@@ -1,0 +1,75 @@
+[project]
+name = "model"
+description = "Simple accelerator lattice model: linear optics errors, closed orbit and Twiss parameters"
+readme = "README.MD"
+requires-python = ">=3.12"
+keywords = ["torch", "orbit", "twiss", "differentiable", "accelerator"]
+authors = [{name = "Ivan Morozov"}]
+license = {text = "MIT"}
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Natural Language :: English",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.12"
+]
+dependencies = [
+    "pyyaml>=6.0.1",
+    "pandas>=2.2.0",
+    "numpy>=1.26.3",
+    "torch>=2.4.0", 
+    "multimethod>=1.11",
+    "twiss>=0.2.6", 
+    "ndmap>=0.1.7"
+    ]
+dynamic = ["version"]
+
+[project.urls]
+documentation = "https://i-a-morozov.github.io/model/"
+repository = "https://github.com/i-a-morozov/model"
+
+[build-system]
+requires = ["setuptools", "setuptools-scm[toml]", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+include = ["model"]
+
+[tool.setuptools.package-data]
+model = ["py.typed", "*.pyi"]
+
+[tool.setuptools.dynamic]
+version = {attr = "model.__version__"}
+
+[project.optional-dependencies]
+test = ["mypy", "pylint", "pytest", "pytest-cov", "numpy"]
+docs = ["pandoc", "sphinx-rtd-theme", "ipykernel", "nbsphinx"]
+build = ["build", "setuptools", "twine"]
+examples = ["jupyterlab",  "pandas", "matplotlib"]
+all = ["twiss[test, docs, build, examples]"]
+
+[tool.pylint.'MESSAGES CONTROL']
+disable=[
+    "raw-checker-failed",
+    "bad-inline-option",
+    "locally-disabled",
+    "file-ignored",
+    "suppressed-message",
+    "useless-suppression",
+    "deprecated-pragma",
+    "use-symbolic-message-instead",
+    "function-redefined",
+    "no-value-for-parameter",
+    "no-member",
+    "redefined-builtin",
+    "unused-argument",
+    "invalid-name",
+    "too-many-locals",
+    "redefined-outer-name",
+    "not-callable"
+]
+
+[tool.pytest.ini_options]
+filterwarnings = [
+    "ignore::DeprecationWarning"
+]
