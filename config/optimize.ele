@@ -1,0 +1,20 @@
+
+&run_setup
+  use_beamline="FODO",
+  lattice = "./config/optimize.lte",
+  p_central_mev = 1000
+&end
+
+&run_control
+&end
+
+&twiss_output
+  filename = "./config/binary.twiss",
+  output_at_each_step = 1
+&end
+
+&bunched_beam
+&end
+
+&track
+&end

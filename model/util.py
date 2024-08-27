@@ -12,7 +12,6 @@ The corresponding values contain the second-level keys and values
 table = {..., location -> data, ...} = {..., location -> {..., key -> value, ...}, ...}
 
 Functions
----------
 
 mod    : Compute remainder with offset
 cast   : Cast string

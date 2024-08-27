@@ -7,7 +7,6 @@ Generate configuration table from MADX or ELEGANT output
 Insert locations into MADX or ELEGANT lattice files
 
 Functions
----------
 
 load_tfs     : Load TFS style table
 load_sdds    : Load SDDS style table
@@ -19,7 +18,6 @@ rift_lattice : Rift MADX or ELEGANT lattice data (insert monitor or virtual loca
 add_rc       : Add RC from lattice to configuration table
 
 External
---------
 
 rename (util)
 insert (util)

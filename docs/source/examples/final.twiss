@@ -1,0 +1,180 @@
+SDDS1
+&description text="Twiss parameters--input: final.ele  lattice: final.lte", contents="Twiss parameters", &end
+&parameter name=Step, description="Simulation step", type=long, &end
+&parameter name=SVNVersion, description="SVN version number", type=string, &end
+&parameter name=nux, symbol="$gn$r$bx$n", units="1/(2$gp$r)", description="Horizontal tune", type=double, &end
+&parameter name=dnux/dp, symbol="$gx$r$bx$n", units="1/(2$gp$r)", description="Horizontal chromaticity", type=double, &end
+&parameter name=dnux/dp2, symbol="$gx$r$bx2$n", units="1/(2$gp$r)", description="Horizontal 2nd-order chromaticity", type=double, &end
+&parameter name=dnux/dp3, symbol="$gx$r$bx3$n", units="1/(2$gp$r)", description="Horizontal 3rd-order chromaticity", type=double, &end
+&parameter name=Ax, symbol="A$bx$n", units=m, description="Horizontal acceptance", type=double, &end
+&parameter name=AxLocation, units=m, description="Location of horizontal acceptance limit", type=double, &end
+&parameter name=AxElementName, description="Name of element that limits horizontal acceptance", type=string, &end
+&parameter name=nuy, symbol="$gn$r$by$n", units="1/(2$gp$r)", description="Vertical tune", type=double, &end
+&parameter name=dnuy/dp, symbol="$gx$r$by$n", units="1/(2$gp$r)", description="Vertical chromaticity", type=double, &end
+&parameter name=dnuy/dp2, symbol="$gx$r$by2$n", units="1/(2$gp$r)", description="Vertical 2nd-order chromaticity", type=double, &end
+&parameter name=dnuy/dp3, symbol="$gx$r$by3$n", units="1/(2$gp$r)", description="Vertical 3rd-order chromaticity", type=double, &end
+&parameter name=Ay, symbol="A$by$n", units=m, description="Vertical acceptance", type=double, &end
+&parameter name=AyLocation, units=m, description="Location of vertical acceptance limit", type=double, &end
+&parameter name=AyElementName, description="Name of element that limits vertical acceptance", type=string, &end
+&parameter name=deltaHalfRange, symbol="$gDd$r/2", description="Half range of momentum offset for chromatic tune spread evaluation", type=double, &end
+&parameter name=nuxChromUpper, symbol="$gx$r$bu$n", description="Upper limit of x tune due to chromaticity and deltaRange", type=double, &end
+&parameter name=nuxChromLower, symbol="$gx$r$bu$n", description="Lower limit of x tune due to chromaticity and deltaRange", type=double, &end
+&parameter name=nuyChromUpper, symbol="$gy$r$bu$n", description="Upper limit of y tune due to chromaticity and deltaRange", type=double, &end
+&parameter name=nuyChromLower, symbol="$gy$r$bu$n", description="Lower limit of y tune due to chromaticity and deltaRange", type=double, &end
+&parameter name=Stage, description="Stage of computation", type=string, &end
+&parameter name=pCentral, units="m$be$nc", description="Central momentum", type=double, &end
+&parameter name=dbetax/dp, units=m, description="Derivative of betax with momentum offset", type=double, &end
+&parameter name=dbetay/dp, units=m, description="Derivative of betay with momentum offset", type=double, &end
+&parameter name=dalphax/dp, description="Derivative of alphax with momentum offset", type=double, &end
+&parameter name=dalphay/dp, description="Derivative of alphay with momentum offset", type=double, &end
+&parameter name=etax2, symbol="$gc$r$bx2$n", units=m, description="Second-order dispersion (for matched or periodic case only)", type=double, &end
+&parameter name=etay2, symbol="$gc$r$by2$n", units=m, description="Second-order dispersion (for matched or periodic case only)", type=double, &end
+&parameter name=etax3, symbol="$gc$r$bx3$n", units=m, description="Third-order dispersion (for matched or periodic case only)", type=double, &end
+&parameter name=etay3, symbol="$gc$r$by3$n", units=m, description="Third-order dispersion (for matched or periodic case only)", type=double, &end
+&parameter name=etaxp2, symbol="$gc$r$bx2$n$a'$n", units=m, description="Second-order dispersion (for matched or periodic case only)", type=double, &end
+&parameter name=etayp2, symbol="$gc$r$by2$n$a'$n", units=m, description="Second-order dispersion (for matched or periodic case only)", type=double, &end
+&parameter name=etaxp3, symbol="$gc$r$bx3$n$a'$n", units=m, description="Third-order dispersion (for matched or periodic case only)", type=double, &end
+&parameter name=etayp3, symbol="$gc$r$by3$n$a'$n", units=m, description="Third-order dispersion (for matched or periodic case only)", type=double, &end
+&parameter name=betaxMin, units=m, description="Minimum betax", type=double, &end
+&parameter name=betaxAve, units=m, description="Average betax", type=double, &end
+&parameter name=betaxMax, units=m, description="Maximum betax", type=double, &end
+&parameter name=betayMin, units=m, description="Minimum betay", type=double, &end
+&parameter name=betayAve, units=m, description="Average betay", type=double, &end
+&parameter name=betayMax, units=m, description="Maximum betay", type=double, &end
+&parameter name=etaxMax, units=m, description="Maximum absolute value of etax", type=double, &end
+&parameter name=etayMax, units=m, description="Maximum absolute value of etay", type=double, &end
+&parameter name=waistsx, description="Number of changes in the sign of alphax", type=long, &end
+&parameter name=waistsy, description="Number of changes in the sign of alphay", type=long, &end
+&parameter name=dnux/dAx, units=1/m, description="Horizontal tune shift with horizontal amplitude", type=double, &end
+&parameter name=dnux/dAy, units=1/m, description="Horizontal tune shift with vertical amplitude", type=double, &end
+&parameter name=dnuy/dAx, units=1/m, description="Vertical tune shift with horizontal amplitude", type=double, &end
+&parameter name=dnuy/dAy, units=1/m, description="Vertical tune shift with vertical amplitude", type=double, &end
+&parameter name=dnux/dAx2, units="1/m$a2$n", description="Horizontal tune shift with horizontal amplitude", type=double, &end
+&parameter name=dnux/dAy2, units="1/m$a2$n", description="Horizontal tune shift with vertical amplitude", type=double, &end
+&parameter name=dnux/dAxAy, units="1/m$a2$n", description="Horizontal tune shift with horizontal and vertical amplitude", type=double, &end
+&parameter name=dnuy/dAx2, units="1/m$a2$n", description="Vertical tune shift with horizontal amplitude", type=double, &end
+&parameter name=dnuy/dAy2, units="1/m$a2$n", description="Vertical tune shift with vertical amplitude", type=double, &end
+&parameter name=dnuy/dAxAy, units="1/m$a2$n", description="Vertical tune shift with horizontal and vertical amplitude", type=double, &end
+&parameter name=nuxTswaLower, description="Minimum horizontal tune from tune-shift-with-amplitude calculations", type=double, &end
+&parameter name=nuxTswaUpper, description="Maximum horizontal tune from tune-shift-with-amplitude calculations", type=double, &end
+&parameter name=nuyTswaLower, description="Minimum vertical tune from tune-shift-with-amplitude calculations", type=double, &end
+&parameter name=nuyTswaUpper, description="Maximum vertical tune from tune-shift-with-amplitude calculations", type=double, &end
+&parameter name=couplingIntegral, description="Coupling integral for difference resonance", type=double, &end
+&parameter name=couplingDelta, description="Distance from difference resonance", type=double, &end
+&parameter name=emittanceRatio, description="Emittance ratio from coupling integral", type=double, &end
+&parameter name=alphac3, symbol="$ga$r$bc3$n", description="3rd-order momentum compaction factor", type=double, &end
+&parameter name=alphac2, symbol="$ga$r$bc2$n", description="2nd-order momentum compaction factor", type=double, &end
+&parameter name=alphac, symbol="$ga$r$bc$n", description="Momentum compaction factor", type=double, &end
+&column name=s, units=m, description=Distance, type=double,  &end
+&column name=betax, symbol="$gb$r$bx$n", units=m, description="Horizontal beta-function", type=double,  &end
+&column name=alphax, symbol="$ga$r$bx$n", description="Horizontal alpha-function", type=double,  &end
+&column name=psix, symbol="$gy$r$bx$n", units=rad, description="Horizontal phase advance", type=double,  &end
+&column name=etax, symbol="$gc$r$bx$n", units=m, description="Horizontal dispersion", type=double,  &end
+&column name=etaxp, symbol="$gc$r$bx$n$a'$n", description="Slope of horizontal dispersion", type=double,  &end
+&column name=xAperture, symbol="a$bx,eff$n", units=m, description="Effective horizontal aperture", type=double,  &end
+&column name=betay, symbol="$gb$r$by$n", units=m, description="Vertical beta-function", type=double,  &end
+&column name=alphay, symbol="$ga$r$by$n", description="Vertical alpha-function", type=double,  &end
+&column name=psiy, symbol="$gy$r$by$n", units=rad, description="Vertical phase advance", type=double,  &end
+&column name=etay, symbol="$gc$r$by$n", units=m, description="Vertical dispersion", type=double,  &end
+&column name=etayp, symbol="$gc$r$by$n$a'$n", description="Slope of vertical dispersion", type=double,  &end
+&column name=yAperture, symbol="a$by,eff$n", units=m, description="Effective vertical aperture", type=double,  &end
+&column name=pCentral0, symbol="p$bcent$n", units="m$be$nc", description="Initial central momentum", type=double,  &end
+&column name=ElementName, description="Element name", format_string=%10s, type=string,  &end
+&column name=ElementOccurence, description="Occurence of element", format_string=%6ld, type=long,  &end
+&column name=ElementType, description="Element-type name", format_string=%10s, type=string,  &end
+&column name=ChamberShape, type=string,  &end
+&data mode=ascii, &end
+! page number 1
+0
+30188M
+ 2.394266841421556e-01
+-2.036051072468398e-01
+ 0.000000000000000e+00
+ 0.000000000000000e+00
+ 6.100534169412876e+00
+ 6.000000000000000e+00
+H_QF
+ 1.913459933062456e-01
+-2.047343769564358e-01
+ 0.000000000000000e+00
+ 0.000000000000000e+00
+ 5.045793281564560e+00
+ 0.000000000000000e+00
+HEAD
+ 0.000000000000000e+00
+ 2.394266841421556e-01
+ 2.394266841421556e-01
+ 1.913459933062456e-01
+ 1.913459933062456e-01
+"tunes corrected"
+ 1.956950762296902e+03
+ 6.948802831222019e+00
+ 4.606196150910143e+00
+ 3.338032551736450e-16
+ 6.666885540082669e-12
+ 1.377676883486402e+00
+ 0.000000000000000e+00
+ 8.022408697986745e-01
+ 0.000000000000000e+00
+ 1.110223024625157e-16
+ 0.000000000000000e+00
+-8.064851261768285e-04
+ 0.000000000000000e+00
+ 4.287017734831201e+00
+ 9.535878382760567e+00
+ 1.639200719526896e+01
+ 5.674619589422572e+00
+ 1.164368033416934e+01
+ 1.981848926815186e+01
+ 2.721417822995524e+00
+ 0.000000000000000e+00
+1
+2
+ 0.000000000000000e+00
+ 0.000000000000000e+00
+ 0.000000000000000e+00
+ 0.000000000000000e+00
+ 0.000000000000000e+00
+ 0.000000000000000e+00
+ 0.000000000000000e+00
+ 0.000000000000000e+00
+ 0.000000000000000e+00
+ 0.000000000000000e+00
+ 0.000000000000000e+00
+ 0.000000000000000e+00
+ 0.000000000000000e+00
+ 0.000000000000000e+00
+ 0.000000000000000e+00
+ 4.808069083590993e-02
+ 0.000000000000000e+00
+ 4.306079262935436e-02
+ 6.024725330354572e-02
+ 5.810891240271305e-02
+                  27
+ 0.000000000000000e+00  4.287017734831204e+00 -1.321304551729011e-16  0.000000000000000e+00  1.549040841795901e+00  2.775557561562891e-17  1.000000000000000e+01  1.981848926815186e+01  6.545730027929358e-16  0.000000000000000e+00  0.000000000000000e+00  0.000000000000000e+00  1.000000000000000e+01  1.956950762296902e+03 _BEG_ 1 MARK "" 
+ 0.000000000000000e+00  4.287017734831204e+00 -1.321304551729011e-16  0.000000000000000e+00  1.549040841795901e+00  2.775557561562891e-17  1.000000000000000e+01  1.981848926815186e+01  6.545730027929358e-16  0.000000000000000e+00  0.000000000000000e+00  0.000000000000000e+00  1.000000000000000e+01  1.956950762296902e+03 HEAD 1 MARK ? 
+ 0.000000000000000e+00  4.287017734831204e+00 -1.321304551729011e-16  0.000000000000000e+00  1.549040841795901e+00  2.775557561562891e-17  1.000000000000000e+01  1.981848926815186e+01  6.545730027929358e-16  0.000000000000000e+00  0.000000000000000e+00  0.000000000000000e+00  1.000000000000000e+01  1.956950762296902e+03 M 1 MONI ? 
+ 5.000000000000000e-01  4.564259065028644e+00 -5.636933794346604e-01  1.142260492176959e-01  1.587928490432771e+00  1.561981825607101e-01  1.000000000000000e+01  1.885637614053284e+01  1.892048404579359e+00  2.565240425108054e-02  0.000000000000000e+00  0.000000000000000e+00  1.000000000000000e+01  1.956950762296902e+03 QD 1 QUAD ? 
+ 1.500000000000000e+00  5.980356479284525e+00 -8.524040348212205e-01  3.068185834444499e-01  1.744126672993481e+00  1.561981825607101e-01  1.000000000000000e+01  1.531515988971357e+01  1.649167846239909e+00  8.453149253790615e-02  0.000000000000000e+00  0.000000000000000e+00  1.000000000000000e+01  1.956950762296902e+03 H_DR 1 DRIF ? 
+ 1.500000000000000e+00  5.980356479284525e+00 -8.524040348212205e-01  3.068185834444499e-01  1.744126672993481e+00  1.561981825607101e-01  1.000000000000000e+01  1.531515988971357e+01  1.649167846239909e+00  8.453149253790615e-02  0.000000000000000e+00  0.000000000000000e+00  1.000000000000000e+01  1.956950762296902e+03 M_DR 1 MONI ? 
+ 2.500000000000000e+00  7.973875204313526e+00 -1.141114690207781e+00  4.521406052535528e-01  1.900324855554191e+00  1.561981825607101e-01  1.000000000000000e+01  1.225970475557321e+01  1.406287287900459e+00  1.575756506853251e-01  0.000000000000000e+00  0.000000000000000e+00  1.000000000000000e+01  1.956950762296902e+03 H_DR 2 DRIF ? 
+ 3.000000000000000e+00  9.120629409314306e+00 -1.146568740048648e+00  5.107301355818847e-01  1.992896322252740e+00  2.138526637243729e-01  1.000000000000000e+01  1.091413760701325e+01  1.284847009200138e+00  2.008141505892614e-01  0.000000000000000e+00  0.000000000000000e+00  1.000000000000000e+01  1.956950762296902e+03 H_BM 1 CSBEND ? 
+ 3.000000000000000e+00  9.120629409314306e+00 -1.146568740048648e+00  5.107301355818847e-01  1.992896322252740e+00  2.138526637243729e-01  1.000000000000000e+01  1.091413760701325e+01  1.284847009200138e+00  2.008141505892614e-01  0.000000000000000e+00  0.000000000000000e+00  1.000000000000000e+01  1.956950762296902e+03 V_BM 1 MARK ? 
+ 3.500000000000000e+00  1.025538824320646e+01 -1.117184878914915e+00  5.623864412439259e-01  2.113906192418457e+00  2.698795969893243e-01  1.000000000000000e+01  9.690010737209839e+00  1.163406730389092e+00  2.494531256593279e-01  0.000000000000000e+00  0.000000000000000e+00  1.000000000000000e+01  1.956950762296902e+03 H_BM 2 CSBEND ? 
+ 4.500000000000000e+00  1.270896979491113e+01 -1.336396672789745e+00  6.500917126795847e-01  2.383785789407781e+00  2.698795969893243e-01  1.000000000000000e+01  7.606077834992553e+00  9.205261718281931e-01  3.661997933967667e-01  0.000000000000000e+00  0.000000000000000e+00  1.000000000000000e+01  1.956950762296902e+03 H_DR 3 DRIF ? 
+ 4.500000000000000e+00  1.270896979491113e+01 -1.336396672789745e+00  6.500917126795847e-01  2.383785789407781e+00  2.698795969893243e-01  1.000000000000000e+01  7.606077834992553e+00  9.205261718281931e-01  3.661997933967667e-01  0.000000000000000e+00  0.000000000000000e+00  1.000000000000000e+01  1.956950762296902e+03 M_DR 2 MONI ? 
+ 5.500000000000000e+00  1.560097493436545e+01 -1.555608466664575e+00  7.211696308919641e-01  2.653665386397106e+00  2.698795969893243e-01  1.000000000000000e+01  6.007906049897066e+00  6.776456132672937e-01  5.146753268591580e-01  0.000000000000000e+00  0.000000000000000e+00  1.000000000000000e+01  1.956950762296902e+03 H_DR 4 DRIF ? 
+ 6.000000000000000e+00  1.639200719526896e+01  3.608224830031759e-16  7.521811119743597e-01  2.721417822995524e+00 -5.551115123125783e-17  1.000000000000000e+01  5.674619589422572e+00  8.326672684688672e-16  6.011311668647427e-01  0.000000000000000e+00  0.000000000000000e+00  1.000000000000000e+01  1.956950762296902e+03 H_QF 1 QUAD ? 
+ 6.000000000000000e+00  1.639200719526896e+01  3.608224830031759e-16  7.521811119743597e-01  2.721417822995524e+00 -5.551115123125783e-17  1.000000000000000e+01  5.674619589422572e+00  8.326672684688672e-16  6.011311668647427e-01  0.000000000000000e+00  0.000000000000000e+00  1.000000000000000e+01  1.956950762296902e+03 V_QF 1 MARK ? 
+ 6.500000000000000e+00  1.560097493436545e+01  1.555608466664576e+00  7.831925930567553e-01  2.653665386397105e+00 -2.698795969893243e-01  1.000000000000000e+01  6.007906049897064e+00 -6.776456132672919e-01  6.875870068703275e-01  0.000000000000000e+00  0.000000000000000e+00  1.000000000000000e+01  1.956950762296902e+03 H_QF 2 QUAD ? 
+ 7.500000000000000e+00  1.270896979491113e+01  1.336396672789746e+00  8.542705112691347e-01  2.383785789407781e+00 -2.698795969893243e-01  1.000000000000000e+01  7.606077834992548e+00 -9.205261718281910e-01  8.360625403327188e-01  0.000000000000000e+00  0.000000000000000e+00  1.000000000000000e+01  1.956950762296902e+03 H_DR 5 DRIF ? 
+ 7.500000000000000e+00  1.270896979491113e+01  1.336396672789746e+00  8.542705112691347e-01  2.383785789407781e+00 -2.698795969893243e-01  1.000000000000000e+01  7.606077834992548e+00 -9.205261718281910e-01  8.360625403327188e-01  0.000000000000000e+00  0.000000000000000e+00  1.000000000000000e+01  1.956950762296902e+03 M_DR 3 MONI ? 
+ 8.500000000000000e+00  1.025538824320647e+01  1.117184878914915e+00  9.419757827047934e-01  2.113906192418457e+00 -2.698795969893243e-01  1.000000000000000e+01  9.690010737209828e+00 -1.163406730389090e+00  9.528092080701577e-01  0.000000000000000e+00  0.000000000000000e+00  1.000000000000000e+01  1.956950762296902e+03 H_DR 6 DRIF ? 
+ 9.000000000000000e+00  9.120629409314306e+00  1.146568740048649e+00  9.936320883668346e-01  1.992896322252739e+00 -2.138526637243729e-01  1.000000000000000e+01  1.091413760701323e+01 -1.284847009200136e+00  1.001448183140224e+00  0.000000000000000e+00  0.000000000000000e+00  1.000000000000000e+01  1.956950762296902e+03 H_BM 3 CSBEND ? 
+ 9.000000000000000e+00  9.120629409314306e+00  1.146568740048649e+00  9.936320883668346e-01  1.992896322252739e+00 -2.138526637243729e-01  1.000000000000000e+01  1.091413760701323e+01 -1.284847009200136e+00  1.001448183140224e+00  0.000000000000000e+00  0.000000000000000e+00  1.000000000000000e+01  1.956950762296902e+03 V_BM 2 MARK ? 
+ 9.500000000000000e+00  7.973875204313525e+00  1.141114690207781e+00  1.052221618695167e+00  1.900324855554191e+00 -1.561981825607101e-01  1.000000000000000e+01  1.225970475557319e+01 -1.406287287900456e+00  1.044686683044161e+00  0.000000000000000e+00  0.000000000000000e+00  1.000000000000000e+01  1.956950762296902e+03 H_BM 4 CSBEND ? 
+ 1.050000000000000e+01  5.980356479284523e+00  8.524040348212210e-01  1.197543640504269e+00  1.744126672993481e+00 -1.561981825607101e-01  1.000000000000000e+01  1.531515988971355e+01 -1.649167846239906e+00  1.117730841191580e+00  0.000000000000000e+00  0.000000000000000e+00  1.000000000000000e+01  1.956950762296902e+03 H_DR 7 DRIF ? 
+ 1.050000000000000e+01  5.980356479284523e+00  8.524040348212210e-01  1.197543640504269e+00  1.744126672993481e+00 -1.561981825607101e-01  1.000000000000000e+01  1.531515988971355e+01 -1.649167846239906e+00  1.117730841191580e+00  0.000000000000000e+00  0.000000000000000e+00  1.000000000000000e+01  1.956950762296902e+03 M_DR 4 MONI ? 
+ 1.150000000000000e+01  4.564259065028641e+00  5.636933794346606e-01  1.390136174731023e+00  1.587928490432770e+00 -1.561981825607101e-01  1.000000000000000e+01  1.885637614053282e+01 -1.892048404579356e+00  1.176609929478405e+00  0.000000000000000e+00  0.000000000000000e+00  1.000000000000000e+01  1.956950762296902e+03 H_DR 8 DRIF ? 
+ 1.200000000000000e+01  4.287017734831201e+00  5.273559366969493e-16  1.504362223948720e+00  1.549040841795901e+00 -1.110223024625157e-16  1.000000000000000e+01  1.981848926815184e+01  1.387778780781446e-16  1.202262333729486e+00  0.000000000000000e+00  0.000000000000000e+00  1.000000000000000e+01  1.956950762296902e+03 QD 2 QUAD ? 
+ 1.200000000000000e+01  4.287017734831201e+00  5.273559366969493e-16  1.504362223948720e+00  1.549040841795901e+00 -1.110223024625157e-16  1.000000000000000e+01  1.981848926815184e+01  1.387778780781446e-16  1.202262333729486e+00  0.000000000000000e+00  0.000000000000000e+00  1.000000000000000e+01  1.956950762296902e+03 TAIL 1 MARK ? 

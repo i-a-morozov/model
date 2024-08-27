@@ -5,6 +5,19 @@ Set linear model from CS Twiss parameters, normalization matrices or transport m
 Generate model with errors
 Compute closed orbit and twiss parameters
 
+External
+
+mod          (util)
+load         (util)
+save         (util)
+insert       (util)
+
+load_tfs     (external)
+oad_sdds     (external)
+convert      (external)
+load_lattice (external)
+add_rc       (external)
+
 """
 from __future__ import annotations
 

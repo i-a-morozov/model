@@ -1,6 +1,6 @@
 SDDS1
 !# little-endian
-&description text="Twiss parameters--input: ./config/final.ele  lattice: ./config/final.lte", contents="Twiss parameters", &end
+&description text="Twiss parameters--input: final.ele  lattice: final.lte", contents="Twiss parameters", &end
 &parameter name=Step, description="Simulation step", type=long, &end
 &parameter name=SVNVersion, description="SVN version number", type=string, fixed_value=30188M, &end
 &parameter name=nux, symbol="$gn$r$bx$n", units="1/(2$gp$r)", description="Horizontal tune", type=double, &end
