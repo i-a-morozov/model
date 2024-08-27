@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>model.external &mdash; twiss  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            twiss
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">API:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../modules/util.html">Util</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../modules/util.html#model.util.cast"><code class="docutils literal notranslate"><span class="pre">cast()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../modules/util.html#model.util.insert"><code class="docutils literal notranslate"><span class="pre">insert()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../modules/util.html#model.util.load"><code class="docutils literal notranslate"><span class="pre">load()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../modules/util.html#model.util.mingle"><code class="docutils literal notranslate"><span class="pre">mingle()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../modules/util.html#model.util.mod"><code class="docutils literal notranslate"><span class="pre">mod()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../modules/util.html#model.util.remove"><code class="docutils literal notranslate"><span class="pre">remove()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../modules/util.html#model.util.rename"><code class="docutils literal notranslate"><span class="pre">rename()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../modules/util.html#model.util.save"><code class="docutils literal notranslate"><span class="pre">save()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../modules/util.html#model.util.select"><code class="docutils literal notranslate"><span class="pre">select()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../modules/external.html">External</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../modules/external.html#model.external.add_rc"><code class="docutils literal notranslate"><span class="pre">add_rc()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../modules/external.html#model.external.convert"><code class="docutils literal notranslate"><span class="pre">convert()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../modules/external.html#model.external.load_lattice"><code class="docutils literal notranslate"><span class="pre">load_lattice()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../modules/external.html#model.external.load_sdds"><code class="docutils literal notranslate"><span class="pre">load_sdds()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../modules/external.html#model.external.load_tfs"><code class="docutils literal notranslate"><span class="pre">load_tfs()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../modules/external.html#model.external.parse"><code class="docutils literal notranslate"><span class="pre">parse()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../modules/external.html#model.external.rift_lattice"><code class="docutils literal notranslate"><span class="pre">rift_lattice()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../modules/external.html#model.external.text_lattice"><code class="docutils literal notranslate"><span class="pre">text_lattice()</span></code></a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">twiss</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">model.external</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for model.external</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">External</span>
+<span class="sd">--------</span>
+
+<span class="sd">External model</span>
+<span class="sd">Generate configuration table from MADX or ELEGANT output</span>
+<span class="sd">Insert locations into MADX or ELEGANT lattice files</span>
+
+<span class="sd">Functions</span>
+
+<span class="sd">load_tfs     : Load TFS style table</span>
+<span class="sd">load_sdds    : Load SDDS style table</span>
+<span class="sd">convert      : Convert (sorted) columns to configuration table</span>
+<span class="sd">parse        : Parse MADX or ELEGANT element or line</span>
+<span class="sd">load_lattice : Load MADX or ELEGANT lattice file</span>
+<span class="sd">text_lattice : Convert MADX or ELEGANT data to text</span>
+<span class="sd">rift_lattice : Rift MADX or ELEGANT lattice data (insert monitor or virtual locations)</span>
+<span class="sd">add_rc       : Add RC from lattice to configuration table</span>
+
+<span class="sd">External</span>
+
+<span class="sd">rename (util)</span>
+<span class="sd">insert (util)</span>
+<span class="sd">select (util)</span>
+<span class="sd">cast   (util)</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
+
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Literal</span>
+
+<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span> <span class="nn">copy</span> <span class="kn">import</span> <span class="n">deepcopy</span>
+
+<span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="n">pi</span>
+
+<span class="kn">from</span> <span class="nn">model.util</span> <span class="kn">import</span> <span class="n">Table</span>
+<span class="kn">from</span> <span class="nn">model.util</span> <span class="kn">import</span> <span class="n">cast</span>
+<span class="kn">from</span> <span class="nn">model.util</span> <span class="kn">import</span> <span class="n">rename</span>
+<span class="kn">from</span> <span class="nn">model.util</span> <span class="kn">import</span> <span class="n">insert</span>
+
+<div class="viewcode-block" id="load_tfs">
+<a class="viewcode-back" href="../../modules/external.html#model.external.load_tfs">[docs]</a>
+<span class="k">def</span> <span class="nf">load_tfs</span><span class="p">(</span><span class="n">path</span><span class="p">:</span><span class="n">Path</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span>
+             <span class="n">postfix</span><span class="p">:</span><span class="nb">str</span><span class="o">=</span><span class="s1">&#39;_&#39;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="o">|</span><span class="nb">int</span><span class="o">|</span><span class="nb">float</span><span class="p">],</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="o">|</span><span class="nb">int</span><span class="o">|</span><span class="nb">float</span><span class="p">]]]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Load TFS style table</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    path: Path</span>
+<span class="sd">        input path</span>
+<span class="sd">    postfix: str, default=&#39;&#39;</span>
+<span class="sd">        rename duplicate locations postfix</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    tuple[dict[str, str|int|float], dict[str, dict[str, str|int|float]]]</span>
+<span class="sd">        {key: value} (parameters)</span>
+<span class="sd">        {location: {key: value}} (columns)</span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">parameters</span><span class="p">:</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="o">|</span><span class="nb">int</span><span class="o">|</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">columns</span><span class="p">:</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="o">|</span><span class="nb">int</span><span class="o">|</span><span class="nb">float</span><span class="p">]]</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">with</span> <span class="n">path</span><span class="o">.</span><span class="n">open</span><span class="p">()</span> <span class="k">as</span> <span class="n">stream</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">stream</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">line</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;@&#39;</span><span class="p">):</span>
+                <span class="n">_</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">unit</span><span class="p">,</span> <span class="o">*</span><span class="n">value</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+                <span class="n">unit</span> <span class="o">=</span> <span class="nb">str</span> <span class="k">if</span> <span class="n">unit</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;s&#39;</span><span class="p">)</span> <span class="k">else</span> <span class="nb">float</span>
+                <span class="n">parameters</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">unit</span><span class="p">((</span><span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">value</span><span class="p">))</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;&quot;&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">))</span>
+                <span class="k">continue</span>
+            <span class="k">if</span> <span class="n">line</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;*&#39;</span><span class="p">):</span>
+                <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="o">*</span><span class="n">keys</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+                <span class="k">continue</span>
+            <span class="k">if</span> <span class="n">line</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;$&#39;</span><span class="p">):</span>
+                <span class="n">_</span><span class="p">,</span> <span class="o">*</span><span class="n">units</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+                <span class="n">units</span> <span class="o">=</span> <span class="p">[{</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1">&#39;</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="s1">&#39;</span><span class="si">%le</span><span class="s1">&#39;</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="s1">&#39;</span><span class="si">%d</span><span class="s1">&#39;</span><span class="p">:</span> <span class="nb">float</span><span class="p">}[</span><span class="n">unit</span><span class="p">]</span> <span class="k">for</span> <span class="n">unit</span> <span class="ow">in</span> <span class="n">units</span><span class="p">]</span>
+                <span class="k">continue</span>
+            <span class="n">values</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+            <span class="n">name</span><span class="p">,</span> <span class="o">*</span><span class="n">values</span> <span class="o">=</span> <span class="p">[</span><span class="n">unit</span><span class="p">(</span><span class="n">value</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;&quot;&#39;</span><span class="p">,</span><span class="s1">&#39;&#39;</span><span class="p">))</span> <span class="k">for</span> <span class="n">unit</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">units</span><span class="p">,</span> <span class="n">values</span><span class="p">)]</span>
+            <span class="k">if</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">columns</span><span class="p">:</span>
+                <span class="n">size</span> <span class="o">=</span> <span class="mi">1</span>
+                <span class="k">while</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s1">_</span><span class="si">{</span><span class="n">size</span><span class="si">}</span><span class="s1">&#39;</span> <span class="ow">in</span> <span class="n">columns</span><span class="p">:</span>
+                    <span class="n">size</span> <span class="o">+=</span><span class="mi">1</span>
+                <span class="n">name</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">name</span><span class="si">}{</span><span class="n">postfix</span><span class="si">}{</span><span class="n">size</span><span class="si">}</span><span class="s1">&#39;</span>
+            <span class="n">columns</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="n">value</span> <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">keys</span><span class="p">,</span> <span class="n">values</span><span class="p">)}</span>
+    <span class="k">return</span> <span class="n">parameters</span><span class="p">,</span> <span class="n">columns</span></div>
+
+
+
+<div class="viewcode-block" id="load_sdds">
+<a class="viewcode-back" href="../../modules/external.html#model.external.load_sdds">[docs]</a>
+<span class="k">def</span> <span class="nf">load_sdds</span><span class="p">(</span><span class="n">path</span><span class="p">:</span><span class="n">Path</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span>
+              <span class="n">postfix</span><span class="p">:</span><span class="nb">str</span><span class="o">=</span><span class="s1">&#39;_&#39;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="o">|</span><span class="nb">int</span><span class="o">|</span><span class="nb">float</span><span class="p">],</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="o">|</span><span class="nb">int</span><span class="o">|</span><span class="nb">float</span><span class="p">]]]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Load SDDS style table</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    path: Path</span>
+<span class="sd">        input path</span>
+<span class="sd">    postfix: str, default=&#39;&#39;</span>
+<span class="sd">        rename duplicate locations postfix</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    tuple[dict[str, str|int|float], dict[str, dict[str, str|int|float]]]</span>
+<span class="sd">        {key: value} (parameters)</span>
+<span class="sd">        {location: {key: value}} (columns)</span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">parameters</span><span class="p">:</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="o">|</span><span class="nb">int</span><span class="o">|</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">columns</span><span class="p">:</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="o">|</span><span class="nb">int</span><span class="o">|</span><span class="nb">float</span><span class="p">]]</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">kp</span><span class="p">:</span><span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">kc</span><span class="p">:</span><span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">up</span><span class="p">:</span><span class="nb">list</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">uc</span><span class="p">:</span><span class="nb">list</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">nl</span><span class="p">:</span><span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">np</span><span class="p">:</span><span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">with</span> <span class="n">path</span><span class="o">.</span><span class="n">open</span><span class="p">()</span> <span class="k">as</span> <span class="n">stream</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">stream</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">line</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;SDDS&#39;</span><span class="p">):</span>
+                <span class="k">continue</span>
+            <span class="k">if</span> <span class="n">line</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;&amp;description&#39;</span><span class="p">):</span>
+                <span class="k">continue</span>
+            <span class="k">if</span> <span class="n">line</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;&amp;parameter&#39;</span><span class="p">):</span>
+                <span class="n">np</span> <span class="o">+=</span> <span class="mi">1</span>
+                <span class="n">_</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="o">*</span><span class="n">_</span><span class="p">,</span> <span class="n">unit</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>    
+                <span class="n">_</span><span class="p">,</span> <span class="n">name</span> <span class="o">=</span> <span class="n">name</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;=&#39;</span><span class="p">)</span>
+                <span class="n">name</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">name</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">)</span>
+                <span class="n">_</span><span class="p">,</span> <span class="n">unit</span> <span class="o">=</span> <span class="n">unit</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;=&#39;</span><span class="p">)</span>
+                <span class="n">unit</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">unit</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">)</span>
+                <span class="n">unit</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;string&#39;</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="s1">&#39;long&#39;</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="s1">&#39;double&#39;</span><span class="p">:</span> <span class="nb">float</span><span class="p">}[</span><span class="n">unit</span><span class="p">]</span>
+                <span class="n">kp</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+                <span class="n">up</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">unit</span><span class="p">)</span>
+                <span class="k">continue</span>
+            <span class="k">if</span> <span class="n">line</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;&amp;column&#39;</span><span class="p">):</span>
+                <span class="n">_</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="o">*</span><span class="n">_</span><span class="p">,</span> <span class="n">unit</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>    
+                <span class="n">_</span><span class="p">,</span> <span class="n">name</span> <span class="o">=</span> <span class="n">name</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;=&#39;</span><span class="p">)</span>
+                <span class="n">name</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">name</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">)</span>
+                <span class="n">_</span><span class="p">,</span> <span class="n">unit</span> <span class="o">=</span> <span class="n">unit</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;=&#39;</span><span class="p">)</span>
+                <span class="n">unit</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">unit</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">)</span>
+                <span class="n">unit</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;string&#39;</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="s1">&#39;long&#39;</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="s1">&#39;double&#39;</span><span class="p">:</span> <span class="nb">float</span><span class="p">}[</span><span class="n">unit</span><span class="p">]</span>
+                <span class="n">kc</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+                <span class="n">uc</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">unit</span><span class="p">)</span>                
+                <span class="k">continue</span>
+            <span class="k">if</span> <span class="n">line</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;&amp;data&#39;</span><span class="p">):</span>
+                <span class="k">continue</span>
+            <span class="k">if</span> <span class="n">line</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;! page number&#39;</span><span class="p">):</span>
+                <span class="k">continue</span>
+            <span class="k">if</span> <span class="n">nl</span> <span class="o">&lt;</span> <span class="n">np</span><span class="p">:</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">parameters</span><span class="p">[</span><span class="n">kp</span><span class="p">[</span><span class="n">nl</span><span class="p">]]</span> <span class="o">=</span> <span class="n">up</span><span class="p">[</span><span class="n">nl</span><span class="p">](</span><span class="n">line</span><span class="p">)</span>
+                <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+                    <span class="n">parameters</span><span class="p">[</span><span class="n">kp</span><span class="p">[</span><span class="n">nl</span><span class="p">]]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+                <span class="n">nl</span> <span class="o">+=</span> <span class="mi">1</span>
+                <span class="k">continue</span>
+            <span class="k">if</span> <span class="n">nl</span> <span class="o">==</span> <span class="n">np</span><span class="p">:</span>
+                <span class="n">nl</span> <span class="o">+=</span> <span class="mi">1</span>
+                <span class="k">continue</span>
+            <span class="n">values</span> <span class="o">=</span> <span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="n">unit</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="k">for</span> <span class="p">(</span><span class="n">unit</span><span class="p">,</span> <span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">))</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">uc</span><span class="p">,</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">kc</span><span class="p">,</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()))</span><span class="o">.</span><span class="n">items</span><span class="p">())}</span>
+            <span class="n">name</span> <span class="o">=</span> <span class="n">values</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;ElementName&#39;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">columns</span><span class="p">:</span>
+                <span class="n">size</span> <span class="o">=</span> <span class="mi">1</span>
+                <span class="k">while</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s1">_</span><span class="si">{</span><span class="n">size</span><span class="si">}</span><span class="s1">&#39;</span> <span class="ow">in</span> <span class="n">columns</span><span class="p">:</span>
+                    <span class="n">size</span> <span class="o">+=</span><span class="mi">1</span>
+                <span class="n">name</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">name</span><span class="si">}{</span><span class="n">postfix</span><span class="si">}{</span><span class="n">size</span><span class="si">}</span><span class="s1">&#39;</span>            
+            <span class="n">columns</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">values</span>
+    <span class="k">return</span> <span class="n">parameters</span><span class="p">,</span> <span class="n">columns</span></div>
+
+
+
+<div class="viewcode-block" id="convert">
+<a class="viewcode-back" href="../../modules/external.html#model.external.convert">[docs]</a>
+<span class="k">def</span> <span class="nf">convert</span><span class="p">(</span><span class="n">columns</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="o">|</span><span class="nb">int</span><span class="o">|</span><span class="nb">float</span><span class="p">]],</span> 
+            <span class="n">kind</span><span class="p">:</span><span class="n">Literal</span><span class="p">[</span><span class="s1">&#39;TFS&#39;</span><span class="p">,</span> <span class="s1">&#39;SDDS&#39;</span><span class="p">],</span>
+            <span class="n">kind_monitor</span><span class="p">:</span><span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+            <span class="n">kind_virtual</span><span class="p">:</span><span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="o">*</span><span class="p">,</span> 
+            <span class="n">dispersion</span><span class="p">:</span><span class="nb">bool</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">rc</span><span class="p">:</span><span class="nb">bool</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">name_monitor</span><span class="p">:</span><span class="n">Optional</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">name_virtual</span><span class="p">:</span><span class="n">Optional</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">monitor</span><span class="p">:</span><span class="nb">str</span><span class="o">=</span><span class="s1">&#39;MONITOR&#39;</span><span class="p">,</span>
+            <span class="n">virtual</span><span class="p">:</span><span class="nb">str</span><span class="o">=</span><span class="s1">&#39;VIRTUAL&#39;</span><span class="p">,</span>
+            <span class="n">rule</span><span class="p">:</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Table</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Convert (sorted) columns to configuration table</span>
+
+<span class="sd">    TFS parameters (MADX) can be used to setup CS model</span>
+<span class="sd">    SDDS parameters (ELEGANT) can be used to setup CS and TM models</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    columns: dict[str, dict[str, str|int|float]]</span>
+<span class="sd">        columns to convert (sorted locations are assumed)</span>
+<span class="sd">    kind: Literal[&#39;TFS&#39;, &#39;SDDS&#39;]</span>
+<span class="sd">        columns kind</span>
+<span class="sd">    kind_monitor: list[str]</span>
+<span class="sd">        list of element types to identify with monitor locations</span>
+<span class="sd">    kind_virtual: list[str]</span>
+<span class="sd">        list of element types to identify with virtual locations</span>
+<span class="sd">    dispersion: bool, default=False</span>
+<span class="sd">        flag to insert zero dispersion values (original values are kept if present)</span>
+<span class="sd">    rc: bool, default=False</span>
+<span class="sd">        flat to add RC key</span>
+<span class="sd">    name_monitor: Optional[list[str]]</span>
+<span class="sd">        list of element names to set as monitor locations</span>
+<span class="sd">    name_virtual: Optional[list[str]]</span>
+<span class="sd">        list of element names to set as virtual locations</span>
+<span class="sd">    monitor: str, default=&#39;MONITOR&#39;</span>
+<span class="sd">        monitor kind</span>
+<span class="sd">    virtual: str, default=&#39;VIRTUAL&#39;</span>
+<span class="sd">        virtual kind</span>
+<span class="sd">    rule: Optional[dict[str, str]]</span>
+<span class="sd">        keys rename rule (appended to default rules)</span>
+<span class="sd">        </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    Table</span>
+<span class="sd">        </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">rule_tfs</span><span class="p">:</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;KEYWORD&#39;</span><span class="p">:</span> <span class="s1">&#39;TYPE&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;S&#39;</span>      <span class="p">:</span> <span class="s1">&#39;S&#39;</span>  <span class="p">,</span> 
+        <span class="s1">&#39;ALFX&#39;</span>   <span class="p">:</span> <span class="s1">&#39;AX&#39;</span> <span class="p">,</span> 
+        <span class="s1">&#39;BETX&#39;</span>   <span class="p">:</span> <span class="s1">&#39;BX&#39;</span> <span class="p">,</span> 
+        <span class="s1">&#39;MUX&#39;</span>    <span class="p">:</span> <span class="s1">&#39;FX&#39;</span> <span class="p">,</span> 
+        <span class="s1">&#39;ALFY&#39;</span>   <span class="p">:</span> <span class="s1">&#39;AY&#39;</span> <span class="p">,</span> 
+        <span class="s1">&#39;BETY&#39;</span>   <span class="p">:</span> <span class="s1">&#39;BY&#39;</span> <span class="p">,</span> 
+        <span class="s1">&#39;MUY&#39;</span>    <span class="p">:</span> <span class="s1">&#39;FY&#39;</span> <span class="p">,</span> 
+        <span class="s1">&#39;DX&#39;</span>     <span class="p">:</span> <span class="s1">&#39;DQX&#39;</span><span class="p">,</span> 
+        <span class="s1">&#39;DPX&#39;</span>    <span class="p">:</span> <span class="s1">&#39;DPX&#39;</span><span class="p">,</span> 
+        <span class="s1">&#39;DY&#39;</span>     <span class="p">:</span> <span class="s1">&#39;DQY&#39;</span><span class="p">,</span> 
+        <span class="s1">&#39;DPY&#39;</span>    <span class="p">:</span> <span class="s1">&#39;DPY&#39;</span><span class="p">,</span>      
+    <span class="p">}</span>
+    <span class="n">rule_sdds</span><span class="p">:</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;ElementType&#39;</span> <span class="p">:</span> <span class="s1">&#39;TYPE&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;s&#39;</span>           <span class="p">:</span> <span class="s1">&#39;S&#39;</span>  <span class="p">,</span> 
+        <span class="s1">&#39;alphax&#39;</span>      <span class="p">:</span> <span class="s1">&#39;AX&#39;</span> <span class="p">,</span> 
+        <span class="s1">&#39;betax&#39;</span>       <span class="p">:</span> <span class="s1">&#39;BX&#39;</span> <span class="p">,</span> 
+        <span class="s1">&#39;psix&#39;</span>        <span class="p">:</span> <span class="s1">&#39;FX&#39;</span> <span class="p">,</span> 
+        <span class="s1">&#39;alphay&#39;</span>      <span class="p">:</span> <span class="s1">&#39;AY&#39;</span> <span class="p">,</span> 
+        <span class="s1">&#39;betay&#39;</span>       <span class="p">:</span> <span class="s1">&#39;BY&#39;</span> <span class="p">,</span> 
+        <span class="s1">&#39;psiy&#39;</span>        <span class="p">:</span> <span class="s1">&#39;FY&#39;</span> <span class="p">,</span> 
+        <span class="s1">&#39;etax&#39;</span>        <span class="p">:</span> <span class="s1">&#39;DQX&#39;</span><span class="p">,</span> 
+        <span class="s1">&#39;etaxp&#39;</span>       <span class="p">:</span> <span class="s1">&#39;DPX&#39;</span><span class="p">,</span> 
+        <span class="s1">&#39;etay&#39;</span>        <span class="p">:</span> <span class="s1">&#39;DQY&#39;</span><span class="p">,</span> 
+        <span class="s1">&#39;etayp&#39;</span>       <span class="p">:</span> <span class="s1">&#39;DPY&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;R11&#39;</span>         <span class="p">:</span> <span class="s1">&#39;T11&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;R12&#39;</span>         <span class="p">:</span> <span class="s1">&#39;T12&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;R13&#39;</span>         <span class="p">:</span> <span class="s1">&#39;T13&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;R14&#39;</span>         <span class="p">:</span> <span class="s1">&#39;T14&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;R21&#39;</span>         <span class="p">:</span> <span class="s1">&#39;T21&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;R22&#39;</span>         <span class="p">:</span> <span class="s1">&#39;T22&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;R23&#39;</span>         <span class="p">:</span> <span class="s1">&#39;T23&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;R24&#39;</span>         <span class="p">:</span> <span class="s1">&#39;T24&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;R31&#39;</span>         <span class="p">:</span> <span class="s1">&#39;T31&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;R32&#39;</span>         <span class="p">:</span> <span class="s1">&#39;T32&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;R33&#39;</span>         <span class="p">:</span> <span class="s1">&#39;T33&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;R34&#39;</span>         <span class="p">:</span> <span class="s1">&#39;T34&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;R41&#39;</span>         <span class="p">:</span> <span class="s1">&#39;T41&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;R42&#39;</span>         <span class="p">:</span> <span class="s1">&#39;T42&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;R43&#39;</span>         <span class="p">:</span> <span class="s1">&#39;T43&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;R44&#39;</span>         <span class="p">:</span> <span class="s1">&#39;T44&#39;</span><span class="p">,</span>         
+    <span class="p">}</span>
+    <span class="n">rule</span><span class="p">:</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="o">**</span><span class="p">({</span><span class="s1">&#39;TFS&#39;</span><span class="p">:</span> <span class="n">rule_tfs</span><span class="p">,</span> <span class="s1">&#39;SDDS&#39;</span><span class="p">:</span> <span class="n">rule_sdds</span><span class="p">}[</span><span class="n">kind</span><span class="p">]),</span> <span class="o">**</span><span class="p">(</span><span class="n">rule</span> <span class="k">if</span> <span class="n">rule</span> <span class="k">else</span> <span class="p">{})}</span>
+    <span class="n">name_monitor</span><span class="p">:</span><span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">name_monitor</span> <span class="k">if</span> <span class="n">name_monitor</span> <span class="k">else</span> <span class="p">[]</span>
+    <span class="n">name_virtual</span><span class="p">:</span><span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">name_virtual</span> <span class="k">if</span> <span class="n">name_virtual</span> <span class="k">else</span> <span class="p">[]</span>    
+    <span class="n">table</span><span class="p">:</span><span class="n">Table</span> <span class="o">=</span> <span class="n">deepcopy</span><span class="p">(</span><span class="n">columns</span><span class="p">)</span>
+    <span class="n">head</span><span class="p">:</span><span class="nb">str</span>
+    <span class="n">tail</span><span class="p">:</span><span class="nb">str</span>
+    <span class="n">head</span><span class="p">,</span> <span class="o">*</span><span class="n">_</span><span class="p">,</span> <span class="n">tail</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+    <span class="n">table</span><span class="p">[</span><span class="s1">&#39;HEAD&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">head</span><span class="p">)</span>
+    <span class="n">table</span><span class="p">[</span><span class="s1">&#39;TAIL&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">tail</span><span class="p">)</span>
+    <span class="n">source</span><span class="p">:</span><span class="nb">str</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;TFS&#39;</span><span class="p">:</span> <span class="s1">&#39;KEYWORD&#39;</span><span class="p">,</span> <span class="s1">&#39;SDDS&#39;</span><span class="p">:</span> <span class="s1">&#39;ElementType&#39;</span><span class="p">}[</span><span class="n">kind</span><span class="p">]</span>
+    <span class="n">kinds</span><span class="p">:</span><span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">kind_monitor</span> <span class="o">+</span> <span class="n">kind_virtual</span>
+    <span class="n">names</span><span class="p">:</span><span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">name_monitor</span> <span class="o">+</span> <span class="n">name_virtual</span>
+    <span class="n">table</span><span class="p">:</span><span class="n">Table</span> <span class="o">=</span> <span class="p">{</span><span class="n">location</span><span class="p">:</span> <span class="n">data</span> <span class="k">for</span> <span class="n">location</span><span class="p">,</span> <span class="n">data</span> <span class="ow">in</span> <span class="n">table</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">data</span><span class="p">[</span><span class="n">source</span><span class="p">]</span> <span class="ow">in</span> <span class="n">kinds</span> <span class="ow">or</span> <span class="n">location</span> <span class="ow">in</span> <span class="n">names</span><span class="p">}</span>
+    <span class="k">for</span> <span class="n">location</span> <span class="ow">in</span> <span class="n">table</span><span class="p">:</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="n">table</span><span class="p">[</span><span class="n">location</span><span class="p">][</span><span class="n">source</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">kind_monitor</span> <span class="ow">or</span> <span class="n">location</span> <span class="ow">in</span> <span class="n">name_monitor</span><span class="p">:</span>
+            <span class="n">table</span><span class="p">[</span><span class="n">location</span><span class="p">][</span><span class="n">source</span><span class="p">]</span> <span class="o">=</span> <span class="n">monitor</span>
+            <span class="k">continue</span>
+        <span class="k">if</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">kind_virtual</span> <span class="ow">or</span> <span class="n">location</span> <span class="ow">in</span> <span class="n">name_virtual</span><span class="p">:</span>
+            <span class="n">table</span><span class="p">[</span><span class="n">location</span><span class="p">][</span><span class="n">source</span><span class="p">]</span> <span class="o">=</span> <span class="n">virtual</span>    
+            <span class="k">continue</span>
+    <span class="n">table</span> <span class="o">=</span> <span class="n">rename</span><span class="p">(</span><span class="n">table</span><span class="p">,</span> <span class="n">rule</span><span class="p">,</span> <span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">kind</span> <span class="o">==</span> <span class="s1">&#39;TFS&#39;</span><span class="p">:</span>
+        <span class="n">scale</span><span class="p">:</span><span class="nb">float</span> <span class="o">=</span> <span class="mf">2.0</span><span class="o">*</span><span class="n">pi</span>
+        <span class="k">for</span> <span class="n">location</span> <span class="ow">in</span> <span class="n">table</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="n">table</span><span class="p">[</span><span class="n">location</span><span class="p">][</span><span class="s1">&#39;FX&#39;</span><span class="p">]</span> <span class="o">*=</span> <span class="n">scale</span>
+            <span class="n">table</span><span class="p">[</span><span class="n">location</span><span class="p">][</span><span class="s1">&#39;FY&#39;</span><span class="p">]</span> <span class="o">*=</span> <span class="n">scale</span>    
+    <span class="k">if</span> <span class="n">dispersion</span><span class="p">:</span>
+        <span class="n">locations</span><span class="p">:</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="n">location</span><span class="p">:</span> <span class="mf">0.0</span> <span class="k">for</span> <span class="n">location</span> <span class="ow">in</span> <span class="n">table</span><span class="o">.</span><span class="n">keys</span><span class="p">()}</span>
+        <span class="n">table</span> <span class="o">=</span> <span class="n">insert</span><span class="p">(</span><span class="n">table</span><span class="p">,</span> <span class="s1">&#39;DQX&#39;</span><span class="p">,</span> <span class="n">locations</span><span class="p">,</span> <span class="n">replace</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">apply</span><span class="o">=</span><span class="nb">sum</span><span class="p">)</span>
+        <span class="n">table</span> <span class="o">=</span> <span class="n">insert</span><span class="p">(</span><span class="n">table</span><span class="p">,</span> <span class="s1">&#39;DPX&#39;</span><span class="p">,</span> <span class="n">locations</span><span class="p">,</span> <span class="n">replace</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">apply</span><span class="o">=</span><span class="nb">sum</span><span class="p">)</span>
+        <span class="n">table</span> <span class="o">=</span> <span class="n">insert</span><span class="p">(</span><span class="n">table</span><span class="p">,</span> <span class="s1">&#39;DQY&#39;</span><span class="p">,</span> <span class="n">locations</span><span class="p">,</span> <span class="n">replace</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">apply</span><span class="o">=</span><span class="nb">sum</span><span class="p">)</span>
+        <span class="n">table</span> <span class="o">=</span> <span class="n">insert</span><span class="p">(</span><span class="n">table</span><span class="p">,</span> <span class="s1">&#39;DPY&#39;</span><span class="p">,</span> <span class="n">locations</span><span class="p">,</span> <span class="n">replace</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">apply</span><span class="o">=</span><span class="nb">sum</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">rc</span><span class="p">:</span>
+        <span class="n">locations</span><span class="p">:</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="n">location</span><span class="p">:</span> <span class="kc">None</span> <span class="k">for</span> <span class="n">location</span> <span class="ow">in</span> <span class="n">table</span><span class="o">.</span><span class="n">keys</span><span class="p">()}</span>
+        <span class="n">table</span> <span class="o">=</span> <span class="n">insert</span><span class="p">(</span><span class="n">table</span><span class="p">,</span> <span class="s1">&#39;RC&#39;</span><span class="p">,</span> <span class="n">locations</span><span class="p">,</span> <span class="n">replace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">table</span><span class="p">[</span><span class="s1">&#39;HEAD&#39;</span><span class="p">][</span><span class="s1">&#39;TYPE&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">virtual</span>
+    <span class="n">table</span><span class="p">[</span><span class="s1">&#39;TAIL&#39;</span><span class="p">][</span><span class="s1">&#39;TYPE&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">virtual</span>    
+    <span class="n">locations</span><span class="p">:</span><span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">table</span><span class="o">.</span><span class="n">keys</span><span class="p">(),</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">location</span><span class="p">:</span> <span class="n">table</span><span class="p">[</span><span class="n">location</span><span class="p">][</span><span class="s1">&#39;S&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="p">(</span><span class="n">location</span> <span class="o">==</span> <span class="s1">&#39;HEAD&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="n">location</span> <span class="o">==</span> <span class="s1">&#39;TAIL&#39;</span><span class="p">))</span>
+    <span class="k">return</span> <span class="p">{</span><span class="n">location</span><span class="p">:</span> <span class="n">table</span><span class="p">[</span><span class="n">location</span><span class="p">]</span> <span class="k">for</span> <span class="n">location</span> <span class="ow">in</span> <span class="n">locations</span><span class="p">}</span></div>
+
+
+
+<div class="viewcode-block" id="parse">
+<a class="viewcode-back" href="../../modules/external.html#model.external.parse">[docs]</a>
+<span class="k">def</span> <span class="nf">parse</span><span class="p">(</span><span class="n">line</span><span class="p">:</span><span class="nb">str</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> 
+          <span class="n">rc</span><span class="p">:</span><span class="nb">bool</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="o">|</span><span class="nb">int</span><span class="o">|</span><span class="nb">float</span><span class="p">]]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Parse MADX or ELEGANT element or line</span>
+
+<span class="sd">    Note, full definition is assumed to be on a singe line</span>
+<span class="sd">    Element or line name should not contain &#39;!&#39;, &#39;:&#39; or &#39;&quot;&#39;</span>
+<span class="sd">    All elements should contain</span>
+
+<span class="sd">    name : line=(element, element, ...) [;] [! comment]</span>
+<span class="sd">    name : kind, [key=value, key=value, ...] [;] [! comment]</span>
+
+<span class="sd">    Note, comma after element kind in mandatory</span>
+<span class="sd">    If comment to be parsed as element it is assumed to match</span>
+
+<span class="sd">    name : kind, [key=value, key=value, ...]</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    line: str</span>
+<span class="sd">        input line</span>
+<span class="sd">    rc: bool, default=False</span>
+<span class="sd">        flag to parse comment as element</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    list[str, dict[str, str|int|float]]</span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span> 
+    <span class="n">name</span><span class="p">,</span> <span class="o">*</span><span class="n">data</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">)</span>
+    <span class="o">*</span><span class="n">name</span><span class="p">,</span> <span class="n">kind</span> <span class="o">=</span> <span class="n">name</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;:&#39;</span><span class="p">)</span>    
+    <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;:&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">name</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+    <span class="k">if</span> <span class="s1">&#39;:LINE=&#39;</span> <span class="ow">in</span> <span class="n">line</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">upper</span><span class="p">():</span>
+        <span class="n">_</span><span class="p">,</span> <span class="n">data</span> <span class="o">=</span> <span class="p">(</span><span class="n">kind</span> <span class="o">+</span> <span class="s1">&#39;,&#39;</span> <span class="o">+</span> <span class="s1">&#39;,&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">data</span><span class="p">))</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;=&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">data</span><span class="p">,</span> <span class="o">*</span><span class="n">comment</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;!&#39;</span><span class="p">)</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;(&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;)&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;;&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">)</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="p">[</span><span class="n">element</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">data</span><span class="p">]</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">name</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;KIND&#39;</span><span class="p">:</span> <span class="s1">&#39;LINE&#39;</span><span class="p">,</span> <span class="s1">&#39;SEQUENCE&#39;</span><span class="p">:</span> <span class="n">data</span><span class="p">}]</span>
+    <span class="n">kind</span> <span class="o">=</span> <span class="n">kind</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">rstrip</span><span class="p">(</span><span class="s1">&#39;;&#39;</span><span class="p">)</span>
+    <span class="n">data</span><span class="p">,</span> <span class="o">*</span><span class="n">comment</span> <span class="o">=</span> <span class="s1">&#39;,&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">data</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;!&#39;</span><span class="p">)</span>
+    <span class="n">comment</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">comment</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">rstrip</span><span class="p">(</span><span class="s1">&#39;;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">)</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;KIND&#39;</span><span class="p">:</span> <span class="n">kind</span><span class="o">.</span><span class="n">strip</span><span class="p">(),</span> <span class="s1">&#39;RC&#39;</span><span class="p">:</span> <span class="n">parse</span><span class="p">(</span><span class="n">comment</span><span class="p">,</span> <span class="n">rc</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="k">if</span> <span class="n">rc</span> <span class="k">else</span> <span class="n">comment</span><span class="p">}</span>
+    <span class="k">for</span> <span class="n">pair</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
+        <span class="k">if</span> <span class="s1">&#39;=&#39;</span> <span class="ow">in</span> <span class="n">pair</span><span class="p">:</span>
+            <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="o">=</span> <span class="n">pair</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;=&#39;</span><span class="p">)</span>
+            <span class="n">result</span><span class="p">[</span><span class="n">key</span><span class="o">.</span><span class="n">strip</span><span class="p">()]</span> <span class="o">=</span> <span class="n">cast</span><span class="p">(</span><span class="n">value</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
+    <span class="k">return</span> <span class="p">[</span><span class="n">name</span><span class="p">,</span> <span class="n">result</span><span class="p">]</span></div>
+
+
+
+<div class="viewcode-block" id="load_lattice">
+<a class="viewcode-back" href="../../modules/external.html#model.external.load_lattice">[docs]</a>
+<span class="k">def</span> <span class="nf">load_lattice</span><span class="p">(</span><span class="n">path</span><span class="p">:</span><span class="n">Path</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span>
+                 <span class="n">rc</span><span class="p">:</span><span class="nb">bool</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span><span class="nb">str</span><span class="o">|</span><span class="nb">int</span><span class="o">|</span><span class="nb">float</span><span class="o">|</span><span class="nb">dict</span><span class="p">]]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Load MADX or ELEGANT lattice file</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    path: Path</span>
+<span class="sd">        input path </span>
+<span class="sd">    rc: bool, default=False</span>
+<span class="sd">        flag to parse comment as element        </span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    dict[str,dict[str,str|int|float|dict]]</span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span> 
+    <span class="n">lattice</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span><span class="nb">str</span><span class="o">|</span><span class="nb">int</span><span class="o">|</span><span class="nb">float</span><span class="o">|</span><span class="nb">dict</span><span class="p">]]</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">name</span><span class="p">:</span><span class="nb">str</span>
+    <span class="n">data</span><span class="p">:</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="o">|</span><span class="nb">int</span><span class="o">|</span><span class="nb">float</span><span class="p">]</span>
+    <span class="k">with</span> <span class="n">path</span><span class="o">.</span><span class="n">open</span><span class="p">()</span> <span class="k">as</span> <span class="n">stream</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">stream</span><span class="p">:</span>
+            <span class="k">if</span> <span class="s1">&#39;:&#39;</span> <span class="ow">in</span> <span class="n">line</span><span class="p">:</span>
+                <span class="n">name</span><span class="p">,</span> <span class="n">data</span> <span class="o">=</span> <span class="n">parse</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">upper</span><span class="p">(),</span> <span class="n">rc</span><span class="o">=</span><span class="n">rc</span><span class="p">)</span>
+                <span class="n">lattice</span><span class="p">[</span><span class="n">name</span><span class="p">]</span><span class="o">=</span> <span class="n">data</span>
+    <span class="k">return</span> <span class="n">lattice</span></div>
+
+
+
+<div class="viewcode-block" id="text_lattice">
+<a class="viewcode-back" href="../../modules/external.html#model.external.text_lattice">[docs]</a>
+<span class="k">def</span> <span class="nf">text_lattice</span><span class="p">(</span><span class="n">kind</span><span class="p">:</span><span class="n">Literal</span><span class="p">[</span><span class="s1">&#39;MADX&#39;</span><span class="p">,</span> <span class="s1">&#39;LTE&#39;</span><span class="p">],</span>
+                 <span class="n">lattice</span><span class="p">:</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span><span class="nb">str</span><span class="o">|</span><span class="nb">int</span><span class="o">|</span><span class="nb">float</span><span class="o">|</span><span class="nb">dict</span><span class="p">]],</span> <span class="o">*</span><span class="p">,</span> 
+                 <span class="n">rc</span><span class="p">:</span><span class="nb">bool</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Convert MADX or ELEGANT data to text</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    kind: Literal[&#39;MADX&#39;, &#39;LTE&#39;]</span>
+<span class="sd">        lattice lind</span>
+<span class="sd">    lattice: dict[str,dict[str,str|int|float|dict]]</span>
+<span class="sd">        lattice data</span>
+<span class="sd">    rc: bool, default=False</span>
+<span class="sd">        flag to parse RC as comment          </span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    str</span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">text</span><span class="p">:</span><span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+    <span class="n">line</span><span class="p">:</span><span class="nb">str</span>
+    <span class="n">last</span><span class="p">:</span><span class="nb">str</span>
+    <span class="n">tail</span><span class="p">:</span><span class="nb">str</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;MADX&#39;</span><span class="p">:</span> <span class="s1">&#39;;&#39;</span><span class="p">,</span> <span class="s1">&#39;LTE&#39;</span><span class="p">:</span> <span class="s1">&#39;&#39;</span><span class="p">}[</span><span class="n">kind</span><span class="p">]</span>
+    <span class="n">name</span><span class="p">:</span><span class="nb">str</span>
+    <span class="n">data</span><span class="p">:</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span><span class="nb">str</span><span class="o">|</span><span class="nb">int</span><span class="o">|</span><span class="nb">float</span><span class="o">|</span><span class="nb">dict</span><span class="p">]</span>
+    <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">data</span> <span class="ow">in</span> <span class="n">lattice</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="n">line</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s1">: &#39;</span>
+        <span class="n">last</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">key</span> <span class="o">==</span> <span class="s1">&#39;RC&#39;</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">rc</span> <span class="ow">and</span> <span class="n">value</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+                        <span class="n">last</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39; ! </span><span class="si">{</span><span class="n">value</span><span class="o">.</span><span class="n">rstrip</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span><span class="si">}</span><span class="s1">&#39;</span>
+                        <span class="k">continue</span>
+                    <span class="n">name</span><span class="p">,</span> <span class="n">data</span> <span class="o">=</span> <span class="n">value</span>
+                    <span class="k">if</span> <span class="ow">not</span> <span class="n">name</span><span class="p">:</span>
+                        <span class="k">continue</span>    
+                    <span class="n">last</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39; ! </span><span class="si">{</span><span class="n">text_lattice</span><span class="p">(</span><span class="n">kind</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="n">name</span><span class="p">:</span><span class="w"> </span><span class="n">data</span><span class="p">},</span><span class="w"> </span><span class="n">rc</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">rstrip</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span><span class="si">}</span><span class="s1">&#39;</span>
+                <span class="k">continue</span>
+            <span class="k">if</span> <span class="n">key</span> <span class="o">==</span> <span class="s1">&#39;KIND&#39;</span><span class="p">:</span>
+                <span class="n">line</span> <span class="o">+=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s1">, &#39;</span>
+                <span class="k">continue</span>
+            <span class="k">if</span> <span class="n">key</span> <span class="o">==</span> <span class="s1">&#39;SEQUENCE&#39;</span><span class="p">:</span>
+                <span class="n">line</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">rstrip</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">)</span><span class="si">}</span><span class="s1">=(</span><span class="si">{</span><span class="s2">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">value</span><span class="p">)</span><span class="si">}</span><span class="s1">)&#39;</span>
+                <span class="k">break</span>
+            <span class="n">line</span> <span class="o">+=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s1">=</span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s1">, &#39;</span>
+        <span class="n">text</span> <span class="o">+=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="si">}{</span><span class="n">tail</span><span class="si">}{</span><span class="n">last</span><span class="si">}</span><span class="se">\n</span><span class="s1">&#39;</span>
+    <span class="k">return</span> <span class="n">text</span></div>
+
+
+
+<div class="viewcode-block" id="rift_lattice">
+<a class="viewcode-back" href="../../modules/external.html#model.external.rift_lattice">[docs]</a>
+<span class="k">def</span> <span class="nf">rift_lattice</span><span class="p">(</span><span class="n">lattice</span><span class="p">:</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span><span class="nb">str</span><span class="o">|</span><span class="nb">int</span><span class="o">|</span><span class="nb">float</span><span class="o">|</span><span class="nb">dict</span><span class="p">]],</span>
+                 <span class="n">monitor</span><span class="p">:</span><span class="nb">str</span><span class="p">,</span>
+                 <span class="n">virtual</span><span class="p">:</span><span class="nb">str</span><span class="p">,</span>
+                 <span class="n">kind_monitor</span><span class="p">:</span><span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+                 <span class="n">kind_virtual</span><span class="p">:</span><span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="o">*</span><span class="p">,</span> 
+                 <span class="n">include_monitor</span><span class="p">:</span><span class="n">Optional</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">include_virtual</span><span class="p">:</span><span class="n">Optional</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">exclude_monitor</span><span class="p">:</span><span class="n">Optional</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">exclude_virtual</span><span class="p">:</span><span class="n">Optional</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>                 
+                 <span class="n">prefix_monitor</span><span class="p">:</span><span class="nb">str</span><span class="o">=</span><span class="s1">&#39;M&#39;</span><span class="p">,</span>
+                 <span class="n">prefix_virtual</span><span class="p">:</span><span class="nb">str</span><span class="o">=</span><span class="s1">&#39;V&#39;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span><span class="nb">str</span><span class="o">|</span><span class="nb">int</span><span class="o">|</span><span class="nb">float</span><span class="o">|</span><span class="nb">dict</span><span class="p">]]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Rift MADX or ELEGANT lattice data (insert monitor or virtual locations)</span>
+
+<span class="sd">    Elements with matching kinds or names are splitted in half (angle and length are halved)</span>
+<span class="sd">    Observaton (monitor or virtual) location is inserted between parts</span>
+<span class="sd">    Elements with zero length are also splitted</span>
+<span class="sd">    Original parameters are added to location RC</span>
+<span class="sd">    Old element is replaced by a line</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    monitor: str</span>
+<span class="sd">        monitor type to use (e.g. MONITOR or MONI)</span>
+<span class="sd">    virtual: str</span>
+<span class="sd">        virtual type to use (e.g. MARKER or MARK)</span>
+<span class="sd">    kind_monitor: list[str]</span>
+<span class="sd">        list of element types to insert monitor locations</span>
+<span class="sd">    kind_virtual: list[str]</span>
+<span class="sd">        list of element types to insert virtual locations</span>
+<span class="sd">    include_monitor: Optional[list[str]]</span>
+<span class="sd">        list of element names to insert monitor locations</span>
+<span class="sd">    include_virtual: Optional[list[str]]</span>
+<span class="sd">        list of element names to insert virtual locations</span>
+<span class="sd">    exclude_monitor: Optional[list[str]]</span>
+<span class="sd">        list of element names to exclude from monitor locations</span>
+<span class="sd">    exclude_virtual: Optional[list[str]]</span>
+<span class="sd">        list of element names to exclude form virtual locations</span>
+<span class="sd">    prefix_monitor: str, default=&#39;M&#39;</span>
+<span class="sd">        monitor rename prefix</span>
+<span class="sd">    prefix_virtual: str, default=&#39;V&#39; </span>
+<span class="sd">        virtual rename prefix</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    dict[str,dict[str,str|int|float|dict]]</span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">result</span><span class="p">:</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span><span class="nb">str</span><span class="o">|</span><span class="nb">int</span><span class="o">|</span><span class="nb">float</span><span class="o">|</span><span class="nb">dict</span><span class="p">]]</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">lattice</span><span class="p">:</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span><span class="nb">str</span><span class="o">|</span><span class="nb">int</span><span class="o">|</span><span class="nb">float</span><span class="o">|</span><span class="nb">dict</span><span class="p">]]</span> <span class="o">=</span> <span class="n">deepcopy</span><span class="p">(</span><span class="n">lattice</span><span class="p">)</span>
+    <span class="n">include_monitor</span><span class="p">:</span><span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">include_monitor</span> <span class="k">if</span> <span class="n">include_monitor</span> <span class="k">else</span> <span class="p">[]</span>
+    <span class="n">include_virtual</span><span class="p">:</span><span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">include_virtual</span> <span class="k">if</span> <span class="n">include_virtual</span> <span class="k">else</span> <span class="p">[]</span>  
+    <span class="n">exclude_monitor</span><span class="p">:</span><span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">exclude_monitor</span> <span class="k">if</span> <span class="n">exclude_monitor</span> <span class="k">else</span> <span class="p">[]</span>
+    <span class="n">exclude_virtual</span><span class="p">:</span><span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">exclude_virtual</span> <span class="k">if</span> <span class="n">exclude_virtual</span> <span class="k">else</span> <span class="p">[]</span>  
+    <span class="n">element</span><span class="p">:</span><span class="nb">str</span>
+    <span class="n">data</span><span class="p">:</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span><span class="nb">str</span><span class="o">|</span><span class="nb">int</span><span class="o">|</span><span class="nb">float</span><span class="o">|</span><span class="nb">dict</span><span class="p">]</span>
+    <span class="k">for</span> <span class="n">element</span><span class="p">,</span> <span class="n">data</span> <span class="ow">in</span> <span class="n">lattice</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="n">kind</span><span class="p">:</span><span class="nb">str</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;KIND&#39;</span><span class="p">]</span>
+        <span class="n">select</span><span class="p">:</span><span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+        <span class="n">prefix</span><span class="p">:</span><span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">kind</span> <span class="ow">in</span> <span class="n">kind_monitor</span> <span class="ow">and</span> <span class="n">element</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">exclude_monitor</span><span class="p">)</span> <span class="ow">or</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">include_monitor</span><span class="p">:</span>
+            <span class="n">select</span> <span class="o">=</span> <span class="n">monitor</span>
+            <span class="n">prefix</span> <span class="o">=</span> <span class="n">prefix_monitor</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">kind</span> <span class="ow">in</span> <span class="n">kind_virtual</span> <span class="ow">and</span> <span class="n">element</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">exclude_virtual</span><span class="p">)</span> <span class="ow">or</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">include_virtual</span><span class="p">:</span>
+            <span class="n">select</span> <span class="o">=</span> <span class="n">virtual</span>
+            <span class="n">prefix</span> <span class="o">=</span> <span class="n">prefix_virtual</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">prefix</span><span class="p">:</span>
+            <span class="n">result</span><span class="p">[</span><span class="n">element</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span>
+            <span class="k">continue</span>
+        <span class="n">data</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;RC&#39;</span><span class="p">)</span>
+        <span class="n">result</span><span class="p">[</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">prefix</span><span class="si">}</span><span class="s1">_</span><span class="si">{</span><span class="n">element</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;KIND&#39;</span><span class="p">:</span> <span class="n">select</span><span class="p">,</span> <span class="s1">&#39;RC&#39;</span><span class="p">:</span> <span class="p">[</span><span class="n">element</span><span class="p">,</span> <span class="n">data</span><span class="p">]}</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="k">if</span> <span class="s1">&#39;L&#39;</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span> 
+            <span class="n">data</span><span class="p">[</span><span class="s1">&#39;L&#39;</span><span class="p">]</span> <span class="o">/=</span> <span class="mf">2.0</span>
+        <span class="k">if</span> <span class="s1">&#39;ANGLE&#39;</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span> 
+            <span class="n">data</span><span class="p">[</span><span class="s1">&#39;ANGLE&#39;</span><span class="p">]</span> <span class="o">/=</span> <span class="mf">2.0</span>
+        <span class="n">result</span><span class="p">[</span><span class="sa">f</span><span class="s1">&#39;H_</span><span class="si">{</span><span class="n">element</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span>
+        <span class="n">result</span><span class="p">[</span><span class="n">element</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;KIND&#39;</span><span class="p">:</span> <span class="s1">&#39;LINE&#39;</span><span class="p">,</span> <span class="s1">&#39;SEQUENCE&#39;</span><span class="p">:</span> <span class="p">[</span><span class="sa">f</span><span class="s1">&#39;H_</span><span class="si">{</span><span class="n">element</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">prefix</span><span class="si">}</span><span class="s1">_</span><span class="si">{</span><span class="n">element</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;H_</span><span class="si">{</span><span class="n">element</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">]}</span> 
+    <span class="k">return</span> <span class="n">result</span></div>
+
+
+
+<div class="viewcode-block" id="add_rc">
+<a class="viewcode-back" href="../../modules/external.html#model.external.add_rc">[docs]</a>
+<span class="k">def</span> <span class="nf">add_rc</span><span class="p">(</span><span class="n">table</span><span class="p">:</span><span class="n">Table</span><span class="p">,</span> 
+           <span class="n">lattice</span><span class="p">:</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span><span class="nb">str</span><span class="o">|</span><span class="nb">int</span><span class="o">|</span><span class="nb">float</span><span class="o">|</span><span class="nb">dict</span><span class="p">]],</span> <span class="o">*</span><span class="p">,</span>
+           <span class="n">monitor</span><span class="p">:</span><span class="nb">str</span><span class="o">=</span><span class="s1">&#39;MONITOR&#39;</span><span class="p">,</span>
+           <span class="n">virtual</span><span class="p">:</span><span class="nb">str</span><span class="o">=</span><span class="s1">&#39;VIRTUAL&#39;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Table</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Add RC from lattice to configuration table</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    table: Table</span>
+<span class="sd">        configuration table</span>
+<span class="sd">    lattice: dict[str,dict[str,str|int|float|dict]]</span>
+<span class="sd">        lattice data</span>
+<span class="sd">    monitor: str, default=&#39;MONITOR&#39;</span>
+<span class="sd">        monitor kind</span>
+<span class="sd">    virtual: str, default=&#39;VIRTUAL&#39;        </span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    Table</span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">table</span><span class="p">:</span><span class="n">Table</span> <span class="o">=</span> <span class="n">deepcopy</span><span class="p">(</span><span class="n">table</span><span class="p">)</span>
+    <span class="n">location</span><span class="p">:</span><span class="nb">str</span>
+    <span class="n">data</span><span class="p">:</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span><span class="nb">str</span><span class="o">|</span><span class="nb">int</span><span class="o">|</span><span class="nb">float</span><span class="o">|</span><span class="nb">dict</span><span class="p">]</span>
+    <span class="k">for</span> <span class="n">location</span><span class="p">,</span> <span class="n">data</span> <span class="ow">in</span> <span class="n">lattice</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="k">if</span> <span class="s1">&#39;RC&#39;</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
+            <span class="n">root</span><span class="p">:</span><span class="nb">str</span>
+            <span class="n">root</span><span class="p">,</span> <span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;RC&#39;</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">root</span><span class="p">:</span>
+                <span class="k">if</span> <span class="s1">&#39;RC&#39;</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
+                    <span class="n">data</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;RC&#39;</span><span class="p">)</span>
+                <span class="n">names</span><span class="p">:</span><span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">name</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">table</span> <span class="k">if</span> <span class="n">root</span> <span class="ow">in</span> <span class="n">name</span><span class="p">]</span>
+                <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">names</span><span class="p">:</span>
+                    <span class="n">table</span><span class="p">[</span><span class="n">name</span><span class="p">][</span><span class="s1">&#39;RC&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">root</span><span class="p">,</span> <span class="n">data</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">table</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Ivan Morozov.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
