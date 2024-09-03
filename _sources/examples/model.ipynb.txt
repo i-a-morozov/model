@@ -1346,7 +1346,7 @@
    "metadata": {},
    "outputs": [],
    "source": [
-    "# In this example various symplecti transformations are compared with corresponding MADX-PTC transformations"
+    "# In this example various symplectic transformations are compared with corresponding MADX-PTC transformations"
    ]
   },
   {

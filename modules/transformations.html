@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>&lt;no title&gt; &mdash; twiss  documentation</title>
+  <title>Transformations module &mdash; twiss  documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
 
@@ -72,7 +72,8 @@
 <li class="toctree-l1"><a class="reference internal" href="external.html#model.external.parse"><code class="docutils literal notranslate"><span class="pre">parse()</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="external.html#model.external.rift_lattice"><code class="docutils literal notranslate"><span class="pre">rift_lattice()</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="external.html#model.external.text_lattice"><code class="docutils literal notranslate"><span class="pre">text_lattice()</span></code></a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#"><code class="docutils literal notranslate"><span class="pre">bend()</span></code></a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Transformations module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#model.library.transformations.bend"><code class="docutils literal notranslate"><span class="pre">bend()</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="#model.library.transformations.calibration"><code class="docutils literal notranslate"><span class="pre">calibration()</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="#model.library.transformations.corrector"><code class="docutils literal notranslate"><span class="pre">corrector()</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="#model.library.transformations.dipole"><code class="docutils literal notranslate"><span class="pre">dipole()</span></code></a></li>
@@ -108,7 +109,7 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
-      <li class="breadcrumb-item active">&lt;no title&gt;</li>
+      <li class="breadcrumb-item active">Transformations module</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../_sources/modules/transformations.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -118,7 +119,8 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <p id="module-model.library.transformations">Transformations module</p>
+  <section id="transformations-module">
+<span id="module-model.library.transformations"></span><h1>Transformations module<a class="headerlink" href="#transformations-module" title="Link to this heading"></a></h1>
 <p>Collection of symplectic transformations, building blocks for accelerator elements</p>
 <p>calibration[_{knobs, track}] – bpm calibration transformation
 corrector[_{knobs, track}]   – corrector transformation
@@ -140,6 +142,7 @@ tz[_{knobs, track}]          – TZ translation
 rx[_{knobs, track}]          – RX rotation
 ry[_{knobs, track}]          – RY rotation
 rz[_{knobs, track}]          – RZ rotation</p>
+</section>
 <dl class="py function">
 <dt class="sig sig-object py" id="model.library.transformations.bend">
 <span class="sig-prename descclassname"><span class="pre">model.library.transformations.</span></span><span class="sig-name descname"><span class="pre">bend</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">state</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">State</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">angle</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">torch.Tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kn</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">torch.Tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ks</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">torch.Tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dp</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">torch.Tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">length</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">torch.Tensor</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">State</span></span></span><a class="reference internal" href="../_modules/model/library/transformations.html#bend"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#model.library.transformations.bend" title="Link to this definition"></a></dt>
