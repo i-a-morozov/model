@@ -1,2 +1,0 @@
-.. automodule:: model.model
-    :members:
