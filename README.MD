@@ -13,4 +13,4 @@ $ pip install git+https://github.com/i-a-morozov/model.git@main
 
 [![Run In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/i-a-morozov/model/blob/main/docs/source/examples/model.ipynb)
 
-[https://i-a-morozov.github.io/ndmap/](https://i-a-morozov.github.io/model/)
+[https://i-a-morozov.github.io/model/](https://i-a-morozov.github.io/model/)

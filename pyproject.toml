@@ -43,7 +43,7 @@ version = {attr = "model.__version__"}
 
 [project.optional-dependencies]
 test = ["mypy", "pylint", "pytest", "pytest-cov", "numpy"]
-docs = ["pandoc", "sphinx-rtd-theme", "ipykernel", "nbsphinx"]
+docs = ["pandoc", "sphinx-rtd-theme", "ipykernel", "nbsphinx", "multimethod"]
 build = ["build", "setuptools", "twine"]
 examples = ["jupyterlab",  "pandas", "matplotlib"]
 all = ["model[test, docs, build, examples]"]
