@@ -47,6 +47,7 @@
 <li class="toctree-l1"><a class="reference internal" href="examples/model.html">Example-01: Optimizaion (import/export API)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="examples/model.html#Example-02:-Workflow-(MADX)">Example-02: Workflow (MADX)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="examples/model.html#Example-03:-Workflow-(ELEGANT)">Example-03: Workflow (ELEGANT)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples/model.html#Example-04:-Transformations-benchmark-(PTC)">Example-04: Transformations benchmark (PTC)</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API:</span></p>
 <ul>
@@ -69,6 +70,26 @@
 <li class="toctree-l1"><a class="reference internal" href="modules/external.html#model.external.parse"><code class="docutils literal notranslate"><span class="pre">parse()</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="modules/external.html#model.external.rift_lattice"><code class="docutils literal notranslate"><span class="pre">rift_lattice()</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="modules/external.html#model.external.text_lattice"><code class="docutils literal notranslate"><span class="pre">text_lattice()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules/transformations.html"><code class="docutils literal notranslate"><span class="pre">bend()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules/transformations.html#model.library.transformations.calibration"><code class="docutils literal notranslate"><span class="pre">calibration()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules/transformations.html#model.library.transformations.corrector"><code class="docutils literal notranslate"><span class="pre">corrector()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules/transformations.html#model.library.transformations.dipole"><code class="docutils literal notranslate"><span class="pre">dipole()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules/transformations.html#model.library.transformations.dquad"><code class="docutils literal notranslate"><span class="pre">dquad()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules/transformations.html#model.library.transformations.drift"><code class="docutils literal notranslate"><span class="pre">drift()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules/transformations.html#model.library.transformations.fquad"><code class="docutils literal notranslate"><span class="pre">fquad()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules/transformations.html#model.library.transformations.kinematic"><code class="docutils literal notranslate"><span class="pre">kinematic()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules/transformations.html#model.library.transformations.linear"><code class="docutils literal notranslate"><span class="pre">linear()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules/transformations.html#model.library.transformations.multipole"><code class="docutils literal notranslate"><span class="pre">multipole()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules/transformations.html#model.library.transformations.octupole"><code class="docutils literal notranslate"><span class="pre">octupole()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules/transformations.html#model.library.transformations.quadrupole"><code class="docutils literal notranslate"><span class="pre">quadrupole()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules/transformations.html#model.library.transformations.rx"><code class="docutils literal notranslate"><span class="pre">rx()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules/transformations.html#model.library.transformations.ry"><code class="docutils literal notranslate"><span class="pre">ry()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules/transformations.html#model.library.transformations.rz"><code class="docutils literal notranslate"><span class="pre">rz()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules/transformations.html#model.library.transformations.sextupole"><code class="docutils literal notranslate"><span class="pre">sextupole()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules/transformations.html#model.library.transformations.tx"><code class="docutils literal notranslate"><span class="pre">tx()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules/transformations.html#model.library.transformations.ty"><code class="docutils literal notranslate"><span class="pre">ty()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules/transformations.html#model.library.transformations.tz"><code class="docutils literal notranslate"><span class="pre">tz()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules/transformations.html#model.library.transformations.wedge"><code class="docutils literal notranslate"><span class="pre">wedge()</span></code></a></li>
 </ul>
 
         </div>
@@ -99,14 +120,21 @@
 
 <div class="genindex-jumpbox">
  <a href="#A"><strong>A</strong></a>
+ | <a href="#B"><strong>B</strong></a>
  | <a href="#C"><strong>C</strong></a>
+ | <a href="#D"><strong>D</strong></a>
+ | <a href="#F"><strong>F</strong></a>
  | <a href="#I"><strong>I</strong></a>
+ | <a href="#K"><strong>K</strong></a>
  | <a href="#L"><strong>L</strong></a>
  | <a href="#M"><strong>M</strong></a>
+ | <a href="#O"><strong>O</strong></a>
  | <a href="#P"><strong>P</strong></a>
+ | <a href="#Q"><strong>Q</strong></a>
  | <a href="#R"><strong>R</strong></a>
  | <a href="#S"><strong>S</strong></a>
  | <a href="#T"><strong>T</strong></a>
+ | <a href="#W"><strong>W</strong></a>
  
 </div>
 <h2 id="A">A</h2>
@@ -117,14 +145,48 @@
   </ul></td>
 </tr></table>
 
+<h2 id="B">B</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="modules/transformations.html#model.library.transformations.bend">bend() (in module model.library.transformations)</a>
+</li>
+  </ul></td>
+</tr></table>
+
 <h2 id="C">C</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="modules/transformations.html#model.library.transformations.calibration">calibration() (in module model.library.transformations)</a>
+</li>
       <li><a href="modules/util.html#model.util.cast">cast() (in module model.util)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="modules/external.html#model.external.convert">convert() (in module model.external)</a>
+</li>
+      <li><a href="modules/transformations.html#model.library.transformations.corrector">corrector() (in module model.library.transformations)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="D">D</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="modules/transformations.html#model.library.transformations.dipole">dipole() (in module model.library.transformations)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="modules/transformations.html#model.library.transformations.dquad">dquad() (in module model.library.transformations)</a>
+</li>
+      <li><a href="modules/transformations.html#model.library.transformations.drift">drift() (in module model.library.transformations)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="F">F</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="modules/transformations.html#model.library.transformations.fquad">fquad() (in module model.library.transformations)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -137,15 +199,25 @@
   </ul></td>
 </tr></table>
 
+<h2 id="K">K</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="modules/transformations.html#model.library.transformations.kinematic">kinematic() (in module model.library.transformations)</a>
+</li>
+  </ul></td>
+</tr></table>
+
 <h2 id="L">L</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="modules/util.html#model.util.load">load() (in module model.util)</a>
+      <li><a href="modules/transformations.html#model.library.transformations.linear">linear() (in module model.library.transformations)</a>
 </li>
-      <li><a href="modules/external.html#model.external.load_lattice">load_lattice() (in module model.external)</a>
+      <li><a href="modules/util.html#model.util.load">load() (in module model.util)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="modules/external.html#model.external.load_lattice">load_lattice() (in module model.external)</a>
+</li>
       <li><a href="modules/external.html#model.external.load_sdds">load_sdds() (in module model.external)</a>
 </li>
       <li><a href="modules/external.html#model.external.load_tfs">load_tfs() (in module model.external)</a>
@@ -167,6 +239,13 @@
         <li><a href="modules/external.html#module-model.external">module</a>
 </li>
       </ul></li>
+      <li>
+    model.library.transformations
+
+      <ul>
+        <li><a href="modules/transformations.html#module-model.library.transformations">module</a>
+</li>
+      </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li>
@@ -182,9 +261,21 @@
       <ul>
         <li><a href="modules/external.html#module-model.external">model.external</a>
 </li>
+        <li><a href="modules/transformations.html#module-model.library.transformations">model.library.transformations</a>
+</li>
         <li><a href="modules/util.html#module-model.util">model.util</a>
 </li>
       </ul></li>
+      <li><a href="modules/transformations.html#model.library.transformations.multipole">multipole() (in module model.library.transformations)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="O">O</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="modules/transformations.html#model.library.transformations.octupole">octupole() (in module model.library.transformations)</a>
+</li>
   </ul></td>
 </tr></table>
 
@@ -196,16 +287,30 @@
   </ul></td>
 </tr></table>
 
+<h2 id="Q">Q</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="modules/transformations.html#model.library.transformations.quadrupole">quadrupole() (in module model.library.transformations)</a>
+</li>
+  </ul></td>
+</tr></table>
+
 <h2 id="R">R</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="modules/util.html#model.util.remove">remove() (in module model.util)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="modules/util.html#model.util.rename">rename() (in module model.util)</a>
 </li>
       <li><a href="modules/external.html#model.external.rift_lattice">rift_lattice() (in module model.external)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="modules/transformations.html#model.library.transformations.rx">rx() (in module model.library.transformations)</a>
+</li>
+      <li><a href="modules/transformations.html#model.library.transformations.ry">ry() (in module model.library.transformations)</a>
+</li>
+      <li><a href="modules/transformations.html#model.library.transformations.rz">rz() (in module model.library.transformations)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -219,6 +324,8 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="modules/util.html#model.util.select">select() (in module model.util)</a>
 </li>
+      <li><a href="modules/transformations.html#model.library.transformations.sextupole">sextupole() (in module model.library.transformations)</a>
+</li>
   </ul></td>
 </tr></table>
 
@@ -226,6 +333,22 @@
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="modules/external.html#model.external.text_lattice">text_lattice() (in module model.external)</a>
+</li>
+      <li><a href="modules/transformations.html#model.library.transformations.tx">tx() (in module model.library.transformations)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="modules/transformations.html#model.library.transformations.ty">ty() (in module model.library.transformations)</a>
+</li>
+      <li><a href="modules/transformations.html#model.library.transformations.tz">tz() (in module model.library.transformations)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="W">W</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="modules/transformations.html#model.library.transformations.wedge">wedge() (in module model.library.transformations)</a>
 </li>
   </ul></td>
 </tr></table>
