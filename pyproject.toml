@@ -1,6 +1,6 @@
 [project]
 name = "model"
-description = "Simple accelerator lattice model: linear optics errors, closed orbit and Twiss parameters"
+description = "Simple accelerator lattice model with composable derivatives in pytorch"
 readme = "README.MD"
 requires-python = ">=3.12"
 keywords = ["torch", "orbit", "twiss", "differentiable", "accelerator"]
