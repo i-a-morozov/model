@@ -4,7 +4,8 @@ Transformations module
 
 Collection of symplectic transformations, building blocks for accelerator elements
 
-calibration[_{knobs, track}] -- bpm calibration transformation
+calibration_forward[_{knobs, track}] -- calibration transformation (from beam frame to bpm frame)
+calibration_inverse[_{knobs, track}] -- calibration transformation (from bpm frame to beam frame)
 corrector[_{knobs, track}]   -- corrector transformation
 drift[_{knobs, track}]       -- drift transformation
 kinematic[_{knobs, track}]   -- kinematic correction transformation
@@ -34,13 +35,13 @@ type State = Tensor
 type Knobs = Tensor
 
 
-def calibration(state:State, 
-                gxx:Tensor, 
-                gxy:Tensor, 
-                gyx:Tensor, 
-                gyy:Tensor) -> State:
+def calibration_forward(state:State, 
+                        gxx:Tensor, 
+                        gxy:Tensor, 
+                        gyx:Tensor, 
+                        gyy:Tensor) -> State:
     """
-    Calibration transformation
+    Calibration transformation (from beam frame to bpm frame)
 
     qx -> gxx qx + gxy qy
     qy -> gyx qx + gyy qy    
@@ -63,11 +64,11 @@ def calibration(state:State,
     State
     
     """        
-    knobs: Knobs = calibration_knobs(gxx, gxy, gyx, gyy)
-    return calibration_track(state, knobs)
+    knobs: Knobs = calibration_forward_knobs(gxx, gxy, gyx, gyy)
+    return calibration_forward_track(state, knobs)
 
 
-def calibration_knobs(gxx:Tensor, gxy:Tensor, gyx:Tensor, gyy:Tensor) -> Knobs:   
+def calibration_forward_knobs(gxx:Tensor, gxy:Tensor, gyx:Tensor, gyy:Tensor) -> Knobs:   
     det =  gxx*gyy - gxy*gyx
     qxqx = gxx
     qxqy = gxy
@@ -80,7 +81,60 @@ def calibration_knobs(gxx:Tensor, gxy:Tensor, gyx:Tensor, gyy:Tensor) -> Knobs:
     return torch.stack([qxqx, qxqy, pxpx, pxpy, qyqx, qyqy, pypx, pypy])
 
 
-def calibration_track(state:State, knobs:Knobs) -> State:    
+def calibration_forward_track(state:State, knobs:Knobs) -> State:    
+    qxqx, qxqy, pxpx, pxpy, qyqx, qyqy, pypx, pypy, *_ = knobs
+    qx, px, qy, py = state
+    Qx = qx*qxqx + qy*qxqy
+    Px = px*pxpx + py*pxpy
+    Qy = qx*qyqx + qy*qyqy
+    Py = px*pypx + py*pypy
+    return torch.stack([Qx, Px, Qy, Py])
+
+
+def calibration_inverse(state:State, 
+                        gxx:Tensor, 
+                        gxy:Tensor, 
+                        gyx:Tensor, 
+                        gyy:Tensor) -> State:
+    """
+    Calibration transformation (from bpm frame to beam frame)
+
+    Parameters
+    ----------
+    state: State
+        initial state
+    gxx: Tensor
+        qx scaling
+    gxy: Tensor
+        qx coupling
+    gyx: Tensor
+        qy coupling
+    gyy: Tensor
+        qy scaling
+        
+    Returns
+    -------
+    State
+    
+    """        
+    knobs: Knobs = calibration_inverse_knobs(gxx, gxy, gyx, gyy)
+    return calibration_inverse_track(state, knobs)
+
+
+def calibration_inverse_knobs(gxx:Tensor, gxy:Tensor, gyx:Tensor, gyy:Tensor) -> Knobs:   
+    det =  gxx*gyy - gxy*gyx
+    qxqx = gyy/det
+    qxqy = -gxy/det
+    pxpx = gxx
+    pxpy = gyx
+    qyqx = -gyx/det
+    qyqy = gxx/det
+    pypx = gxy
+    pypy = gyy
+    return torch.stack([qxqx, qxqy, pxpx, pxpy, qyqx, qyqy, pypx, pypy])
+
+
+def calibration_inverse_track(state:State, knobs:Knobs) -> State:    
     qxqx, qxqy, pxpx, pxpy, qyqx, qyqy, pypx, pypy, *_ = knobs
     qx, px, qy, py = state
     Qx = qx*qxqx + qy*qxqy
