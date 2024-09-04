@@ -19,8 +19,8 @@ dependencies = [
     "numpy>=1.26.3",
     "torch>=2.4.0", 
     "multimethod>=1.11",
-    "twiss>=0.2.6", 
-    "ndmap>=0.1.7"
+    "twiss@git+https://github.com/i-a-morozov/twiss#egg=main", 
+    "ndmap@git+https://github.com/i-a-morozov/ndmap#egg=main"
     ]
 dynamic = ["version"]
 
