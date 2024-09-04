@@ -72,7 +72,8 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../modules/external.html#model.external.text_lattice"><code class="docutils literal notranslate"><span class="pre">text_lattice()</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../modules/transformations.html">Transformations module</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../modules/transformations.html#model.library.transformations.bend"><code class="docutils literal notranslate"><span class="pre">bend()</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../modules/transformations.html#model.library.transformations.calibration"><code class="docutils literal notranslate"><span class="pre">calibration()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules/transformations.html#model.library.transformations.calibration_forward"><code class="docutils literal notranslate"><span class="pre">calibration_forward()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules/transformations.html#model.library.transformations.calibration_inverse"><code class="docutils literal notranslate"><span class="pre">calibration_inverse()</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../modules/transformations.html#model.library.transformations.corrector"><code class="docutils literal notranslate"><span class="pre">corrector()</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../modules/transformations.html#model.library.transformations.dipole"><code class="docutils literal notranslate"><span class="pre">dipole()</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../modules/transformations.html#model.library.transformations.dquad"><code class="docutils literal notranslate"><span class="pre">dquad()</span></code></a></li>
@@ -125,7 +126,8 @@
 
 <span class="sd">Collection of symplectic transformations, building blocks for accelerator elements</span>
 
-<span class="sd">calibration[_{knobs, track}] -- bpm calibration transformation</span>
+<span class="sd">calibration_forward[_{knobs, track}] -- calibration transformation (from beam frame to bpm frame)</span>
+<span class="sd">calibration_inverse[_{knobs, track}] -- calibration transformation (from bpm frame to beam frame)</span>
 <span class="sd">corrector[_{knobs, track}]   -- corrector transformation</span>
 <span class="sd">drift[_{knobs, track}]       -- drift transformation</span>
 <span class="sd">kinematic[_{knobs, track}]   -- kinematic correction transformation</span>
@@ -155,15 +157,15 @@
 <span class="nb">type</span> <span class="n">Knobs</span> <span class="o">=</span> <span class="n">Tensor</span>
 
 
-<div class="viewcode-block" id="calibration">
-<a class="viewcode-back" href="../../../modules/transformations.html#model.library.transformations.calibration">[docs]</a>
-<span class="k">def</span> <span class="nf">calibration</span><span class="p">(</span><span class="n">state</span><span class="p">:</span><span class="n">State</span><span class="p">,</span> 
-                <span class="n">gxx</span><span class="p">:</span><span class="n">Tensor</span><span class="p">,</span> 
-                <span class="n">gxy</span><span class="p">:</span><span class="n">Tensor</span><span class="p">,</span> 
-                <span class="n">gyx</span><span class="p">:</span><span class="n">Tensor</span><span class="p">,</span> 
-                <span class="n">gyy</span><span class="p">:</span><span class="n">Tensor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">State</span><span class="p">:</span>
+<div class="viewcode-block" id="calibration_forward">
+<a class="viewcode-back" href="../../../modules/transformations.html#model.library.transformations.calibration_forward">[docs]</a>
+<span class="k">def</span> <span class="nf">calibration_forward</span><span class="p">(</span><span class="n">state</span><span class="p">:</span><span class="n">State</span><span class="p">,</span> 
+                        <span class="n">gxx</span><span class="p">:</span><span class="n">Tensor</span><span class="p">,</span> 
+                        <span class="n">gxy</span><span class="p">:</span><span class="n">Tensor</span><span class="p">,</span> 
+                        <span class="n">gyx</span><span class="p">:</span><span class="n">Tensor</span><span class="p">,</span> 
+                        <span class="n">gyy</span><span class="p">:</span><span class="n">Tensor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">State</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Calibration transformation</span>
+<span class="sd">    Calibration transformation (from beam frame to bpm frame)</span>
 
 <span class="sd">    qx -&gt; gxx qx + gxy qy</span>
 <span class="sd">    qy -&gt; gyx qx + gyy qy    </span>
@@ -186,12 +188,12 @@
 <span class="sd">    State</span>
 <span class="sd">    </span>
 <span class="sd">    &quot;&quot;&quot;</span>        
-    <span class="n">knobs</span><span class="p">:</span> <span class="n">Knobs</span> <span class="o">=</span> <span class="n">calibration_knobs</span><span class="p">(</span><span class="n">gxx</span><span class="p">,</span> <span class="n">gxy</span><span class="p">,</span> <span class="n">gyx</span><span class="p">,</span> <span class="n">gyy</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">calibration_track</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">knobs</span><span class="p">)</span></div>
+    <span class="n">knobs</span><span class="p">:</span> <span class="n">Knobs</span> <span class="o">=</span> <span class="n">calibration_forward_knobs</span><span class="p">(</span><span class="n">gxx</span><span class="p">,</span> <span class="n">gxy</span><span class="p">,</span> <span class="n">gyx</span><span class="p">,</span> <span class="n">gyy</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">calibration_forward_track</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">knobs</span><span class="p">)</span></div>
 
 
 
-<span class="k">def</span> <span class="nf">calibration_knobs</span><span class="p">(</span><span class="n">gxx</span><span class="p">:</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">gxy</span><span class="p">:</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">gyx</span><span class="p">:</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">gyy</span><span class="p">:</span><span class="n">Tensor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Knobs</span><span class="p">:</span>   
+<span class="k">def</span> <span class="nf">calibration_forward_knobs</span><span class="p">(</span><span class="n">gxx</span><span class="p">:</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">gxy</span><span class="p">:</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">gyx</span><span class="p">:</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">gyy</span><span class="p">:</span><span class="n">Tensor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Knobs</span><span class="p">:</span>   
     <span class="n">det</span> <span class="o">=</span>  <span class="n">gxx</span><span class="o">*</span><span class="n">gyy</span> <span class="o">-</span> <span class="n">gxy</span><span class="o">*</span><span class="n">gyx</span>
     <span class="n">qxqx</span> <span class="o">=</span> <span class="n">gxx</span>
     <span class="n">qxqy</span> <span class="o">=</span> <span class="n">gxy</span>
@@ -204,7 +206,63 @@
     <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span><span class="n">qxqx</span><span class="p">,</span> <span class="n">qxqy</span><span class="p">,</span> <span class="n">pxpx</span><span class="p">,</span> <span class="n">pxpy</span><span class="p">,</span> <span class="n">qyqx</span><span class="p">,</span> <span class="n">qyqy</span><span class="p">,</span> <span class="n">pypx</span><span class="p">,</span> <span class="n">pypy</span><span class="p">])</span>
 
 
-<span class="k">def</span> <span class="nf">calibration_track</span><span class="p">(</span><span class="n">state</span><span class="p">:</span><span class="n">State</span><span class="p">,</span> <span class="n">knobs</span><span class="p">:</span><span class="n">Knobs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">State</span><span class="p">:</span>    
+<span class="k">def</span> <span class="nf">calibration_forward_track</span><span class="p">(</span><span class="n">state</span><span class="p">:</span><span class="n">State</span><span class="p">,</span> <span class="n">knobs</span><span class="p">:</span><span class="n">Knobs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">State</span><span class="p">:</span>    
+    <span class="n">qxqx</span><span class="p">,</span> <span class="n">qxqy</span><span class="p">,</span> <span class="n">pxpx</span><span class="p">,</span> <span class="n">pxpy</span><span class="p">,</span> <span class="n">qyqx</span><span class="p">,</span> <span class="n">qyqy</span><span class="p">,</span> <span class="n">pypx</span><span class="p">,</span> <span class="n">pypy</span><span class="p">,</span> <span class="o">*</span><span class="n">_</span> <span class="o">=</span> <span class="n">knobs</span>
+    <span class="n">qx</span><span class="p">,</span> <span class="n">px</span><span class="p">,</span> <span class="n">qy</span><span class="p">,</span> <span class="n">py</span> <span class="o">=</span> <span class="n">state</span>
+    <span class="n">Qx</span> <span class="o">=</span> <span class="n">qx</span><span class="o">*</span><span class="n">qxqx</span> <span class="o">+</span> <span class="n">qy</span><span class="o">*</span><span class="n">qxqy</span>
+    <span class="n">Px</span> <span class="o">=</span> <span class="n">px</span><span class="o">*</span><span class="n">pxpx</span> <span class="o">+</span> <span class="n">py</span><span class="o">*</span><span class="n">pxpy</span>
+    <span class="n">Qy</span> <span class="o">=</span> <span class="n">qx</span><span class="o">*</span><span class="n">qyqx</span> <span class="o">+</span> <span class="n">qy</span><span class="o">*</span><span class="n">qyqy</span>
+    <span class="n">Py</span> <span class="o">=</span> <span class="n">px</span><span class="o">*</span><span class="n">pypx</span> <span class="o">+</span> <span class="n">py</span><span class="o">*</span><span class="n">pypy</span>
+    <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span><span class="n">Qx</span><span class="p">,</span> <span class="n">Px</span><span class="p">,</span> <span class="n">Qy</span><span class="p">,</span> <span class="n">Py</span><span class="p">])</span>
+
+
+<div class="viewcode-block" id="calibration_inverse">
+<a class="viewcode-back" href="../../../modules/transformations.html#model.library.transformations.calibration_inverse">[docs]</a>
+<span class="k">def</span> <span class="nf">calibration_inverse</span><span class="p">(</span><span class="n">state</span><span class="p">:</span><span class="n">State</span><span class="p">,</span> 
+                        <span class="n">gxx</span><span class="p">:</span><span class="n">Tensor</span><span class="p">,</span> 
+                        <span class="n">gxy</span><span class="p">:</span><span class="n">Tensor</span><span class="p">,</span> 
+                        <span class="n">gyx</span><span class="p">:</span><span class="n">Tensor</span><span class="p">,</span> 
+                        <span class="n">gyy</span><span class="p">:</span><span class="n">Tensor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">State</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Calibration transformation (from bpm frame to beam frame)</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    state: State</span>
+<span class="sd">        initial state</span>
+<span class="sd">    gxx: Tensor</span>
+<span class="sd">        qx scaling</span>
+<span class="sd">    gxy: Tensor</span>
+<span class="sd">        qx coupling</span>
+<span class="sd">    gyx: Tensor</span>
+<span class="sd">        qy coupling</span>
+<span class="sd">    gyy: Tensor</span>
+<span class="sd">        qy scaling</span>
+<span class="sd">        </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    State</span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>        
+    <span class="n">knobs</span><span class="p">:</span> <span class="n">Knobs</span> <span class="o">=</span> <span class="n">calibration_inverse_knobs</span><span class="p">(</span><span class="n">gxx</span><span class="p">,</span> <span class="n">gxy</span><span class="p">,</span> <span class="n">gyx</span><span class="p">,</span> <span class="n">gyy</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">calibration_inverse_track</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">knobs</span><span class="p">)</span></div>
+
+
+
+<span class="k">def</span> <span class="nf">calibration_inverse_knobs</span><span class="p">(</span><span class="n">gxx</span><span class="p">:</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">gxy</span><span class="p">:</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">gyx</span><span class="p">:</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">gyy</span><span class="p">:</span><span class="n">Tensor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Knobs</span><span class="p">:</span>   
+    <span class="n">det</span> <span class="o">=</span>  <span class="n">gxx</span><span class="o">*</span><span class="n">gyy</span> <span class="o">-</span> <span class="n">gxy</span><span class="o">*</span><span class="n">gyx</span>
+    <span class="n">qxqx</span> <span class="o">=</span> <span class="n">gyy</span><span class="o">/</span><span class="n">det</span>
+    <span class="n">qxqy</span> <span class="o">=</span> <span class="o">-</span><span class="n">gxy</span><span class="o">/</span><span class="n">det</span>
+    <span class="n">pxpx</span> <span class="o">=</span> <span class="n">gxx</span>
+    <span class="n">pxpy</span> <span class="o">=</span> <span class="n">gyx</span>
+    <span class="n">qyqx</span> <span class="o">=</span> <span class="o">-</span><span class="n">gyx</span><span class="o">/</span><span class="n">det</span>
+    <span class="n">qyqy</span> <span class="o">=</span> <span class="n">gxx</span><span class="o">/</span><span class="n">det</span>
+    <span class="n">pypx</span> <span class="o">=</span> <span class="n">gxy</span>
+    <span class="n">pypy</span> <span class="o">=</span> <span class="n">gyy</span>
+    <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span><span class="n">qxqx</span><span class="p">,</span> <span class="n">qxqy</span><span class="p">,</span> <span class="n">pxpx</span><span class="p">,</span> <span class="n">pxpy</span><span class="p">,</span> <span class="n">qyqx</span><span class="p">,</span> <span class="n">qyqy</span><span class="p">,</span> <span class="n">pypx</span><span class="p">,</span> <span class="n">pypy</span><span class="p">])</span>
+
+
+<span class="k">def</span> <span class="nf">calibration_inverse_track</span><span class="p">(</span><span class="n">state</span><span class="p">:</span><span class="n">State</span><span class="p">,</span> <span class="n">knobs</span><span class="p">:</span><span class="n">Knobs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">State</span><span class="p">:</span>    
     <span class="n">qxqx</span><span class="p">,</span> <span class="n">qxqy</span><span class="p">,</span> <span class="n">pxpx</span><span class="p">,</span> <span class="n">pxpy</span><span class="p">,</span> <span class="n">qyqx</span><span class="p">,</span> <span class="n">qyqy</span><span class="p">,</span> <span class="n">pypx</span><span class="p">,</span> <span class="n">pypy</span><span class="p">,</span> <span class="o">*</span><span class="n">_</span> <span class="o">=</span> <span class="n">knobs</span>
     <span class="n">qx</span><span class="p">,</span> <span class="n">px</span><span class="p">,</span> <span class="n">qy</span><span class="p">,</span> <span class="n">py</span> <span class="o">=</span> <span class="n">state</span>
     <span class="n">Qx</span> <span class="o">=</span> <span class="n">qx</span><span class="o">*</span><span class="n">qxqx</span> <span class="o">+</span> <span class="n">qy</span><span class="o">*</span><span class="n">qxqy</span>
