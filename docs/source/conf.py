@@ -18,8 +18,8 @@ source_suffix = '.rst'
 # -- Project information -----------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
-project = 'twiss'
-copyright = '2023, Ivan Morozov'
+project = 'model'
+copyright = '2024, Ivan Morozov'
 author = 'Ivan Morozov'
 
 # -- General configuration ---------------------------------------------------
