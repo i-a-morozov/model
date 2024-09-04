@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Transformations module &mdash; twiss  documentation</title>
+  <title>Transformations module &mdash; model  documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
 
@@ -34,7 +34,7 @@
           
           
           <a href="../index.html" class="icon icon-home">
-            twiss
+            model
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -80,6 +80,7 @@
 <li class="toctree-l1"><a class="reference internal" href="#model.library.transformations.dquad"><code class="docutils literal notranslate"><span class="pre">dquad()</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="#model.library.transformations.drift"><code class="docutils literal notranslate"><span class="pre">drift()</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="#model.library.transformations.fquad"><code class="docutils literal notranslate"><span class="pre">fquad()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="#model.library.transformations.gradient"><code class="docutils literal notranslate"><span class="pre">gradient()</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="#model.library.transformations.kinematic"><code class="docutils literal notranslate"><span class="pre">kinematic()</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="#model.library.transformations.linear"><code class="docutils literal notranslate"><span class="pre">linear()</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="#model.library.transformations.multipole"><code class="docutils literal notranslate"><span class="pre">multipole()</span></code></a></li>
@@ -101,7 +102,7 @@
 
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="../index.html">twiss</a>
+          <a href="../index.html">model</a>
       </nav>
 
       <div class="wy-nav-content">
@@ -130,12 +131,13 @@ fquad[_{knobs, track}]       – focusing quadrupole transformation
 dquad[_{knobs, track}]       – defocusing quadrupole transformation
 quadrupole[_{knobs, track}]  – generic quadrupole transformation
 linear                       – generic linear transformation
+gradient[_{knobs, track}]    – thin quadrupole transformation
 sextupole[_{knobs, track}]   – thin sextupole transformation
 octupole[_{knobs, track}]    – thin octupole transformation
 dipole[_{knobs, track}]      – dipole transformation
 bend[_{knobs, track}]        – generic bend transformation
 wedge[_{knobs, track}]       – dipole wedge transformation
-multipole[_{knobs, track}]   – cylindrical multipole kick upto octupole degree
+multipole[_{knobs, track}]   – cylindrical multipole error kick upto octupole degree
 tx[_{knobs, track}]          – TX translation
 ty[_{knobs, track}]          – TY translation
 tz[_{knobs, track}]          – TZ translation
@@ -273,6 +275,25 @@ py -&gt; py + ky</p>
 <li><p><strong>state</strong> (<em>State</em>) – initial state</p></li>
 <li><p><strong>kn</strong> (<em>Tensor</em><em>, </em><em>positive</em>) – quadrupole strength</p></li>
 <li><p><strong>dp</strong> (<em>Tensor</em>) – momentum deviation</p></li>
+<li><p><strong>length</strong> (<em>Tensor</em>) – length</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>State</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="model.library.transformations.gradient">
+<span class="sig-prename descclassname"><span class="pre">model.library.transformations.</span></span><span class="sig-name descname"><span class="pre">gradient</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">state</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">State</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kn</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">torch.Tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ks</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">torch.Tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">length</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">torch.Tensor</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">State</span></span></span><a class="reference internal" href="../_modules/model/library/transformations.html#gradient"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#model.library.transformations.gradient" title="Link to this definition"></a></dt>
+<dd><p>Thin quadrupole transformation</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>state</strong> (<em>State</em>) – initial state</p></li>
+<li><p><strong>kn</strong> (<em>Tensor</em>) – skew strength</p></li>
+<li><p><strong>ks</strong> (<em>Tensor</em>) – skew strength</p></li>
 <li><p><strong>length</strong> (<em>Tensor</em>) – length</p></li>
 </ul>
 </dd>
@@ -533,7 +554,7 @@ py -&gt; py + ky</p>
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2023, Ivan Morozov.</p>
+    <p>&#169; Copyright 2024, Ivan Morozov.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

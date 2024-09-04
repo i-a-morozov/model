@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>model.library.transformations &mdash; twiss  documentation</title>
+  <title>model.library.transformations &mdash; model  documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=19f00094" />
 
@@ -32,7 +32,7 @@
           
           
           <a href="../../../index.html" class="icon icon-home">
-            twiss
+            model
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -78,6 +78,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../modules/transformations.html#model.library.transformations.dquad"><code class="docutils literal notranslate"><span class="pre">dquad()</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../modules/transformations.html#model.library.transformations.drift"><code class="docutils literal notranslate"><span class="pre">drift()</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../modules/transformations.html#model.library.transformations.fquad"><code class="docutils literal notranslate"><span class="pre">fquad()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules/transformations.html#model.library.transformations.gradient"><code class="docutils literal notranslate"><span class="pre">gradient()</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../modules/transformations.html#model.library.transformations.kinematic"><code class="docutils literal notranslate"><span class="pre">kinematic()</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../modules/transformations.html#model.library.transformations.linear"><code class="docutils literal notranslate"><span class="pre">linear()</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../modules/transformations.html#model.library.transformations.multipole"><code class="docutils literal notranslate"><span class="pre">multipole()</span></code></a></li>
@@ -99,7 +100,7 @@
 
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="../../../index.html">twiss</a>
+          <a href="../../../index.html">model</a>
       </nav>
 
       <div class="wy-nav-content">
@@ -132,12 +133,13 @@
 <span class="sd">dquad[_{knobs, track}]       -- defocusing quadrupole transformation</span>
 <span class="sd">quadrupole[_{knobs, track}]  -- generic quadrupole transformation</span>
 <span class="sd">linear                       -- generic linear transformation</span>
+<span class="sd">gradient[_{knobs, track}]    -- thin quadrupole transformation</span>
 <span class="sd">sextupole[_{knobs, track}]   -- thin sextupole transformation</span>
 <span class="sd">octupole[_{knobs, track}]    -- thin octupole transformation</span>
 <span class="sd">dipole[_{knobs, track}]      -- dipole transformation</span>
 <span class="sd">bend[_{knobs, track}]        -- generic bend transformation</span>
 <span class="sd">wedge[_{knobs, track}]       -- dipole wedge transformation</span>
-<span class="sd">multipole[_{knobs, track}]   -- cylindrical multipole kick upto octupole degree</span>
+<span class="sd">multipole[_{knobs, track}]   -- cylindrical multipole error kick upto octupole degree</span>
 <span class="sd">tx[_{knobs, track}]          -- TX translation</span>
 <span class="sd">ty[_{knobs, track}]          -- TY translation</span>
 <span class="sd">tz[_{knobs, track}]          -- TZ translation</span>
@@ -555,6 +557,50 @@
 <span class="sd">    &quot;&quot;&quot;</span>       
     <span class="k">return</span> <span class="n">vector</span> <span class="o">+</span> <span class="n">matrix</span> <span class="o">@</span> <span class="n">state</span></div>
 
+
+
+<div class="viewcode-block" id="gradient">
+<a class="viewcode-back" href="../../../modules/transformations.html#model.library.transformations.gradient">[docs]</a>
+<span class="k">def</span> <span class="nf">gradient</span><span class="p">(</span><span class="n">state</span><span class="p">:</span><span class="n">State</span><span class="p">,</span> 
+             <span class="n">kn</span><span class="p">:</span><span class="n">Tensor</span><span class="p">,</span> 
+             <span class="n">ks</span><span class="p">:</span><span class="n">Tensor</span><span class="p">,</span> 
+             <span class="n">length</span><span class="p">:</span><span class="n">Tensor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">State</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Thin quadrupole transformation</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    state: State</span>
+<span class="sd">        initial state</span>
+<span class="sd">    kn: Tensor</span>
+<span class="sd">        skew strength</span>
+<span class="sd">    ks: Tensor</span>
+<span class="sd">        skew strength</span>
+<span class="sd">    length: Tensor</span>
+<span class="sd">        length</span>
+<span class="sd">        </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    State</span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>     
+    <span class="n">knobs</span><span class="p">:</span> <span class="n">Knobs</span> <span class="o">=</span> <span class="n">gradient_knobs</span><span class="p">(</span><span class="n">kn</span><span class="p">,</span> <span class="n">ks</span><span class="p">,</span> <span class="n">length</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">gradient_track</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">knobs</span><span class="p">)</span>  </div>
+
+
+
+<span class="k">def</span> <span class="nf">gradient_knobs</span><span class="p">(</span><span class="n">kn</span><span class="p">:</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">ks</span><span class="p">:</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">length</span><span class="p">:</span><span class="n">Tensor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Knobs</span><span class="p">:</span>      
+    <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span><span class="n">length</span><span class="o">*</span><span class="n">kn</span><span class="p">,</span> <span class="n">length</span><span class="o">*</span><span class="n">ks</span><span class="p">])</span>
+
+
+<span class="k">def</span> <span class="nf">gradient_track</span><span class="p">(</span><span class="n">state</span><span class="p">:</span><span class="n">State</span><span class="p">,</span> <span class="n">knobs</span><span class="p">:</span><span class="n">Knobs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">State</span><span class="p">:</span>       
+    <span class="n">kn</span><span class="p">,</span> <span class="n">ks</span><span class="p">,</span> <span class="o">*</span><span class="n">_</span> <span class="o">=</span> <span class="n">knobs</span>
+    <span class="n">qx</span><span class="p">,</span> <span class="n">px</span><span class="p">,</span> <span class="n">qy</span><span class="p">,</span> <span class="n">py</span> <span class="o">=</span> <span class="n">state</span>
+    <span class="n">Qx</span> <span class="o">=</span> <span class="n">qx</span>
+    <span class="n">Px</span> <span class="o">=</span> <span class="n">px</span> <span class="o">-</span> <span class="n">kn</span><span class="o">*</span><span class="n">qx</span> <span class="o">+</span> <span class="n">ks</span><span class="o">*</span><span class="n">qy</span>
+    <span class="n">Qy</span> <span class="o">=</span> <span class="n">qy</span>
+    <span class="n">Py</span> <span class="o">=</span> <span class="n">py</span> <span class="o">+</span> <span class="n">kn</span><span class="o">*</span><span class="n">qy</span> <span class="o">+</span> <span class="n">ks</span><span class="o">*</span><span class="n">qx</span>
+    <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span><span class="n">Qx</span><span class="p">,</span> <span class="n">Px</span><span class="p">,</span> <span class="n">Qy</span><span class="p">,</span> <span class="n">Py</span><span class="p">])</span>
 
 
 <div class="viewcode-block" id="sextupole">
@@ -1158,7 +1204,7 @@
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2023, Ivan Morozov.</p>
+    <p>&#169; Copyright 2024, Ivan Morozov.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Example-01: Optimizaion (import/export API) &mdash; twiss  documentation</title>
+  <title>Example-01: Optimizaion (import/export API) &mdash; model  documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
       <link rel="stylesheet" type="text/css" href="../_static/nbsphinx-code-cells.css?v=2aa19091" />
@@ -38,7 +38,7 @@
           
           
           <a href="../index.html" class="icon icon-home">
-            twiss
+            model
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -84,6 +84,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../modules/transformations.html#model.library.transformations.dquad"><code class="docutils literal notranslate"><span class="pre">dquad()</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="../modules/transformations.html#model.library.transformations.drift"><code class="docutils literal notranslate"><span class="pre">drift()</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="../modules/transformations.html#model.library.transformations.fquad"><code class="docutils literal notranslate"><span class="pre">fquad()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/transformations.html#model.library.transformations.gradient"><code class="docutils literal notranslate"><span class="pre">gradient()</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="../modules/transformations.html#model.library.transformations.kinematic"><code class="docutils literal notranslate"><span class="pre">kinematic()</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="../modules/transformations.html#model.library.transformations.linear"><code class="docutils literal notranslate"><span class="pre">linear()</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="../modules/transformations.html#model.library.transformations.multipole"><code class="docutils literal notranslate"><span class="pre">multipole()</span></code></a></li>
@@ -105,7 +106,7 @@
 
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="../index.html">twiss</a>
+          <a href="../index.html">model</a>
       </nav>
 
       <div class="wy-nav-content">
@@ -1830,6 +1831,76 @@ FODO {&#39;KIND&#39;: &#39;LINE&#39;, &#39;SEQUENCE&#39;: [&#39;HEAD&#39;, &#39;
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
 </pre></div>
 </div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># quadrupole kick</span>
+
+<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span> <span class="nn">os</span> <span class="kn">import</span> <span class="n">system</span>
+
+<span class="kn">import</span> <span class="nn">torch</span>
+<span class="kn">from</span> <span class="nn">model.library.transformations</span> <span class="kn">import</span> <span class="n">gradient</span>
+
+<span class="n">ptc</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s1">&#39;ptc&#39;</span><span class="p">)</span>
+<span class="n">obs</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s1">&#39;track.obs0001.p0001&#39;</span><span class="p">)</span>
+
+<span class="n">kn</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="mf">1.5</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+<span class="n">ks</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+<span class="n">dp</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="mf">0.005</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+<span class="n">length</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+<span class="n">state</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">0.01</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.005</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.05</span><span class="p">,</span> <span class="mf">0.001</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+
+<span class="n">qx</span><span class="p">,</span> <span class="n">px</span><span class="p">,</span> <span class="n">qy</span><span class="p">,</span> <span class="n">py</span> <span class="o">=</span> <span class="n">state</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+
+<span class="n">code</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">mag: multipole,knl=</span><span class="se">{{</span><span class="s2">0.0,</span><span class="si">{</span><span class="p">(</span><span class="n">kn</span><span class="o">*</span><span class="n">length</span><span class="p">)</span><span class="o">.</span><span class="n">item</span><span class="p">()</span><span class="si">}</span><span class="se">}}</span><span class="s2">,ksl=</span><span class="se">{{</span><span class="s2">0.0,</span><span class="si">{</span><span class="p">(</span><span class="n">ks</span><span class="o">*</span><span class="n">length</span><span class="p">)</span><span class="o">.</span><span class="n">item</span><span class="p">()</span><span class="si">}</span><span class="se">}}</span><span class="s2">;</span>
+<span class="s2">map:line=(mag) ;</span>
+<span class="s2">beam,energy=1.0E+9,particle=electron ;</span>
+<span class="s2">set,format=&quot;20.20f&quot;,&quot;-20s&quot; ;</span>
+<span class="s2">use,period=map  ;</span>
+<span class="s2">ptc_create_universe,sector_nmul_max=10,sector_nmul=10 ;</span>
+<span class="s2">ptc_create_layout,model=1,method=6,nst=1000,exact=false ;</span>
+<span class="s2">ptc_setswitch,fringe=false,time=true,totalpath=true,exact_mis=false ;</span>
+<span class="s2">ptc_start,x=</span><span class="si">{</span><span class="n">qx</span><span class="si">}</span><span class="s2">,px=</span><span class="si">{</span><span class="n">px</span><span class="si">}</span><span class="s2">,y=</span><span class="si">{</span><span class="n">qy</span><span class="si">}</span><span class="s2">,py=</span><span class="si">{</span><span class="n">py</span><span class="si">}</span><span class="s2">,pt=</span><span class="si">{</span><span class="n">dp</span><span class="o">.</span><span class="n">item</span><span class="p">()</span><span class="si">}</span><span class="s2">,t=0.0 ;</span>
+<span class="s2">ptc_track,icase=6,deltap=0.,turns=1,file=track,maxaper=</span><span class="se">{{</span><span class="s2">1.,1.,1.,1.,1.,1.</span><span class="se">}}</span><span class="s2">;</span>
+<span class="s2">ptc_track_end;</span>
+<span class="s2">ptc_end;</span>
+<span class="s2">&quot;&quot;&quot;</span>
+
+<span class="k">with</span> <span class="n">ptc</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">stream</span><span class="p">:</span>
+    <span class="n">stream</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">code</span><span class="p">)</span>
+
+<span class="n">system</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;madx &lt; </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">ptc</span><span class="p">)</span><span class="si">}</span><span class="s1"> &gt; /dev/null&#39;</span><span class="p">)</span>
+
+<span class="k">with</span> <span class="n">obs</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">stream</span><span class="p">:</span>
+    <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">stream</span><span class="p">:</span>
+        <span class="k">continue</span>
+    <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">qx</span><span class="p">,</span> <span class="n">px</span><span class="p">,</span> <span class="n">qy</span><span class="p">,</span> <span class="n">py</span><span class="p">,</span> <span class="o">*</span><span class="n">_</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+
+<span class="n">ref</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="nb">float</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="p">(</span><span class="n">qx</span><span class="p">,</span> <span class="n">px</span><span class="p">,</span> <span class="n">qy</span><span class="p">,</span> <span class="n">py</span><span class="p">)],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+<span class="n">res</span> <span class="o">=</span> <span class="n">gradient</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">kn</span><span class="p">,</span> <span class="n">ks</span><span class="p">,</span> <span class="n">length</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">ref</span><span class="o">.</span><span class="n">tolist</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">res</span><span class="o">.</span><span class="n">tolist</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">((</span><span class="n">ref</span> <span class="o">-</span> <span class="n">res</span><span class="p">)</span><span class="o">.</span><span class="n">tolist</span><span class="p">())</span>
+
+<span class="n">ptc</span><span class="o">.</span><span class="n">unlink</span><span class="p">()</span>
+<span class="n">obs</span><span class="o">.</span><span class="n">unlink</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+[0.01, -0.07, -0.05, -0.06400000000000002]
+[0.01, -0.07, -0.05, -0.06400000000000002]
+[0.0, 0.0, 0.0, 0.0]
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+</pre></div>
+</div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># sextupole kick</span>
 
 <span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
@@ -1896,7 +1967,7 @@ FODO {&#39;KIND&#39;: &#39;LINE&#39;, &#39;SEQUENCE&#39;: [&#39;HEAD&#39;, &#39;
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># octupole kick</span>
@@ -1965,7 +2036,7 @@ FODO {&#39;KIND&#39;: &#39;LINE&#39;, &#39;SEQUENCE&#39;: [&#39;HEAD&#39;, &#39;
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># pure dipole (no edge effects if e1 = e2 = 0)</span>
@@ -2035,7 +2106,7 @@ FODO {&#39;KIND&#39;: &#39;LINE&#39;, &#39;SEQUENCE&#39;: [&#39;HEAD&#39;, &#39;
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># combined function dipole (no edge effects if e1 = e2 = 0)</span>
@@ -2107,7 +2178,7 @@ FODO {&#39;KIND&#39;: &#39;LINE&#39;, &#39;SEQUENCE&#39;: [&#39;HEAD&#39;, &#39;
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># combined function dipole with edge effects</span>
@@ -2185,7 +2256,7 @@ FODO {&#39;KIND&#39;: &#39;LINE&#39;, &#39;SEQUENCE&#39;: [&#39;HEAD&#39;, &#39;
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># translations (exact alignment, straight layout, act on a thin representation at the entrance frame)</span>
@@ -2276,7 +2347,7 @@ FODO {&#39;KIND&#39;: &#39;LINE&#39;, &#39;SEQUENCE&#39;: [&#39;HEAD&#39;, &#39;
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># translations + rotations (exact alignment, straight layout, act on a thin representation at the entrance frame)</span>
@@ -2383,7 +2454,7 @@ FODO {&#39;KIND&#39;: &#39;LINE&#39;, &#39;SEQUENCE&#39;: [&#39;HEAD&#39;, &#39;
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># translations + rotations (exact alignment, curved layout, act on a thin representation at the entrance frame)</span>
@@ -2512,7 +2583,7 @@ FODO {&#39;KIND&#39;: &#39;LINE&#39;, &#39;SEQUENCE&#39;: [&#39;HEAD&#39;, &#39;
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2023, Ivan Morozov.</p>
+    <p>&#169; Copyright 2024, Ivan Morozov.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
