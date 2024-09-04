@@ -12,12 +12,13 @@ fquad[_{knobs, track}]       -- focusing quadrupole transformation
 dquad[_{knobs, track}]       -- defocusing quadrupole transformation
 quadrupole[_{knobs, track}]  -- generic quadrupole transformation
 linear                       -- generic linear transformation
+gradient[_{knobs, track}]    -- thin quadrupole transformation
 sextupole[_{knobs, track}]   -- thin sextupole transformation
 octupole[_{knobs, track}]    -- thin octupole transformation
 dipole[_{knobs, track}]      -- dipole transformation
 bend[_{knobs, track}]        -- generic bend transformation
 wedge[_{knobs, track}]       -- dipole wedge transformation
-multipole[_{knobs, track}]   -- cylindrical multipole kick upto octupole degree
+multipole[_{knobs, track}]   -- cylindrical multipole error kick upto octupole degree
 tx[_{knobs, track}]          -- TX translation
 ty[_{knobs, track}]          -- TY translation
 tz[_{knobs, track}]          -- TZ translation
@@ -411,6 +412,47 @@ def linear(state:State,
     
     """       
     return vector + matrix @ state
+
+
+def gradient(state:State, 
+             kn:Tensor, 
+             ks:Tensor, 
+             length:Tensor) -> State:
+    """
+    Thin quadrupole transformation
+
+    Parameters
+    ----------
+    state: State
+        initial state
+    kn: Tensor
+        skew strength
+    ks: Tensor
+        skew strength
+    length: Tensor
+        length
+        
+    Returns
+    -------
+    State
+    
+    """     
+    knobs: Knobs = gradient_knobs(kn, ks, length)
+    return gradient_track(state, knobs)  
+
+
+def gradient_knobs(kn:Tensor, ks:Tensor, length:Tensor) -> Knobs:      
+    return torch.stack([length*kn, length*ks])
+
+
+def gradient_track(state:State, knobs:Knobs) -> State:       
+    kn, ks, *_ = knobs
+    qx, px, qy, py = state
+    Qx = qx
+    Px = px - kn*qx + ks*qy
+    Qy = qy
+    Py = py + kn*qy + ks*qx
+    return torch.stack([Qx, Px, Qy, Py])
 
 
 def sextupole(state:State, 
