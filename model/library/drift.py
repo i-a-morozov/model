@@ -10,8 +10,6 @@ from typing import Callable
 
 from math import ceil
 
-from multimethod import multimethod
-
 import torch
 from torch import Tensor
 from torch import dtype as DataType
@@ -39,6 +37,8 @@ class Drift:
     Drift
     
     """
+    keys: list[str] = ['dp', 'dl']
+    
     def __init__(self, 
                  name:str, 
                  length:float=0.0,
@@ -306,188 +306,90 @@ class Drift:
         self._lmat, self._rmat = self.make_matrix()
 
 
-    @multimethod
-    def __call__(self, 
-                 state:State) -> State:
-        """
-        Transform initial input state using attibutes
-
-        Parameters
-        ----------
-        state: State
-            initial input state
-
-        Returns
-        -------
-        State
-        
-        """
-        for _ in range(self.ns):
-            state = self._step(state)
-        return state
-
-
-    @multimethod
     def __call__(self, 
                  state:State, 
-                 dxyz:list[Tensor, Tensor, Tensor],
-                 wxyz:list[Tensor, Tensor, Tensor]) -> State:
-        """
-        Transform initial input state using attibutes
-        Apply alignment errors (dxyz, wzyz)
-
-        Parameters
-        ----------
-        state: State
-            initial input state
-        dxyz: list[Tensor, Tensor, Tensor]
-            translation errors
-        wxyz: list[Tensor, Tensor, Tensor]
-            rotation errors
-
-        Returns
-        -------
-        State
-        
-        """      
-        dx:Tensor
-        dy:Tensor
-        dz:Tensor        
-        wx:Tensor
-        wy:Tensor
-        wz:Tensor   
-        dx, dy, dz = dxyz
-        wx, wy, wz = wxyz
-        
-        state = tx(state, +dx)
-        state = ty(state, +dy)
-        state = tz(state, +dz, self.dp)
-        
-        state = rx(state, +wx, self.dp)
-        state = ry(state, +wy, self.dp)
-        state = rz(state, +wz)
-        
-        state = self(state)
-        state = tz(state, -self.length, self.dp)
-        
-        state = rz(state, -wz)
-        state = ry(state, -wy, self.dp)
-        state = rx(state, -wx, self.dp)
-        
-        state = tz(state, -dz, self.dp)
-        state = ty(state, -dy)
-        state = tx(state, -dx)
-        
-        state = tz(state, +self.length, self.dp)
-        
-        return state
-
-
-    @multimethod            
-    def __call__(self, 
-                 state:State,
-                 dp:Tensor, 
-                 dl:Tensor, *,
-                 error:bool=False) -> State:
+                 insertion:bool=False,
+                 alignment:bool=False,
+                 **kwargs:dict[str, Tensor]) -> State:
         """
         Transform initial input state using attibutes and deviations
+        Deviations and alignment valurs are passed in kwargs
         Deviations are added to corresponding parameters
-        Expected to be differentiable with respect to deviations
-        Treat as thin insertion (error flag), if deviations are zero, full transformation is identity
-
+        
         Parameters
         ----------
         state: State
             initial input state
-        dp: Tensor
-            momentum deviation
-        dl: Tensor
-            length deviation
+        insertion: bool, default=False
+            flag to treat eleemnt as error insertion
+        alignment: bool, default=False
+            flag to apply alignment error
+        **kwargs: dict[str, Tensor]
+            deviation and alignment values
 
         Returns
         -------
         State
         
-        """       
-        if error:
+        """   
+        knob: dict[str, Tensor] = {key: kwargs[key] for key in self.keys if key in kwargs}
+
+        step: Callable[[State], State] | Callable[[State, Tensor, ...], State]
+        step = self._knob if knob else self._step
+
+        if not alignment:
+            if insertion:
+                state = self._lmat @ state
+            for _ in range(self.ns):
+                state = step(state, **knob)
+            if insertion:
+                state = self._rmat @ state
+            return state
+
+        dp:Tensor = self.dp
+        dl:Tensor = self.length
+
+        if knob:
+            dp = dp + knob['dp']
+            dl = dl + knob['dl']
+            
+        dx:Tensor
+        dy:Tensor
+        dz:Tensor         
+        dx, dy, dz = [kwargs[key] for key in ['dx', 'dy', 'dz']]
+
+        wx:Tensor
+        wy:Tensor
+        wz:Tensor  
+        wx, wy, wz = [kwargs[key] for key in ['wx', 'wy', 'wz']]
+
+        if insertion:
             state = self._lmat @ state
-            
-        for _ in range(self.ns):
-            state = self._knob(state, dp, dl)
-            
-        if error:
-            state = self._rmat @ state
-            
-        return state
-
-
-    @multimethod            
-    def __call__(self, 
-                 state:State,
-                 dp:Tensor, 
-                 dl:Tensor, 
-                 dxyz:list[Tensor, Tensor, Tensor],
-                 wxyz:list[Tensor, Tensor, Tensor], *,
-                 error:bool=False) -> State:
-        """
-        Transform initial input state using attibutes and deviations
-        Deviations are added to corresponding parameters
-        Expected to be differentiable with respect to deviations
-        Apply alignment errors (dxyz, rzyz)
-        Treat as thin insertion (error flag), if deviations are zero, full transformation is identity
-
-        Parameters
-        ----------
-        state: State
-            initial input state
-        dp: Tensor
-            momentum deviation
-        dl: Tensor
-            length deviation            
-        dxyz: list[Tensor, Tensor, Tensor]
-            translation errors
-        wxyz: list[Tensor, Tensor, Tensor]
-            rotation errors            
-
-        Returns
-        -------
-        State
         
-        """       
-        dx:Tensor
-        dy:Tensor
-        dz:Tensor        
-        wx:Tensor
-        wy:Tensor
-        wz:Tensor        
-        dx, dy, dz = dxyz
-        wx, wy, wz = wxyz
-        
-        if error:
-            state = self._lmat @ state   
-            
         state = tx(state, +dx)
         state = ty(state, +dy)
-        state = tz(state, +dz, self.dp + dp)
-        
-        state = rx(state, +wx, self.dp + dp)
-        state = ry(state, +wy, self.dp + dp)
+        state = tz(state, +dz, dp)
+
+        state = rx(state, +wx, dp)
+        state = ry(state, +wy, dp)
         state = rz(state, +wz)
         
-        state = self(state, dp, dl)
-        state = tz(state, -(self.length + dl), self.dp + dp)
+        for _ in range(self.ns):
+            state = step(state, **knob)
+
+        state = tz(state, -dl, dp)
         
         state = rz(state, -wz)
-        state = ry(state, -wy, self.dp + dp)
-        state = rx(state, -wx, self.dp + dp)
+        state = ry(state, -wy, dp)
+        state = rx(state, -wx, dp)
         
-        state = tz(state, -dz, self.dp + dp)
+        state = tz(state, -dz, dp)
         state = ty(state, -dy)
         state = tx(state, -dx)
         
-        state = tz(state, +(self.length + dl), self.dp + dp)
+        state = tz(state, +dl, dp)
+
+        if insertion:
+            state = self._rmat @ state
         
-        if error:
-            state = self._rmat @ state      
-            
-        return state 
+        return state
