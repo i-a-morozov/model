@@ -5,10 +5,10 @@ Drift
 Drift element
 
 """
+from __future__ import annotations
+
 from typing import Optional
 from typing import Callable
-
-from math import ceil
 
 import torch
 from torch import Tensor
@@ -18,13 +18,13 @@ from torch import float64 as Float64
 
 from ndmap.yoshida import yoshida
 
+from model.library.element import Element
 from model.library.transformations import drift
 from model.library.transformations import kinematic
-from model.library.alignment import transform
 
 type State = Tensor
 
-class Drift:
+class Drift(Element):
     """
     Drift element
     -------------
@@ -78,16 +78,16 @@ class Drift:
         None
         
         """
-        self._name: str = name
-        self._length: float = length
-        self._dp: float = dp
-        self._ns: int = ceil(self._length/ds) if ds else ns        
-        self._order: bool = order
-        self._exact: bool = exact
+        super().__init__(name=name, 
+                         length=length, 
+                         dp=dp, 
+                         ns=ns,
+                         ds=ds, 
+                         order=order, 
+                         exact=exact, 
+                         dtype=dtype, 
+                         device=device)
         
-        self.dtype: DataType = dtype
-        self.device: DataDevice = device
-
         self._data: list[list[int], list[float]] = None
         self._step: Callable[[State], State]
         self._knob: Callable[[State, Tensor, ...], State]
@@ -95,32 +95,7 @@ class Drift:
 
         self._lmat: Tensor
         self._rmat: Tensor
-        self._lmat, self._rmat = self.make_matrix()
-
-
-    def table(self, *, 
-              name:bool=False,
-              alignment:bool=True) -> dict[str, dict[str,Tensor]] | dict[str,Tensor]:
-        """
-        Generate default deviation table
-
-        Parameters
-        ----------
-        None
-
-        Returns
-        -------
-        dict[str, dict[str,Tensor]] | dict[str,Tensor]
-        
-        """
-        zeros: Tensor = torch.zeros(len(self.keys), dtype=self.dtype, device=self.device)
-        table: dict[str, Tensor] = {key: value for key, value in zip(self.keys, zeros)}
-        if alignment:
-            keys:list[str] = ['dx', 'dy', 'dz', 'wx', 'wy', 'wz']
-            zeros: Tensor = torch.zeros(len(keys), dtype=self.dtype, device=self.device)
-            table = {**table, **{key: value for key, value in zip(keys, zeros)}}
-        return table if not name else {self.name: table}
-
+        self._lmat, self._rmat = self.make_matrix()    
 
     def make_step(self) -> tuple[Callable[[State], State], Callable[[State, Tensor, ...], State]]:
         """
@@ -177,281 +152,6 @@ class Drift:
         
         return lmat, rmat
 
-
-    @property
-    def name(self) -> str:
-        """
-        Get name
-
-        Parameters
-        ----------
-        None
-
-        Returns
-        -------
-        str
-        
-        """        
-        return self._name
-        
     
-    @name.setter
-    def name(self, 
-             name:str) -> None:
-        """
-        Set name
-
-        Parameters
-        ----------
-        name: str
-            name
-
-        Returns
-        -------
-        None
-        
-        """        
-        self._name = name
-        
-        
-    @property
-    def length(self) -> Tensor:
-        """
-        Get length
-
-        Parameters
-        ----------
-        None
-
-        Returns
-        -------
-        Tensor
-        
-        """     
-        return torch.tensor(self._length, dtype=self.dtype, device=self.device)
-    
-    
-    @length.setter
-    def length(self, 
-               length:float) -> None:
-        """
-        Set length
-
-        Parameters
-        ----------
-        length: float
-            length
-
-        Returns
-        -------
-        None
-        
-        """       
-        self._length = length
-        self._step, self._knob = self.make_step()
-        self._lmat, self._rmat = self.make_matrix()
-    
-    
-    @property
-    def dp(self) -> Tensor:
-        """
-        Get momentum deviation
-
-        Parameters
-        ----------
-        None
-
-        Returns
-        -------
-        Tensor
-        
-        """       
-        return torch.tensor(self._dp, dtype=self.dtype, device=self.device)
-    
-    
-    @dp.setter
-    def dp(self, 
-           dp:float) -> None:
-        """
-        Set momentum deviation
-
-        Parameters
-        ----------
-        dp: float
-            momentum deviation
-
-        Returns
-        -------
-        None
-        
-        """       
-        self._dp = dp
-        self._step, self._knob = self.make_step()
-        self._lmat, self._rmat = self.make_matrix()
-
-
-    @property
-    def ns(self) -> int:
-        """
-        Get number of integration steps
-
-        Parameters
-        ----------
-        None
-
-        Returns
-        -------
-        int
-        
-        """       
-        return self._ns
-    
-    
-    @ns.setter
-    def ns(self, 
-           ns:int) -> None:
-        """
-        Set number of integration steps
-
-        Parameters
-        ----------
-        ns: int, positive
-            number of intergration steps
-
-        Returns
-        -------
-        None
-        
-        """          
-        self._ns = ns
-        self._step, self._knob = self.make_step()
-        self._lmat, self._rmat = self.make_matrix()
-
-
-    @property
-    def order(self) -> int:
-        """
-        Get integration order
-
-        Parameters
-        ----------
-        None
-
-        Returns
-        -------
-        int
-        
-        """       
-        return self._order
-    
-    
-    @order.setter
-    def order(self, 
-              order:int) -> None:
-        """
-        Set integration order
-
-        Parameters
-        ----------
-        order: int, non-negative
-            integration order
-
-        Returns
-        -------
-        None
-        
-        """          
-        self._order = order
-        self._step, self._knob = self.make_step()
-
-
-    @property
-    def exact(self) -> bool:
-        """
-        Get exact flag
-
-        Parameters
-        ----------
-        None
-
-        Returns
-        -------
-        bool
-        
-        """        
-        return self._exact
-        
-    
-    @exact.setter
-    def exact(self, 
-              exact:bool) -> None:
-        """
-        Set exact flag
-
-        Parameters
-        ----------
-        exact: bool
-            exact
-
-        Returns
-        -------
-        None
-        
-        """        
-        self._exact = exact
-        self._step, self._knob = self.make_step()
- 
-
-    def __call__(self, 
-                 state:State, *,
-                 data:Optional[dict[str, Tensor]]=None,
-                 insertion:bool=False,
-                 alignment:bool=False) -> State:
-        """
-        Transform initial input state using attibutes and deviations
-        Deviations and alignment valurs are passed in kwargs
-        Deviations are added to corresponding parameters
-        
-        Parameters
-        ----------
-        state: State
-            initial input state
-        data: Optional[dict[str, Tensor]]
-            deviation and alignment table            
-        insertion: bool, default=False
-            flag to treat element as error insertion
-        alignment: bool, default=False
-            flag to apply alignment error
-
-        Returns
-        -------
-        State
-        
-        """   
-        data: dict[str, Tensor] = data if data else {}
-        knob: dict[str, Tensor] = {key: data[key] for key in self.keys if key in data}
-        step: Callable[[State], State] | Callable[[State, Tensor, ...], State]
-        step = self._knob if knob else self._step
-
-        if not alignment:
-            if insertion:
-                state = self._lmat @ state
-            for _ in range(self.ns):
-                state = step(state, **knob)
-            if insertion:
-                state = self._rmat @ state
-            return state
-
-        if insertion:
-            state = self._lmat @ state
-
-        state = transform(self, state, data)
-
-        if insertion:
-            state = self._rmat @ state
-        
-        return state
-
-
     def __repr__(self) -> str:
         return f'{self.__class__.__name__}(name="{self._name}", length={self._length}, dp={self._dp}, exact={self.exact}, ns={self._ns}, order={self.order})'
