@@ -20,12 +20,9 @@ from ndmap.yoshida import yoshida
 
 from model.library.transformations import drift
 from model.library.transformations import kinematic
-from model.library.transformations import tx, ty, tz
-from model.library.transformations import rx, ry, rz
+from model.library.alignment import transform
 
 type State = Tensor
-type Knobs = Tensor
-
 
 class Drift:
     """
@@ -37,8 +34,9 @@ class Drift:
     Drift
     
     """
+    flag: bool = False
     keys: list[str] = ['dp', 'dl']
-    
+
     def __init__(self, 
                  name:str, 
                  length:float=0.0,
@@ -98,6 +96,30 @@ class Drift:
         self._lmat: Tensor
         self._rmat: Tensor
         self._lmat, self._rmat = self.make_matrix()
+
+
+    def table(self, *, 
+              name:bool=False,
+              alignment:bool=True) -> dict[str|dict[str,Tensor]] | dict[str,Tensor]:
+        """
+        Generate default deviation table
+
+        Parameters
+        ----------
+        None
+
+        Returns
+        -------
+        dict[str|dict[str,Tensor]] | dict[str,Tensor]
+        
+        """
+        zeros: Tensor = torch.zeros(len(self.keys), dtype=self.dtype, device=self.device)
+        table: dict[str, Tensor] = {key: value for key, value in zip(self.keys, zeros)}
+        if alignment:
+            keys:list[str] = ['dx', 'dy', 'dz', 'wx', 'wy', 'wz']
+            zeros: Tensor = torch.zeros(len(keys), dtype=self.dtype, device=self.device)
+            table = {**table, **{key: value for key, value in zip(keys, zeros)}}
+        return table if not name else {self.name: table}
 
 
     def make_step(self) -> tuple[Callable[[State], State], Callable[[State, Tensor, ...], State]]:
@@ -307,10 +329,10 @@ class Drift:
 
 
     def __call__(self, 
-                 state:State, 
+                 state:State, *,
+                 data:Optional[dict[str, Tensor]]=None,
                  insertion:bool=False,
-                 alignment:bool=False,
-                 **kwargs:dict[str, Tensor]) -> State:
+                 alignment:bool=False) -> State:
         """
         Transform initial input state using attibutes and deviations
         Deviations and alignment valurs are passed in kwargs
@@ -320,20 +342,20 @@ class Drift:
         ----------
         state: State
             initial input state
+        data: Optional[dict[str, Tensor]]
+            deviation and alignment table            
         insertion: bool, default=False
             flag to treat eleemnt as error insertion
         alignment: bool, default=False
             flag to apply alignment error
-        **kwargs: dict[str, Tensor]
-            deviation and alignment values
 
         Returns
         -------
         State
         
         """   
-        knob: dict[str, Tensor] = {key: kwargs[key] for key in self.keys if key in kwargs}
-
+        data: dict[str, Tensor] = data if data else {}
+        knob: dict[str, Tensor] = {key: data[key] for key in self.keys if key in data}
         step: Callable[[State], State] | Callable[[State, Tensor, ...], State]
         step = self._knob if knob else self._step
 
@@ -346,48 +368,10 @@ class Drift:
                 state = self._rmat @ state
             return state
 
-        dp:Tensor = self.dp
-        dl:Tensor = self.length
-
-        if knob:
-            dp = dp + knob['dp']
-            dl = dl + knob['dl']
-            
-        dx:Tensor
-        dy:Tensor
-        dz:Tensor         
-        dx, dy, dz = [kwargs[key] for key in ['dx', 'dy', 'dz']]
-
-        wx:Tensor
-        wy:Tensor
-        wz:Tensor  
-        wx, wy, wz = [kwargs[key] for key in ['wx', 'wy', 'wz']]
-
         if insertion:
             state = self._lmat @ state
-        
-        state = tx(state, +dx)
-        state = ty(state, +dy)
-        state = tz(state, +dz, dp)
 
-        state = rx(state, +wx, dp)
-        state = ry(state, +wy, dp)
-        state = rz(state, +wz)
-        
-        for _ in range(self.ns):
-            state = step(state, **knob)
-
-        state = tz(state, -dl, dp)
-        
-        state = rz(state, -wz)
-        state = ry(state, -wy, dp)
-        state = rx(state, -wx, dp)
-        
-        state = tz(state, -dz, dp)
-        state = ty(state, -dy)
-        state = tx(state, -dx)
-        
-        state = tz(state, +dl, dp)
+        state = transform(self, state, data)
 
         if insertion:
             state = self._rmat @ state
