@@ -23,6 +23,8 @@ from model.library.transformations import quadrupole
 from model.library.transformations import kinematic
 
 type State = Tensor
+type Mapping = Callable[[State], State]
+type ParametricMapping = Callable[[State, Tensor, ...], State]
 
 class Quadrupole(Element):
     """
@@ -50,7 +52,7 @@ class Quadrupole(Element):
                  dtype:DataType = Float64,
                  device:DataDevice = DataDevice('cpu')) -> None:
         """
-        Drift instance initialization
+        Quadrupole instance initialization
 
         Parameters
         ----------
@@ -58,6 +60,10 @@ class Quadrupole(Element):
             name
         length: float, default=0.0
             length
+        kn: float
+            normal quadrupole strength (epsilon is added)
+        ks: float
+            skew quadrupole strength 
         dp: float, default=0.0
             momentum deviation
         ns: int, positive, default=1
@@ -103,7 +109,7 @@ class Quadrupole(Element):
         self._lmat, self._rmat = self.make_matrix()
         
 
-    def make_step(self) -> tuple[Callable[[State], State], Callable[[State, Tensor, ...], State]]:
+    def make_step(self) -> tuple[Mapping, ParametricMapping]:
         """
         Generate integration step
 
@@ -113,7 +119,7 @@ class Quadrupole(Element):
 
         Returns
         -------
-        tuple[Callable[[State], State], Callable[[State, Tensor, ...], State]]
+        tuple[Mapping, ParametricMapping]
         
         """        
         def quad_wrapper(state:State, ds:Tensor, kn:Tensor, ks:Tensor, dp:Tensor) -> State:
@@ -128,10 +134,14 @@ class Quadrupole(Element):
         self._data: list[list[int], list[float]] = integrator.table
         
         def step(state:State) -> State:
-            return integrator(state, self.length/self.ns, self.kn, self.ks, self.dp)
+            for _ in range(self.ns):
+                state = integrator(state, self.length/self.ns, self.kn, self.ks, self.dp)
+            return state
             
         def knob(state:State, kn:Tensor, ks:Tensor, dp:Tensor, dl:Tensor) -> State:
-            return integrator(state, (self.length + dl)/self.ns, self.kn + kn, self.ks + ks, self.dp + dp)
+            for _ in range(self.ns):
+                state = integrator(state, (self.length + dl)/self.ns, self.kn + kn, self.ks + ks, self.dp + dp)
+            return state
             
         return step, knob
 

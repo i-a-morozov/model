@@ -25,6 +25,8 @@ from model.library.transformations import tx, ty, tz
 from model.library.transformations import rx, ry, rz
 
 type State = Tensor
+type Mapping = Callable[[State], State]
+type ParametricMapping = Callable[[State, Tensor, ...], State]
 
 class Element(ABC):
     """
@@ -124,7 +126,7 @@ class Element(ABC):
 
 
     @abstractmethod
-    def make_step(self) -> tuple[Callable[[State], State], Callable[[State, Tensor, ...], State]]:
+    def make_step(self) -> tuple[Mapping, ParametricMapping]:
         """
         Generate integration step
         
@@ -134,7 +136,7 @@ class Element(ABC):
         
         Returns
         -------
-        tuple[Callable[[State], State], Callable[[State, Tensor, ...], State]]
+        tuple[Mapping, ParametricMapping]
         
         """
         pass
@@ -403,13 +405,12 @@ class Element(ABC):
         """   
         data: dict[str, Tensor] = data if data else {}
         knob: dict[str, Tensor] = {key: data[key] for key in self.keys if key in data}
-        step: Callable[[State], State] | Callable[[State, Tensor, ...], State]
+        step: Mapping | ParametricMapping
         step = self._knob if knob else self._step
         if not alignment:
             if insertion:
                 state = self._lmat @ state
-            for _ in range(self.ns):
-                state = step(state, **knob)
+            state = step(state, **knob)
             if insertion:
                 state = self._rmat @ state
             return state

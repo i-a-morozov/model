@@ -23,6 +23,8 @@ from model.library.transformations import drift
 from model.library.transformations import kinematic
 
 type State = Tensor
+type Mapping = Callable[[State], State]
+type ParametricMapping = Callable[[State, Tensor, ...], State]
 
 class Drift(Element):
     """
@@ -97,7 +99,8 @@ class Drift(Element):
         self._rmat: Tensor
         self._lmat, self._rmat = self.make_matrix()    
 
-    def make_step(self) -> tuple[Callable[[State], State], Callable[[State, Tensor, ...], State]]:
+    
+    def make_step(self) -> tuple[Mapping, ParametricMapping]:
         """
         Generate integration step
 
@@ -107,7 +110,7 @@ class Drift(Element):
 
         Returns
         -------
-        tuple[Callable[[State], State], Callable[[State, Tensor, ...], State]]
+        tuple[Mapping, ParametricMapping]
         
         """        
         def drif_wrapper(state:State, ds:Tensor, dp:Tensor) -> State:
@@ -122,10 +125,14 @@ class Drift(Element):
         self._data: list[list[int], list[float]] = integrator.table
         
         def step(state:State) -> State:
-            return integrator(state, self.length/self.ns, self.dp)
+            for _ in range(self.ns):
+                state = integrator(state, self.length/self.ns, self.dp)
+            return state
             
         def knob(state:State, dp:Tensor, dl:Tensor) -> State:
-            return integrator(state, (self.length + dl)/self.ns, self.dp + dp)
+            for _ in range(self.ns):
+                state = integrator(state, (self.length + dl)/self.ns, self.dp + dp)
+            return state
             
         return step, knob  
 
