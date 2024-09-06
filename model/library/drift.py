@@ -82,9 +82,9 @@ class Drift:
         self._length: float = length
         self._dp: float = dp
         self._ns: int = ceil(self._length/ds) if ds else ns        
-    
+        self._exact: bool = exact
+        
         self.order: bool = order
-        self.exact: bool = exact
         self.dtype: DataType = dtype
         self.device: DataDevice = device
 
@@ -327,6 +327,43 @@ class Drift:
         self._step, self._knob = self.make_step()
         self._lmat, self._rmat = self.make_matrix()
 
+
+    @property
+    def exact(self) -> bool:
+        """
+        Get exact flag
+
+        Parameters
+        ----------
+        None
+
+        Returns
+        -------
+        bool
+        
+        """        
+        return self._exact
+        
+    
+    @exact.setter
+    def exact(self, 
+              exact:bool) -> None:
+        """
+        Set exact flag
+
+        Parameters
+        ----------
+        exact: bool
+            exact
+
+        Returns
+        -------
+        None
+        
+        """        
+        self._exact = exact
+        self._step, self._knob = self.make_step()
+ 
 
     def __call__(self, 
                  state:State, *,
