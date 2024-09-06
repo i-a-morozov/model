@@ -28,6 +28,13 @@ type State = Tensor
 type Mapping = Callable[[State], State]
 type ParametricMapping = Callable[[State, Tensor, ...], State]
 
+KEY_DP:str = 'dp'
+KEY_DL:str = 'dl'
+KEY_DW:str = 'dw'
+
+KEYS_TXYZ:list[str] = ['dx', 'dy', 'dz']
+KEYS_RXYZ:list[str] = ['wx', 'wy', 'wz']
+
 class Element(ABC):
     """
     Abstract element
@@ -35,7 +42,7 @@ class Element(ABC):
     
     """
     _tolerance:float = 1.0E-16
-    _alignment:list[str] = ['dx', 'dy', 'dz', 'wx', 'wy', 'wz']    
+    _alignment:list[str] = [*KEYS_TXYZ, *KEYS_RXYZ]    
     
     @property
     @abstractmethod
@@ -441,28 +448,20 @@ def transform(element:Element,
         deviation and alignment table
 
     """
-    dp:Tensor = element.dp
-    if 'dp' in data: 
-        dp = dp + data['dp']
-
-    length:Tensor = element.length
-    if 'dl' in data: 
-        length = length + data['dl']
-
+    dp:Tensor = element.dp + data.get(KEY_DP, 0.0)
+    length:Tensor = element.length + data.get(KEY_DL, 0.0)
     if element.flag:
-        angle:Tensor = element.angle 
-        if 'dw' in data:
-            angle = angle + data['dw']
+        angle:Tensor = element.angle + data.get(KEY_DW, 0.0)
 
     dx:Tensor
     dy:Tensor
     dz:Tensor         
-    dx, dy, dz = [data[key] for key in ['dx', 'dy', 'dz']]
+    dx, dy, dz = [data[key] for key in KEYS_TXYZ]
 
     wx:Tensor
     wy:Tensor
     wz:Tensor  
-    wx, wy, wz = [data[key] for key in ['wx', 'wy', 'wz']]
+    wx, wy, wz = [data[key] for key in KEYS_RXYZ]
 
     state = tx(state, +dx)
     state = ty(state, +dy)
