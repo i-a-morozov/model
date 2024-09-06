@@ -463,3 +463,6 @@ class Quadrupole:
             state = self._rmat @ state
         
         return state
+
+    def __repr__(self) -> str:
+        return f'{self.__class__.__name__}(name="{self._name}", length={self._length}, kn={self._kn}, ks={self._ks}, dp={self._dp}, exact={self.exact}, ns={self._ns}, order={self.order})'
