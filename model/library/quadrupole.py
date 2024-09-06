@@ -71,7 +71,7 @@ class Quadrupole:
         ds: Optional[float], positive
             integration step length
             if given, input ns value is ignored and ds is used to compute ns = ceil(length/ds)
-            actual integration svaluestep is not ds, but length/ns
+            actual integration step is not ds, but length/ns
         order: int, default=0, non-negative
             Yoshida integration order
         exact: bool, default=False
@@ -92,6 +92,7 @@ class Quadrupole:
         self._ks: float = ks
         self._dp: float = dp
         self._ns: int = ceil(self._length/ds) if ds else ns
+        self._order: bool = order
         self._exact: bool = exact
 
         self.order: bool = order
@@ -110,7 +111,7 @@ class Quadrupole:
 
     def table(self, *, 
               name:bool=False,
-              alignment:bool=True) -> dict[str|dict[str,Tensor]] | dict[str,Tensor]:
+              alignment:bool=True) -> dict[str, dict[str,Tensor]] | dict[str,Tensor]:
         """
         Generate default deviation table
 
@@ -120,7 +121,7 @@ class Quadrupole:
 
         Returns
         -------
-        dict[str|dict[str,Tensor]] | dict[str,Tensor]
+        dict[str, dict[str,Tensor]] | dict[str,Tensor]
         
         """
         zeros: Tensor = torch.zeros(len(self.keys), dtype=self.dtype, device=self.device)
@@ -413,7 +414,44 @@ class Quadrupole:
         self._step, self._knob = self.make_step()
         self._lmat, self._rmat = self.make_matrix()
 
+    
+    @property
+    def order(self) -> int:
+        """
+        Get integration order
 
+        Parameters
+        ----------
+        None
+
+        Returns
+        -------
+        int
+        
+        """       
+        return self._order
+    
+    
+    @order.setter
+    def order(self, 
+              order:int) -> None:
+        """
+        Set integration order
+
+        Parameters
+        ----------
+        order: int, non-negative
+            integration order
+
+        Returns
+        -------
+        None
+        
+        """          
+        self._order = order
+        self._step, self._knob = self.make_step()
+
+    
     @property
     def exact(self) -> bool:
         """
@@ -468,7 +506,7 @@ class Quadrupole:
         data: Optional[dict[str, Tensor]]
             deviation and alignment table            
         insertion: bool, default=False
-            flag to treat eleemnt as error insertion
+            flag to treat element as error insertion
         alignment: bool, default=False
             flag to apply alignment error
 

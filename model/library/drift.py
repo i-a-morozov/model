@@ -82,9 +82,9 @@ class Drift:
         self._length: float = length
         self._dp: float = dp
         self._ns: int = ceil(self._length/ds) if ds else ns        
+        self._order: bool = order
         self._exact: bool = exact
         
-        self.order: bool = order
         self.dtype: DataType = dtype
         self.device: DataDevice = device
 
@@ -100,7 +100,7 @@ class Drift:
 
     def table(self, *, 
               name:bool=False,
-              alignment:bool=True) -> dict[str|dict[str,Tensor]] | dict[str,Tensor]:
+              alignment:bool=True) -> dict[str, dict[str,Tensor]] | dict[str,Tensor]:
         """
         Generate default deviation table
 
@@ -110,7 +110,7 @@ class Drift:
 
         Returns
         -------
-        dict[str|dict[str,Tensor]] | dict[str,Tensor]
+        dict[str, dict[str,Tensor]] | dict[str,Tensor]
         
         """
         zeros: Tensor = torch.zeros(len(self.keys), dtype=self.dtype, device=self.device)
@@ -329,6 +329,43 @@ class Drift:
 
 
     @property
+    def order(self) -> int:
+        """
+        Get integration order
+
+        Parameters
+        ----------
+        None
+
+        Returns
+        -------
+        int
+        
+        """       
+        return self._order
+    
+    
+    @order.setter
+    def order(self, 
+              order:int) -> None:
+        """
+        Set integration order
+
+        Parameters
+        ----------
+        order: int, non-negative
+            integration order
+
+        Returns
+        -------
+        None
+        
+        """          
+        self._order = order
+        self._step, self._knob = self.make_step()
+
+
+    @property
     def exact(self) -> bool:
         """
         Get exact flag
@@ -382,7 +419,7 @@ class Drift:
         data: Optional[dict[str, Tensor]]
             deviation and alignment table            
         insertion: bool, default=False
-            flag to treat eleemnt as error insertion
+            flag to treat element as error insertion
         alignment: bool, default=False
             flag to apply alignment error
 
