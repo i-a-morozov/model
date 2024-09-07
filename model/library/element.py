@@ -41,8 +41,11 @@ class Element(ABC):
     -------------
     
     """
-    _tolerance:float = 1.0E-16
-    _alignment:list[str] = [*KEYS_TXYZ, *KEYS_RXYZ]    
+    _tolerance: float = 1.0E-16
+    _alignment: list[str] = [*KEYS_TXYZ, *KEYS_RXYZ]    
+
+    dtype:DataType = Float64
+    device:DataDevice = DataDevice('cpu')
     
     @property
     @abstractmethod
@@ -64,8 +67,9 @@ class Element(ABC):
                  ds:Optional[float]=None,
                  order:int=0,
                  exact:bool=False,
-                 dtype:DataType = Float64,
-                 device:DataDevice = DataDevice('cpu')) -> None:
+                 insertion:bool=False,
+                 output:bool=False,
+                 matrix:bool=False) -> None:
         """
         Element instance initialization
 
@@ -87,10 +91,13 @@ class Element(ABC):
             Yoshida integration order
         exact: bool, default=False
             flag to include kinematic term
-        dtype: DataType, default=Float64
-            data type
-        device: DataDevice, default=DataDevice('cpu')
-            data device        
+        insertion: bool, default=False
+            flat to treat element as thin insertion
+        output: bool, default=False
+            flag to save output at each step
+        matrix: bool, default=False
+            flag to save matrix at each step
+      
 
         Returns
         -------
@@ -103,11 +110,21 @@ class Element(ABC):
         self._ns: int = ceil(self._length/ds) if ds else ns        
         self._order: bool = order
         self._exact: bool = exact
+        self._insertion: bool = insertion
+        self._output: bool = output
+        self._matrix: bool = matrix
+
+        self._lmatrix: Tensor
+        self._rmatrix: Tensor
+                
+        self._data: list[list[int], list[float]]
+        self._step: Callable[[State], State]
+        self._knob: Callable[[State, Tensor, ...], State]
         
-        self.dtype: DataType = dtype
-        self.device: DataDevice = device
+        self.container_output:Tensor
+        self.container_matrix:Tensor
 
-
+    
     def table(self, *, 
               name:bool=False,
               alignment:bool=True) -> dict[str, dict[str,Tensor]] | dict[str,Tensor]:
@@ -234,8 +251,8 @@ class Element(ABC):
         
         """       
         self._length = length
+        self._lmatrix, self._rmatrix = self.make_matrix()
         self._step, self._knob = self.make_step()
-        self._lmat, self._rmat = self.make_matrix()
     
     
     @property
@@ -271,8 +288,8 @@ class Element(ABC):
         
         """       
         self._dp = dp
+        self._lmatrix, self._rmatrix = self.make_matrix()
         self._step, self._knob = self.make_step()
-        self._lmat, self._rmat = self.make_matrix()
 
 
     @property
@@ -309,7 +326,6 @@ class Element(ABC):
         """          
         self._ns = ns
         self._step, self._knob = self.make_step()
-        self._lmat, self._rmat = self.make_matrix()
 
 
     @property
@@ -384,10 +400,116 @@ class Element(ABC):
         self._step, self._knob = self.make_step()
 
 
+    @property
+    def insertion(self) -> bool:
+        """
+        Get insertion flag
+
+        Parameters
+        ----------
+        None
+
+        Returns
+        -------
+        bool
+        
+        """        
+        return self._insertion
+        
+    
+    @insertion.setter
+    def insertion(self, insertion:bool) -> None:
+        """
+        Set insertion flag
+
+        Parameters
+        ----------
+        insertion: bool
+            insertion
+
+        Returns
+        -------
+        None
+        
+        """        
+        self._insertion = insertion
+        self._step, self._knob = self.make_step()
+
+
+    @property
+    def output(self) -> bool:
+        """
+        Get output flag
+
+        Parameters
+        ----------
+        None
+
+        Returns
+        -------
+        bool
+        
+        """        
+        return self._output
+        
+    
+    @output.setter
+    def output(self, output:bool) -> None:
+        """
+        Set output flag
+
+        Parameters
+        ----------
+        output: bool
+            output
+
+        Returns
+        -------
+        None
+        
+        """        
+        self._output = output
+        self._step, self._knob = self.make_step()
+
+    @property
+    def matrix(self) -> bool:
+        """
+        Get matrix flag
+
+        Parameters
+        ----------
+        None
+
+        Returns
+        -------
+        bool
+        
+        """        
+        return self._matrix
+        
+    
+    @matrix.setter
+    def matrix(self, matrix:bool) -> None:
+        """
+        Set matrix flag
+
+        Parameters
+        ----------
+        matrix: bool
+            matrix
+
+        Returns
+        -------
+        None
+        
+        """        
+        self._matrix = matrix
+        self._step, self._knob = self.make_step()
+
+
     def __call__(self, 
                  state:State, *,
                  data:Optional[dict[str, Tensor]]=None,
-                 insertion:bool=False,
                  alignment:bool=False) -> State:
         """
         Transform initial input state using attibutes and deviations
@@ -399,9 +521,7 @@ class Element(ABC):
         state: State
             initial input state
         data: Optional[dict[str, Tensor]]
-            deviation and alignment table            
-        insertion: bool, default=False
-            flag to treat element as error insertion
+            deviation and alignment table
         alignment: bool, default=False
             flag to apply alignment error
 
@@ -415,17 +535,9 @@ class Element(ABC):
         step: Mapping | ParametricMapping
         step = self._knob if knob else self._step
         if not alignment:
-            if insertion:
-                state = self._lmat @ state
             state = step(state, **knob)
-            if insertion:
-                state = self._rmat @ state
             return state
-        if insertion:
-            state = self._lmat @ state
         state = transform(self, state, data)
-        if insertion:
-            state = self._rmat @ state
         return state
 
     
@@ -471,7 +583,7 @@ def transform(element:Element,
     state = ry(state, +wy, dp)
     state = rz(state, +wz)
     
-    state = element(state, data=data, alignment=False, insertion=False)
+    state = element(state, data=data, alignment=False)
 
     if element.flag:
         state = ry(state, +angle/2, dp)

@@ -12,9 +12,6 @@ from typing import Callable
 
 import torch
 from torch import Tensor
-from torch import dtype as DataType
-from torch import device as DataDevice
-from torch import float64 as Float64
 
 from ndmap.yoshida import yoshida
 
@@ -49,8 +46,9 @@ class Quadrupole(Element):
                  ds:Optional[float]=None,
                  order:int=0,
                  exact:bool=False,
-                 dtype:DataType = Float64,
-                 device:DataDevice = DataDevice('cpu')) -> None:
+                 insertion:bool=False,
+                 output:bool=False,
+                 matrix:bool=False) -> None:
         """
         Quadrupole instance initialization
 
@@ -76,6 +74,12 @@ class Quadrupole(Element):
             Yoshida integration order
         exact: bool, default=False
             flag to include kinematic term
+        insertion: bool, default=False
+            flat to treat element as thin insertion
+        output: bool, default=False
+            flag to save output at each step
+        matrix: bool, default=False
+            flag to save matrix at each step            
         dtype: DataType, default=Float64
             data type
         device: DataDevice, default=DataDevice('cpu')
@@ -93,57 +97,21 @@ class Quadrupole(Element):
                          ds=ds, 
                          order=order, 
                          exact=exact, 
-                         dtype=dtype, 
-                         device=device)
+                         insertion=insertion,
+                         output=output,
+                         matrix=matrix)
 
         self._kn: float = kn + self._tolerance
         self._ks: float = ks        
+
+        self._lmatrix: Tensor
+        self._rmatrix: Tensor
+        self._lmatrix, self._rmatrix = self.make_matrix() 
         
         self._data: list[list[int], list[float]] = None
         self._step: Callable[[State], State]
         self._knob: Callable[[State, Tensor, ...], State]
         self._step, self._knob = self.make_step()
-
-        self._lmat: Tensor
-        self._rmat: Tensor
-        self._lmat, self._rmat = self.make_matrix()
-        
-
-    def make_step(self) -> tuple[Mapping, ParametricMapping]:
-        """
-        Generate integration step
-
-        Parameters
-        ----------
-        None
-
-        Returns
-        -------
-        tuple[Mapping, ParametricMapping]
-        
-        """        
-        def quad_wrapper(state:State, ds:Tensor, kn:Tensor, ks:Tensor, dp:Tensor) -> State:
-            return quadrupole(state, kn, ks, dp, ds)
-            
-        def sqrt_wrapper(state:State, ds:Tensor, kn:Tensor, ks:Tensor, dp:Tensor) -> State:
-            return kinematic(state, dp, ds) if self.exact else state
-            
-        integrator: Callable[[State], State, Tensor, ...]
-        integrator = yoshida(0, self.order, True, [quad_wrapper, sqrt_wrapper])
-        
-        self._data: list[list[int], list[float]] = integrator.table
-        
-        def step(state:State) -> State:
-            for _ in range(self.ns):
-                state = integrator(state, self.length/self.ns, self.kn, self.ks, self.dp)
-            return state
-            
-        def knob(state:State, kn:Tensor, ks:Tensor, dp:Tensor, dl:Tensor) -> State:
-            for _ in range(self.ns):
-                state = integrator(state, (self.length + dl)/self.ns, self.kn + kn, self.ks + ks, self.dp + dp)
-            return state
-            
-        return step, knob
 
 
     def make_matrix(self) -> tuple[Tensor, Tensor]:
@@ -161,12 +129,88 @@ class Quadrupole(Element):
         """
         state: State = torch.tensor([0.0, 0.0, 0.0, 0.0], dtype=self.dtype, device=self.device)
         
-        matrix: Tensor = torch.func.jacrev(quadrupole)(state, self.kn, self.ks, 0.0*self.dp, -0.5*self.length)
+        matrix: Tensor = torch.func.jacrev(quadrupole)(state, self.kn, self.ks, self.dp, -0.5*self.length)
         
-        lmat: Tensor = matrix
-        rmat: Tensor = matrix
+        lmatrix: Tensor = matrix
+        rmatrix: Tensor = matrix
         
-        return lmat, rmat
+        return lmatrix, rmatrix
+        
+
+    def make_step(self) -> tuple[Mapping, ParametricMapping]:
+        """
+        Generate integration step
+
+        Parameters
+        ----------
+        None
+
+        Returns
+        -------
+        tuple[Mapping, ParametricMapping]
+        
+        """        
+        ns: int = self.ns
+        exact:bool = self.exact
+        order:int = self.order
+        _ds: Tensor = self.length/self.ns
+        _kn: Tensor = self.kn
+        _ks: Tensor = self.ks
+        _dp: Tensor = self.dp
+        insertion:bool = self.insertion
+        if insertion:
+            lmatrix: Tensor = self._lmatrix
+            rmatrix: Tensor = self._rmatrix
+        output:bool = self.output
+        if output:
+            container_output = []
+        matrix:bool = self.matrix
+        if matrix:
+            container_matrix = []        
+        
+        def quad_wrapper(state:State, ds:Tensor, kn:Tensor, ks:Tensor, dp:Tensor) -> State:
+            return quadrupole(state, kn, ks, dp, ds)
+            
+        def sqrt_wrapper(state:State, ds:Tensor, kn:Tensor, ks:Tensor, dp:Tensor) -> State:
+            return kinematic(state, dp, ds) if exact else state
+            
+        integrator: Callable[[State], State, Tensor, ...]
+        integrator = yoshida(0, order, True, [quad_wrapper, sqrt_wrapper])
+        
+        self._data: list[list[int], list[float]] = integrator.table
+        
+        def step(state:State) -> State:
+            state = lmatrix @ state if insertion else state
+            for _ in range(ns):
+                state = integrator(state, _ds, _kn, _ks, _dp)
+                if output:
+                    container_output.append(state)
+                if matrix:
+                    container_matrix.append(torch.func.jacrev(integrator)(state, _ds, _kn, _ks, _dp))                
+            if output:
+                self.container_output = torch.stack(container_output)
+            if matrix:
+                self.container_matrix = torch.stack(container_matrix)                    
+            state = rmatrix @ state if insertion else state
+            return state
+            
+        def knob(state:State, kn:Tensor, ks:Tensor, dp:Tensor, dl:Tensor) -> State:
+            state = lmatrix @ state if insertion else state
+            for _ in range(ns):
+                state = integrator(state, (_ds + dl/ns), _kn + kn, _ks + ks, _dp + dp)
+                if output:
+                    container_output.append(state)
+                if matrix:
+                    container_matrix.append(torch.func.jacrev(integrator)(state, (_ds + dl/ns), _kn + kn, _ks + ks, _dp + dp))                
+            if output:
+                self.container_output = torch.stack(container_output)
+            if matrix:
+                self.container_matrix = torch.stack(container_matrix)                    
+                
+            state = rmatrix @ state if insertion else state
+            return state
+            
+        return step, knob
 
 
     @property
@@ -203,9 +247,9 @@ class Quadrupole(Element):
         
         """       
         self._kn = kn
+        self._lmatrix, self._rmatrix = self.make_matrix()
         self._step, self._knob = self.make_step()
-        self._lmat, self._rmat = self.make_matrix()
-    
+        
     
     @property
     def ks(self) -> Tensor:
@@ -241,8 +285,8 @@ class Quadrupole(Element):
         
         """       
         self._ks = ks
+        self._lmatrix, self._rmatrix = self.make_matrix()
         self._step, self._knob = self.make_step()
-        self._lmat, self._rmat = self.make_matrix()
 
     
     def __repr__(self) -> str:
