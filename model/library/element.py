@@ -108,7 +108,7 @@ class Element(ABC):
         self._length: float = length
         self._dp: float = dp
         self._ns: int = ceil(self._length/ds) if ds else ns
-        self._order: bool = order
+        self._order: int = order
         self._exact: bool = exact
         self._insertion: bool = insertion
         self._output: bool = output
@@ -513,7 +513,7 @@ class Element(ABC):
                  alignment:bool=False) -> State:
         """
         Transform initial input state using attibutes and deviations
-        Deviations and alignment valurs are passed in kwargs
+        Deviations and alignment valurs are passed in data
         Deviations are added to corresponding parameters
 
         Parameters
