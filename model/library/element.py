@@ -39,28 +39,28 @@ class Element(ABC):
     """
     Abstract element
     -------------
-    
+
     """
     _tolerance: float = 1.0E-16
-    _alignment: list[str] = [*KEYS_TXYZ, *KEYS_RXYZ]    
+    _alignment: list[str] = [*KEYS_TXYZ, *KEYS_RXYZ]
 
     dtype:DataType = Float64
     device:DataDevice = DataDevice('cpu')
-    
+
     @property
     @abstractmethod
     def flag(self) -> bool:
         pass
 
-    
+
     @property
     @abstractmethod
     def keys(self) -> list[str]:
         pass
 
-    
-    def __init__(self, 
-                 name:str, 
+
+    def __init__(self,
+                 name:str,
                  length:float=0.0,
                  dp:float=0.0, *,
                  ns:int=1,
@@ -96,18 +96,18 @@ class Element(ABC):
         output: bool, default=False
             flag to save output at each step
         matrix: bool, default=False
-            flag to save matrix at each step
-      
+            flag to save matrix at each step if output is true
+
 
         Returns
         -------
         None
-        
+
         """
         self._name: str = name
         self._length: float = length
         self._dp: float = dp
-        self._ns: int = ceil(self._length/ds) if ds else ns        
+        self._ns: int = ceil(self._length/ds) if ds else ns
         self._order: bool = order
         self._exact: bool = exact
         self._insertion: bool = insertion
@@ -116,16 +116,16 @@ class Element(ABC):
 
         self._lmatrix: Tensor
         self._rmatrix: Tensor
-                
+
         self._data: list[list[int], list[float]]
         self._step: Callable[[State], State]
         self._knob: Callable[[State, Tensor, ...], State]
-        
+
         self.container_output:Tensor
         self.container_matrix:Tensor
 
-    
-    def table(self, *, 
+
+    def table(self, *,
               name:bool=False,
               alignment:bool=True) -> dict[str, dict[str,Tensor]] | dict[str,Tensor]:
         """
@@ -138,7 +138,7 @@ class Element(ABC):
         Returns
         -------
         dict[str, dict[str,Tensor]] | dict[str,Tensor]
-        
+
         """
         zeros: Tensor = torch.zeros(len(self.keys), dtype=self.dtype, device=self.device)
         table: dict[str, Tensor] = {key: value for key, value in zip(self.keys, zeros)}
@@ -153,15 +153,15 @@ class Element(ABC):
     def make_step(self) -> tuple[Mapping, ParametricMapping]:
         """
         Generate integration step
-        
+
         Parameters
         ----------
         None
-        
+
         Returns
         -------
         tuple[Mapping, ParametricMapping]
-        
+
         """
         pass
 
@@ -178,7 +178,7 @@ class Element(ABC):
         Returns
         -------
         tuple[Tensor, Tensor]
-        
+
         """
         pass
 
@@ -195,11 +195,11 @@ class Element(ABC):
         Returns
         -------
         str
-        
-        """        
+
+        """
         return self._name
-        
-    
+
+
     @name.setter
     def name(self, name:str) -> None:
         """
@@ -213,11 +213,11 @@ class Element(ABC):
         Returns
         -------
         None
-        
-        """        
+
+        """
         self._name = name
-        
-        
+
+
     @property
     def length(self) -> Tensor:
         """
@@ -230,11 +230,11 @@ class Element(ABC):
         Returns
         -------
         Tensor
-        
-        """     
+
+        """
         return torch.tensor(self._length, dtype=self.dtype, device=self.device)
-    
-    
+
+
     @length.setter
     def length(self, length:float) -> None:
         """
@@ -248,13 +248,13 @@ class Element(ABC):
         Returns
         -------
         None
-        
-        """       
+
+        """
         self._length = length
         self._lmatrix, self._rmatrix = self.make_matrix()
         self._step, self._knob = self.make_step()
-    
-    
+
+
     @property
     def dp(self) -> Tensor:
         """
@@ -267,11 +267,11 @@ class Element(ABC):
         Returns
         -------
         Tensor
-        
-        """       
+
+        """
         return torch.tensor(self._dp, dtype=self.dtype, device=self.device)
-    
-    
+
+
     @dp.setter
     def dp(self, dp:float) -> None:
         """
@@ -285,8 +285,8 @@ class Element(ABC):
         Returns
         -------
         None
-        
-        """       
+
+        """
         self._dp = dp
         self._lmatrix, self._rmatrix = self.make_matrix()
         self._step, self._knob = self.make_step()
@@ -304,11 +304,11 @@ class Element(ABC):
         Returns
         -------
         int
-        
-        """       
+
+        """
         return self._ns
-    
-    
+
+
     @ns.setter
     def ns(self, ns:int) -> None:
         """
@@ -322,8 +322,8 @@ class Element(ABC):
         Returns
         -------
         None
-        
-        """          
+
+        """
         self._ns = ns
         self._step, self._knob = self.make_step()
 
@@ -340,11 +340,11 @@ class Element(ABC):
         Returns
         -------
         int
-        
-        """       
+
+        """
         return self._order
-    
-    
+
+
     @order.setter
     def order(self, order:int) -> None:
         """
@@ -358,8 +358,8 @@ class Element(ABC):
         Returns
         -------
         None
-        
-        """          
+
+        """
         self._order = order
         self._step, self._knob = self.make_step()
 
@@ -376,11 +376,11 @@ class Element(ABC):
         Returns
         -------
         bool
-        
-        """        
+
+        """
         return self._exact
-        
-    
+
+
     @exact.setter
     def exact(self, exact:bool) -> None:
         """
@@ -394,8 +394,8 @@ class Element(ABC):
         Returns
         -------
         None
-        
-        """        
+
+        """
         self._exact = exact
         self._step, self._knob = self.make_step()
 
@@ -412,11 +412,11 @@ class Element(ABC):
         Returns
         -------
         bool
-        
-        """        
+
+        """
         return self._insertion
-        
-    
+
+
     @insertion.setter
     def insertion(self, insertion:bool) -> None:
         """
@@ -430,8 +430,8 @@ class Element(ABC):
         Returns
         -------
         None
-        
-        """        
+
+        """
         self._insertion = insertion
         self._step, self._knob = self.make_step()
 
@@ -448,11 +448,11 @@ class Element(ABC):
         Returns
         -------
         bool
-        
-        """        
+
+        """
         return self._output
-        
-    
+
+
     @output.setter
     def output(self, output:bool) -> None:
         """
@@ -466,8 +466,8 @@ class Element(ABC):
         Returns
         -------
         None
-        
-        """        
+
+        """
         self._output = output
         self._step, self._knob = self.make_step()
 
@@ -483,11 +483,11 @@ class Element(ABC):
         Returns
         -------
         bool
-        
-        """        
+
+        """
         return self._matrix
-        
-    
+
+
     @matrix.setter
     def matrix(self, matrix:bool) -> None:
         """
@@ -501,13 +501,13 @@ class Element(ABC):
         Returns
         -------
         None
-        
-        """        
+
+        """
         self._matrix = matrix
         self._step, self._knob = self.make_step()
 
 
-    def __call__(self, 
+    def __call__(self,
                  state:State, *,
                  data:Optional[dict[str, Tensor]]=None,
                  alignment:bool=False) -> State:
@@ -515,7 +515,7 @@ class Element(ABC):
         Transform initial input state using attibutes and deviations
         Deviations and alignment valurs are passed in kwargs
         Deviations are added to corresponding parameters
-        
+
         Parameters
         ----------
         state: State
@@ -528,8 +528,8 @@ class Element(ABC):
         Returns
         -------
         State
-        
-        """   
+
+        """
         data: dict[str, Tensor] = data if data else {}
         knob: dict[str, Tensor] = {key: data[key] for key in self.keys if key in data}
         step: Mapping | ParametricMapping
@@ -540,14 +540,14 @@ class Element(ABC):
         state = transform(self, state, data)
         return state
 
-    
+
     @abstractmethod
     def __repr__(self) -> str:
         pass
 
 
-def transform(element:Element, 
-              state:State, 
+def transform(element:Element,
+              state:State,
               data:dict[str, Tensor]) -> State:
     """
     Apply alignment errors
@@ -567,12 +567,12 @@ def transform(element:Element,
 
     dx:Tensor
     dy:Tensor
-    dz:Tensor         
+    dz:Tensor
     dx, dy, dz = [data[key] for key in KEYS_TXYZ]
 
     wx:Tensor
     wy:Tensor
-    wz:Tensor  
+    wz:Tensor
     wx, wy, wz = [data[key] for key in KEYS_RXYZ]
 
     state = tx(state, +dx)
@@ -582,20 +582,20 @@ def transform(element:Element,
     state = rx(state, +wx, dp)
     state = ry(state, +wy, dp)
     state = rz(state, +wz)
-    
+
     state = element(state, data=data, alignment=False)
 
     if element.flag:
         state = ry(state, +angle/2, dp)
         state = tz(state, -2.0*length/angle*(angle/2.0).sin(), dp)
-        state = ry(state, +angle/2, dp)            
+        state = ry(state, +angle/2, dp)
     else:
         state = tz(state, -length, dp)
-    
+
     state = rz(state, -wz)
     state = ry(state, -wy, dp)
     state = rx(state, -wx, dp)
-    
+
     state = tz(state, -dz, dp)
     state = ty(state, -dy)
     state = tx(state, -dx)
