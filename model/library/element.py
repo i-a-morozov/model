@@ -21,19 +21,16 @@ from torch import dtype as DataType
 from torch import device as DataDevice
 from torch import float64 as Float64
 
+from model.library.keys import KEY_DP, KEY_DL, KEY_DW
+from model.library.keys import KEY_DX, KEY_DY, KEY_DZ
+from model.library.keys import KEY_WX, KEY_WY, KEY_WZ
+
 from model.library.transformations import tx, ty, tz
 from model.library.transformations import rx, ry, rz
 
 type State = Tensor
 type Mapping = Callable[[State], State]
 type ParametricMapping = Callable[[State, Tensor, ...], State]
-
-KEY_DP:str = 'dp'
-KEY_DL:str = 'dl'
-KEY_DW:str = 'dw'
-
-KEYS_TXYZ:list[str] = ['dx', 'dy', 'dz']
-KEYS_RXYZ:list[str] = ['wx', 'wy', 'wz']
 
 class Element(ABC):
     """
@@ -42,7 +39,7 @@ class Element(ABC):
 
     """
     _tolerance: float = 1.0E-16
-    _alignment: list[str] = [*KEYS_TXYZ, *KEYS_RXYZ]
+    _alignment: list[str] = [KEY_DX, KEY_DY, KEY_DZ, KEY_WX, KEY_WY, KEY_WZ]
 
     dtype:DataType = Float64
     device:DataDevice = DataDevice('cpu')
@@ -568,12 +565,12 @@ def transform(element:Element,
     dx:Tensor
     dy:Tensor
     dz:Tensor
-    dx, dy, dz = [data[key] for key in KEYS_TXYZ]
+    dx, dy, dz = [data[key] for key in [KEY_DX, KEY_DY, KEY_DZ]]
 
     wx:Tensor
     wy:Tensor
     wz:Tensor
-    wx, wy, wz = [data[key] for key in KEYS_RXYZ]
+    wx, wy, wz = [data[key] for key in [KEY_WX, KEY_WY, KEY_WZ]]
 
     state = tx(state, +dx)
     state = ty(state, +dy)

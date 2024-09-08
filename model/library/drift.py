@@ -15,6 +15,7 @@ from torch import Tensor
 
 from ndmap.yoshida import yoshida
 
+from model.library.keys import KEY_DP, KEY_DL
 from model.library.element import Element
 from model.library.transformations import drift
 from model.library.transformations import kinematic
@@ -34,7 +35,7 @@ class Drift(Element):
 
     """
     flag: bool = False
-    keys: list[str] = ['dp', 'dl']
+    keys: list[str] = [KEY_DP, KEY_DL]
 
     def __init__(self,
                  name:str,

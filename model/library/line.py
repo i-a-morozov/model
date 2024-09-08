@@ -18,12 +18,9 @@ from torch import Tensor
 
 from model.library.element import Element
 
-from model.library.element import KEY_DP
-from model.library.element import KEY_DL
-from model.library.element import KEY_DW
-
-from model.library.element import KEYS_TXYZ
-from model.library.element import KEYS_RXYZ
+from model.library.keys import KEY_DP, KEY_DL, KEY_DW
+from model.library.keys import KEY_DX, KEY_DY, KEY_DZ
+from model.library.keys import KEY_WX, KEY_WY, KEY_WZ
 
 from model.library.transformations import tx, ty, tz
 from model.library.transformations import rx, ry, rz
@@ -653,12 +650,12 @@ class Line(Element):
         dx:Tensor
         dy:Tensor
         dz:Tensor
-        dx, dy, dz = [data[key] for key in KEYS_TXYZ]
+        dx, dy, dz = [data[key] for key in [KEY_DX, KEY_DY, KEY_DZ]]
 
         wx:Tensor
         wy:Tensor
         wz:Tensor
-        wx, wy, wz = [data[key] for key in KEYS_RXYZ]
+        wx, wy, wz = [data[key] for key in [KEY_WX, KEY_WY, KEY_WZ]]
 
         state = tx(state, +dx)
         state = ty(state, +dy)
