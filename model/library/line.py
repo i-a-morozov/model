@@ -713,6 +713,28 @@ class Line(Element):
         return '\n'.join([str(element) for element in self.sequence])
 
 
+    def layout(self) -> tuple[list[str], list[str], list[float], list[float]]:
+        """
+        Generate data for line layout plotting
+
+        Parameters
+        ----------
+        None
+
+        Returns
+        -------
+        tuple[list[str], list[str], list[float], list[float]]
+            lists of elements names, types, lengthes and angles
+            
+        """
+        default:Tensor = torch.tensor(0.0, dtype=self.dtype, device=self.device)
+        names:list[str] = [element.name for element in self.scan('name')]
+        types:list[str] = [element.__class__.__name__ for element in self.scan('name')]
+        lengths:list[float] = torch.stack([getattr(element, 'length', default) for element in self.scan('name')])
+        angles:list[float]  = torch.stack([getattr(element, 'angle', default) for element in self.scan('name')])
+        return names, types, lengths, angles
+
+
 def accumulate(data:dict[str, Tensor|dict[str, Tensor]],
                attribute:str) -> float|Tensor:
     """
