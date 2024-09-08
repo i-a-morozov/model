@@ -272,7 +272,7 @@ class Quadrupole(Element):
     def kn(self,
            kn:float) -> None:
         """
-        Set momentum deviation
+        Set kn
 
         Parameters
         ----------
@@ -310,12 +310,12 @@ class Quadrupole(Element):
     def ks(self,
            ks:float) -> None:
         """
-        Set momentum deviation
+        Set ks deviation
 
         Parameters
         ----------
-        dp: float
-            momentum deviation
+        ks: float
+            ks
 
         Returns
         -------
