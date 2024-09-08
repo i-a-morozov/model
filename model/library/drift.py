@@ -171,7 +171,7 @@ class Drift(Element):
             def rmatrix_wrapper(state:State) -> State:
                 return state
 
-        integrator: Callable[[State], State, Tensor, ...]
+        integrator: Callable[[State, Tensor, ...], State]
         integrator = yoshida(0, order, True, [drif_wrapper, sqrt_wrapper])
 
         self._data: list[list[int], list[float]] = integrator.table
