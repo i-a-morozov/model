@@ -588,7 +588,7 @@ def octupole_track(state:State, knobs:Knobs) -> State:
 
 
 def dipole(state:State, 
-           angle:Tensor, 
+           r:Tensor, 
            dp:Tensor, 
            length:Tensor) -> State:
     """
@@ -598,8 +598,8 @@ def dipole(state:State,
     ----------
     state: State
         initial state
-    angle: Tensor
-        bending angle
+    r: Tensor
+        bending radius
     dp: Tensor
         momentum deviation        
     length: Tensor
@@ -610,12 +610,11 @@ def dipole(state:State,
     State
     
     """       
-    knobs: Knobs = dipole_knobs(angle, dp, length)
+    knobs: Knobs = dipole_knobs(r, dp, length)
     return dipole_track(state, knobs)
 
 
-def dipole_knobs(angle:Tensor, dp:Tensor, length:Tensor) -> Knobs:
-    r = length/angle
+def dipole_knobs(r:Tensor, dp:Tensor, length:Tensor) -> Knobs:
     dq = (1 + dp).sqrt()
     dw = length/(dq*r)
     cos = dw.cos()
@@ -641,7 +640,7 @@ def dipole_track(state:State, knobs:Knobs) -> State:
 
 
 def bend(state:State, 
-         angle:Tensor, 
+         r:Tensor, 
          kn:Tensor, 
          ks:Tensor, 
          dp:Tensor, 
@@ -655,8 +654,8 @@ def bend(state:State,
     ----------
     state: State
         initial state
-    angle: Tensor
-        bending angle
+    r: Tensor
+        bending radius
     kn: Tensor
         normal quadrupole strength
     ks: Tensor
@@ -671,12 +670,11 @@ def bend(state:State,
     State
     
     """       
-    knobs: Knobs = bend_knobs(angle, kn, ks, dp, length)
+    knobs: Knobs = bend_knobs(r, kn, ks, dp, length)
     return bend_track(state, knobs)
 
 
-def bend_knobs(angle:Tensor, kn:Tensor, ks:Tensor, dp:Tensor, length:Tensor) -> Knobs:
-    r = length/angle
+def bend_knobs(r:Tensor, kn:Tensor, ks:Tensor, dp:Tensor, length:Tensor) -> Knobs:
     kq = kn + r**2*(kn**2 + ks**2)
     kr = (1 + 4*kq*r**2).sqrt()
     kra = (kr + 1).sqrt()
@@ -737,8 +735,7 @@ def bend_track(state:Tensor, knobs:Tensor) -> Tensor:
 
 def wedge(state:State,
           epsilon:Tensor, 
-          angle:Tensor, 
-          length:Tensor) -> State:
+          r:Tensor) -> State:
     """
     Dipole wedge transformation
     
@@ -748,22 +745,19 @@ def wedge(state:State,
         initial state
     epsilon: Tensor
         wedge angle
-    angle: Tensor
-        bending angle
-    length: Tensor
-        length
+    r: Tensor
+        bending radius
     
     Returns
     -------
     State
     
     """      
-    knobs: Knobs = wedge_knobs(epsilon, angle, length)
+    knobs: Knobs = wedge_knobs(epsilon, r)
     return wedge_track(state, knobs)
 
 
-def wedge_knobs(epsilon:Tensor, angle:Tensor, length:Tensor) -> Knobs:
-    r = length/angle
+def wedge_knobs(epsilon:Tensor, r:Tensor) -> Knobs:
     return torch.stack([epsilon.tan()/r])
 
 
@@ -778,7 +772,7 @@ def wedge_track(state:State, knobs:Knobs) -> State:
 
 
 def multipole(state:State, 
-              angle:Tensor, 
+              r:Tensor, 
               kqn:Tensor, 
               kqs:Tensor, 
               ks:Tensor, 
@@ -791,8 +785,8 @@ def multipole(state:State,
     ----------
     state: State
         initial state
-    angle: Tensor
-        bending angle
+    r: Tensor
+        bending radius
     kqn: Tensor
         normal quadrupole strength
     kqs: Tensor
@@ -809,12 +803,11 @@ def multipole(state:State,
     State    
     
     """
-    knobs: Knobs = multipole_knobs(angle, kqn, kqs, ks, ko, length)
+    knobs: Knobs = multipole_knobs(r, kqn, kqs, ks, ko, length)
     return multipole_track(state, knobs)
 
 
-def multipole_knobs(angle:Tensor, kqn:Tensor, kqs:Tensor, ks:Tensor, ko:Tensor, length:Tensor) -> Knobs:
-    r = length/angle
+def multipole_knobs(r:Tensor, kqn:Tensor, kqs:Tensor, ks:Tensor, ko:Tensor, length:Tensor) -> Knobs:
     kqnlr =  kqn*length/r
     kqslr =  kqs*length/r
     kslr = ks*length/r
