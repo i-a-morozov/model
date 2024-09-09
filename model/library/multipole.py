@@ -116,8 +116,8 @@ class Multipole(Element):
         self._lmatrix, self._rmatrix = self.make_matrix()
 
         self._data: list[list[int], list[float]] = None
-        self._step: Callable[[State], State]
-        self._knob: Callable[[State, Tensor, ...], State]
+        self._step: Mapping
+        self._knob: ParametricMapping
         self._step, self._knob = self.make_step()
 
 
@@ -287,7 +287,7 @@ class Multipole(Element):
     def kn(self,
            kn:float) -> None:
         """
-        Set momentum deviation
+        Set kn
 
         Parameters
         ----------
@@ -325,12 +325,12 @@ class Multipole(Element):
     def ks(self,
            ks:float) -> None:
         """
-        Set momentum deviation
+        Set ks
 
         Parameters
         ----------
         dp: float
-            momentum deviation
+            ks
 
         Returns
         -------
@@ -367,8 +367,8 @@ class Multipole(Element):
 
         Parameters
         ----------
-        kn: float
-            kn
+        ms: float
+            ms
 
         Returns
         -------
@@ -404,8 +404,8 @@ class Multipole(Element):
 
         Parameters
         ----------
-        kn: float
-            kn
+        mo: float
+            mo
 
         Returns
         -------

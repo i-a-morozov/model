@@ -106,8 +106,8 @@ class Quadrupole(Element):
         self._lmatrix, self._rmatrix = self.make_matrix()
 
         self._data: list[list[int], list[float]] = None
-        self._step: Callable[[State], State]
-        self._knob: Callable[[State, Tensor, ...], State]
+        self._step: Mapping
+        self._knob: ParametricMapping
         self._step, self._knob = self.make_step()
 
 

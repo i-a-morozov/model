@@ -115,8 +115,8 @@ class Element(ABC):
         self._rmatrix: Tensor
 
         self._data: list[list[int], list[float]]
-        self._step: Callable[[State], State]
-        self._knob: Callable[[State, Tensor, ...], State]
+        self._step: Mapping
+        self._knob: ParametricMapping
 
         self.container_output:Tensor
         self.container_matrix:Tensor
@@ -147,23 +147,6 @@ class Element(ABC):
 
 
     @abstractmethod
-    def make_step(self) -> tuple[Mapping, ParametricMapping]:
-        """
-        Generate integration step
-
-        Parameters
-        ----------
-        None
-
-        Returns
-        -------
-        tuple[Mapping, ParametricMapping]
-
-        """
-        pass
-
-
-    @abstractmethod
     def make_matrix(self) -> tuple[Tensor, Tensor]:
         """
         Generate transformation matrices (error element)
@@ -175,6 +158,23 @@ class Element(ABC):
         Returns
         -------
         tuple[Tensor, Tensor]
+
+        """
+        pass
+
+
+    @abstractmethod
+    def make_step(self) -> tuple[Mapping, ParametricMapping]:
+        """
+        Generate integration step
+
+        Parameters
+        ----------
+        None
+
+        Returns
+        -------
+        tuple[Mapping, ParametricMapping]
 
         """
         pass
