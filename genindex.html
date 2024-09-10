@@ -75,6 +75,8 @@
 <li class="toctree-l1"><a class="reference internal" href="modules/transformations.html#model.library.transformations.calibration_forward"><code class="docutils literal notranslate"><span class="pre">calibration_forward()</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="modules/transformations.html#model.library.transformations.calibration_inverse"><code class="docutils literal notranslate"><span class="pre">calibration_inverse()</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="modules/transformations.html#model.library.transformations.corrector"><code class="docutils literal notranslate"><span class="pre">corrector()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules/transformations.html#model.library.transformations.cylindrical"><code class="docutils literal notranslate"><span class="pre">cylindrical()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules/transformations.html#model.library.transformations.cylindrical_error"><code class="docutils literal notranslate"><span class="pre">cylindrical_error()</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="modules/transformations.html#model.library.transformations.dipole"><code class="docutils literal notranslate"><span class="pre">dipole()</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="modules/transformations.html#model.library.transformations.dquad"><code class="docutils literal notranslate"><span class="pre">dquad()</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="modules/transformations.html#model.library.transformations.drift"><code class="docutils literal notranslate"><span class="pre">drift()</span></code></a></li>
@@ -82,12 +84,15 @@
 <li class="toctree-l1"><a class="reference internal" href="modules/transformations.html#model.library.transformations.gradient"><code class="docutils literal notranslate"><span class="pre">gradient()</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="modules/transformations.html#model.library.transformations.kinematic"><code class="docutils literal notranslate"><span class="pre">kinematic()</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="modules/transformations.html#model.library.transformations.linear"><code class="docutils literal notranslate"><span class="pre">linear()</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="modules/transformations.html#model.library.transformations.multipole"><code class="docutils literal notranslate"><span class="pre">multipole()</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="modules/transformations.html#model.library.transformations.octupole"><code class="docutils literal notranslate"><span class="pre">octupole()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules/transformations.html#model.library.transformations.polar"><code class="docutils literal notranslate"><span class="pre">polar()</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="modules/transformations.html#model.library.transformations.quadrupole"><code class="docutils literal notranslate"><span class="pre">quadrupole()</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="modules/transformations.html#model.library.transformations.rx"><code class="docutils literal notranslate"><span class="pre">rx()</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="modules/transformations.html#model.library.transformations.ry"><code class="docutils literal notranslate"><span class="pre">ry()</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="modules/transformations.html#model.library.transformations.rz"><code class="docutils literal notranslate"><span class="pre">rz()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules/transformations.html#model.library.transformations.sector_bend"><code class="docutils literal notranslate"><span class="pre">sector_bend()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules/transformations.html#model.library.transformations.sector_bend_fringe"><code class="docutils literal notranslate"><span class="pre">sector_bend_fringe()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules/transformations.html#model.library.transformations.sector_bend_wedge"><code class="docutils literal notranslate"><span class="pre">sector_bend_wedge()</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="modules/transformations.html#model.library.transformations.sextupole"><code class="docutils literal notranslate"><span class="pre">sextupole()</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="modules/transformations.html#model.library.transformations.tx"><code class="docutils literal notranslate"><span class="pre">tx()</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="modules/transformations.html#model.library.transformations.ty"><code class="docutils literal notranslate"><span class="pre">ty()</span></code></a></li>
@@ -164,13 +169,17 @@
 </li>
       <li><a href="modules/transformations.html#model.library.transformations.calibration_inverse">calibration_inverse() (in module model.library.transformations)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="modules/util.html#model.util.cast">cast() (in module model.util)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="modules/external.html#model.external.convert">convert() (in module model.external)</a>
 </li>
       <li><a href="modules/transformations.html#model.library.transformations.corrector">corrector() (in module model.library.transformations)</a>
+</li>
+      <li><a href="modules/transformations.html#model.library.transformations.cylindrical">cylindrical() (in module model.library.transformations)</a>
+</li>
+      <li><a href="modules/transformations.html#model.library.transformations.cylindrical_error">cylindrical_error() (in module model.library.transformations)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -280,8 +289,6 @@
         <li><a href="modules/util.html#module-model.util">model.util</a>
 </li>
       </ul></li>
-      <li><a href="modules/transformations.html#model.library.transformations.multipole">multipole() (in module model.library.transformations)</a>
-</li>
   </ul></td>
 </tr></table>
 
@@ -297,6 +304,10 @@
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="modules/external.html#model.external.parse">parse() (in module model.external)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="modules/transformations.html#model.library.transformations.polar">polar() (in module model.library.transformations)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -334,8 +345,14 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="modules/util.html#model.util.save">save() (in module model.util)</a>
 </li>
+      <li><a href="modules/transformations.html#model.library.transformations.sector_bend">sector_bend() (in module model.library.transformations)</a>
+</li>
+      <li><a href="modules/transformations.html#model.library.transformations.sector_bend_fringe">sector_bend_fringe() (in module model.library.transformations)</a>
+</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="modules/transformations.html#model.library.transformations.sector_bend_wedge">sector_bend_wedge() (in module model.library.transformations)</a>
+</li>
       <li><a href="modules/util.html#model.util.select">select() (in module model.util)</a>
 </li>
       <li><a href="modules/transformations.html#model.library.transformations.sextupole">sextupole() (in module model.library.transformations)</a>

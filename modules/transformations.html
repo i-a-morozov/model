@@ -77,6 +77,8 @@
 <li class="toctree-l1"><a class="reference internal" href="#model.library.transformations.calibration_forward"><code class="docutils literal notranslate"><span class="pre">calibration_forward()</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="#model.library.transformations.calibration_inverse"><code class="docutils literal notranslate"><span class="pre">calibration_inverse()</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="#model.library.transformations.corrector"><code class="docutils literal notranslate"><span class="pre">corrector()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="#model.library.transformations.cylindrical"><code class="docutils literal notranslate"><span class="pre">cylindrical()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="#model.library.transformations.cylindrical_error"><code class="docutils literal notranslate"><span class="pre">cylindrical_error()</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="#model.library.transformations.dipole"><code class="docutils literal notranslate"><span class="pre">dipole()</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="#model.library.transformations.dquad"><code class="docutils literal notranslate"><span class="pre">dquad()</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="#model.library.transformations.drift"><code class="docutils literal notranslate"><span class="pre">drift()</span></code></a></li>
@@ -84,12 +86,15 @@
 <li class="toctree-l1"><a class="reference internal" href="#model.library.transformations.gradient"><code class="docutils literal notranslate"><span class="pre">gradient()</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="#model.library.transformations.kinematic"><code class="docutils literal notranslate"><span class="pre">kinematic()</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="#model.library.transformations.linear"><code class="docutils literal notranslate"><span class="pre">linear()</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="#model.library.transformations.multipole"><code class="docutils literal notranslate"><span class="pre">multipole()</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="#model.library.transformations.octupole"><code class="docutils literal notranslate"><span class="pre">octupole()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="#model.library.transformations.polar"><code class="docutils literal notranslate"><span class="pre">polar()</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="#model.library.transformations.quadrupole"><code class="docutils literal notranslate"><span class="pre">quadrupole()</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="#model.library.transformations.rx"><code class="docutils literal notranslate"><span class="pre">rx()</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="#model.library.transformations.ry"><code class="docutils literal notranslate"><span class="pre">ry()</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="#model.library.transformations.rz"><code class="docutils literal notranslate"><span class="pre">rz()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="#model.library.transformations.sector_bend"><code class="docutils literal notranslate"><span class="pre">sector_bend()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="#model.library.transformations.sector_bend_fringe"><code class="docutils literal notranslate"><span class="pre">sector_bend_fringe()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="#model.library.transformations.sector_bend_wedge"><code class="docutils literal notranslate"><span class="pre">sector_bend_wedge()</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="#model.library.transformations.sextupole"><code class="docutils literal notranslate"><span class="pre">sextupole()</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="#model.library.transformations.tx"><code class="docutils literal notranslate"><span class="pre">tx()</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="#model.library.transformations.ty"><code class="docutils literal notranslate"><span class="pre">ty()</span></code></a></li>
@@ -126,26 +131,31 @@
 <p>Collection of symplectic transformations, building blocks for accelerator elements</p>
 <p>calibration_forward[_{knobs, track}] – calibration transformation (from beam frame to bpm frame)
 calibration_inverse[_{knobs, track}] – calibration transformation (from bpm frame to beam frame)
-corrector[_{knobs, track}]   – corrector transformation
-drift[_{knobs, track}]       – drift transformation
-kinematic[_{knobs, track}]   – kinematic correction transformation
-fquad[_{knobs, track}]       – focusing quadrupole transformation
-dquad[_{knobs, track}]       – defocusing quadrupole transformation
-quadrupole[_{knobs, track}]  – generic quadrupole transformation
-linear                       – generic linear transformation
-gradient[_{knobs, track}]    – thin quadrupole transformation
-sextupole[_{knobs, track}]   – thin sextupole transformation
-octupole[_{knobs, track}]    – thin octupole transformation
-dipole[_{knobs, track}]      – dipole transformation
-bend[_{knobs, track}]        – generic bend transformation
-wedge[_{knobs, track}]       – dipole wedge transformation
-multipole[_{knobs, track}]   – cylindrical multipole error kick upto octupole degree
-tx[_{knobs, track}]          – TX translation
-ty[_{knobs, track}]          – TY translation
-tz[_{knobs, track}]          – TZ translation
-rx[_{knobs, track}]          – RX rotation
-ry[_{knobs, track}]          – RY rotation
-rz[_{knobs, track}]          – RZ rotation</p>
+corrector[_{knobs, track}]           – corrector transformation
+drift[_{knobs, track}]               – drift transformation
+kinematic[_{knobs, track}]           – kinematic correction transformation
+fquad[_{knobs, track}]               – focusing quadrupole transformation
+dquad[_{knobs, track}]               – defocusing quadrupole transformation
+quadrupole[_{knobs, track}]          – generic quadrupole transformation
+linear                               – generic linear transformation
+gradient[_{knobs, track}]            – thin quadrupole transformation
+sextupole[_{knobs, track}]           – thin sextupole transformation
+octupole[_{knobs, track}]            – thin octupole transformation
+dipole[_{knobs, track}]              – dipole transformation
+bend[_{knobs, track}]                – generic linear bend transformation
+wedge[_{knobs, track}]               – dipole wedge transformation
+sector_bend                          – exact sector bend body tranformation
+sector_bend_fringe                   – sector bend fringe transformation
+sector_bend_wedge                    – sector bend wedge transformation
+polar[_{knobs, track}]               – polar drift
+cylindrical[_{knobs, track}]         – cylindrical multipole error kick upto octupole degree
+cylindrical_error[_{knobs, track}]   – cylindrical multipole error kick upto octupole degree
+tx[_{knobs, track}]                  – TX translation
+ty[_{knobs, track}]                  – TY translation
+tz[_{knobs, track}]                  – TZ translation
+rx[_{knobs, track}]                  – RX rotation
+ry[_{knobs, track}]                  – RY rotation
+rz[_{knobs, track}]                  – RZ rotation</p>
 </section>
 <dl class="py function">
 <dt class="sig sig-object py" id="model.library.transformations.bend">
@@ -223,6 +233,51 @@ py -&gt; py + ky</p>
 <li><p><strong>state</strong> (<em>State</em>) – initial state</p></li>
 <li><p><strong>kx</strong> (<em>Tensor</em>) – px kick</p></li>
 <li><p><strong>ky</strong> (<em>Tensor</em>) – py kick</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>State</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="model.library.transformations.cylindrical">
+<span class="sig-prename descclassname"><span class="pre">model.library.transformations.</span></span><span class="sig-name descname"><span class="pre">cylindrical</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">state</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">State</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">r</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">torch.Tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kqn</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">torch.Tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kqs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">torch.Tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ks</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">torch.Tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ko</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">torch.Tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dp</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">torch.Tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">length</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">torch.Tensor</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">State</span></span></span><a class="reference internal" href="../_modules/model/library/transformations.html#cylindrical"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#model.library.transformations.cylindrical" title="Link to this definition"></a></dt>
+<dd><p>Cylindrical multipole kick upto octupole degree</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>state</strong> (<em>State</em>) – initial state</p></li>
+<li><p><strong>r</strong> (<em>Tensor</em>) – bending radius</p></li>
+<li><p><strong>kqn</strong> (<em>Tensor</em>) – normal quadrupole strength</p></li>
+<li><p><strong>kqs</strong> (<em>Tensor</em>) – skew quadrupole strength</p></li>
+<li><p><strong>ks</strong> (<em>Tensor</em>) – sextupole strength</p></li>
+<li><p><strong>ks</strong> – octupole strength</p></li>
+<li><p><strong>dp</strong> (<em>Tensor</em>) – momentum deviation</p></li>
+<li><p><strong>length</strong> (<em>Tensor</em>) – length</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>State</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="model.library.transformations.cylindrical_error">
+<span class="sig-prename descclassname"><span class="pre">model.library.transformations.</span></span><span class="sig-name descname"><span class="pre">cylindrical_error</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">state</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">State</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">r</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">torch.Tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kqn</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">torch.Tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kqs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">torch.Tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ks</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">torch.Tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ko</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">torch.Tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">length</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">torch.Tensor</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">State</span></span></span><a class="reference internal" href="../_modules/model/library/transformations.html#cylindrical_error"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#model.library.transformations.cylindrical_error" title="Link to this definition"></a></dt>
+<dd><p>Cylindrical multipole kick upto octupole degree without leading order linear part</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>state</strong> (<em>State</em>) – initial state</p></li>
+<li><p><strong>r</strong> (<em>Tensor</em>) – bending radius</p></li>
+<li><p><strong>kqn</strong> (<em>Tensor</em>) – normal quadrupole strength</p></li>
+<li><p><strong>kqs</strong> (<em>Tensor</em>) – skew quadrupole strength</p></li>
+<li><p><strong>ks</strong> (<em>Tensor</em>) – sextupole strength</p></li>
+<li><p><strong>ks</strong> – octupole strength</p></li>
+<li><p><strong>length</strong> (<em>Tensor</em>) – length</p></li>
 </ul>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
@@ -362,18 +417,14 @@ py -&gt; py + ky</p>
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="model.library.transformations.multipole">
-<span class="sig-prename descclassname"><span class="pre">model.library.transformations.</span></span><span class="sig-name descname"><span class="pre">multipole</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">state</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">State</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">r</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">torch.Tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kqn</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">torch.Tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kqs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">torch.Tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ks</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">torch.Tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ko</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">torch.Tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">length</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">torch.Tensor</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">State</span></span></span><a class="reference internal" href="../_modules/model/library/transformations.html#multipole"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#model.library.transformations.multipole" title="Link to this definition"></a></dt>
-<dd><p>Cylindrical multipole kick upto octupole degree</p>
+<dt class="sig sig-object py" id="model.library.transformations.octupole">
+<span class="sig-prename descclassname"><span class="pre">model.library.transformations.</span></span><span class="sig-name descname"><span class="pre">octupole</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">state</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">State</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ko</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">torch.Tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">length</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">torch.Tensor</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">State</span></span></span><a class="reference internal" href="../_modules/model/library/transformations.html#octupole"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#model.library.transformations.octupole" title="Link to this definition"></a></dt>
+<dd><p>Thin octupole transformation</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>state</strong> (<em>State</em>) – initial state</p></li>
-<li><p><strong>r</strong> (<em>Tensor</em>) – bending radius</p></li>
-<li><p><strong>kqn</strong> (<em>Tensor</em>) – normal quadrupole strength</p></li>
-<li><p><strong>kqs</strong> (<em>Tensor</em>) – skew quadrupole strength</p></li>
-<li><p><strong>ks</strong> (<em>Tensor</em>) – sextupole strength</p></li>
-<li><p><strong>ks</strong> – octupole strength</p></li>
+<li><p><strong>ko</strong> (<em>Tensor</em>) – strength</p></li>
 <li><p><strong>length</strong> (<em>Tensor</em>) – length</p></li>
 </ul>
 </dd>
@@ -384,15 +435,16 @@ py -&gt; py + ky</p>
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="model.library.transformations.octupole">
-<span class="sig-prename descclassname"><span class="pre">model.library.transformations.</span></span><span class="sig-name descname"><span class="pre">octupole</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">state</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">State</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ko</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">torch.Tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">length</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">torch.Tensor</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">State</span></span></span><a class="reference internal" href="../_modules/model/library/transformations.html#octupole"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#model.library.transformations.octupole" title="Link to this definition"></a></dt>
-<dd><p>Thin octupole transformation</p>
+<dt class="sig sig-object py" id="model.library.transformations.polar">
+<span class="sig-prename descclassname"><span class="pre">model.library.transformations.</span></span><span class="sig-name descname"><span class="pre">polar</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">state</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">State</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">angle</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">torch.Tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dp</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">torch.Tensor</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">State</span></span></span><a class="reference internal" href="../_modules/model/library/transformations.html#polar"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#model.library.transformations.polar" title="Link to this definition"></a></dt>
+<dd><p>Polar drift</p>
+<p>Note, same as rotation around qy axis, but with different angle sign</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>state</strong> (<em>State</em>) – initial state</p></li>
-<li><p><strong>ko</strong> (<em>Tensor</em>) – strength</p></li>
-<li><p><strong>length</strong> (<em>Tensor</em>) – length</p></li>
+<li><p><strong>angle</strong> (<em>Tensor</em>) – rotation angle</p></li>
+<li><p><strong>dp</strong> (<em>Tensor</em>) – momentum deviation</p></li>
 </ul>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
@@ -425,7 +477,7 @@ py -&gt; py + ky</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="model.library.transformations.rx">
 <span class="sig-prename descclassname"><span class="pre">model.library.transformations.</span></span><span class="sig-name descname"><span class="pre">rx</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">state</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">State</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wx</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">torch.Tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dp</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">torch.Tensor</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">State</span></span></span><a class="reference internal" href="../_modules/model/library/transformations.html#rx"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#model.library.transformations.rx" title="Link to this definition"></a></dt>
-<dd><p>RX translation (sign matches MADX)</p>
+<dd><p>RX rotation (sign matches MADX)</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -443,7 +495,7 @@ py -&gt; py + ky</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="model.library.transformations.ry">
 <span class="sig-prename descclassname"><span class="pre">model.library.transformations.</span></span><span class="sig-name descname"><span class="pre">ry</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">state</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">State</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wy</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">torch.Tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dp</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">torch.Tensor</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">State</span></span></span><a class="reference internal" href="../_modules/model/library/transformations.html#ry"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#model.library.transformations.ry" title="Link to this definition"></a></dt>
-<dd><p>RY translation (sign matches MADX)</p>
+<dd><p>RY rotation (sign matches MADX)</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -461,12 +513,71 @@ py -&gt; py + ky</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="model.library.transformations.rz">
 <span class="sig-prename descclassname"><span class="pre">model.library.transformations.</span></span><span class="sig-name descname"><span class="pre">rz</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">state</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">State</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wz</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">torch.Tensor</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">State</span></span></span><a class="reference internal" href="../_modules/model/library/transformations.html#rz"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#model.library.transformations.rz" title="Link to this definition"></a></dt>
-<dd><p>RZ translation (sign matches MADX)</p>
+<dd><p>RZ rotation (sign matches MADX)</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>state</strong> (<em>State</em>) – initial state</p></li>
 <li><p><strong>wz</strong> (<em>Tensor</em>) – qz rotation angle</p></li>
+<li><p><strong>dp</strong> (<em>Tensor</em>) – momentum deviation</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>State</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="model.library.transformations.sector_bend">
+<span class="sig-prename descclassname"><span class="pre">model.library.transformations.</span></span><span class="sig-name descname"><span class="pre">sector_bend</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">state</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">State</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">r</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">torch.Tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dp</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">torch.Tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">length</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">torch.Tensor</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">State</span></span></span><a class="reference internal" href="../_modules/model/library/transformations.html#sector_bend"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#model.library.transformations.sector_bend" title="Link to this definition"></a></dt>
+<dd><p>Exact sector bend body tranformation</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>state</strong> (<em>State</em>) – initial state</p></li>
+<li><p><strong>r</strong> (<em>Tensor</em>) – bending radius</p></li>
+<li><p><strong>dp</strong> (<em>Tensor</em>) – momentum deviation</p></li>
+<li><p><strong>length</strong> (<em>Tensor</em>) – length</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>State</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="model.library.transformations.sector_bend_fringe">
+<span class="sig-prename descclassname"><span class="pre">model.library.transformations.</span></span><span class="sig-name descname"><span class="pre">sector_bend_fringe</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">state</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">State</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">r</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">torch.Tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dp</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">torch.Tensor</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">State</span></span></span><a class="reference internal" href="../_modules/model/library/transformations.html#sector_bend_fringe"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#model.library.transformations.sector_bend_fringe" title="Link to this definition"></a></dt>
+<dd><p>Sector bend fringe transformation</p>
+<p>sector_bend_fringe(state, +r, dp) - entrance fringe
+sector_bend_fringe(state, -r, dp) - exit fringe</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>state</strong> (<em>State</em>) – initial state</p></li>
+<li><p><strong>r</strong> (<em>Tensor</em>) – bending radius</p></li>
+<li><p><strong>dp</strong> (<em>Tensor</em>) – momentum deviation</p></li>
+<li><p><strong>length</strong> (<em>Tensor</em>) – length</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>State</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="model.library.transformations.sector_bend_wedge">
+<span class="sig-prename descclassname"><span class="pre">model.library.transformations.</span></span><span class="sig-name descname"><span class="pre">sector_bend_wedge</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">state</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">State</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">w</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">torch.Tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">r</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">torch.Tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dp</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">torch.Tensor</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">torch.Tensor</span></span></span><a class="reference internal" href="../_modules/model/library/transformations.html#sector_bend_wedge"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#model.library.transformations.sector_bend_wedge" title="Link to this definition"></a></dt>
+<dd><p>Sector bend wedge transformation</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>state</strong> (<em>State</em>) – initial state</p></li>
+<li><p><strong>w</strong> (<em>Tensor</em>) – wegde angle</p></li>
+<li><p><strong>r</strong> (<em>Tensor</em>) – bending radius</p></li>
 <li><p><strong>dp</strong> (<em>Tensor</em>) – momentum deviation</p></li>
 </ul>
 </dd>
@@ -549,7 +660,7 @@ py -&gt; py + ky</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="model.library.transformations.wedge">
 <span class="sig-prename descclassname"><span class="pre">model.library.transformations.</span></span><span class="sig-name descname"><span class="pre">wedge</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">state</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">State</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">epsilon</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">torch.Tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">r</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">torch.Tensor</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">State</span></span></span><a class="reference internal" href="../_modules/model/library/transformations.html#wedge"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#model.library.transformations.wedge" title="Link to this definition"></a></dt>
-<dd><p>Dipole wedge transformation</p>
+<dd><p>Dipole linear wedge transformation</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">

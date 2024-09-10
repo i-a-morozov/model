@@ -81,6 +81,8 @@
 <li class="toctree-l1"><a class="reference internal" href="../modules/transformations.html#model.library.transformations.calibration_forward"><code class="docutils literal notranslate"><span class="pre">calibration_forward()</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="../modules/transformations.html#model.library.transformations.calibration_inverse"><code class="docutils literal notranslate"><span class="pre">calibration_inverse()</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="../modules/transformations.html#model.library.transformations.corrector"><code class="docutils literal notranslate"><span class="pre">corrector()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/transformations.html#model.library.transformations.cylindrical"><code class="docutils literal notranslate"><span class="pre">cylindrical()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/transformations.html#model.library.transformations.cylindrical_error"><code class="docutils literal notranslate"><span class="pre">cylindrical_error()</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="../modules/transformations.html#model.library.transformations.dipole"><code class="docutils literal notranslate"><span class="pre">dipole()</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="../modules/transformations.html#model.library.transformations.dquad"><code class="docutils literal notranslate"><span class="pre">dquad()</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="../modules/transformations.html#model.library.transformations.drift"><code class="docutils literal notranslate"><span class="pre">drift()</span></code></a></li>
@@ -88,12 +90,15 @@
 <li class="toctree-l1"><a class="reference internal" href="../modules/transformations.html#model.library.transformations.gradient"><code class="docutils literal notranslate"><span class="pre">gradient()</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="../modules/transformations.html#model.library.transformations.kinematic"><code class="docutils literal notranslate"><span class="pre">kinematic()</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="../modules/transformations.html#model.library.transformations.linear"><code class="docutils literal notranslate"><span class="pre">linear()</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="../modules/transformations.html#model.library.transformations.multipole"><code class="docutils literal notranslate"><span class="pre">multipole()</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="../modules/transformations.html#model.library.transformations.octupole"><code class="docutils literal notranslate"><span class="pre">octupole()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/transformations.html#model.library.transformations.polar"><code class="docutils literal notranslate"><span class="pre">polar()</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="../modules/transformations.html#model.library.transformations.quadrupole"><code class="docutils literal notranslate"><span class="pre">quadrupole()</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="../modules/transformations.html#model.library.transformations.rx"><code class="docutils literal notranslate"><span class="pre">rx()</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="../modules/transformations.html#model.library.transformations.ry"><code class="docutils literal notranslate"><span class="pre">ry()</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="../modules/transformations.html#model.library.transformations.rz"><code class="docutils literal notranslate"><span class="pre">rz()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/transformations.html#model.library.transformations.sector_bend"><code class="docutils literal notranslate"><span class="pre">sector_bend()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/transformations.html#model.library.transformations.sector_bend_fringe"><code class="docutils literal notranslate"><span class="pre">sector_bend_fringe()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/transformations.html#model.library.transformations.sector_bend_wedge"><code class="docutils literal notranslate"><span class="pre">sector_bend_wedge()</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="../modules/transformations.html#model.library.transformations.sextupole"><code class="docutils literal notranslate"><span class="pre">sextupole()</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="../modules/transformations.html#model.library.transformations.tx"><code class="docutils literal notranslate"><span class="pre">tx()</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="../modules/transformations.html#model.library.transformations.ty"><code class="docutils literal notranslate"><span class="pre">ty()</span></code></a></li>
@@ -2608,13 +2613,333 @@ FODO {&#39;KIND&#39;: &#39;LINE&#39;, &#39;SEQUENCE&#39;: [&#39;HEAD&#39;, &#39;
 [5.273559366969494e-16, 5.551115123125783e-17, -1.3877787807814457e-17, -1.942890293094024e-16]
 </pre></div></div>
 </div>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># exact sector bend (without fringe)</span>
+
+<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span> <span class="nn">os</span> <span class="kn">import</span> <span class="n">system</span>
+
+<span class="kn">import</span> <span class="nn">torch</span>
+<span class="kn">from</span> <span class="nn">model.library.transformations</span> <span class="kn">import</span> <span class="n">sector_bend</span>
+
+<span class="n">ptc</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s1">&#39;ptc&#39;</span><span class="p">)</span>
+<span class="n">obs</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s1">&#39;track.obs0001.p0001&#39;</span><span class="p">)</span>
+
+<span class="n">length</span> <span class="o">=</span> <span class="mf">2.5</span>
+<span class="n">angle</span> <span class="o">=</span> <span class="mf">0.1</span>
+<span class="n">e1</span> <span class="o">=</span> <span class="mf">0.0</span>
+<span class="n">e2</span> <span class="o">=</span> <span class="mf">0.0</span>
+<span class="n">dp</span> <span class="o">=</span> <span class="mf">0.005</span>
+
+<span class="n">state</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">0.01</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.0005</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.01</span><span class="p">,</span> <span class="mf">0.0005</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+<span class="n">qx</span><span class="p">,</span> <span class="n">px</span><span class="p">,</span> <span class="n">qy</span><span class="p">,</span> <span class="n">py</span> <span class="o">=</span> <span class="n">state</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+
+<span class="n">code</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">mag:sbend,l=</span><span class="si">{</span><span class="n">length</span><span class="si">}</span><span class="s2">,angle=</span><span class="si">{</span><span class="n">angle</span><span class="si">}</span><span class="s2">,e1=</span><span class="si">{</span><span class="n">e1</span><span class="si">}</span><span class="s2">,e2=</span><span class="si">{</span><span class="n">e2</span><span class="si">}</span><span class="s2">,kill_ent_fringe=true,kill_exi_fringe=true;</span>
+<span class="s2">map:line=(mag) ;</span>
+<span class="s2">beam,energy=1.0E+6,particle=electron ;</span>
+<span class="s2">set,format=&quot;20.20f&quot;,&quot;-20s&quot; ;</span>
+<span class="s2">use,period=map  ;</span>
+<span class="s2">ptc_create_universe,sector_nmul_max=10,sector_nmul=10 ;</span>
+<span class="s2">ptc_create_layout,model=1,method=6,nst=1000,exact=true ;</span>
+<span class="s2">ptc_setswitch,fringe=false,time=true,totalpath=true,exact_mis=true ;</span>
+<span class="s2">ptc_align;</span>
+<span class="s2">ptc_start,x=</span><span class="si">{</span><span class="n">qx</span><span class="si">}</span><span class="s2">,px=</span><span class="si">{</span><span class="n">px</span><span class="si">}</span><span class="s2">,y=</span><span class="si">{</span><span class="n">qy</span><span class="si">}</span><span class="s2">,py=</span><span class="si">{</span><span class="n">py</span><span class="si">}</span><span class="s2">,pt=</span><span class="si">{</span><span class="n">dp</span><span class="si">}</span><span class="s2">,t=0.0 ;</span>
+<span class="s2">ptc_track,icase=6,deltap=0.,turns=1,file=track,maxaper=</span><span class="se">{{</span><span class="s2">1.,1.,1.,1.,1.,1.</span><span class="se">}}</span><span class="s2">;</span>
+<span class="s2">ptc_track_end;</span>
+<span class="s2">ptc_end;</span>
+<span class="s2">&quot;&quot;&quot;</span>
+
+<span class="k">with</span> <span class="n">ptc</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">stream</span><span class="p">:</span>
+    <span class="n">stream</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">code</span><span class="p">)</span>
+
+<span class="n">system</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;madx &lt; </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">ptc</span><span class="p">)</span><span class="si">}</span><span class="s1"> &gt; /dev/null&#39;</span><span class="p">)</span>
+
+<span class="k">with</span> <span class="n">obs</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">stream</span><span class="p">:</span>
+    <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">stream</span><span class="p">:</span>
+        <span class="k">continue</span>
+    <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">qx</span><span class="p">,</span> <span class="n">px</span><span class="p">,</span> <span class="n">qy</span><span class="p">,</span> <span class="n">py</span><span class="p">,</span> <span class="o">*</span><span class="n">_</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+
+<span class="n">ref</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="nb">float</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="p">(</span><span class="n">qx</span><span class="p">,</span> <span class="n">px</span><span class="p">,</span> <span class="n">qy</span><span class="p">,</span> <span class="n">py</span><span class="p">)],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+
+<span class="n">length</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">length</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+<span class="n">angle</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">angle</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+<span class="n">e1</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">e1</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+<span class="n">e2</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">e2</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+<span class="n">dp</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">dp</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+
+<span class="n">state</span> <span class="o">=</span> <span class="n">sector_bend</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">length</span><span class="o">/</span><span class="n">angle</span><span class="p">,</span> <span class="n">dp</span><span class="p">,</span> <span class="n">length</span><span class="p">)</span>
+<span class="n">res</span> <span class="o">=</span> <span class="n">state</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">ref</span><span class="o">.</span><span class="n">tolist</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">res</span><span class="o">.</span><span class="n">tolist</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">((</span><span class="n">ref</span> <span class="o">-</span> <span class="n">res</span><span class="p">)</span><span class="o">.</span><span class="n">tolist</span><span class="p">())</span>
+
+<span class="n">ptc</span><span class="o">.</span><span class="n">unlink</span><span class="p">()</span>
+<span class="n">obs</span><span class="o">.</span><span class="n">unlink</span><span class="p">()</span>
 </pre></div>
 </div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+[0.00932966343120269, -3.829320024990772e-05, -0.008755742622854638, 0.0005]
+[0.009329663431209667, -3.829320024994158e-05, -0.008755742622854576, 0.0005]
+[-6.977057820378718e-15, 3.386098909943791e-17, -6.245004513516506e-17, 0.0]
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># exact sector bend (with fringe)</span>
+
+<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span> <span class="nn">os</span> <span class="kn">import</span> <span class="n">system</span>
+
+<span class="kn">import</span> <span class="nn">torch</span>
+<span class="kn">from</span> <span class="nn">model.library.transformations</span> <span class="kn">import</span> <span class="n">sector_bend</span>
+<span class="kn">from</span> <span class="nn">model.library.transformations</span> <span class="kn">import</span> <span class="n">sector_bend_fringe</span>
+
+<span class="n">ptc</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s1">&#39;ptc&#39;</span><span class="p">)</span>
+<span class="n">obs</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s1">&#39;track.obs0001.p0001&#39;</span><span class="p">)</span>
+
+<span class="n">length</span> <span class="o">=</span> <span class="mf">2.5</span>
+<span class="n">angle</span> <span class="o">=</span> <span class="mf">0.1</span>
+<span class="n">e1</span> <span class="o">=</span> <span class="mf">0.0</span>
+<span class="n">e2</span> <span class="o">=</span> <span class="mf">0.0</span>
+<span class="n">dp</span> <span class="o">=</span> <span class="mf">0.005</span>
+
+<span class="n">state</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">0.01</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.0005</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.01</span><span class="p">,</span> <span class="mf">0.0005</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+<span class="n">qx</span><span class="p">,</span> <span class="n">px</span><span class="p">,</span> <span class="n">qy</span><span class="p">,</span> <span class="n">py</span> <span class="o">=</span> <span class="n">state</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+
+<span class="n">code</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">mag:sbend,l=</span><span class="si">{</span><span class="n">length</span><span class="si">}</span><span class="s2">,angle=</span><span class="si">{</span><span class="n">angle</span><span class="si">}</span><span class="s2">,e1=</span><span class="si">{</span><span class="n">e1</span><span class="si">}</span><span class="s2">,e2=</span><span class="si">{</span><span class="n">e2</span><span class="si">}</span><span class="s2">,kill_ent_fringe=false,kill_exi_fringe=false;</span>
+<span class="s2">map:line=(mag) ;</span>
+<span class="s2">beam,energy=1.0E+6,particle=electron ;</span>
+<span class="s2">set,format=&quot;20.20f&quot;,&quot;-20s&quot; ;</span>
+<span class="s2">use,period=map  ;</span>
+<span class="s2">ptc_create_universe,sector_nmul_max=10,sector_nmul=10 ;</span>
+<span class="s2">ptc_create_layout,model=1,method=6,nst=1000,exact=true ;</span>
+<span class="s2">ptc_setswitch,fringe=false,time=true,totalpath=true,exact_mis=true ;</span>
+<span class="s2">ptc_align;</span>
+<span class="s2">ptc_start,x=</span><span class="si">{</span><span class="n">qx</span><span class="si">}</span><span class="s2">,px=</span><span class="si">{</span><span class="n">px</span><span class="si">}</span><span class="s2">,y=</span><span class="si">{</span><span class="n">qy</span><span class="si">}</span><span class="s2">,py=</span><span class="si">{</span><span class="n">py</span><span class="si">}</span><span class="s2">,pt=</span><span class="si">{</span><span class="n">dp</span><span class="si">}</span><span class="s2">,t=0.0 ;</span>
+<span class="s2">ptc_track,icase=6,deltap=0.,turns=1,file=track,maxaper=</span><span class="se">{{</span><span class="s2">1.,1.,1.,1.,1.,1.</span><span class="se">}}</span><span class="s2">;</span>
+<span class="s2">ptc_track_end;</span>
+<span class="s2">ptc_end;</span>
+<span class="s2">&quot;&quot;&quot;</span>
+
+<span class="k">with</span> <span class="n">ptc</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">stream</span><span class="p">:</span>
+    <span class="n">stream</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">code</span><span class="p">)</span>
+
+<span class="n">system</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;madx &lt; </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">ptc</span><span class="p">)</span><span class="si">}</span><span class="s1"> &gt; /dev/null&#39;</span><span class="p">)</span>
+
+<span class="k">with</span> <span class="n">obs</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">stream</span><span class="p">:</span>
+    <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">stream</span><span class="p">:</span>
+        <span class="k">continue</span>
+    <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">qx</span><span class="p">,</span> <span class="n">px</span><span class="p">,</span> <span class="n">qy</span><span class="p">,</span> <span class="n">py</span><span class="p">,</span> <span class="o">*</span><span class="n">_</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+
+<span class="n">ref</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="nb">float</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="p">(</span><span class="n">qx</span><span class="p">,</span> <span class="n">px</span><span class="p">,</span> <span class="n">qy</span><span class="p">,</span> <span class="n">py</span><span class="p">)],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+
+<span class="n">length</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">length</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+<span class="n">angle</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">angle</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+<span class="n">e1</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">e1</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+<span class="n">e2</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">e2</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+<span class="n">dp</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">dp</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+
+<span class="n">state</span> <span class="o">=</span> <span class="n">sector_bend_fringe</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="o">+</span><span class="n">length</span><span class="o">/</span><span class="n">angle</span><span class="p">,</span> <span class="n">dp</span><span class="p">)</span>
+<span class="n">state</span> <span class="o">=</span> <span class="n">sector_bend</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">length</span><span class="o">/</span><span class="n">angle</span><span class="p">,</span> <span class="n">dp</span><span class="p">,</span> <span class="n">length</span><span class="p">)</span>
+<span class="n">state</span> <span class="o">=</span> <span class="n">sector_bend_fringe</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="o">-</span><span class="n">length</span><span class="o">/</span><span class="n">angle</span><span class="p">,</span> <span class="n">dp</span><span class="p">)</span>
+<span class="n">res</span> <span class="o">=</span> <span class="n">state</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">ref</span><span class="o">.</span><span class="n">tolist</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">res</span><span class="o">.</span><span class="n">tolist</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">((</span><span class="n">ref</span> <span class="o">-</span> <span class="n">res</span><span class="p">)</span><span class="o">.</span><span class="n">tolist</span><span class="p">())</span>
+
+<span class="n">ptc</span><span class="o">.</span><span class="n">unlink</span><span class="p">()</span>
+<span class="n">obs</span><span class="o">.</span><span class="n">unlink</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+[0.00933011773950498, -3.830113730822001e-05, -0.008756237750526722, 0.0004998143432367524]
+[0.009330117739498277, -3.8301137308233764e-05, -0.008756237750526754, 0.0004998143432367524]
+[6.702971511174383e-15, 1.3755815063409838e-17, 3.122502256758253e-17, 0.0]
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[21]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># exact sector bend (with fringe and wedges)</span>
+
+<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span> <span class="nn">os</span> <span class="kn">import</span> <span class="n">system</span>
+
+<span class="kn">import</span> <span class="nn">torch</span>
+<span class="kn">from</span> <span class="nn">model.library.transformations</span> <span class="kn">import</span> <span class="n">sector_bend</span>
+<span class="kn">from</span> <span class="nn">model.library.transformations</span> <span class="kn">import</span> <span class="n">sector_bend_fringe</span>
+<span class="kn">from</span> <span class="nn">model.library.transformations</span> <span class="kn">import</span> <span class="n">sector_bend_wedge</span>
+<span class="kn">from</span> <span class="nn">model.library.transformations</span> <span class="kn">import</span> <span class="n">polar</span>
+
+<span class="n">ptc</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s1">&#39;ptc&#39;</span><span class="p">)</span>
+<span class="n">obs</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s1">&#39;track.obs0001.p0001&#39;</span><span class="p">)</span>
+
+<span class="n">length</span> <span class="o">=</span> <span class="mf">2.5</span>
+<span class="n">angle</span> <span class="o">=</span> <span class="mf">0.1</span>
+<span class="n">e1</span> <span class="o">=</span> <span class="mf">0.01</span>
+<span class="n">e2</span> <span class="o">=</span> <span class="o">-</span><span class="mf">0.01</span>
+<span class="n">dp</span> <span class="o">=</span> <span class="mf">0.005</span>
+
+<span class="n">state</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">0.01</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.0005</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.01</span><span class="p">,</span> <span class="mf">0.0005</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+<span class="n">qx</span><span class="p">,</span> <span class="n">px</span><span class="p">,</span> <span class="n">qy</span><span class="p">,</span> <span class="n">py</span> <span class="o">=</span> <span class="n">state</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+
+<span class="n">code</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">mag:sbend,l=</span><span class="si">{</span><span class="n">length</span><span class="si">}</span><span class="s2">,angle=</span><span class="si">{</span><span class="n">angle</span><span class="si">}</span><span class="s2">,e1=</span><span class="si">{</span><span class="n">e1</span><span class="si">}</span><span class="s2">,e2=</span><span class="si">{</span><span class="n">e2</span><span class="si">}</span><span class="s2">,kill_ent_fringe=false,kill_exi_fringe=false;</span>
+<span class="s2">map:line=(mag) ;</span>
+<span class="s2">beam,energy=1.0E+6,particle=electron ;</span>
+<span class="s2">set,format=&quot;20.20f&quot;,&quot;-20s&quot; ;</span>
+<span class="s2">use,period=map  ;</span>
+<span class="s2">ptc_create_universe,sector_nmul_max=10,sector_nmul=10 ;</span>
+<span class="s2">ptc_create_layout,model=1,method=6,nst=1000,exact=true ;</span>
+<span class="s2">ptc_setswitch,fringe=false,time=true,totalpath=true,exact_mis=true ;</span>
+<span class="s2">ptc_align;</span>
+<span class="s2">ptc_start,x=</span><span class="si">{</span><span class="n">qx</span><span class="si">}</span><span class="s2">,px=</span><span class="si">{</span><span class="n">px</span><span class="si">}</span><span class="s2">,y=</span><span class="si">{</span><span class="n">qy</span><span class="si">}</span><span class="s2">,py=</span><span class="si">{</span><span class="n">py</span><span class="si">}</span><span class="s2">,pt=</span><span class="si">{</span><span class="n">dp</span><span class="si">}</span><span class="s2">,t=0.0 ;</span>
+<span class="s2">ptc_track,icase=6,deltap=0.,turns=1,file=track,maxaper=</span><span class="se">{{</span><span class="s2">1.,1.,1.,1.,1.,1.</span><span class="se">}}</span><span class="s2">;</span>
+<span class="s2">ptc_track_end;</span>
+<span class="s2">ptc_end;</span>
+<span class="s2">&quot;&quot;&quot;</span>
+
+<span class="k">with</span> <span class="n">ptc</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">stream</span><span class="p">:</span>
+    <span class="n">stream</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">code</span><span class="p">)</span>
+
+<span class="n">system</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;madx &lt; </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">ptc</span><span class="p">)</span><span class="si">}</span><span class="s1"> &gt; /dev/null&#39;</span><span class="p">)</span>
+
+<span class="k">with</span> <span class="n">obs</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">stream</span><span class="p">:</span>
+    <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">stream</span><span class="p">:</span>
+        <span class="k">continue</span>
+    <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">qx</span><span class="p">,</span> <span class="n">px</span><span class="p">,</span> <span class="n">qy</span><span class="p">,</span> <span class="n">py</span><span class="p">,</span> <span class="o">*</span><span class="n">_</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+
+<span class="n">ref</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="nb">float</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="p">(</span><span class="n">qx</span><span class="p">,</span> <span class="n">px</span><span class="p">,</span> <span class="n">qy</span><span class="p">,</span> <span class="n">py</span><span class="p">)],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+
+<span class="n">length</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">length</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+<span class="n">angle</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">angle</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+<span class="n">e1</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">e1</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+<span class="n">e2</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">e2</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+<span class="n">dp</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">dp</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+
+<span class="n">state</span> <span class="o">=</span> <span class="n">polar</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">e1</span><span class="p">,</span> <span class="n">dp</span><span class="p">)</span>
+<span class="n">state</span> <span class="o">=</span> <span class="n">sector_bend_fringe</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="o">+</span><span class="n">length</span><span class="o">/</span><span class="n">angle</span><span class="p">,</span> <span class="n">dp</span><span class="p">)</span>
+<span class="n">state</span> <span class="o">=</span> <span class="n">sector_bend_wedge</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="o">-</span><span class="n">e1</span><span class="p">,</span> <span class="n">length</span><span class="o">/</span><span class="n">angle</span><span class="p">,</span> <span class="n">dp</span><span class="p">)</span>
+<span class="n">state</span> <span class="o">=</span> <span class="n">sector_bend</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">length</span><span class="o">/</span><span class="n">angle</span><span class="p">,</span> <span class="n">dp</span><span class="p">,</span> <span class="n">length</span><span class="p">)</span>
+<span class="n">state</span> <span class="o">=</span> <span class="n">sector_bend_wedge</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="o">-</span><span class="n">e2</span><span class="p">,</span> <span class="n">length</span><span class="o">/</span><span class="n">angle</span><span class="p">,</span> <span class="n">dp</span><span class="p">)</span>
+<span class="n">state</span> <span class="o">=</span> <span class="n">sector_bend_fringe</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="o">-</span><span class="n">length</span><span class="o">/</span><span class="n">angle</span><span class="p">,</span> <span class="n">dp</span><span class="p">)</span>
+<span class="n">state</span> <span class="o">=</span> <span class="n">polar</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">e2</span><span class="p">,</span> <span class="n">dp</span><span class="p">)</span>
+<span class="n">res</span> <span class="o">=</span> <span class="n">state</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">ref</span><span class="o">.</span><span class="n">tolist</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">res</span><span class="o">.</span><span class="n">tolist</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">((</span><span class="n">ref</span> <span class="o">-</span> <span class="n">res</span><span class="p">)</span><span class="o">.</span><span class="n">tolist</span><span class="p">())</span>
+
+<span class="n">ptc</span><span class="o">.</span><span class="n">unlink</span><span class="p">()</span>
+<span class="n">obs</span><span class="o">.</span><span class="n">unlink</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+[0.009340060895391944, -3.805697197357787e-05, -0.00874628326389246, 0.0005003157283896672]
+[0.009340060895401722, -3.805697197360909e-05, -0.00874628326389242, 0.0005003157283896674]
+[-9.778636234081262e-15, 3.1218246304004493e-17, -3.9898639947466563e-17, -1.0842021724855044e-19]
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[22]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># linear wedge matrix</span>
+
+<span class="kn">from</span> <span class="nn">model.library.transformations</span> <span class="kn">import</span> <span class="n">wedge</span>
+<span class="kn">from</span> <span class="nn">model.library.transformations</span> <span class="kn">import</span> <span class="n">polar</span>
+<span class="kn">from</span> <span class="nn">model.library.transformations</span> <span class="kn">import</span> <span class="n">sector_bend_fringe</span>
+<span class="kn">from</span> <span class="nn">model.library.transformations</span> <span class="kn">import</span> <span class="n">sector_bend_wedge</span>
+
+<span class="n">length</span> <span class="o">=</span> <span class="mf">2.5</span>
+<span class="n">angle</span> <span class="o">=</span> <span class="mf">0.1</span>
+<span class="n">e1</span> <span class="o">=</span> <span class="mf">0.01</span>
+<span class="n">e2</span> <span class="o">=</span> <span class="o">-</span><span class="mf">0.01</span>
+<span class="n">dp</span> <span class="o">=</span> <span class="mf">0.005</span>
+
+<span class="n">state</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+
+<span class="n">length</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">length</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+<span class="n">angle</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">angle</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+<span class="n">e1</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">e1</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+<span class="n">e2</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">e2</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+<span class="n">dp</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">dp</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">wedge_entrance</span><span class="p">(</span><span class="n">state</span><span class="p">):</span>
+    <span class="n">state</span> <span class="o">=</span> <span class="n">polar</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">e1</span><span class="p">,</span> <span class="n">dp</span><span class="p">)</span>
+    <span class="n">state</span> <span class="o">=</span> <span class="n">sector_bend_fringe</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="o">+</span><span class="n">length</span><span class="o">/</span><span class="n">angle</span><span class="p">,</span> <span class="n">dp</span><span class="p">)</span>
+    <span class="n">state</span> <span class="o">=</span> <span class="n">sector_bend_wedge</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="o">-</span><span class="n">e1</span><span class="p">,</span> <span class="n">length</span><span class="o">/</span><span class="n">angle</span><span class="p">,</span> <span class="n">dp</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">state</span>
+
+<span class="k">def</span> <span class="nf">wedge_exit</span><span class="p">(</span><span class="n">state</span><span class="p">):</span>
+    <span class="n">state</span> <span class="o">=</span> <span class="n">sector_bend_wedge</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="o">-</span><span class="n">e2</span><span class="p">,</span> <span class="n">length</span><span class="o">/</span><span class="n">angle</span><span class="p">,</span> <span class="n">dp</span><span class="p">)</span>
+    <span class="n">state</span> <span class="o">=</span> <span class="n">sector_bend_fringe</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="o">-</span><span class="n">length</span><span class="o">/</span><span class="n">angle</span><span class="p">,</span> <span class="n">dp</span><span class="p">)</span>
+    <span class="n">state</span> <span class="o">=</span> <span class="n">polar</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">e2</span><span class="p">,</span> <span class="n">dp</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">state</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">func</span><span class="o">.</span><span class="n">jacrev</span><span class="p">(</span><span class="n">wedge</span><span class="p">)(</span><span class="n">state</span><span class="p">,</span> <span class="n">e1</span><span class="p">,</span> <span class="n">length</span><span class="o">/</span><span class="n">angle</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">func</span><span class="o">.</span><span class="n">jacrev</span><span class="p">(</span><span class="n">wedge_entrance</span><span class="p">)(</span><span class="n">state</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">()</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">func</span><span class="o">.</span><span class="n">jacrev</span><span class="p">(</span><span class="n">wedge</span><span class="p">)(</span><span class="n">state</span><span class="p">,</span> <span class="n">e2</span><span class="p">,</span> <span class="n">length</span><span class="o">/</span><span class="n">angle</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">func</span><span class="o">.</span><span class="n">jacrev</span><span class="p">(</span><span class="n">wedge_exit</span><span class="p">)(</span><span class="n">state</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+tensor([[ 1.0000e+00,  0.0000e+00,  0.0000e+00,  0.0000e+00],
+        [ 4.0001e-04,  1.0000e+00,  0.0000e+00,  0.0000e+00],
+        [ 0.0000e+00,  0.0000e+00,  1.0000e+00,  0.0000e+00],
+        [ 0.0000e+00,  0.0000e+00, -4.0001e-04,  1.0000e+00]],
+       dtype=torch.float64)
+tensor([[ 1.0000e+00,  5.5508e-17,  0.0000e+00,  0.0000e+00],
+        [ 4.0001e-04,  1.0000e+00,  0.0000e+00,  0.0000e+00],
+        [ 0.0000e+00,  0.0000e+00,  1.0000e+00,  0.0000e+00],
+        [ 0.0000e+00,  0.0000e+00, -4.0001e-04,  1.0000e+00]],
+       dtype=torch.float64)
+
+tensor([[ 1.0000e+00,  0.0000e+00,  0.0000e+00,  0.0000e+00],
+        [-4.0001e-04,  1.0000e+00,  0.0000e+00,  0.0000e+00],
+        [ 0.0000e+00,  0.0000e+00,  1.0000e+00,  0.0000e+00],
+        [ 0.0000e+00,  0.0000e+00,  4.0001e-04,  1.0000e+00]],
+       dtype=torch.float64)
+tensor([[ 1.0000e+00,  0.0000e+00,  0.0000e+00,  0.0000e+00],
+        [-4.0001e-04,  1.0000e+00,  0.0000e+00,  0.0000e+00],
+        [ 0.0000e+00,  0.0000e+00,  1.0000e+00,  5.5234e-17],
+        [ 0.0000e+00,  0.0000e+00,  4.0001e-04,  1.0000e+00]],
+       dtype=torch.float64)
+
+</pre></div></div>
 </div>
 </section>
 

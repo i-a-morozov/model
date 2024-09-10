@@ -75,6 +75,8 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../modules/transformations.html#model.library.transformations.calibration_forward"><code class="docutils literal notranslate"><span class="pre">calibration_forward()</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../modules/transformations.html#model.library.transformations.calibration_inverse"><code class="docutils literal notranslate"><span class="pre">calibration_inverse()</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../modules/transformations.html#model.library.transformations.corrector"><code class="docutils literal notranslate"><span class="pre">corrector()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules/transformations.html#model.library.transformations.cylindrical"><code class="docutils literal notranslate"><span class="pre">cylindrical()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules/transformations.html#model.library.transformations.cylindrical_error"><code class="docutils literal notranslate"><span class="pre">cylindrical_error()</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../modules/transformations.html#model.library.transformations.dipole"><code class="docutils literal notranslate"><span class="pre">dipole()</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../modules/transformations.html#model.library.transformations.dquad"><code class="docutils literal notranslate"><span class="pre">dquad()</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../modules/transformations.html#model.library.transformations.drift"><code class="docutils literal notranslate"><span class="pre">drift()</span></code></a></li>
@@ -82,12 +84,15 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../modules/transformations.html#model.library.transformations.gradient"><code class="docutils literal notranslate"><span class="pre">gradient()</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../modules/transformations.html#model.library.transformations.kinematic"><code class="docutils literal notranslate"><span class="pre">kinematic()</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../modules/transformations.html#model.library.transformations.linear"><code class="docutils literal notranslate"><span class="pre">linear()</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../modules/transformations.html#model.library.transformations.multipole"><code class="docutils literal notranslate"><span class="pre">multipole()</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../modules/transformations.html#model.library.transformations.octupole"><code class="docutils literal notranslate"><span class="pre">octupole()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules/transformations.html#model.library.transformations.polar"><code class="docutils literal notranslate"><span class="pre">polar()</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../modules/transformations.html#model.library.transformations.quadrupole"><code class="docutils literal notranslate"><span class="pre">quadrupole()</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../modules/transformations.html#model.library.transformations.rx"><code class="docutils literal notranslate"><span class="pre">rx()</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../modules/transformations.html#model.library.transformations.ry"><code class="docutils literal notranslate"><span class="pre">ry()</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../modules/transformations.html#model.library.transformations.rz"><code class="docutils literal notranslate"><span class="pre">rz()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules/transformations.html#model.library.transformations.sector_bend"><code class="docutils literal notranslate"><span class="pre">sector_bend()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules/transformations.html#model.library.transformations.sector_bend_fringe"><code class="docutils literal notranslate"><span class="pre">sector_bend_fringe()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules/transformations.html#model.library.transformations.sector_bend_wedge"><code class="docutils literal notranslate"><span class="pre">sector_bend_wedge()</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../modules/transformations.html#model.library.transformations.sextupole"><code class="docutils literal notranslate"><span class="pre">sextupole()</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../modules/transformations.html#model.library.transformations.tx"><code class="docutils literal notranslate"><span class="pre">tx()</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../modules/transformations.html#model.library.transformations.ty"><code class="docutils literal notranslate"><span class="pre">ty()</span></code></a></li>
@@ -128,26 +133,31 @@
 
 <span class="sd">calibration_forward[_{knobs, track}] -- calibration transformation (from beam frame to bpm frame)</span>
 <span class="sd">calibration_inverse[_{knobs, track}] -- calibration transformation (from bpm frame to beam frame)</span>
-<span class="sd">corrector[_{knobs, track}]   -- corrector transformation</span>
-<span class="sd">drift[_{knobs, track}]       -- drift transformation</span>
-<span class="sd">kinematic[_{knobs, track}]   -- kinematic correction transformation</span>
-<span class="sd">fquad[_{knobs, track}]       -- focusing quadrupole transformation</span>
-<span class="sd">dquad[_{knobs, track}]       -- defocusing quadrupole transformation</span>
-<span class="sd">quadrupole[_{knobs, track}]  -- generic quadrupole transformation</span>
-<span class="sd">linear                       -- generic linear transformation</span>
-<span class="sd">gradient[_{knobs, track}]    -- thin quadrupole transformation</span>
-<span class="sd">sextupole[_{knobs, track}]   -- thin sextupole transformation</span>
-<span class="sd">octupole[_{knobs, track}]    -- thin octupole transformation</span>
-<span class="sd">dipole[_{knobs, track}]      -- dipole transformation</span>
-<span class="sd">bend[_{knobs, track}]        -- generic bend transformation</span>
-<span class="sd">wedge[_{knobs, track}]       -- dipole wedge transformation</span>
-<span class="sd">multipole[_{knobs, track}]   -- cylindrical multipole error kick upto octupole degree</span>
-<span class="sd">tx[_{knobs, track}]          -- TX translation</span>
-<span class="sd">ty[_{knobs, track}]          -- TY translation</span>
-<span class="sd">tz[_{knobs, track}]          -- TZ translation</span>
-<span class="sd">rx[_{knobs, track}]          -- RX rotation</span>
-<span class="sd">ry[_{knobs, track}]          -- RY rotation</span>
-<span class="sd">rz[_{knobs, track}]          -- RZ rotation</span>
+<span class="sd">corrector[_{knobs, track}]           -- corrector transformation</span>
+<span class="sd">drift[_{knobs, track}]               -- drift transformation</span>
+<span class="sd">kinematic[_{knobs, track}]           -- kinematic correction transformation</span>
+<span class="sd">fquad[_{knobs, track}]               -- focusing quadrupole transformation</span>
+<span class="sd">dquad[_{knobs, track}]               -- defocusing quadrupole transformation</span>
+<span class="sd">quadrupole[_{knobs, track}]          -- generic quadrupole transformation</span>
+<span class="sd">linear                               -- generic linear transformation</span>
+<span class="sd">gradient[_{knobs, track}]            -- thin quadrupole transformation</span>
+<span class="sd">sextupole[_{knobs, track}]           -- thin sextupole transformation</span>
+<span class="sd">octupole[_{knobs, track}]            -- thin octupole transformation</span>
+<span class="sd">dipole[_{knobs, track}]              -- dipole transformation</span>
+<span class="sd">bend[_{knobs, track}]                -- generic linear bend transformation</span>
+<span class="sd">wedge[_{knobs, track}]               -- dipole wedge transformation</span>
+<span class="sd">sector_bend                          -- exact sector bend body tranformation</span>
+<span class="sd">sector_bend_fringe                   -- sector bend fringe transformation</span>
+<span class="sd">sector_bend_wedge                    -- sector bend wedge transformation</span>
+<span class="sd">polar[_{knobs, track}]               -- polar drift</span>
+<span class="sd">cylindrical[_{knobs, track}]         -- cylindrical multipole error kick upto octupole degree</span>
+<span class="sd">cylindrical_error[_{knobs, track}]   -- cylindrical multipole error kick upto octupole degree</span>
+<span class="sd">tx[_{knobs, track}]                  -- TX translation</span>
+<span class="sd">ty[_{knobs, track}]                  -- TY translation</span>
+<span class="sd">tz[_{knobs, track}]                  -- TZ translation</span>
+<span class="sd">rx[_{knobs, track}]                  -- RX rotation</span>
+<span class="sd">ry[_{knobs, track}]                  -- RY rotation</span>
+<span class="sd">rz[_{knobs, track}]                  -- RZ rotation</span>
 
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">import</span> <span class="nn">torch</span>
@@ -159,16 +169,16 @@
 
 <div class="viewcode-block" id="calibration_forward">
 <a class="viewcode-back" href="../../../modules/transformations.html#model.library.transformations.calibration_forward">[docs]</a>
-<span class="k">def</span> <span class="nf">calibration_forward</span><span class="p">(</span><span class="n">state</span><span class="p">:</span><span class="n">State</span><span class="p">,</span> 
-                        <span class="n">gxx</span><span class="p">:</span><span class="n">Tensor</span><span class="p">,</span> 
-                        <span class="n">gxy</span><span class="p">:</span><span class="n">Tensor</span><span class="p">,</span> 
-                        <span class="n">gyx</span><span class="p">:</span><span class="n">Tensor</span><span class="p">,</span> 
+<span class="k">def</span> <span class="nf">calibration_forward</span><span class="p">(</span><span class="n">state</span><span class="p">:</span><span class="n">State</span><span class="p">,</span>
+                        <span class="n">gxx</span><span class="p">:</span><span class="n">Tensor</span><span class="p">,</span>
+                        <span class="n">gxy</span><span class="p">:</span><span class="n">Tensor</span><span class="p">,</span>
+                        <span class="n">gyx</span><span class="p">:</span><span class="n">Tensor</span><span class="p">,</span>
                         <span class="n">gyy</span><span class="p">:</span><span class="n">Tensor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">State</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Calibration transformation (from beam frame to bpm frame)</span>
 
 <span class="sd">    qx -&gt; gxx qx + gxy qy</span>
-<span class="sd">    qy -&gt; gyx qx + gyy qy    </span>
+<span class="sd">    qy -&gt; gyx qx + gyy qy</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -182,18 +192,18 @@
 <span class="sd">        qy coupling</span>
 <span class="sd">    gyy: Tensor</span>
 <span class="sd">        qy scaling</span>
-<span class="sd">        </span>
+
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    State</span>
-<span class="sd">    </span>
-<span class="sd">    &quot;&quot;&quot;</span>        
+
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">knobs</span><span class="p">:</span> <span class="n">Knobs</span> <span class="o">=</span> <span class="n">calibration_forward_knobs</span><span class="p">(</span><span class="n">gxx</span><span class="p">,</span> <span class="n">gxy</span><span class="p">,</span> <span class="n">gyx</span><span class="p">,</span> <span class="n">gyy</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">calibration_forward_track</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">knobs</span><span class="p">)</span></div>
 
 
 
-<span class="k">def</span> <span class="nf">calibration_forward_knobs</span><span class="p">(</span><span class="n">gxx</span><span class="p">:</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">gxy</span><span class="p">:</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">gyx</span><span class="p">:</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">gyy</span><span class="p">:</span><span class="n">Tensor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Knobs</span><span class="p">:</span>   
+<span class="k">def</span> <span class="nf">calibration_forward_knobs</span><span class="p">(</span><span class="n">gxx</span><span class="p">:</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">gxy</span><span class="p">:</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">gyx</span><span class="p">:</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">gyy</span><span class="p">:</span><span class="n">Tensor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Knobs</span><span class="p">:</span>
     <span class="n">det</span> <span class="o">=</span>  <span class="n">gxx</span><span class="o">*</span><span class="n">gyy</span> <span class="o">-</span> <span class="n">gxy</span><span class="o">*</span><span class="n">gyx</span>
     <span class="n">qxqx</span> <span class="o">=</span> <span class="n">gxx</span>
     <span class="n">qxqy</span> <span class="o">=</span> <span class="n">gxy</span>
@@ -206,7 +216,7 @@
     <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span><span class="n">qxqx</span><span class="p">,</span> <span class="n">qxqy</span><span class="p">,</span> <span class="n">pxpx</span><span class="p">,</span> <span class="n">pxpy</span><span class="p">,</span> <span class="n">qyqx</span><span class="p">,</span> <span class="n">qyqy</span><span class="p">,</span> <span class="n">pypx</span><span class="p">,</span> <span class="n">pypy</span><span class="p">])</span>
 
 
-<span class="k">def</span> <span class="nf">calibration_forward_track</span><span class="p">(</span><span class="n">state</span><span class="p">:</span><span class="n">State</span><span class="p">,</span> <span class="n">knobs</span><span class="p">:</span><span class="n">Knobs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">State</span><span class="p">:</span>    
+<span class="k">def</span> <span class="nf">calibration_forward_track</span><span class="p">(</span><span class="n">state</span><span class="p">:</span><span class="n">State</span><span class="p">,</span> <span class="n">knobs</span><span class="p">:</span><span class="n">Knobs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">State</span><span class="p">:</span>
     <span class="n">qxqx</span><span class="p">,</span> <span class="n">qxqy</span><span class="p">,</span> <span class="n">pxpx</span><span class="p">,</span> <span class="n">pxpy</span><span class="p">,</span> <span class="n">qyqx</span><span class="p">,</span> <span class="n">qyqy</span><span class="p">,</span> <span class="n">pypx</span><span class="p">,</span> <span class="n">pypy</span><span class="p">,</span> <span class="o">*</span><span class="n">_</span> <span class="o">=</span> <span class="n">knobs</span>
     <span class="n">qx</span><span class="p">,</span> <span class="n">px</span><span class="p">,</span> <span class="n">qy</span><span class="p">,</span> <span class="n">py</span> <span class="o">=</span> <span class="n">state</span>
     <span class="n">Qx</span> <span class="o">=</span> <span class="n">qx</span><span class="o">*</span><span class="n">qxqx</span> <span class="o">+</span> <span class="n">qy</span><span class="o">*</span><span class="n">qxqy</span>
@@ -218,10 +228,10 @@
 
 <div class="viewcode-block" id="calibration_inverse">
 <a class="viewcode-back" href="../../../modules/transformations.html#model.library.transformations.calibration_inverse">[docs]</a>
-<span class="k">def</span> <span class="nf">calibration_inverse</span><span class="p">(</span><span class="n">state</span><span class="p">:</span><span class="n">State</span><span class="p">,</span> 
-                        <span class="n">gxx</span><span class="p">:</span><span class="n">Tensor</span><span class="p">,</span> 
-                        <span class="n">gxy</span><span class="p">:</span><span class="n">Tensor</span><span class="p">,</span> 
-                        <span class="n">gyx</span><span class="p">:</span><span class="n">Tensor</span><span class="p">,</span> 
+<span class="k">def</span> <span class="nf">calibration_inverse</span><span class="p">(</span><span class="n">state</span><span class="p">:</span><span class="n">State</span><span class="p">,</span>
+                        <span class="n">gxx</span><span class="p">:</span><span class="n">Tensor</span><span class="p">,</span>
+                        <span class="n">gxy</span><span class="p">:</span><span class="n">Tensor</span><span class="p">,</span>
+                        <span class="n">gyx</span><span class="p">:</span><span class="n">Tensor</span><span class="p">,</span>
                         <span class="n">gyy</span><span class="p">:</span><span class="n">Tensor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">State</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Calibration transformation (from bpm frame to beam frame)</span>
@@ -238,18 +248,18 @@
 <span class="sd">        qy coupling</span>
 <span class="sd">    gyy: Tensor</span>
 <span class="sd">        qy scaling</span>
-<span class="sd">        </span>
+
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    State</span>
-<span class="sd">    </span>
-<span class="sd">    &quot;&quot;&quot;</span>        
+
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">knobs</span><span class="p">:</span> <span class="n">Knobs</span> <span class="o">=</span> <span class="n">calibration_inverse_knobs</span><span class="p">(</span><span class="n">gxx</span><span class="p">,</span> <span class="n">gxy</span><span class="p">,</span> <span class="n">gyx</span><span class="p">,</span> <span class="n">gyy</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">calibration_inverse_track</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">knobs</span><span class="p">)</span></div>
 
 
 
-<span class="k">def</span> <span class="nf">calibration_inverse_knobs</span><span class="p">(</span><span class="n">gxx</span><span class="p">:</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">gxy</span><span class="p">:</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">gyx</span><span class="p">:</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">gyy</span><span class="p">:</span><span class="n">Tensor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Knobs</span><span class="p">:</span>   
+<span class="k">def</span> <span class="nf">calibration_inverse_knobs</span><span class="p">(</span><span class="n">gxx</span><span class="p">:</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">gxy</span><span class="p">:</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">gyx</span><span class="p">:</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">gyy</span><span class="p">:</span><span class="n">Tensor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Knobs</span><span class="p">:</span>
     <span class="n">det</span> <span class="o">=</span>  <span class="n">gxx</span><span class="o">*</span><span class="n">gyy</span> <span class="o">-</span> <span class="n">gxy</span><span class="o">*</span><span class="n">gyx</span>
     <span class="n">qxqx</span> <span class="o">=</span> <span class="n">gyy</span><span class="o">/</span><span class="n">det</span>
     <span class="n">qxqy</span> <span class="o">=</span> <span class="o">-</span><span class="n">gxy</span><span class="o">/</span><span class="n">det</span>
@@ -262,7 +272,7 @@
     <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span><span class="n">qxqx</span><span class="p">,</span> <span class="n">qxqy</span><span class="p">,</span> <span class="n">pxpx</span><span class="p">,</span> <span class="n">pxpy</span><span class="p">,</span> <span class="n">qyqx</span><span class="p">,</span> <span class="n">qyqy</span><span class="p">,</span> <span class="n">pypx</span><span class="p">,</span> <span class="n">pypy</span><span class="p">])</span>
 
 
-<span class="k">def</span> <span class="nf">calibration_inverse_track</span><span class="p">(</span><span class="n">state</span><span class="p">:</span><span class="n">State</span><span class="p">,</span> <span class="n">knobs</span><span class="p">:</span><span class="n">Knobs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">State</span><span class="p">:</span>    
+<span class="k">def</span> <span class="nf">calibration_inverse_track</span><span class="p">(</span><span class="n">state</span><span class="p">:</span><span class="n">State</span><span class="p">,</span> <span class="n">knobs</span><span class="p">:</span><span class="n">Knobs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">State</span><span class="p">:</span>
     <span class="n">qxqx</span><span class="p">,</span> <span class="n">qxqy</span><span class="p">,</span> <span class="n">pxpx</span><span class="p">,</span> <span class="n">pxpy</span><span class="p">,</span> <span class="n">qyqx</span><span class="p">,</span> <span class="n">qyqy</span><span class="p">,</span> <span class="n">pypx</span><span class="p">,</span> <span class="n">pypy</span><span class="p">,</span> <span class="o">*</span><span class="n">_</span> <span class="o">=</span> <span class="n">knobs</span>
     <span class="n">qx</span><span class="p">,</span> <span class="n">px</span><span class="p">,</span> <span class="n">qy</span><span class="p">,</span> <span class="n">py</span> <span class="o">=</span> <span class="n">state</span>
     <span class="n">Qx</span> <span class="o">=</span> <span class="n">qx</span><span class="o">*</span><span class="n">qxqx</span> <span class="o">+</span> <span class="n">qy</span><span class="o">*</span><span class="n">qxqy</span>
@@ -274,8 +284,8 @@
 
 <div class="viewcode-block" id="corrector">
 <a class="viewcode-back" href="../../../modules/transformations.html#model.library.transformations.corrector">[docs]</a>
-<span class="k">def</span> <span class="nf">corrector</span><span class="p">(</span><span class="n">state</span><span class="p">:</span><span class="n">State</span><span class="p">,</span> 
-              <span class="n">kx</span><span class="p">:</span><span class="n">Tensor</span><span class="p">,</span> 
+<span class="k">def</span> <span class="nf">corrector</span><span class="p">(</span><span class="n">state</span><span class="p">:</span><span class="n">State</span><span class="p">,</span>
+              <span class="n">kx</span><span class="p">:</span><span class="n">Tensor</span><span class="p">,</span>
               <span class="n">ky</span><span class="p">:</span><span class="n">Tensor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">State</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Corrector transformation</span>
@@ -291,22 +301,22 @@
 <span class="sd">        px kick</span>
 <span class="sd">    ky: Tensor</span>
 <span class="sd">        py kick</span>
-<span class="sd">        </span>
+
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    State</span>
-<span class="sd">      </span>
-<span class="sd">    &quot;&quot;&quot;</span> 
+
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">knobs</span><span class="p">:</span> <span class="n">Knobs</span> <span class="o">=</span> <span class="n">corrector_knobs</span><span class="p">(</span><span class="n">kx</span><span class="p">,</span> <span class="n">ky</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">corrector_track</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">knobs</span><span class="p">)</span></div>
 
 
 
-<span class="k">def</span> <span class="nf">corrector_knobs</span><span class="p">(</span><span class="n">kx</span><span class="p">:</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">ky</span><span class="p">:</span><span class="n">Tensor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Knobs</span><span class="p">:</span>    
+<span class="k">def</span> <span class="nf">corrector_knobs</span><span class="p">(</span><span class="n">kx</span><span class="p">:</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">ky</span><span class="p">:</span><span class="n">Tensor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Knobs</span><span class="p">:</span>
     <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span><span class="n">kx</span><span class="p">,</span> <span class="n">ky</span><span class="p">])</span>
 
 
-<span class="k">def</span> <span class="nf">corrector_track</span><span class="p">(</span><span class="n">state</span><span class="p">:</span><span class="n">State</span><span class="p">,</span> <span class="n">knobs</span><span class="p">:</span><span class="n">Knobs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">State</span><span class="p">:</span>    
+<span class="k">def</span> <span class="nf">corrector_track</span><span class="p">(</span><span class="n">state</span><span class="p">:</span><span class="n">State</span><span class="p">,</span> <span class="n">knobs</span><span class="p">:</span><span class="n">Knobs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">State</span><span class="p">:</span>
     <span class="n">kx</span><span class="p">,</span> <span class="n">ky</span><span class="p">,</span> <span class="o">*</span><span class="n">_</span> <span class="o">=</span> <span class="n">knobs</span>
     <span class="n">qx</span><span class="p">,</span> <span class="n">px</span><span class="p">,</span> <span class="n">qy</span><span class="p">,</span> <span class="n">py</span> <span class="o">=</span> <span class="n">state</span>
     <span class="n">Qx</span> <span class="o">=</span> <span class="n">qx</span>
@@ -318,8 +328,8 @@
 
 <div class="viewcode-block" id="drift">
 <a class="viewcode-back" href="../../../modules/transformations.html#model.library.transformations.drift">[docs]</a>
-<span class="k">def</span> <span class="nf">drift</span><span class="p">(</span><span class="n">state</span><span class="p">:</span><span class="n">State</span><span class="p">,</span> 
-          <span class="n">dp</span><span class="p">:</span><span class="n">Tensor</span><span class="p">,</span> 
+<span class="k">def</span> <span class="nf">drift</span><span class="p">(</span><span class="n">state</span><span class="p">:</span><span class="n">State</span><span class="p">,</span>
+          <span class="n">dp</span><span class="p">:</span><span class="n">Tensor</span><span class="p">,</span>
           <span class="n">length</span><span class="p">:</span><span class="n">Tensor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">State</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Drift transformation</span>
@@ -332,12 +342,12 @@
 <span class="sd">        momentum deviation</span>
 <span class="sd">    length: Tensor</span>
 <span class="sd">        length</span>
-<span class="sd">        </span>
+
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    State</span>
-<span class="sd">    </span>
-<span class="sd">    &quot;&quot;&quot;</span>       
+
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">knobs</span><span class="p">:</span> <span class="n">Knobs</span> <span class="o">=</span> <span class="n">drift_knobs</span><span class="p">(</span><span class="n">dp</span><span class="p">,</span> <span class="n">length</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">drift_track</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">knobs</span><span class="p">)</span></div>
 
@@ -359,8 +369,8 @@
 
 <div class="viewcode-block" id="kinematic">
 <a class="viewcode-back" href="../../../modules/transformations.html#model.library.transformations.kinematic">[docs]</a>
-<span class="k">def</span> <span class="nf">kinematic</span><span class="p">(</span><span class="n">state</span><span class="p">:</span><span class="n">State</span><span class="p">,</span> 
-              <span class="n">dp</span><span class="p">:</span><span class="n">Tensor</span><span class="p">,</span> 
+<span class="k">def</span> <span class="nf">kinematic</span><span class="p">(</span><span class="n">state</span><span class="p">:</span><span class="n">State</span><span class="p">,</span>
+              <span class="n">dp</span><span class="p">:</span><span class="n">Tensor</span><span class="p">,</span>
               <span class="n">length</span><span class="p">:</span><span class="n">Tensor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">State</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Kinematic correction transformation</span>
@@ -373,16 +383,16 @@
 <span class="sd">        momentum deviation</span>
 <span class="sd">    length: Tensor</span>
 <span class="sd">        length</span>
-<span class="sd">        </span>
+
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    State</span>
-<span class="sd">    </span>
-<span class="sd">    &quot;&quot;&quot;</span>      
-    <span class="n">knobs</span><span class="p">:</span> <span class="n">Knobs</span> <span class="o">=</span> <span class="n">kinematic_knobs</span><span class="p">(</span><span class="n">dp</span><span class="p">,</span> <span class="n">length</span><span class="p">)</span>    
-    <span class="k">return</span> <span class="n">kinematic_track</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">knobs</span><span class="p">)</span>   </div>
 
-    
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">knobs</span><span class="p">:</span> <span class="n">Knobs</span> <span class="o">=</span> <span class="n">kinematic_knobs</span><span class="p">(</span><span class="n">dp</span><span class="p">,</span> <span class="n">length</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">kinematic_track</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">knobs</span><span class="p">)</span></div>
+
+
 
 <span class="k">def</span> <span class="nf">kinematic_knobs</span><span class="p">(</span><span class="n">dp</span><span class="p">:</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">length</span><span class="p">:</span><span class="n">Tensor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Knobs</span><span class="p">:</span>
     <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span><span class="n">length</span><span class="p">,</span> <span class="mi">1</span> <span class="o">+</span> <span class="n">dp</span><span class="p">])</span>
@@ -401,9 +411,9 @@
 
 <div class="viewcode-block" id="fquad">
 <a class="viewcode-back" href="../../../modules/transformations.html#model.library.transformations.fquad">[docs]</a>
-<span class="k">def</span> <span class="nf">fquad</span><span class="p">(</span><span class="n">state</span><span class="p">:</span><span class="n">State</span><span class="p">,</span> 
-          <span class="n">kn</span><span class="p">:</span><span class="n">Tensor</span><span class="p">,</span> 
-          <span class="n">dp</span><span class="p">:</span><span class="n">Tensor</span><span class="p">,</span> 
+<span class="k">def</span> <span class="nf">fquad</span><span class="p">(</span><span class="n">state</span><span class="p">:</span><span class="n">State</span><span class="p">,</span>
+          <span class="n">kn</span><span class="p">:</span><span class="n">Tensor</span><span class="p">,</span>
+          <span class="n">dp</span><span class="p">:</span><span class="n">Tensor</span><span class="p">,</span>
           <span class="n">length</span><span class="p">:</span><span class="n">Tensor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">State</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Focusing quadrupole transformation</span>
@@ -418,12 +428,12 @@
 <span class="sd">        momentum deviation</span>
 <span class="sd">    length: Tensor</span>
 <span class="sd">        length</span>
-<span class="sd">        </span>
+
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    State</span>
-<span class="sd">    </span>
-<span class="sd">    &quot;&quot;&quot;</span>        
+
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">knobs</span><span class="p">:</span> <span class="n">Knobs</span> <span class="o">=</span> <span class="n">fquad_knobs</span><span class="p">(</span><span class="n">kn</span><span class="p">,</span> <span class="n">dp</span><span class="p">,</span> <span class="n">length</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">fquad_track</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">knobs</span><span class="p">)</span></div>
 
@@ -445,7 +455,7 @@
     <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span><span class="n">qxqx</span><span class="p">,</span> <span class="n">qxpx</span><span class="p">,</span> <span class="n">pxpx</span><span class="p">,</span> <span class="n">pxqx</span><span class="p">,</span> <span class="n">qyqy</span><span class="p">,</span> <span class="n">qypy</span><span class="p">,</span> <span class="n">pypy</span><span class="p">,</span> <span class="n">pyqy</span><span class="p">])</span>
 
 
-<span class="k">def</span> <span class="nf">fquad_track</span><span class="p">(</span><span class="n">state</span><span class="p">:</span><span class="n">State</span><span class="p">,</span> <span class="n">knobs</span><span class="p">:</span><span class="n">Knobs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">State</span><span class="p">:</span>      
+<span class="k">def</span> <span class="nf">fquad_track</span><span class="p">(</span><span class="n">state</span><span class="p">:</span><span class="n">State</span><span class="p">,</span> <span class="n">knobs</span><span class="p">:</span><span class="n">Knobs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">State</span><span class="p">:</span>
     <span class="n">qxqx</span><span class="p">,</span> <span class="n">qxpx</span><span class="p">,</span> <span class="n">pxpx</span><span class="p">,</span> <span class="n">pxqx</span><span class="p">,</span> <span class="n">qyqy</span><span class="p">,</span> <span class="n">qypy</span><span class="p">,</span> <span class="n">pypy</span><span class="p">,</span> <span class="n">pyqy</span><span class="p">,</span> <span class="o">*</span><span class="n">_</span> <span class="o">=</span> <span class="n">knobs</span>
     <span class="n">qx</span><span class="p">,</span> <span class="n">px</span><span class="p">,</span> <span class="n">qy</span><span class="p">,</span> <span class="n">py</span> <span class="o">=</span> <span class="n">state</span>
     <span class="n">Qx</span> <span class="o">=</span> <span class="n">qx</span><span class="o">*</span><span class="n">qxqx</span> <span class="o">+</span> <span class="n">px</span><span class="o">*</span><span class="n">qxpx</span>
@@ -457,9 +467,9 @@
 
 <div class="viewcode-block" id="dquad">
 <a class="viewcode-back" href="../../../modules/transformations.html#model.library.transformations.dquad">[docs]</a>
-<span class="k">def</span> <span class="nf">dquad</span><span class="p">(</span><span class="n">state</span><span class="p">:</span><span class="n">State</span><span class="p">,</span> 
-          <span class="n">kn</span><span class="p">:</span><span class="n">Tensor</span><span class="p">,</span> 
-          <span class="n">dp</span><span class="p">:</span><span class="n">Tensor</span><span class="p">,</span> 
+<span class="k">def</span> <span class="nf">dquad</span><span class="p">(</span><span class="n">state</span><span class="p">:</span><span class="n">State</span><span class="p">,</span>
+          <span class="n">kn</span><span class="p">:</span><span class="n">Tensor</span><span class="p">,</span>
+          <span class="n">dp</span><span class="p">:</span><span class="n">Tensor</span><span class="p">,</span>
           <span class="n">length</span><span class="p">:</span><span class="n">Tensor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">State</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Defocusing quadrupole transformation</span>
@@ -474,18 +484,18 @@
 <span class="sd">        momentum deviation</span>
 <span class="sd">    length: Tensor</span>
 <span class="sd">        length</span>
-<span class="sd">        </span>
+
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    State</span>
-<span class="sd">    </span>
-<span class="sd">    &quot;&quot;&quot;</span>        
+
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">knobs</span><span class="p">:</span> <span class="n">Knobs</span> <span class="o">=</span> <span class="n">dquad_knobs</span><span class="p">(</span><span class="n">kn</span><span class="p">,</span> <span class="n">dp</span><span class="p">,</span> <span class="n">length</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">dquad_track</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">knobs</span><span class="p">)</span></div>
 
 
 
-<span class="k">def</span> <span class="nf">dquad_knobs</span><span class="p">(</span><span class="n">kn</span><span class="p">:</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">dp</span><span class="p">:</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">length</span><span class="p">:</span><span class="n">Tensor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Knobs</span><span class="p">:</span>  
+<span class="k">def</span> <span class="nf">dquad_knobs</span><span class="p">(</span><span class="n">kn</span><span class="p">:</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">dp</span><span class="p">:</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">length</span><span class="p">:</span><span class="n">Tensor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Knobs</span><span class="p">:</span>
     <span class="n">dw</span> <span class="o">=</span> <span class="n">length</span><span class="o">*</span><span class="p">(</span><span class="n">kn</span><span class="o">/</span><span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">dp</span><span class="p">))</span><span class="o">.</span><span class="n">sqrt</span><span class="p">()</span>
     <span class="n">kp</span> <span class="o">=</span> <span class="p">(</span><span class="n">kn</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">dp</span><span class="p">))</span><span class="o">.</span><span class="n">sqrt</span><span class="p">()</span>
     <span class="n">cos</span><span class="p">,</span> <span class="n">cosh</span> <span class="o">=</span> <span class="n">dw</span><span class="o">.</span><span class="n">cos</span><span class="p">(),</span> <span class="n">dw</span><span class="o">.</span><span class="n">cosh</span><span class="p">()</span>
@@ -513,10 +523,10 @@
 
 <div class="viewcode-block" id="quadrupole">
 <a class="viewcode-back" href="../../../modules/transformations.html#model.library.transformations.quadrupole">[docs]</a>
-<span class="k">def</span> <span class="nf">quadrupole</span><span class="p">(</span><span class="n">state</span><span class="p">:</span><span class="n">State</span><span class="p">,</span> 
-               <span class="n">kn</span><span class="p">:</span><span class="n">Tensor</span><span class="p">,</span> 
-               <span class="n">ks</span><span class="p">:</span><span class="n">Tensor</span><span class="p">,</span> 
-               <span class="n">dp</span><span class="p">:</span><span class="n">Tensor</span><span class="p">,</span> 
+<span class="k">def</span> <span class="nf">quadrupole</span><span class="p">(</span><span class="n">state</span><span class="p">:</span><span class="n">State</span><span class="p">,</span>
+               <span class="n">kn</span><span class="p">:</span><span class="n">Tensor</span><span class="p">,</span>
+               <span class="n">ks</span><span class="p">:</span><span class="n">Tensor</span><span class="p">,</span>
+               <span class="n">dp</span><span class="p">:</span><span class="n">Tensor</span><span class="p">,</span>
                <span class="n">length</span><span class="p">:</span><span class="n">Tensor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">State</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Generic quadrupole transformation</span>
@@ -530,26 +540,26 @@
 <span class="sd">    kn: Tensor</span>
 <span class="sd">        normal quadrupole strength</span>
 <span class="sd">    ks: Tensor</span>
-<span class="sd">        skew quadrupole strength   </span>
+<span class="sd">        skew quadrupole strength</span>
 <span class="sd">    dp: Tensor</span>
 <span class="sd">        momentum deviation</span>
 <span class="sd">    length: Tensor</span>
 <span class="sd">        length</span>
-<span class="sd">        </span>
+
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    State</span>
-<span class="sd">    </span>
-<span class="sd">    &quot;&quot;&quot;</span>   
+
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">knobs</span><span class="p">:</span> <span class="n">Knobs</span> <span class="o">=</span> <span class="n">quadrupole_knobs</span><span class="p">(</span><span class="n">kn</span><span class="p">,</span> <span class="n">ks</span><span class="p">,</span> <span class="n">dp</span><span class="p">,</span> <span class="n">length</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">quadrupole_track</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">knobs</span><span class="p">)</span></div>
 
 
 
-<span class="k">def</span> <span class="nf">quadrupole_knobs</span><span class="p">(</span><span class="n">kn</span><span class="p">:</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">ks</span><span class="p">:</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">dp</span><span class="p">:</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">length</span><span class="p">:</span><span class="n">Tensor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Knobs</span><span class="p">:</span>    
+<span class="k">def</span> <span class="nf">quadrupole_knobs</span><span class="p">(</span><span class="n">kn</span><span class="p">:</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">ks</span><span class="p">:</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">dp</span><span class="p">:</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">length</span><span class="p">:</span><span class="n">Tensor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Knobs</span><span class="p">:</span>
     <span class="n">kq</span> <span class="o">=</span> <span class="p">(</span><span class="n">kn</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">ks</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">sqrt</span><span class="p">()</span>
     <span class="n">kp</span> <span class="o">=</span> <span class="p">(</span><span class="n">kq</span><span class="o">/</span><span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">dp</span><span class="p">))</span><span class="o">.</span><span class="n">sqrt</span><span class="p">()</span>
-    <span class="n">dw</span> <span class="o">=</span> <span class="n">kp</span><span class="o">*</span><span class="n">length</span>    
+    <span class="n">dw</span> <span class="o">=</span> <span class="n">kp</span><span class="o">*</span><span class="n">length</span>
     <span class="n">ka</span> <span class="o">=</span> <span class="n">kq</span> <span class="o">+</span> <span class="n">kn</span>
     <span class="n">kb</span> <span class="o">=</span> <span class="n">kq</span> <span class="o">-</span> <span class="n">kn</span>
     <span class="n">ka</span><span class="p">,</span> <span class="n">kb</span><span class="p">,</span> <span class="n">ks</span><span class="p">,</span> <span class="n">kp</span> <span class="o">=</span> <span class="n">ka</span><span class="o">/</span><span class="n">kq</span><span class="p">,</span> <span class="n">kb</span><span class="o">/</span><span class="n">kq</span><span class="p">,</span> <span class="n">ks</span><span class="o">/</span><span class="n">kq</span><span class="p">,</span> <span class="n">kp</span><span class="o">/</span><span class="n">kq</span>
@@ -571,14 +581,14 @@
     <span class="n">pypx</span> <span class="o">=</span> <span class="p">(</span><span class="n">cosh</span> <span class="o">-</span> <span class="n">cos</span><span class="p">)</span><span class="o">*</span><span class="n">ks</span>
     <span class="n">pyqy</span> <span class="o">=</span> <span class="p">(</span><span class="n">ka</span><span class="o">*</span><span class="n">sinh</span> <span class="o">-</span> <span class="n">kb</span><span class="o">*</span><span class="n">sin</span><span class="p">)</span><span class="o">/</span><span class="n">kp</span>
     <span class="n">pypy</span> <span class="o">=</span> <span class="p">(</span><span class="n">ka</span><span class="o">*</span><span class="n">cosh</span> <span class="o">+</span> <span class="n">kb</span><span class="o">*</span><span class="n">cos</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span><span class="n">qxqx</span><span class="p">,</span> <span class="n">qxpx</span><span class="p">,</span> <span class="n">qxqy</span><span class="p">,</span> <span class="n">qxpy</span><span class="p">,</span> 
-                        <span class="n">pxqx</span><span class="p">,</span> <span class="n">pxpx</span><span class="p">,</span> <span class="n">pxqy</span><span class="p">,</span> <span class="n">pxpy</span><span class="p">,</span> 
-                        <span class="n">qyqx</span><span class="p">,</span> <span class="n">qypx</span><span class="p">,</span> <span class="n">qyqy</span><span class="p">,</span> <span class="n">qypy</span><span class="p">,</span> 
+    <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span><span class="n">qxqx</span><span class="p">,</span> <span class="n">qxpx</span><span class="p">,</span> <span class="n">qxqy</span><span class="p">,</span> <span class="n">qxpy</span><span class="p">,</span>
+                        <span class="n">pxqx</span><span class="p">,</span> <span class="n">pxpx</span><span class="p">,</span> <span class="n">pxqy</span><span class="p">,</span> <span class="n">pxpy</span><span class="p">,</span>
+                        <span class="n">qyqx</span><span class="p">,</span> <span class="n">qypx</span><span class="p">,</span> <span class="n">qyqy</span><span class="p">,</span> <span class="n">qypy</span><span class="p">,</span>
                         <span class="n">pyqx</span><span class="p">,</span> <span class="n">pypx</span><span class="p">,</span> <span class="n">pyqy</span><span class="p">,</span> <span class="n">pypy</span><span class="p">])</span>
 
 
 
-<span class="k">def</span> <span class="nf">quadrupole_track</span><span class="p">(</span><span class="n">x</span><span class="p">:</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">knobs</span><span class="p">:</span><span class="n">Tensor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tensor</span><span class="p">:</span>       
+<span class="k">def</span> <span class="nf">quadrupole_track</span><span class="p">(</span><span class="n">x</span><span class="p">:</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">knobs</span><span class="p">:</span><span class="n">Tensor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tensor</span><span class="p">:</span>
     <span class="n">qx</span><span class="p">,</span> <span class="n">px</span><span class="p">,</span> <span class="n">qy</span><span class="p">,</span> <span class="n">py</span> <span class="o">=</span> <span class="mf">0.5</span><span class="o">*</span><span class="n">x</span>
     <span class="n">qxqx</span><span class="p">,</span> <span class="n">qxpx</span><span class="p">,</span> <span class="n">qxqy</span><span class="p">,</span> <span class="n">qxpy</span><span class="p">,</span> \
     <span class="n">pxqx</span><span class="p">,</span> <span class="n">pxpx</span><span class="p">,</span> <span class="n">pxqy</span><span class="p">,</span> <span class="n">pxpy</span><span class="p">,</span> \
@@ -593,8 +603,8 @@
 
 <div class="viewcode-block" id="linear">
 <a class="viewcode-back" href="../../../modules/transformations.html#model.library.transformations.linear">[docs]</a>
-<span class="k">def</span> <span class="nf">linear</span><span class="p">(</span><span class="n">state</span><span class="p">:</span><span class="n">State</span><span class="p">,</span> 
-           <span class="n">vector</span><span class="p">:</span><span class="n">Tensor</span><span class="p">,</span> 
+<span class="k">def</span> <span class="nf">linear</span><span class="p">(</span><span class="n">state</span><span class="p">:</span><span class="n">State</span><span class="p">,</span>
+           <span class="n">vector</span><span class="p">:</span><span class="n">Tensor</span><span class="p">,</span>
            <span class="n">matrix</span><span class="p">:</span><span class="n">Tensor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">State</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Generic linear transformation</span>
@@ -607,21 +617,21 @@
 <span class="sd">        constant vector (dispersion)</span>
 <span class="sd">    matrix: Tensor</span>
 <span class="sd">        matrix</span>
-<span class="sd">        </span>
+
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    State</span>
-<span class="sd">    </span>
-<span class="sd">    &quot;&quot;&quot;</span>       
+
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">vector</span> <span class="o">+</span> <span class="n">matrix</span> <span class="o">@</span> <span class="n">state</span></div>
 
 
 
 <div class="viewcode-block" id="gradient">
 <a class="viewcode-back" href="../../../modules/transformations.html#model.library.transformations.gradient">[docs]</a>
-<span class="k">def</span> <span class="nf">gradient</span><span class="p">(</span><span class="n">state</span><span class="p">:</span><span class="n">State</span><span class="p">,</span> 
-             <span class="n">kn</span><span class="p">:</span><span class="n">Tensor</span><span class="p">,</span> 
-             <span class="n">ks</span><span class="p">:</span><span class="n">Tensor</span><span class="p">,</span> 
+<span class="k">def</span> <span class="nf">gradient</span><span class="p">(</span><span class="n">state</span><span class="p">:</span><span class="n">State</span><span class="p">,</span>
+             <span class="n">kn</span><span class="p">:</span><span class="n">Tensor</span><span class="p">,</span>
+             <span class="n">ks</span><span class="p">:</span><span class="n">Tensor</span><span class="p">,</span>
              <span class="n">length</span><span class="p">:</span><span class="n">Tensor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">State</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Thin quadrupole transformation</span>
@@ -636,22 +646,22 @@
 <span class="sd">        skew strength</span>
 <span class="sd">    length: Tensor</span>
 <span class="sd">        length</span>
-<span class="sd">        </span>
+
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    State</span>
-<span class="sd">    </span>
-<span class="sd">    &quot;&quot;&quot;</span>     
+
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">knobs</span><span class="p">:</span> <span class="n">Knobs</span> <span class="o">=</span> <span class="n">gradient_knobs</span><span class="p">(</span><span class="n">kn</span><span class="p">,</span> <span class="n">ks</span><span class="p">,</span> <span class="n">length</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">gradient_track</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">knobs</span><span class="p">)</span>  </div>
+    <span class="k">return</span> <span class="n">gradient_track</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">knobs</span><span class="p">)</span></div>
 
 
 
-<span class="k">def</span> <span class="nf">gradient_knobs</span><span class="p">(</span><span class="n">kn</span><span class="p">:</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">ks</span><span class="p">:</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">length</span><span class="p">:</span><span class="n">Tensor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Knobs</span><span class="p">:</span>      
+<span class="k">def</span> <span class="nf">gradient_knobs</span><span class="p">(</span><span class="n">kn</span><span class="p">:</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">ks</span><span class="p">:</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">length</span><span class="p">:</span><span class="n">Tensor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Knobs</span><span class="p">:</span>
     <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span><span class="n">length</span><span class="o">*</span><span class="n">kn</span><span class="p">,</span> <span class="n">length</span><span class="o">*</span><span class="n">ks</span><span class="p">])</span>
 
 
-<span class="k">def</span> <span class="nf">gradient_track</span><span class="p">(</span><span class="n">state</span><span class="p">:</span><span class="n">State</span><span class="p">,</span> <span class="n">knobs</span><span class="p">:</span><span class="n">Knobs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">State</span><span class="p">:</span>       
+<span class="k">def</span> <span class="nf">gradient_track</span><span class="p">(</span><span class="n">state</span><span class="p">:</span><span class="n">State</span><span class="p">,</span> <span class="n">knobs</span><span class="p">:</span><span class="n">Knobs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">State</span><span class="p">:</span>
     <span class="n">kn</span><span class="p">,</span> <span class="n">ks</span><span class="p">,</span> <span class="o">*</span><span class="n">_</span> <span class="o">=</span> <span class="n">knobs</span>
     <span class="n">qx</span><span class="p">,</span> <span class="n">px</span><span class="p">,</span> <span class="n">qy</span><span class="p">,</span> <span class="n">py</span> <span class="o">=</span> <span class="n">state</span>
     <span class="n">Qx</span> <span class="o">=</span> <span class="n">qx</span>
@@ -663,8 +673,8 @@
 
 <div class="viewcode-block" id="sextupole">
 <a class="viewcode-back" href="../../../modules/transformations.html#model.library.transformations.sextupole">[docs]</a>
-<span class="k">def</span> <span class="nf">sextupole</span><span class="p">(</span><span class="n">state</span><span class="p">:</span><span class="n">State</span><span class="p">,</span> 
-              <span class="n">ks</span><span class="p">:</span><span class="n">Tensor</span><span class="p">,</span> 
+<span class="k">def</span> <span class="nf">sextupole</span><span class="p">(</span><span class="n">state</span><span class="p">:</span><span class="n">State</span><span class="p">,</span>
+              <span class="n">ks</span><span class="p">:</span><span class="n">Tensor</span><span class="p">,</span>
               <span class="n">length</span><span class="p">:</span><span class="n">Tensor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">State</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Thin sextupole transformation</span>
@@ -677,23 +687,23 @@
 <span class="sd">        strength</span>
 <span class="sd">    length: Tensor</span>
 <span class="sd">        length</span>
-<span class="sd">        </span>
+
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    State</span>
-<span class="sd">    </span>
-<span class="sd">    &quot;&quot;&quot;</span>     
+
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">knobs</span><span class="p">:</span> <span class="n">Knobs</span> <span class="o">=</span> <span class="n">sextupole_knobs</span><span class="p">(</span><span class="n">ks</span><span class="p">,</span> <span class="n">length</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">sextupole_track</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">knobs</span><span class="p">)</span>  </div>
+    <span class="k">return</span> <span class="n">sextupole_track</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">knobs</span><span class="p">)</span></div>
 
 
 
-<span class="k">def</span> <span class="nf">sextupole_knobs</span><span class="p">(</span><span class="n">ks</span><span class="p">:</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">length</span><span class="p">:</span><span class="n">Tensor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Knobs</span><span class="p">:</span>      
+<span class="k">def</span> <span class="nf">sextupole_knobs</span><span class="p">(</span><span class="n">ks</span><span class="p">:</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">length</span><span class="p">:</span><span class="n">Tensor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Knobs</span><span class="p">:</span>
     <span class="n">kl</span> <span class="o">=</span> <span class="n">ks</span><span class="o">*</span><span class="n">length</span>
     <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span><span class="n">kl</span><span class="o">/</span><span class="mf">2.0</span><span class="p">,</span> <span class="n">kl</span><span class="p">])</span>
 
 
-<span class="k">def</span> <span class="nf">sextupole_track</span><span class="p">(</span><span class="n">state</span><span class="p">:</span><span class="n">State</span><span class="p">,</span> <span class="n">knobs</span><span class="p">:</span><span class="n">Knobs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">State</span><span class="p">:</span>       
+<span class="k">def</span> <span class="nf">sextupole_track</span><span class="p">(</span><span class="n">state</span><span class="p">:</span><span class="n">State</span><span class="p">,</span> <span class="n">knobs</span><span class="p">:</span><span class="n">Knobs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">State</span><span class="p">:</span>
     <span class="n">kx</span><span class="p">,</span> <span class="n">ky</span><span class="p">,</span> <span class="o">*</span><span class="n">_</span> <span class="o">=</span> <span class="n">knobs</span>
     <span class="n">qx</span><span class="p">,</span> <span class="n">px</span><span class="p">,</span> <span class="n">qy</span><span class="p">,</span> <span class="n">py</span> <span class="o">=</span> <span class="n">state</span>
     <span class="n">Qx</span> <span class="o">=</span> <span class="n">qx</span>
@@ -705,8 +715,8 @@
 
 <div class="viewcode-block" id="octupole">
 <a class="viewcode-back" href="../../../modules/transformations.html#model.library.transformations.octupole">[docs]</a>
-<span class="k">def</span> <span class="nf">octupole</span><span class="p">(</span><span class="n">state</span><span class="p">:</span><span class="n">State</span><span class="p">,</span> 
-             <span class="n">ko</span><span class="p">:</span><span class="n">Tensor</span><span class="p">,</span> 
+<span class="k">def</span> <span class="nf">octupole</span><span class="p">(</span><span class="n">state</span><span class="p">:</span><span class="n">State</span><span class="p">,</span>
+             <span class="n">ko</span><span class="p">:</span><span class="n">Tensor</span><span class="p">,</span>
              <span class="n">length</span><span class="p">:</span><span class="n">Tensor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">State</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Thin octupole transformation</span>
@@ -719,23 +729,23 @@
 <span class="sd">        strength</span>
 <span class="sd">    length: Tensor</span>
 <span class="sd">        length</span>
-<span class="sd">        </span>
+
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    State</span>
-<span class="sd">    </span>
-<span class="sd">    &quot;&quot;&quot;</span>        
+
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">knobs</span><span class="p">:</span> <span class="n">Knobs</span> <span class="o">=</span> <span class="n">octupole_knobs</span><span class="p">(</span><span class="n">ko</span><span class="p">,</span> <span class="n">length</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">octupole_track</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">knobs</span><span class="p">)</span></div>
 
 
 
-<span class="k">def</span> <span class="nf">octupole_knobs</span><span class="p">(</span><span class="n">ko</span><span class="p">:</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">length</span><span class="p">:</span><span class="n">Tensor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Knobs</span><span class="p">:</span>        
+<span class="k">def</span> <span class="nf">octupole_knobs</span><span class="p">(</span><span class="n">ko</span><span class="p">:</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">length</span><span class="p">:</span><span class="n">Tensor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Knobs</span><span class="p">:</span>
     <span class="n">kl</span> <span class="o">=</span> <span class="n">ko</span><span class="o">*</span><span class="n">length</span>
     <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span><span class="o">-</span><span class="n">kl</span><span class="o">/</span><span class="mf">6.0</span><span class="p">])</span>
 
 
-<span class="k">def</span> <span class="nf">octupole_track</span><span class="p">(</span><span class="n">state</span><span class="p">:</span><span class="n">State</span><span class="p">,</span> <span class="n">knobs</span><span class="p">:</span><span class="n">Knobs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">State</span><span class="p">:</span>      
+<span class="k">def</span> <span class="nf">octupole_track</span><span class="p">(</span><span class="n">state</span><span class="p">:</span><span class="n">State</span><span class="p">,</span> <span class="n">knobs</span><span class="p">:</span><span class="n">Knobs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">State</span><span class="p">:</span>
     <span class="n">kl</span><span class="p">,</span> <span class="o">*</span><span class="n">_</span> <span class="o">=</span> <span class="n">knobs</span>
     <span class="n">qx</span><span class="p">,</span> <span class="n">px</span><span class="p">,</span> <span class="n">qy</span><span class="p">,</span> <span class="n">py</span> <span class="o">=</span> <span class="n">state</span>
     <span class="n">Qx</span> <span class="o">=</span> <span class="n">qx</span>
@@ -747,9 +757,9 @@
 
 <div class="viewcode-block" id="dipole">
 <a class="viewcode-back" href="../../../modules/transformations.html#model.library.transformations.dipole">[docs]</a>
-<span class="k">def</span> <span class="nf">dipole</span><span class="p">(</span><span class="n">state</span><span class="p">:</span><span class="n">State</span><span class="p">,</span> 
-           <span class="n">r</span><span class="p">:</span><span class="n">Tensor</span><span class="p">,</span> 
-           <span class="n">dp</span><span class="p">:</span><span class="n">Tensor</span><span class="p">,</span> 
+<span class="k">def</span> <span class="nf">dipole</span><span class="p">(</span><span class="n">state</span><span class="p">:</span><span class="n">State</span><span class="p">,</span>
+           <span class="n">r</span><span class="p">:</span><span class="n">Tensor</span><span class="p">,</span>
+           <span class="n">dp</span><span class="p">:</span><span class="n">Tensor</span><span class="p">,</span>
            <span class="n">length</span><span class="p">:</span><span class="n">Tensor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">State</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Dipole transformation</span>
@@ -761,15 +771,15 @@
 <span class="sd">    r: Tensor</span>
 <span class="sd">        bending radius</span>
 <span class="sd">    dp: Tensor</span>
-<span class="sd">        momentum deviation        </span>
+<span class="sd">        momentum deviation</span>
 <span class="sd">    length: Tensor</span>
 <span class="sd">        length</span>
-<span class="sd">        </span>
+
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    State</span>
-<span class="sd">    </span>
-<span class="sd">    &quot;&quot;&quot;</span>       
+
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">knobs</span><span class="p">:</span> <span class="n">Knobs</span> <span class="o">=</span> <span class="n">dipole_knobs</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">dp</span><span class="p">,</span> <span class="n">length</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">dipole_track</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">knobs</span><span class="p">)</span></div>
 
@@ -782,7 +792,7 @@
     <span class="n">sin</span> <span class="o">=</span> <span class="n">dw</span><span class="o">.</span><span class="n">sin</span><span class="p">()</span>
     <span class="n">qxcx</span> <span class="o">=</span> <span class="n">dp</span><span class="o">*</span><span class="n">r</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">cos</span><span class="p">)</span>
     <span class="n">qxqx</span> <span class="o">=</span> <span class="n">cos</span>
-    <span class="n">qxpx</span> <span class="o">=</span> <span class="n">r</span><span class="o">*</span><span class="n">sin</span><span class="o">/</span><span class="n">dq</span> 
+    <span class="n">qxpx</span> <span class="o">=</span> <span class="n">r</span><span class="o">*</span><span class="n">sin</span><span class="o">/</span><span class="n">dq</span>
     <span class="n">pxcx</span> <span class="o">=</span> <span class="n">dp</span><span class="o">*</span><span class="n">dq</span><span class="o">*</span><span class="n">sin</span>
     <span class="n">pxqx</span> <span class="o">=</span> <span class="o">-</span> <span class="n">dq</span><span class="o">*</span><span class="n">sin</span><span class="o">/</span><span class="n">r</span>
     <span class="n">pxpx</span> <span class="o">=</span> <span class="n">cos</span>
@@ -790,7 +800,7 @@
     <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span><span class="n">qxcx</span><span class="p">,</span> <span class="n">qxqx</span><span class="p">,</span> <span class="n">qxpx</span><span class="p">,</span> <span class="n">pxcx</span><span class="p">,</span> <span class="n">pxqx</span><span class="p">,</span> <span class="n">pxpx</span><span class="p">,</span> <span class="n">qypy</span><span class="p">])</span>
 
 
-<span class="k">def</span> <span class="nf">dipole_track</span><span class="p">(</span><span class="n">state</span><span class="p">:</span><span class="n">State</span><span class="p">,</span> <span class="n">knobs</span><span class="p">:</span><span class="n">Knobs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">State</span><span class="p">:</span>     
+<span class="k">def</span> <span class="nf">dipole_track</span><span class="p">(</span><span class="n">state</span><span class="p">:</span><span class="n">State</span><span class="p">,</span> <span class="n">knobs</span><span class="p">:</span><span class="n">Knobs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">State</span><span class="p">:</span>
     <span class="n">qxcx</span><span class="p">,</span> <span class="n">qxqx</span><span class="p">,</span> <span class="n">qxpx</span><span class="p">,</span> <span class="n">pxcx</span><span class="p">,</span> <span class="n">pxqx</span><span class="p">,</span> <span class="n">pxpx</span><span class="p">,</span> <span class="n">qypy</span><span class="p">,</span> <span class="o">*</span><span class="n">_</span> <span class="o">=</span> <span class="n">knobs</span>
     <span class="n">qx</span><span class="p">,</span> <span class="n">px</span><span class="p">,</span> <span class="n">qy</span><span class="p">,</span> <span class="n">py</span> <span class="o">=</span> <span class="n">state</span>
     <span class="n">Qx</span> <span class="o">=</span> <span class="n">qxcx</span> <span class="o">+</span> <span class="n">qx</span><span class="o">*</span><span class="n">qxqx</span> <span class="o">+</span> <span class="n">px</span><span class="o">*</span><span class="n">qxpx</span>
@@ -802,11 +812,11 @@
 
 <div class="viewcode-block" id="bend">
 <a class="viewcode-back" href="../../../modules/transformations.html#model.library.transformations.bend">[docs]</a>
-<span class="k">def</span> <span class="nf">bend</span><span class="p">(</span><span class="n">state</span><span class="p">:</span><span class="n">State</span><span class="p">,</span> 
-         <span class="n">r</span><span class="p">:</span><span class="n">Tensor</span><span class="p">,</span> 
-         <span class="n">kn</span><span class="p">:</span><span class="n">Tensor</span><span class="p">,</span> 
-         <span class="n">ks</span><span class="p">:</span><span class="n">Tensor</span><span class="p">,</span> 
-         <span class="n">dp</span><span class="p">:</span><span class="n">Tensor</span><span class="p">,</span> 
+<span class="k">def</span> <span class="nf">bend</span><span class="p">(</span><span class="n">state</span><span class="p">:</span><span class="n">State</span><span class="p">,</span>
+         <span class="n">r</span><span class="p">:</span><span class="n">Tensor</span><span class="p">,</span>
+         <span class="n">kn</span><span class="p">:</span><span class="n">Tensor</span><span class="p">,</span>
+         <span class="n">ks</span><span class="p">:</span><span class="n">Tensor</span><span class="p">,</span>
+         <span class="n">dp</span><span class="p">:</span><span class="n">Tensor</span><span class="p">,</span>
          <span class="n">length</span><span class="p">:</span><span class="n">Tensor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">State</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Combined function bend transformation</span>
@@ -822,17 +832,17 @@
 <span class="sd">    kn: Tensor</span>
 <span class="sd">        normal quadrupole strength</span>
 <span class="sd">    ks: Tensor</span>
-<span class="sd">        skew quadrupole strength           </span>
+<span class="sd">        skew quadrupole strength</span>
 <span class="sd">    dp: Tensor</span>
-<span class="sd">        momentum deviation        </span>
+<span class="sd">        momentum deviation</span>
 <span class="sd">    length: Tensor</span>
 <span class="sd">        length</span>
-<span class="sd">        </span>
+
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    State</span>
-<span class="sd">    </span>
-<span class="sd">    &quot;&quot;&quot;</span>       
+
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">knobs</span><span class="p">:</span> <span class="n">Knobs</span> <span class="o">=</span> <span class="n">bend_knobs</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">kn</span><span class="p">,</span> <span class="n">ks</span><span class="p">,</span> <span class="n">dp</span><span class="p">,</span> <span class="n">length</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">bend_track</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">knobs</span><span class="p">)</span></div>
 
@@ -857,9 +867,9 @@
     <span class="n">kx</span> <span class="o">=</span> <span class="n">krb</span><span class="o">**</span><span class="mi">2</span><span class="o">*</span><span class="n">kn</span> <span class="o">+</span> <span class="mi">2</span><span class="o">*</span><span class="n">kq</span>
     <span class="n">ky</span> <span class="o">=</span> <span class="n">kn</span> <span class="o">-</span> <span class="mi">2</span><span class="o">*</span><span class="n">kq</span> <span class="o">+</span> <span class="n">kn</span><span class="o">*</span><span class="n">kr</span>
     <span class="n">cos</span><span class="p">,</span> <span class="n">cosh</span> <span class="o">=</span> <span class="n">wa</span><span class="o">.</span><span class="n">cos</span><span class="p">(),</span> <span class="n">wb</span><span class="o">.</span><span class="n">cosh</span><span class="p">()</span>
-    <span class="n">sin</span><span class="p">,</span> <span class="n">sinh</span> <span class="o">=</span> <span class="n">wa</span><span class="o">.</span><span class="n">sin</span><span class="p">(),</span> <span class="n">wb</span><span class="o">.</span><span class="n">sinh</span><span class="p">()</span>    
+    <span class="n">sin</span><span class="p">,</span> <span class="n">sinh</span> <span class="o">=</span> <span class="n">wa</span><span class="o">.</span><span class="n">sin</span><span class="p">(),</span> <span class="n">wb</span><span class="o">.</span><span class="n">sinh</span><span class="p">()</span>
     <span class="n">qxcx</span> <span class="o">=</span> <span class="n">dp</span><span class="o">*</span><span class="n">r</span><span class="o">/</span><span class="n">kq</span><span class="o">*</span><span class="p">(</span><span class="n">kn</span> <span class="o">-</span> <span class="p">(</span><span class="n">kx</span><span class="o">*</span><span class="n">cos</span> <span class="o">+</span> <span class="n">ky</span><span class="o">*</span><span class="n">cosh</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">kr</span><span class="p">))</span>
-    <span class="n">pxcx</span> <span class="o">=</span> <span class="n">dp</span><span class="o">*</span><span class="n">dpsq</span><span class="o">/</span><span class="p">(</span><span class="mi">4</span><span class="o">*</span><span class="n">kq</span><span class="o">*</span><span class="n">kr</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">kra</span><span class="o">*</span><span class="n">kx</span><span class="o">*</span><span class="n">sin</span> <span class="o">-</span> <span class="n">krb</span><span class="o">*</span><span class="n">ky</span><span class="o">*</span><span class="n">sinh</span><span class="p">)</span>    
+    <span class="n">pxcx</span> <span class="o">=</span> <span class="n">dp</span><span class="o">*</span><span class="n">dpsq</span><span class="o">/</span><span class="p">(</span><span class="mi">4</span><span class="o">*</span><span class="n">kq</span><span class="o">*</span><span class="n">kr</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">kra</span><span class="o">*</span><span class="n">kx</span><span class="o">*</span><span class="n">sin</span> <span class="o">-</span> <span class="n">krb</span><span class="o">*</span><span class="n">ky</span><span class="o">*</span><span class="n">sinh</span><span class="p">)</span>
     <span class="n">qycy</span> <span class="o">=</span> <span class="n">dp</span><span class="o">*</span><span class="n">kskr</span><span class="o">*</span><span class="n">r</span><span class="o">/</span><span class="n">kq</span><span class="o">*</span><span class="p">(</span><span class="o">-</span><span class="n">kr</span> <span class="o">+</span> <span class="n">krb</span><span class="o">**</span><span class="mi">2</span><span class="o">*</span><span class="n">cos</span><span class="o">/</span><span class="mi">2</span> <span class="o">+</span> <span class="n">kra</span><span class="o">**</span><span class="mi">2</span><span class="o">*</span><span class="n">cosh</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span>
     <span class="n">pycy</span> <span class="o">=</span> <span class="n">dp</span><span class="o">*</span><span class="n">kskr</span><span class="o">*</span><span class="n">dpsq</span><span class="o">*</span><span class="n">kra</span><span class="o">*</span><span class="n">krb</span><span class="o">/</span><span class="p">(</span><span class="mi">4</span><span class="o">*</span><span class="n">kq</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">kra</span><span class="o">*</span><span class="n">sinh</span> <span class="o">-</span> <span class="n">krb</span><span class="o">*</span><span class="n">sin</span><span class="p">)</span>
     <span class="n">qxqx</span> <span class="o">=</span> <span class="p">(</span><span class="n">kakr</span><span class="o">*</span><span class="n">cos</span> <span class="o">+</span> <span class="n">kbkr</span><span class="o">*</span><span class="n">cosh</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span>
@@ -869,22 +879,22 @@
     <span class="n">pxqx</span> <span class="o">=</span> <span class="p">(</span><span class="n">kbkr</span><span class="o">*</span><span class="n">sinh</span><span class="o">/</span><span class="n">qb</span> <span class="o">-</span> <span class="n">kakr</span><span class="o">*</span><span class="n">sin</span><span class="o">/</span><span class="n">qa</span><span class="p">)</span><span class="o">/</span><span class="mi">4</span>
     <span class="n">pxpx</span> <span class="o">=</span> <span class="p">(</span><span class="n">kakr</span><span class="o">*</span><span class="n">cos</span> <span class="o">+</span> <span class="n">kbkr</span><span class="o">*</span><span class="n">cosh</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span>
     <span class="n">pxqy</span> <span class="o">=</span> <span class="p">(</span><span class="n">ksdr</span><span class="o">*</span><span class="p">(</span><span class="n">qb</span><span class="o">*</span><span class="n">sin</span> <span class="o">+</span> <span class="n">qa</span><span class="o">*</span><span class="n">sinh</span><span class="p">))</span><span class="o">/</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">qa</span><span class="o">*</span><span class="n">qb</span><span class="p">)</span>
-    <span class="n">pxpy</span> <span class="o">=</span> <span class="p">(</span><span class="n">ksdr</span><span class="o">*</span><span class="p">(</span><span class="o">-</span><span class="n">cos</span> <span class="o">+</span> <span class="n">cosh</span><span class="p">))</span>    
+    <span class="n">pxpy</span> <span class="o">=</span> <span class="p">(</span><span class="n">ksdr</span><span class="o">*</span><span class="p">(</span><span class="o">-</span><span class="n">cos</span> <span class="o">+</span> <span class="n">cosh</span><span class="p">))</span>
     <span class="n">qyqx</span> <span class="o">=</span> <span class="p">(</span><span class="n">ksdr</span><span class="o">*</span><span class="p">(</span><span class="n">cosh</span> <span class="o">-</span> <span class="n">cos</span><span class="p">))</span>
     <span class="n">qypx</span> <span class="o">=</span> <span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">ksdr</span><span class="o">*</span><span class="p">(</span><span class="n">qb</span><span class="o">*</span><span class="n">sinh</span><span class="o">-</span> <span class="n">qa</span><span class="o">*</span><span class="n">sin</span><span class="p">))</span>
     <span class="n">qyqy</span> <span class="o">=</span> <span class="p">(</span><span class="n">kbkr</span><span class="o">*</span><span class="n">cos</span> <span class="o">+</span> <span class="n">kakr</span><span class="o">*</span><span class="n">cosh</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span>
-    <span class="n">qypy</span> <span class="o">=</span> <span class="p">(</span><span class="n">kbkr</span><span class="o">*</span><span class="n">qa</span><span class="o">*</span><span class="n">sin</span> <span class="o">+</span> <span class="n">kakr</span><span class="o">*</span><span class="n">qb</span><span class="o">*</span><span class="n">sinh</span><span class="p">)</span>    
+    <span class="n">qypy</span> <span class="o">=</span> <span class="p">(</span><span class="n">kbkr</span><span class="o">*</span><span class="n">qa</span><span class="o">*</span><span class="n">sin</span> <span class="o">+</span> <span class="n">kakr</span><span class="o">*</span><span class="n">qb</span><span class="o">*</span><span class="n">sinh</span><span class="p">)</span>
     <span class="n">pyqx</span> <span class="o">=</span> <span class="p">(</span><span class="n">ksdr</span><span class="o">*</span><span class="p">(</span><span class="n">qb</span><span class="o">*</span><span class="n">sin</span> <span class="o">+</span> <span class="n">qa</span><span class="o">*</span><span class="n">sinh</span><span class="p">))</span><span class="o">/</span><span class="p">(</span><span class="mf">2.</span><span class="o">*</span><span class="n">qa</span><span class="o">*</span><span class="n">qb</span><span class="p">)</span>
     <span class="n">pypx</span> <span class="o">=</span> <span class="p">(</span><span class="n">ksdr</span><span class="o">*</span><span class="p">(</span><span class="n">cosh</span> <span class="o">-</span> <span class="n">cos</span><span class="p">))</span>
     <span class="n">pyqy</span> <span class="o">=</span> <span class="p">(</span><span class="n">kakr</span><span class="o">*</span><span class="n">sinh</span><span class="o">/</span><span class="n">qb</span> <span class="o">-</span> <span class="n">kbkr</span><span class="o">*</span><span class="n">sin</span><span class="o">/</span><span class="n">qa</span><span class="p">)</span><span class="o">/</span><span class="mi">4</span>
     <span class="n">pypy</span> <span class="o">=</span> <span class="p">(</span><span class="n">kbkr</span><span class="o">*</span><span class="n">cos</span> <span class="o">+</span> <span class="n">kakr</span><span class="o">*</span><span class="n">cosh</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span>
-    <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span><span class="n">qxcx</span><span class="p">,</span> <span class="n">qxqx</span><span class="p">,</span> <span class="n">qxpx</span><span class="p">,</span> <span class="n">qxqy</span><span class="p">,</span> <span class="n">qxpy</span><span class="p">,</span> 
-                        <span class="n">pxcx</span><span class="p">,</span> <span class="n">pxqx</span><span class="p">,</span> <span class="n">pxpx</span><span class="p">,</span> <span class="n">pxqy</span><span class="p">,</span> <span class="n">pxpy</span><span class="p">,</span> 
-                        <span class="n">qycy</span><span class="p">,</span> <span class="n">qyqx</span><span class="p">,</span> <span class="n">qypx</span><span class="p">,</span> <span class="n">qyqy</span><span class="p">,</span> <span class="n">qypy</span><span class="p">,</span> 
+    <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span><span class="n">qxcx</span><span class="p">,</span> <span class="n">qxqx</span><span class="p">,</span> <span class="n">qxpx</span><span class="p">,</span> <span class="n">qxqy</span><span class="p">,</span> <span class="n">qxpy</span><span class="p">,</span>
+                        <span class="n">pxcx</span><span class="p">,</span> <span class="n">pxqx</span><span class="p">,</span> <span class="n">pxpx</span><span class="p">,</span> <span class="n">pxqy</span><span class="p">,</span> <span class="n">pxpy</span><span class="p">,</span>
+                        <span class="n">qycy</span><span class="p">,</span> <span class="n">qyqx</span><span class="p">,</span> <span class="n">qypx</span><span class="p">,</span> <span class="n">qyqy</span><span class="p">,</span> <span class="n">qypy</span><span class="p">,</span>
                         <span class="n">pycy</span><span class="p">,</span> <span class="n">pyqx</span><span class="p">,</span> <span class="n">pypx</span><span class="p">,</span> <span class="n">pyqy</span><span class="p">,</span> <span class="n">pypy</span><span class="p">])</span>
 
 
-<span class="k">def</span> <span class="nf">bend_track</span><span class="p">(</span><span class="n">state</span><span class="p">:</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">knobs</span><span class="p">:</span><span class="n">Tensor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tensor</span><span class="p">:</span>      
+<span class="k">def</span> <span class="nf">bend_track</span><span class="p">(</span><span class="n">state</span><span class="p">:</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">knobs</span><span class="p">:</span><span class="n">Tensor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tensor</span><span class="p">:</span>
     <span class="n">qx</span><span class="p">,</span> <span class="n">px</span><span class="p">,</span> <span class="n">qy</span><span class="p">,</span> <span class="n">py</span> <span class="o">=</span> <span class="n">state</span>
     <span class="n">qxcx</span><span class="p">,</span> <span class="n">qxqx</span><span class="p">,</span> <span class="n">qxpx</span><span class="p">,</span> <span class="n">qxqy</span><span class="p">,</span> <span class="n">qxpy</span><span class="p">,</span> \
     <span class="n">pxcx</span><span class="p">,</span> <span class="n">pxqx</span><span class="p">,</span> <span class="n">pxpx</span><span class="p">,</span> <span class="n">pxqy</span><span class="p">,</span> <span class="n">pxpy</span><span class="p">,</span> \
@@ -900,11 +910,11 @@
 <div class="viewcode-block" id="wedge">
 <a class="viewcode-back" href="../../../modules/transformations.html#model.library.transformations.wedge">[docs]</a>
 <span class="k">def</span> <span class="nf">wedge</span><span class="p">(</span><span class="n">state</span><span class="p">:</span><span class="n">State</span><span class="p">,</span>
-          <span class="n">epsilon</span><span class="p">:</span><span class="n">Tensor</span><span class="p">,</span> 
+          <span class="n">epsilon</span><span class="p">:</span><span class="n">Tensor</span><span class="p">,</span>
           <span class="n">r</span><span class="p">:</span><span class="n">Tensor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">State</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Dipole wedge transformation</span>
-<span class="sd">    </span>
+<span class="sd">    Dipole linear wedge transformation</span>
+
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    state: State</span>
@@ -913,12 +923,12 @@
 <span class="sd">        wedge angle</span>
 <span class="sd">    r: Tensor</span>
 <span class="sd">        bending radius</span>
-<span class="sd">    </span>
+
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    State</span>
-<span class="sd">    </span>
-<span class="sd">    &quot;&quot;&quot;</span>      
+
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">knobs</span><span class="p">:</span> <span class="n">Knobs</span> <span class="o">=</span> <span class="n">wedge_knobs</span><span class="p">(</span><span class="n">epsilon</span><span class="p">,</span> <span class="n">r</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">wedge_track</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">knobs</span><span class="p">)</span></div>
 
@@ -928,7 +938,7 @@
     <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span><span class="n">epsilon</span><span class="o">.</span><span class="n">tan</span><span class="p">()</span><span class="o">/</span><span class="n">r</span><span class="p">])</span>
 
 
-<span class="k">def</span> <span class="nf">wedge_track</span><span class="p">(</span><span class="n">state</span><span class="p">:</span><span class="n">State</span><span class="p">,</span> <span class="n">knobs</span><span class="p">:</span><span class="n">Knobs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">State</span><span class="p">:</span>  
+<span class="k">def</span> <span class="nf">wedge_track</span><span class="p">(</span><span class="n">state</span><span class="p">:</span><span class="n">State</span><span class="p">,</span> <span class="n">knobs</span><span class="p">:</span><span class="n">Knobs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">State</span><span class="p">:</span>
     <span class="n">kw</span><span class="p">,</span> <span class="o">*</span><span class="n">_</span> <span class="o">=</span> <span class="n">knobs</span>
     <span class="n">qx</span><span class="p">,</span> <span class="n">px</span><span class="p">,</span> <span class="n">qy</span><span class="p">,</span> <span class="n">py</span> <span class="o">=</span> <span class="n">state</span>
     <span class="n">Qx</span> <span class="o">=</span> <span class="n">qx</span>
@@ -938,17 +948,237 @@
     <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span><span class="n">Qx</span><span class="p">,</span> <span class="n">Px</span><span class="p">,</span> <span class="n">Qy</span><span class="p">,</span> <span class="n">Py</span><span class="p">])</span>
 
 
-<div class="viewcode-block" id="multipole">
-<a class="viewcode-back" href="../../../modules/transformations.html#model.library.transformations.multipole">[docs]</a>
-<span class="k">def</span> <span class="nf">multipole</span><span class="p">(</span><span class="n">state</span><span class="p">:</span><span class="n">State</span><span class="p">,</span> 
-              <span class="n">r</span><span class="p">:</span><span class="n">Tensor</span><span class="p">,</span> 
-              <span class="n">kqn</span><span class="p">:</span><span class="n">Tensor</span><span class="p">,</span> 
-              <span class="n">kqs</span><span class="p">:</span><span class="n">Tensor</span><span class="p">,</span> 
-              <span class="n">ks</span><span class="p">:</span><span class="n">Tensor</span><span class="p">,</span> 
-              <span class="n">ko</span><span class="p">:</span><span class="n">Tensor</span><span class="p">,</span> 
-              <span class="n">length</span><span class="p">:</span><span class="n">Tensor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">State</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot; </span>
+<div class="viewcode-block" id="sector_bend">
+<a class="viewcode-back" href="../../../modules/transformations.html#model.library.transformations.sector_bend">[docs]</a>
+<span class="k">def</span> <span class="nf">sector_bend</span><span class="p">(</span><span class="n">state</span><span class="p">:</span><span class="n">State</span><span class="p">,</span> <span class="n">r</span><span class="p">:</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">dp</span><span class="p">:</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">length</span><span class="p">:</span><span class="n">Tensor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">State</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Exact sector bend body tranformation</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    state: State</span>
+<span class="sd">        initial state</span>
+<span class="sd">    r: Tensor</span>
+<span class="sd">        bending radius</span>
+<span class="sd">    dp: Tensor</span>
+<span class="sd">        momentum deviation</span>
+<span class="sd">    length: Tensor</span>
+<span class="sd">        length</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    State</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">qx</span><span class="p">,</span> <span class="n">px</span><span class="p">,</span> <span class="n">qy</span><span class="p">,</span> <span class="n">py</span> <span class="o">=</span> <span class="n">state</span>
+    <span class="n">dw</span> <span class="o">=</span> <span class="n">length</span><span class="o">/</span><span class="n">r</span>
+    <span class="n">cos</span> <span class="o">=</span> <span class="n">dw</span><span class="o">.</span><span class="n">cos</span><span class="p">()</span>
+    <span class="n">sin</span> <span class="o">=</span> <span class="n">dw</span><span class="o">.</span><span class="n">sin</span><span class="p">()</span>
+    <span class="n">pa</span> <span class="o">=</span> <span class="p">((</span><span class="mi">1</span> <span class="o">+</span> <span class="n">dp</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">-</span> <span class="n">px</span><span class="o">**</span><span class="mi">2</span> <span class="o">-</span> <span class="n">py</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">sqrt</span><span class="p">()</span>
+    <span class="n">pb</span> <span class="o">=</span> <span class="p">((</span><span class="mi">1</span> <span class="o">+</span> <span class="n">dp</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">-</span> <span class="n">py</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">sqrt</span><span class="p">()</span>
+    <span class="n">pc</span> <span class="o">=</span> <span class="p">(</span><span class="n">pa</span> <span class="o">-</span> <span class="p">(</span><span class="n">qx</span> <span class="o">+</span> <span class="n">r</span><span class="p">)</span><span class="o">/</span><span class="n">r</span><span class="p">)</span><span class="o">*</span><span class="n">sin</span>
+    <span class="n">pd</span> <span class="o">=</span> <span class="p">(</span><span class="n">px</span><span class="o">*</span><span class="n">cos</span> <span class="o">+</span> <span class="n">pc</span><span class="p">)</span>
+    <span class="n">Qx</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="n">r</span> <span class="o">+</span> <span class="p">(</span><span class="n">qx</span> <span class="o">+</span> <span class="n">r</span> <span class="o">-</span> <span class="n">pa</span><span class="o">*</span><span class="n">r</span><span class="p">)</span><span class="o">*</span><span class="n">cos</span> <span class="o">+</span> <span class="n">r</span><span class="o">*</span><span class="p">(</span><span class="n">px</span><span class="o">*</span><span class="n">sin</span> <span class="o">+</span> <span class="p">(</span><span class="n">pb</span><span class="o">**</span><span class="mi">2</span> <span class="o">-</span> <span class="n">pd</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">sqrt</span><span class="p">()))</span>
+    <span class="n">Px</span> <span class="o">=</span> <span class="n">pd</span>
+    <span class="n">Qy</span> <span class="o">=</span> <span class="p">(</span><span class="n">qy</span> <span class="o">+</span> <span class="n">py</span><span class="o">*</span><span class="p">(</span><span class="n">length</span> <span class="o">+</span> <span class="n">r</span><span class="o">*</span><span class="p">((</span><span class="n">px</span><span class="o">/</span><span class="n">pb</span><span class="p">)</span><span class="o">.</span><span class="n">asin</span><span class="p">()</span> <span class="o">-</span> <span class="p">(</span><span class="n">pd</span><span class="o">/</span><span class="n">pb</span><span class="p">)</span><span class="o">.</span><span class="n">asin</span><span class="p">())))</span>
+    <span class="n">Py</span> <span class="o">=</span> <span class="n">py</span>
+    <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span><span class="n">Qx</span><span class="p">,</span> <span class="n">Px</span><span class="p">,</span> <span class="n">Qy</span><span class="p">,</span> <span class="n">Py</span><span class="p">])</span></div>
+
+
+
+<div class="viewcode-block" id="sector_bend_fringe">
+<a class="viewcode-back" href="../../../modules/transformations.html#model.library.transformations.sector_bend_fringe">[docs]</a>
+<span class="k">def</span> <span class="nf">sector_bend_fringe</span><span class="p">(</span><span class="n">state</span><span class="p">:</span><span class="n">State</span><span class="p">,</span> <span class="n">r</span><span class="p">:</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">dp</span><span class="p">:</span><span class="n">Tensor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">State</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Sector bend fringe transformation</span>
+
+<span class="sd">    sector_bend_fringe(state, +r, dp) - entrance fringe</span>
+<span class="sd">    sector_bend_fringe(state, -r, dp) - exit fringe</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    state: State</span>
+<span class="sd">        initial state</span>
+<span class="sd">    r: Tensor</span>
+<span class="sd">        bending radius</span>
+<span class="sd">    dp: Tensor</span>
+<span class="sd">        momentum deviation</span>
+<span class="sd">    length: Tensor</span>
+<span class="sd">        length</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    State</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">qx</span><span class="p">,</span> <span class="n">px</span><span class="p">,</span> <span class="n">qy</span><span class="p">,</span> <span class="n">py</span> <span class="o">=</span> <span class="n">state</span>
+    <span class="n">pa</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">dp</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span>
+    <span class="n">pb</span> <span class="o">=</span> <span class="p">(</span><span class="n">pa</span> <span class="o">-</span> <span class="n">px</span><span class="o">**</span><span class="mi">2</span> <span class="o">-</span> <span class="n">py</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">sqrt</span><span class="p">()</span>
+    <span class="n">pc</span> <span class="o">=</span> <span class="o">-</span><span class="p">(</span><span class="n">pa</span> <span class="o">-</span> <span class="n">px</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">pd</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">px</span><span class="o">*</span><span class="n">py</span><span class="o">*</span><span class="n">qy</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="n">pc</span><span class="o">*</span><span class="n">pb</span><span class="o">*</span><span class="n">r</span><span class="p">))</span><span class="o">.</span><span class="n">sqrt</span><span class="p">()</span>
+    <span class="n">Qx</span> <span class="o">=</span> <span class="p">(</span><span class="n">qx</span> <span class="o">-</span> <span class="mi">2</span><span class="o">*</span><span class="p">(</span><span class="n">pa</span><span class="o">**</span><span class="mi">2</span><span class="o">*</span><span class="p">(</span><span class="n">py</span><span class="o">**</span><span class="mi">2</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="n">px</span><span class="o">**</span><span class="mi">2</span><span class="o">*</span><span class="p">(</span><span class="n">pa</span> <span class="o">+</span> <span class="n">py</span><span class="o">**</span><span class="mi">2</span><span class="p">))</span><span class="o">*</span><span class="n">qy</span><span class="o">**</span><span class="mi">2</span><span class="o">/</span><span class="p">(</span><span class="n">pc</span><span class="o">**</span><span class="mi">2</span><span class="o">*</span><span class="n">pb</span><span class="o">*</span><span class="n">pd</span><span class="o">**</span><span class="mi">2</span><span class="o">*</span><span class="n">r</span><span class="p">))</span>
+    <span class="n">Px</span> <span class="o">=</span> <span class="n">px</span>
+    <span class="n">Qy</span> <span class="o">=</span> <span class="mi">2</span><span class="o">*</span><span class="n">qy</span><span class="o">/</span><span class="n">pd</span>
+    <span class="n">Py</span> <span class="o">=</span> <span class="n">py</span> <span class="o">+</span> <span class="mi">2</span><span class="o">*</span><span class="n">px</span><span class="o">*</span><span class="n">pb</span><span class="o">*</span><span class="n">qy</span><span class="o">/</span><span class="p">(</span><span class="n">r</span><span class="o">*</span><span class="n">pc</span><span class="o">*</span><span class="n">pd</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span><span class="n">Qx</span><span class="p">,</span> <span class="n">Px</span><span class="p">,</span> <span class="n">Qy</span><span class="p">,</span> <span class="n">Py</span><span class="p">])</span></div>
+
+
+
+<div class="viewcode-block" id="sector_bend_wedge">
+<a class="viewcode-back" href="../../../modules/transformations.html#model.library.transformations.sector_bend_wedge">[docs]</a>
+<span class="k">def</span> <span class="nf">sector_bend_wedge</span><span class="p">(</span><span class="n">state</span><span class="p">:</span><span class="n">State</span><span class="p">,</span> <span class="n">w</span><span class="p">:</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">r</span><span class="p">:</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">dp</span><span class="p">:</span><span class="n">Tensor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tensor</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Sector bend wedge transformation</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    state: State</span>
+<span class="sd">        initial state</span>
+<span class="sd">    w: Tensor</span>
+<span class="sd">        wegde angle</span>
+<span class="sd">    r: Tensor</span>
+<span class="sd">        bending radius</span>
+<span class="sd">    dp: Tensor</span>
+<span class="sd">        momentum deviation</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    State</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">qx</span><span class="p">,</span> <span class="n">px</span><span class="p">,</span> <span class="n">qy</span><span class="p">,</span> <span class="n">py</span> <span class="o">=</span> <span class="n">state</span>
+    <span class="n">cos</span> <span class="o">=</span> <span class="n">w</span><span class="o">.</span><span class="n">cos</span><span class="p">()</span>
+    <span class="n">sin</span> <span class="o">=</span> <span class="n">w</span><span class="o">.</span><span class="n">sin</span><span class="p">()</span>
+    <span class="n">pa</span> <span class="o">=</span> <span class="p">((</span><span class="mi">1</span> <span class="o">+</span> <span class="n">dp</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">-</span> <span class="n">px</span><span class="o">**</span><span class="mi">2</span> <span class="o">-</span> <span class="n">py</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">sqrt</span><span class="p">()</span>
+    <span class="n">pb</span> <span class="o">=</span> <span class="p">((</span><span class="mi">1</span> <span class="o">+</span> <span class="n">dp</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">-</span> <span class="n">py</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">sqrt</span><span class="p">()</span>
+    <span class="n">pc</span> <span class="o">=</span> <span class="p">(</span><span class="n">pa</span> <span class="o">-</span> <span class="n">qx</span><span class="o">/</span><span class="n">r</span><span class="p">)</span>
+    <span class="n">pd</span> <span class="o">=</span> <span class="p">(</span><span class="n">px</span><span class="o">*</span><span class="n">cos</span> <span class="o">+</span> <span class="n">pc</span><span class="o">*</span><span class="n">sin</span><span class="p">)</span>
+    <span class="n">Qx</span> <span class="o">=</span> <span class="p">(</span><span class="n">qx</span><span class="o">*</span><span class="n">cos</span> <span class="o">-</span> <span class="n">r</span><span class="o">*</span><span class="p">(</span><span class="n">pa</span><span class="o">*</span><span class="n">cos</span> <span class="o">-</span> <span class="n">px</span><span class="o">*</span><span class="n">sin</span> <span class="o">-</span> <span class="p">(</span><span class="n">pb</span><span class="o">**</span><span class="mi">2</span> <span class="o">-</span> <span class="n">pd</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">sqrt</span><span class="p">()))</span>
+    <span class="n">Px</span> <span class="o">=</span> <span class="p">(</span><span class="n">px</span><span class="o">*</span><span class="n">cos</span> <span class="o">+</span> <span class="n">pc</span><span class="o">*</span><span class="n">sin</span><span class="p">)</span>
+    <span class="n">Qy</span> <span class="o">=</span> <span class="p">(</span><span class="n">qy</span> <span class="o">+</span> <span class="n">r</span><span class="o">*</span><span class="n">py</span><span class="o">*</span><span class="p">(</span><span class="n">w</span> <span class="o">+</span> <span class="p">(</span><span class="n">px</span><span class="o">/</span><span class="n">pb</span><span class="p">)</span><span class="o">.</span><span class="n">asin</span><span class="p">()</span> <span class="o">-</span> <span class="p">(</span><span class="n">pd</span><span class="o">/</span><span class="n">pb</span><span class="p">)</span><span class="o">.</span><span class="n">asin</span><span class="p">()))</span>
+    <span class="n">Py</span> <span class="o">=</span> <span class="n">py</span>
+    <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span><span class="n">Qx</span><span class="p">,</span> <span class="n">Px</span><span class="p">,</span> <span class="n">Qy</span><span class="p">,</span> <span class="n">Py</span><span class="p">])</span></div>
+
+
+
+<div class="viewcode-block" id="polar">
+<a class="viewcode-back" href="../../../modules/transformations.html#model.library.transformations.polar">[docs]</a>
+<span class="k">def</span> <span class="nf">polar</span><span class="p">(</span><span class="n">state</span><span class="p">:</span><span class="n">State</span><span class="p">,</span>
+          <span class="n">angle</span><span class="p">:</span><span class="n">Tensor</span><span class="p">,</span>
+          <span class="n">dp</span><span class="p">:</span><span class="n">Tensor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">State</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Polar drift</span>
+
+<span class="sd">    Note, same as rotation around qy axis, but with different angle sign</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    state: State</span>
+<span class="sd">        initial state</span>
+<span class="sd">    angle: Tensor</span>
+<span class="sd">        rotation angle</span>
+<span class="sd">    dp: Tensor</span>
+<span class="sd">        momentum deviation</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    State</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">knobs</span><span class="p">:</span> <span class="n">Knobs</span> <span class="o">=</span> <span class="n">polar_knobs</span><span class="p">(</span><span class="n">angle</span><span class="p">,</span> <span class="n">dp</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">polar_track</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">knobs</span><span class="p">)</span></div>
+
+
+
+<span class="k">def</span> <span class="nf">polar_knobs</span><span class="p">(</span><span class="n">angle</span><span class="p">:</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">dp</span><span class="p">:</span><span class="n">Tensor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Knobs</span><span class="p">:</span>
+    <span class="n">kp</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">dp</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span>
+    <span class="n">cos</span> <span class="o">=</span> <span class="n">angle</span><span class="o">.</span><span class="n">cos</span><span class="p">()</span>
+    <span class="n">sin</span> <span class="o">=</span> <span class="n">angle</span><span class="o">.</span><span class="n">sin</span><span class="p">()</span>
+    <span class="n">tan</span> <span class="o">=</span> <span class="n">sin</span><span class="o">/</span><span class="n">cos</span>
+    <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span><span class="n">kp</span><span class="p">,</span> <span class="n">cos</span><span class="p">,</span> <span class="n">sin</span><span class="p">,</span> <span class="n">tan</span><span class="p">])</span>
+
+
+<span class="k">def</span> <span class="nf">polar_track</span><span class="p">(</span><span class="n">state</span><span class="p">:</span><span class="n">State</span><span class="p">,</span> <span class="n">knobs</span><span class="p">:</span><span class="n">Knobs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">State</span><span class="p">:</span>
+    <span class="n">kp</span><span class="p">,</span> <span class="n">cos</span><span class="p">,</span> <span class="n">sin</span><span class="p">,</span> <span class="n">tan</span><span class="p">,</span> <span class="o">*</span><span class="n">_</span> <span class="o">=</span> <span class="n">knobs</span>
+    <span class="n">qx</span><span class="p">,</span> <span class="n">px</span><span class="p">,</span> <span class="n">qy</span><span class="p">,</span> <span class="n">py</span> <span class="o">=</span> <span class="n">state</span>
+    <span class="n">pz</span> <span class="o">=</span> <span class="p">(</span><span class="n">kp</span> <span class="o">-</span> <span class="n">px</span><span class="o">**</span><span class="mi">2</span> <span class="o">-</span> <span class="n">py</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">sqrt</span><span class="p">()</span>
+    <span class="n">Qx</span> <span class="o">=</span> <span class="n">qx</span><span class="o">/</span><span class="n">cos</span><span class="o">/</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">px</span><span class="o">/</span><span class="n">pz</span><span class="o">*</span><span class="n">tan</span><span class="p">)</span>
+    <span class="n">Px</span> <span class="o">=</span> <span class="n">px</span><span class="o">*</span><span class="n">cos</span> <span class="o">+</span> <span class="n">pz</span><span class="o">*</span><span class="n">sin</span>
+    <span class="n">Qy</span> <span class="o">=</span> <span class="n">qy</span> <span class="o">+</span> <span class="n">py</span><span class="o">*</span><span class="n">qx</span><span class="o">*</span><span class="n">tan</span><span class="o">/</span><span class="p">(</span><span class="n">pz</span> <span class="o">-</span> <span class="n">px</span><span class="o">*</span><span class="n">tan</span><span class="p">)</span>
+    <span class="n">Py</span> <span class="o">=</span> <span class="n">py</span>
+    <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span><span class="n">Qx</span><span class="p">,</span> <span class="n">Px</span><span class="p">,</span> <span class="n">Qy</span><span class="p">,</span> <span class="n">Py</span><span class="p">])</span>
+
+
+<div class="viewcode-block" id="cylindrical">
+<a class="viewcode-back" href="../../../modules/transformations.html#model.library.transformations.cylindrical">[docs]</a>
+<span class="k">def</span> <span class="nf">cylindrical</span><span class="p">(</span><span class="n">state</span><span class="p">:</span><span class="n">State</span><span class="p">,</span>
+                <span class="n">r</span><span class="p">:</span><span class="n">Tensor</span><span class="p">,</span>
+                <span class="n">kqn</span><span class="p">:</span><span class="n">Tensor</span><span class="p">,</span>
+                <span class="n">kqs</span><span class="p">:</span><span class="n">Tensor</span><span class="p">,</span>
+                <span class="n">ks</span><span class="p">:</span><span class="n">Tensor</span><span class="p">,</span>
+                <span class="n">ko</span><span class="p">:</span><span class="n">Tensor</span><span class="p">,</span>
+                <span class="n">dp</span><span class="p">:</span><span class="n">Tensor</span><span class="p">,</span>
+                <span class="n">length</span><span class="p">:</span><span class="n">Tensor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">State</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Cylindrical multipole kick upto octupole degree</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    state: State</span>
+<span class="sd">        initial state</span>
+<span class="sd">    r: Tensor</span>
+<span class="sd">        bending radius</span>
+<span class="sd">    kqn: Tensor</span>
+<span class="sd">        normal quadrupole strength</span>
+<span class="sd">    kqs: Tensor</span>
+<span class="sd">        skew quadrupole strength</span>
+<span class="sd">    ks: Tensor</span>
+<span class="sd">        sextupole strength</span>
+<span class="sd">    ks: Tensor</span>
+<span class="sd">        octupole strength</span>
+<span class="sd">    dp: Tensor</span>
+<span class="sd">        momentum deviation</span>
+<span class="sd">    length: Tensor</span>
+<span class="sd">        length</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    State</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">qx</span><span class="p">,</span> <span class="n">px</span><span class="p">,</span> <span class="n">qy</span><span class="p">,</span> <span class="n">py</span> <span class="o">=</span> <span class="n">state</span>
+    <span class="n">Qx</span> <span class="o">=</span> <span class="n">qx</span>
+    <span class="n">Px</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">px</span>
+        <span class="o">+</span> <span class="p">(</span><span class="n">length</span><span class="o">*</span><span class="p">(</span><span class="n">dp</span><span class="o">*</span><span class="n">r</span> <span class="o">-</span> <span class="n">qx</span><span class="p">))</span><span class="o">/</span><span class="n">r</span><span class="o">**</span><span class="mi">2</span>
+        <span class="o">+</span> <span class="p">(</span><span class="n">kqn</span><span class="o">*</span><span class="n">length</span><span class="o">*</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="o">*</span><span class="n">qx</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">qy</span><span class="o">**</span><span class="mi">2</span> <span class="o">-</span> <span class="mi">2</span><span class="o">*</span><span class="n">qx</span><span class="o">*</span><span class="n">r</span><span class="p">))</span><span class="o">/</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">r</span><span class="p">)</span>
+        <span class="o">+</span> <span class="p">(</span><span class="n">kqs</span><span class="o">*</span><span class="n">length</span><span class="o">*</span><span class="n">qy</span><span class="o">*</span><span class="p">(</span><span class="n">qy</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="mi">6</span><span class="o">*</span><span class="n">r</span><span class="o">*</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">qx</span> <span class="o">+</span> <span class="n">r</span><span class="p">)))</span><span class="o">/</span><span class="p">(</span><span class="mi">6</span><span class="o">*</span><span class="n">r</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+        <span class="o">-</span> <span class="p">(</span><span class="n">ko</span><span class="o">*</span><span class="n">length</span><span class="o">*</span><span class="p">(</span><span class="n">qx</span><span class="o">**</span><span class="mi">3</span> <span class="o">-</span> <span class="mi">3</span><span class="o">*</span><span class="n">qx</span><span class="o">*</span><span class="n">qy</span><span class="o">**</span><span class="mi">2</span><span class="p">))</span><span class="o">/</span><span class="mi">6</span>
+        <span class="o">-</span> <span class="p">(</span><span class="n">ks</span><span class="o">*</span><span class="n">length</span><span class="o">*</span><span class="p">(</span><span class="n">qx</span><span class="o">**</span><span class="mi">3</span> <span class="o">-</span> <span class="mi">2</span><span class="o">*</span><span class="n">qx</span><span class="o">*</span><span class="n">qy</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">qx</span><span class="o">**</span><span class="mi">2</span><span class="o">*</span><span class="n">r</span> <span class="o">-</span> <span class="n">qy</span><span class="o">**</span><span class="mi">2</span><span class="o">*</span><span class="n">r</span><span class="p">))</span><span class="o">/</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">r</span><span class="p">)</span>
+    <span class="p">)</span>
+    <span class="n">Qy</span> <span class="o">=</span> <span class="n">qy</span>
+    <span class="n">Py</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">py</span>
+        <span class="o">+</span> <span class="p">(</span><span class="n">kqn</span><span class="o">*</span><span class="n">length</span><span class="o">*</span><span class="n">qy</span><span class="o">*</span><span class="p">(</span><span class="n">qy</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="mi">6</span><span class="o">*</span><span class="n">r</span><span class="o">*</span><span class="p">(</span><span class="n">qx</span> <span class="o">+</span> <span class="n">r</span><span class="p">)))</span><span class="o">/</span><span class="p">(</span><span class="mi">6</span><span class="o">*</span><span class="n">r</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+        <span class="o">+</span> <span class="p">(</span><span class="n">kqs</span><span class="o">*</span><span class="n">length</span><span class="o">*</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">qx</span><span class="o">**</span><span class="mi">2</span><span class="o">*</span><span class="n">r</span> <span class="o">-</span> <span class="n">qy</span><span class="o">**</span><span class="mi">2</span><span class="o">*</span><span class="n">r</span> <span class="o">+</span> <span class="n">qx</span><span class="o">*</span><span class="p">(</span><span class="n">qy</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="mi">2</span><span class="o">*</span><span class="n">r</span><span class="o">**</span><span class="mi">2</span><span class="p">)))</span><span class="o">/</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">r</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+        <span class="o">-</span> <span class="p">(</span><span class="n">ko</span><span class="o">*</span><span class="n">length</span><span class="o">*</span><span class="n">qy</span><span class="o">*</span><span class="p">(</span><span class="o">-</span><span class="mi">3</span><span class="o">*</span><span class="n">qx</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">qy</span><span class="o">**</span><span class="mi">2</span><span class="p">))</span><span class="o">/</span><span class="mi">6</span>
+        <span class="o">-</span> <span class="p">(</span><span class="n">ks</span><span class="o">*</span><span class="n">length</span><span class="o">*</span><span class="n">qy</span><span class="o">*</span><span class="p">(</span><span class="o">-</span><span class="mi">6</span><span class="o">*</span><span class="n">qx</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">qy</span><span class="o">**</span><span class="mi">2</span> <span class="o">-</span> <span class="mi">6</span><span class="o">*</span><span class="n">qx</span><span class="o">*</span><span class="n">r</span><span class="p">))</span><span class="o">/</span><span class="p">(</span><span class="mi">6</span><span class="o">*</span><span class="n">r</span><span class="p">)</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span><span class="n">Qx</span><span class="p">,</span> <span class="n">Px</span><span class="p">,</span> <span class="n">Qy</span><span class="p">,</span> <span class="n">Py</span><span class="p">])</span></div>
+
+
+
+<div class="viewcode-block" id="cylindrical_error">
+<a class="viewcode-back" href="../../../modules/transformations.html#model.library.transformations.cylindrical_error">[docs]</a>
+<span class="k">def</span> <span class="nf">cylindrical_error</span><span class="p">(</span><span class="n">state</span><span class="p">:</span><span class="n">State</span><span class="p">,</span>
+                      <span class="n">r</span><span class="p">:</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">kqn</span><span class="p">:</span><span class="n">Tensor</span><span class="p">,</span>
+                      <span class="n">kqs</span><span class="p">:</span><span class="n">Tensor</span><span class="p">,</span>
+                      <span class="n">ks</span><span class="p">:</span><span class="n">Tensor</span><span class="p">,</span>
+                      <span class="n">ko</span><span class="p">:</span><span class="n">Tensor</span><span class="p">,</span>
+                      <span class="n">length</span><span class="p">:</span><span class="n">Tensor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">State</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Cylindrical multipole kick upto octupole degree without leading order linear part</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -966,18 +1196,18 @@
 <span class="sd">        octupole strength</span>
 <span class="sd">    length: Tensor</span>
 <span class="sd">        length</span>
-<span class="sd">        </span>
+
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">    State    </span>
-<span class="sd">    </span>
+<span class="sd">    State</span>
+
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">knobs</span><span class="p">:</span> <span class="n">Knobs</span> <span class="o">=</span> <span class="n">multipole_knobs</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">kqn</span><span class="p">,</span> <span class="n">kqs</span><span class="p">,</span> <span class="n">ks</span><span class="p">,</span> <span class="n">ko</span><span class="p">,</span> <span class="n">length</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">multipole_track</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">knobs</span><span class="p">)</span></div>
+    <span class="n">knobs</span><span class="p">:</span> <span class="n">Knobs</span> <span class="o">=</span> <span class="n">cylindrical_error_knobs</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">kqn</span><span class="p">,</span> <span class="n">kqs</span><span class="p">,</span> <span class="n">ks</span><span class="p">,</span> <span class="n">ko</span><span class="p">,</span> <span class="n">length</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">cylindrical_error_track</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">knobs</span><span class="p">)</span></div>
 
 
 
-<span class="k">def</span> <span class="nf">multipole_knobs</span><span class="p">(</span><span class="n">r</span><span class="p">:</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">kqn</span><span class="p">:</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">kqs</span><span class="p">:</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">ks</span><span class="p">:</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">ko</span><span class="p">:</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">length</span><span class="p">:</span><span class="n">Tensor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Knobs</span><span class="p">:</span>
+<span class="k">def</span> <span class="nf">cylindrical_error_knobs</span><span class="p">(</span><span class="n">r</span><span class="p">:</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">kqn</span><span class="p">:</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">kqs</span><span class="p">:</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">ks</span><span class="p">:</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">ko</span><span class="p">:</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">length</span><span class="p">:</span><span class="n">Tensor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Knobs</span><span class="p">:</span>
     <span class="n">kqnlr</span> <span class="o">=</span>  <span class="n">kqn</span><span class="o">*</span><span class="n">length</span><span class="o">/</span><span class="n">r</span>
     <span class="n">kqslr</span> <span class="o">=</span>  <span class="n">kqs</span><span class="o">*</span><span class="n">length</span><span class="o">/</span><span class="n">r</span>
     <span class="n">kslr</span> <span class="o">=</span> <span class="n">ks</span><span class="o">*</span><span class="n">length</span><span class="o">/</span><span class="n">r</span>
@@ -985,7 +1215,7 @@
     <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span><span class="n">r</span><span class="p">,</span> <span class="n">kqnlr</span><span class="p">,</span> <span class="n">kqslr</span><span class="p">,</span> <span class="n">kslr</span><span class="p">,</span> <span class="n">kol</span><span class="p">])</span>
 
 
-<span class="k">def</span> <span class="nf">multipole_track</span><span class="p">(</span><span class="n">state</span><span class="p">:</span><span class="n">State</span><span class="p">,</span> <span class="n">knobs</span><span class="p">:</span><span class="n">Knobs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">State</span><span class="p">:</span>
+<span class="k">def</span> <span class="nf">cylindrical_error_track</span><span class="p">(</span><span class="n">state</span><span class="p">:</span><span class="n">State</span><span class="p">,</span> <span class="n">knobs</span><span class="p">:</span><span class="n">Knobs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">State</span><span class="p">:</span>
     <span class="n">r</span><span class="p">,</span> <span class="n">kqnlr</span><span class="p">,</span> <span class="n">kqslr</span><span class="p">,</span> <span class="n">kslr</span><span class="p">,</span> <span class="n">kol</span><span class="p">,</span> <span class="o">*</span><span class="n">_</span> <span class="o">=</span> <span class="n">knobs</span>
     <span class="n">qx</span><span class="p">,</span> <span class="n">px</span><span class="p">,</span> <span class="n">qy</span><span class="p">,</span> <span class="n">py</span> <span class="o">=</span> <span class="n">state</span>
     <span class="n">Qx</span> <span class="o">=</span> <span class="n">qx</span>
@@ -1001,19 +1231,19 @@
        <span class="n">dx</span><span class="p">:</span><span class="n">Tensor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">State</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    TX translation (sign matches MADX)</span>
-<span class="sd">    </span>
+
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    state: State</span>
 <span class="sd">        initial state</span>
 <span class="sd">    dx: Tensor</span>
 <span class="sd">        qx translation error</span>
-<span class="sd">    </span>
+
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    State</span>
-<span class="sd">    </span>
-<span class="sd">    &quot;&quot;&quot;</span>      
+
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">knobs</span><span class="p">:</span> <span class="n">Knobs</span> <span class="o">=</span> <span class="n">tx_knobs</span><span class="p">(</span><span class="n">dx</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">tx_track</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">knobs</span><span class="p">)</span></div>
 
@@ -1039,19 +1269,19 @@
        <span class="n">dy</span><span class="p">:</span><span class="n">Tensor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">State</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    TY translation (sign matches MADX)</span>
-<span class="sd">    </span>
+
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    state: State</span>
 <span class="sd">        initial state</span>
 <span class="sd">    dy: Tensor</span>
 <span class="sd">        qy translation error</span>
-<span class="sd">    </span>
+
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    State</span>
-<span class="sd">    </span>
-<span class="sd">    &quot;&quot;&quot;</span>      
+
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">knobs</span><span class="p">:</span> <span class="n">Knobs</span> <span class="o">=</span> <span class="n">ty_knobs</span><span class="p">(</span><span class="n">dy</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">ty_track</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">knobs</span><span class="p">)</span></div>
 
@@ -1078,7 +1308,7 @@
        <span class="n">dp</span><span class="p">:</span><span class="n">Tensor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">State</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    TZ translation (sign matches MADX)</span>
-<span class="sd">    </span>
+
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    state: State</span>
@@ -1086,13 +1316,13 @@
 <span class="sd">    dz: Tensor</span>
 <span class="sd">        qz translation error</span>
 <span class="sd">    dp: Tensor</span>
-<span class="sd">        momentum deviation           </span>
-<span class="sd">    </span>
+<span class="sd">        momentum deviation</span>
+
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    State</span>
-<span class="sd">    </span>
-<span class="sd">    &quot;&quot;&quot;</span>      
+
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">knobs</span><span class="p">:</span> <span class="n">Knobs</span> <span class="o">=</span> <span class="n">tz_knobs</span><span class="p">(</span><span class="n">dz</span><span class="p">,</span> <span class="n">dp</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">tz_track</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">knobs</span><span class="p">)</span></div>
 
@@ -1120,8 +1350,8 @@
        <span class="n">wx</span><span class="p">:</span><span class="n">Tensor</span><span class="p">,</span>
        <span class="n">dp</span><span class="p">:</span><span class="n">Tensor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">State</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    RX translation (sign matches MADX)</span>
-<span class="sd">    </span>
+<span class="sd">    RX rotation (sign matches MADX)</span>
+
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    state: State</span>
@@ -1129,13 +1359,13 @@
 <span class="sd">    wx: Tensor</span>
 <span class="sd">        qx rotation angle</span>
 <span class="sd">    dp: Tensor</span>
-<span class="sd">        momentum deviation           </span>
-<span class="sd">    </span>
+<span class="sd">        momentum deviation</span>
+
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    State</span>
-<span class="sd">    </span>
-<span class="sd">    &quot;&quot;&quot;</span>      
+
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">knobs</span><span class="p">:</span> <span class="n">Knobs</span> <span class="o">=</span> <span class="n">rx_knobs</span><span class="p">(</span><span class="n">wx</span><span class="p">,</span> <span class="n">dp</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">rx_track</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">knobs</span><span class="p">)</span></div>
 
@@ -1166,8 +1396,8 @@
        <span class="n">wy</span><span class="p">:</span><span class="n">Tensor</span><span class="p">,</span>
        <span class="n">dp</span><span class="p">:</span><span class="n">Tensor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">State</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    RY translation (sign matches MADX)</span>
-<span class="sd">    </span>
+<span class="sd">    RY rotation (sign matches MADX)</span>
+
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    state: State</span>
@@ -1175,13 +1405,13 @@
 <span class="sd">    wz: Tensor</span>
 <span class="sd">        qy rotation angle</span>
 <span class="sd">    dp: Tensor</span>
-<span class="sd">        momentum deviation           </span>
-<span class="sd">    </span>
+<span class="sd">        momentum deviation</span>
+
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    State</span>
-<span class="sd">    </span>
-<span class="sd">    &quot;&quot;&quot;</span>      
+
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">knobs</span><span class="p">:</span> <span class="n">Knobs</span> <span class="o">=</span> <span class="n">ry_knobs</span><span class="p">(</span><span class="n">wy</span><span class="p">,</span> <span class="n">dp</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">ry_track</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">knobs</span><span class="p">)</span></div>
 
@@ -1200,9 +1430,9 @@
     <span class="n">qx</span><span class="p">,</span> <span class="n">px</span><span class="p">,</span> <span class="n">qy</span><span class="p">,</span> <span class="n">py</span> <span class="o">=</span> <span class="n">state</span>
     <span class="n">pz</span> <span class="o">=</span> <span class="p">(</span><span class="n">kp</span> <span class="o">-</span> <span class="n">px</span><span class="o">**</span><span class="mi">2</span> <span class="o">-</span> <span class="n">py</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">sqrt</span><span class="p">()</span>
     <span class="n">Qx</span> <span class="o">=</span> <span class="n">qx</span><span class="o">/</span><span class="n">cos</span><span class="o">/</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">px</span><span class="o">/</span><span class="n">pz</span><span class="o">*</span><span class="n">tan</span><span class="p">)</span>
-    <span class="n">Px</span> <span class="o">=</span> <span class="n">px</span><span class="o">*</span><span class="n">cos</span> <span class="o">+</span> <span class="n">pz</span><span class="o">*</span><span class="n">sin</span> 
+    <span class="n">Px</span> <span class="o">=</span> <span class="n">px</span><span class="o">*</span><span class="n">cos</span> <span class="o">+</span> <span class="n">pz</span><span class="o">*</span><span class="n">sin</span>
     <span class="n">Qy</span> <span class="o">=</span> <span class="n">qy</span> <span class="o">+</span> <span class="n">py</span><span class="o">*</span><span class="n">qx</span><span class="o">*</span><span class="n">tan</span><span class="o">/</span><span class="p">(</span><span class="n">pz</span> <span class="o">-</span> <span class="n">px</span><span class="o">*</span><span class="n">tan</span><span class="p">)</span>
-    <span class="n">Py</span> <span class="o">=</span> <span class="n">py</span> 
+    <span class="n">Py</span> <span class="o">=</span> <span class="n">py</span>
     <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span><span class="n">Qx</span><span class="p">,</span> <span class="n">Px</span><span class="p">,</span> <span class="n">Qy</span><span class="p">,</span> <span class="n">Py</span><span class="p">])</span>
 
 
@@ -1211,8 +1441,8 @@
 <span class="k">def</span> <span class="nf">rz</span><span class="p">(</span><span class="n">state</span><span class="p">:</span><span class="n">State</span><span class="p">,</span>
        <span class="n">wz</span><span class="p">:</span><span class="n">Tensor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">State</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    RZ translation (sign matches MADX)</span>
-<span class="sd">    </span>
+<span class="sd">    RZ rotation (sign matches MADX)</span>
+
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    state: State</span>
@@ -1220,13 +1450,13 @@
 <span class="sd">    wz: Tensor</span>
 <span class="sd">        qz rotation angle</span>
 <span class="sd">    dp: Tensor</span>
-<span class="sd">        momentum deviation           </span>
-<span class="sd">    </span>
+<span class="sd">        momentum deviation</span>
+
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    State</span>
-<span class="sd">    </span>
-<span class="sd">    &quot;&quot;&quot;</span>      
+
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">knobs</span><span class="p">:</span> <span class="n">Knobs</span> <span class="o">=</span> <span class="n">rz_knobs</span><span class="p">(</span><span class="n">wz</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">rz_track</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">knobs</span><span class="p">)</span></div>
 
@@ -1234,7 +1464,7 @@
 
 <span class="k">def</span> <span class="nf">rz_knobs</span><span class="p">(</span><span class="n">wz</span><span class="p">:</span><span class="n">Tensor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Knobs</span><span class="p">:</span>
     <span class="n">cos</span> <span class="o">=</span> <span class="n">wz</span><span class="o">.</span><span class="n">cos</span><span class="p">()</span>
-    <span class="n">sin</span> <span class="o">=</span> <span class="n">wz</span><span class="o">.</span><span class="n">sin</span><span class="p">()</span>    
+    <span class="n">sin</span> <span class="o">=</span> <span class="n">wz</span><span class="o">.</span><span class="n">sin</span><span class="p">()</span>
     <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span><span class="n">cos</span><span class="p">,</span> <span class="n">sin</span><span class="p">])</span>
 
 
