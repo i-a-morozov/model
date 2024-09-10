@@ -748,7 +748,7 @@
 <div class="viewcode-block" id="dipole">
 <a class="viewcode-back" href="../../../modules/transformations.html#model.library.transformations.dipole">[docs]</a>
 <span class="k">def</span> <span class="nf">dipole</span><span class="p">(</span><span class="n">state</span><span class="p">:</span><span class="n">State</span><span class="p">,</span> 
-           <span class="n">angle</span><span class="p">:</span><span class="n">Tensor</span><span class="p">,</span> 
+           <span class="n">r</span><span class="p">:</span><span class="n">Tensor</span><span class="p">,</span> 
            <span class="n">dp</span><span class="p">:</span><span class="n">Tensor</span><span class="p">,</span> 
            <span class="n">length</span><span class="p">:</span><span class="n">Tensor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">State</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
@@ -758,8 +758,8 @@
 <span class="sd">    ----------</span>
 <span class="sd">    state: State</span>
 <span class="sd">        initial state</span>
-<span class="sd">    angle: Tensor</span>
-<span class="sd">        bending angle</span>
+<span class="sd">    r: Tensor</span>
+<span class="sd">        bending radius</span>
 <span class="sd">    dp: Tensor</span>
 <span class="sd">        momentum deviation        </span>
 <span class="sd">    length: Tensor</span>
@@ -770,13 +770,12 @@
 <span class="sd">    State</span>
 <span class="sd">    </span>
 <span class="sd">    &quot;&quot;&quot;</span>       
-    <span class="n">knobs</span><span class="p">:</span> <span class="n">Knobs</span> <span class="o">=</span> <span class="n">dipole_knobs</span><span class="p">(</span><span class="n">angle</span><span class="p">,</span> <span class="n">dp</span><span class="p">,</span> <span class="n">length</span><span class="p">)</span>
+    <span class="n">knobs</span><span class="p">:</span> <span class="n">Knobs</span> <span class="o">=</span> <span class="n">dipole_knobs</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">dp</span><span class="p">,</span> <span class="n">length</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">dipole_track</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">knobs</span><span class="p">)</span></div>
 
 
 
-<span class="k">def</span> <span class="nf">dipole_knobs</span><span class="p">(</span><span class="n">angle</span><span class="p">:</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">dp</span><span class="p">:</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">length</span><span class="p">:</span><span class="n">Tensor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Knobs</span><span class="p">:</span>
-    <span class="n">r</span> <span class="o">=</span> <span class="n">length</span><span class="o">/</span><span class="n">angle</span>
+<span class="k">def</span> <span class="nf">dipole_knobs</span><span class="p">(</span><span class="n">r</span><span class="p">:</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">dp</span><span class="p">:</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">length</span><span class="p">:</span><span class="n">Tensor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Knobs</span><span class="p">:</span>
     <span class="n">dq</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">dp</span><span class="p">)</span><span class="o">.</span><span class="n">sqrt</span><span class="p">()</span>
     <span class="n">dw</span> <span class="o">=</span> <span class="n">length</span><span class="o">/</span><span class="p">(</span><span class="n">dq</span><span class="o">*</span><span class="n">r</span><span class="p">)</span>
     <span class="n">cos</span> <span class="o">=</span> <span class="n">dw</span><span class="o">.</span><span class="n">cos</span><span class="p">()</span>
@@ -804,7 +803,7 @@
 <div class="viewcode-block" id="bend">
 <a class="viewcode-back" href="../../../modules/transformations.html#model.library.transformations.bend">[docs]</a>
 <span class="k">def</span> <span class="nf">bend</span><span class="p">(</span><span class="n">state</span><span class="p">:</span><span class="n">State</span><span class="p">,</span> 
-         <span class="n">angle</span><span class="p">:</span><span class="n">Tensor</span><span class="p">,</span> 
+         <span class="n">r</span><span class="p">:</span><span class="n">Tensor</span><span class="p">,</span> 
          <span class="n">kn</span><span class="p">:</span><span class="n">Tensor</span><span class="p">,</span> 
          <span class="n">ks</span><span class="p">:</span><span class="n">Tensor</span><span class="p">,</span> 
          <span class="n">dp</span><span class="p">:</span><span class="n">Tensor</span><span class="p">,</span> 
@@ -818,8 +817,8 @@
 <span class="sd">    ----------</span>
 <span class="sd">    state: State</span>
 <span class="sd">        initial state</span>
-<span class="sd">    angle: Tensor</span>
-<span class="sd">        bending angle</span>
+<span class="sd">    r: Tensor</span>
+<span class="sd">        bending radius</span>
 <span class="sd">    kn: Tensor</span>
 <span class="sd">        normal quadrupole strength</span>
 <span class="sd">    ks: Tensor</span>
@@ -834,13 +833,12 @@
 <span class="sd">    State</span>
 <span class="sd">    </span>
 <span class="sd">    &quot;&quot;&quot;</span>       
-    <span class="n">knobs</span><span class="p">:</span> <span class="n">Knobs</span> <span class="o">=</span> <span class="n">bend_knobs</span><span class="p">(</span><span class="n">angle</span><span class="p">,</span> <span class="n">kn</span><span class="p">,</span> <span class="n">ks</span><span class="p">,</span> <span class="n">dp</span><span class="p">,</span> <span class="n">length</span><span class="p">)</span>
+    <span class="n">knobs</span><span class="p">:</span> <span class="n">Knobs</span> <span class="o">=</span> <span class="n">bend_knobs</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">kn</span><span class="p">,</span> <span class="n">ks</span><span class="p">,</span> <span class="n">dp</span><span class="p">,</span> <span class="n">length</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">bend_track</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">knobs</span><span class="p">)</span></div>
 
 
 
-<span class="k">def</span> <span class="nf">bend_knobs</span><span class="p">(</span><span class="n">angle</span><span class="p">:</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">kn</span><span class="p">:</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">ks</span><span class="p">:</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">dp</span><span class="p">:</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">length</span><span class="p">:</span><span class="n">Tensor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Knobs</span><span class="p">:</span>
-    <span class="n">r</span> <span class="o">=</span> <span class="n">length</span><span class="o">/</span><span class="n">angle</span>
+<span class="k">def</span> <span class="nf">bend_knobs</span><span class="p">(</span><span class="n">r</span><span class="p">:</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">kn</span><span class="p">:</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">ks</span><span class="p">:</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">dp</span><span class="p">:</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">length</span><span class="p">:</span><span class="n">Tensor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Knobs</span><span class="p">:</span>
     <span class="n">kq</span> <span class="o">=</span> <span class="n">kn</span> <span class="o">+</span> <span class="n">r</span><span class="o">**</span><span class="mi">2</span><span class="o">*</span><span class="p">(</span><span class="n">kn</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">ks</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
     <span class="n">kr</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="mi">4</span><span class="o">*</span><span class="n">kq</span><span class="o">*</span><span class="n">r</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">sqrt</span><span class="p">()</span>
     <span class="n">kra</span> <span class="o">=</span> <span class="p">(</span><span class="n">kr</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">sqrt</span><span class="p">()</span>
@@ -903,8 +901,7 @@
 <a class="viewcode-back" href="../../../modules/transformations.html#model.library.transformations.wedge">[docs]</a>
 <span class="k">def</span> <span class="nf">wedge</span><span class="p">(</span><span class="n">state</span><span class="p">:</span><span class="n">State</span><span class="p">,</span>
           <span class="n">epsilon</span><span class="p">:</span><span class="n">Tensor</span><span class="p">,</span> 
-          <span class="n">angle</span><span class="p">:</span><span class="n">Tensor</span><span class="p">,</span> 
-          <span class="n">length</span><span class="p">:</span><span class="n">Tensor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">State</span><span class="p">:</span>
+          <span class="n">r</span><span class="p">:</span><span class="n">Tensor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">State</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Dipole wedge transformation</span>
 <span class="sd">    </span>
@@ -914,23 +911,20 @@
 <span class="sd">        initial state</span>
 <span class="sd">    epsilon: Tensor</span>
 <span class="sd">        wedge angle</span>
-<span class="sd">    angle: Tensor</span>
-<span class="sd">        bending angle</span>
-<span class="sd">    length: Tensor</span>
-<span class="sd">        length</span>
+<span class="sd">    r: Tensor</span>
+<span class="sd">        bending radius</span>
 <span class="sd">    </span>
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    State</span>
 <span class="sd">    </span>
 <span class="sd">    &quot;&quot;&quot;</span>      
-    <span class="n">knobs</span><span class="p">:</span> <span class="n">Knobs</span> <span class="o">=</span> <span class="n">wedge_knobs</span><span class="p">(</span><span class="n">epsilon</span><span class="p">,</span> <span class="n">angle</span><span class="p">,</span> <span class="n">length</span><span class="p">)</span>
+    <span class="n">knobs</span><span class="p">:</span> <span class="n">Knobs</span> <span class="o">=</span> <span class="n">wedge_knobs</span><span class="p">(</span><span class="n">epsilon</span><span class="p">,</span> <span class="n">r</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">wedge_track</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">knobs</span><span class="p">)</span></div>
 
 
 
-<span class="k">def</span> <span class="nf">wedge_knobs</span><span class="p">(</span><span class="n">epsilon</span><span class="p">:</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">angle</span><span class="p">:</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">length</span><span class="p">:</span><span class="n">Tensor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Knobs</span><span class="p">:</span>
-    <span class="n">r</span> <span class="o">=</span> <span class="n">length</span><span class="o">/</span><span class="n">angle</span>
+<span class="k">def</span> <span class="nf">wedge_knobs</span><span class="p">(</span><span class="n">epsilon</span><span class="p">:</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">r</span><span class="p">:</span><span class="n">Tensor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Knobs</span><span class="p">:</span>
     <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span><span class="n">epsilon</span><span class="o">.</span><span class="n">tan</span><span class="p">()</span><span class="o">/</span><span class="n">r</span><span class="p">])</span>
 
 
@@ -947,7 +941,7 @@
 <div class="viewcode-block" id="multipole">
 <a class="viewcode-back" href="../../../modules/transformations.html#model.library.transformations.multipole">[docs]</a>
 <span class="k">def</span> <span class="nf">multipole</span><span class="p">(</span><span class="n">state</span><span class="p">:</span><span class="n">State</span><span class="p">,</span> 
-              <span class="n">angle</span><span class="p">:</span><span class="n">Tensor</span><span class="p">,</span> 
+              <span class="n">r</span><span class="p">:</span><span class="n">Tensor</span><span class="p">,</span> 
               <span class="n">kqn</span><span class="p">:</span><span class="n">Tensor</span><span class="p">,</span> 
               <span class="n">kqs</span><span class="p">:</span><span class="n">Tensor</span><span class="p">,</span> 
               <span class="n">ks</span><span class="p">:</span><span class="n">Tensor</span><span class="p">,</span> 
@@ -960,8 +954,8 @@
 <span class="sd">    ----------</span>
 <span class="sd">    state: State</span>
 <span class="sd">        initial state</span>
-<span class="sd">    angle: Tensor</span>
-<span class="sd">        bending angle</span>
+<span class="sd">    r: Tensor</span>
+<span class="sd">        bending radius</span>
 <span class="sd">    kqn: Tensor</span>
 <span class="sd">        normal quadrupole strength</span>
 <span class="sd">    kqs: Tensor</span>
@@ -978,13 +972,12 @@
 <span class="sd">    State    </span>
 <span class="sd">    </span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">knobs</span><span class="p">:</span> <span class="n">Knobs</span> <span class="o">=</span> <span class="n">multipole_knobs</span><span class="p">(</span><span class="n">angle</span><span class="p">,</span> <span class="n">kqn</span><span class="p">,</span> <span class="n">kqs</span><span class="p">,</span> <span class="n">ks</span><span class="p">,</span> <span class="n">ko</span><span class="p">,</span> <span class="n">length</span><span class="p">)</span>
+    <span class="n">knobs</span><span class="p">:</span> <span class="n">Knobs</span> <span class="o">=</span> <span class="n">multipole_knobs</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">kqn</span><span class="p">,</span> <span class="n">kqs</span><span class="p">,</span> <span class="n">ks</span><span class="p">,</span> <span class="n">ko</span><span class="p">,</span> <span class="n">length</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">multipole_track</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">knobs</span><span class="p">)</span></div>
 
 
 
-<span class="k">def</span> <span class="nf">multipole_knobs</span><span class="p">(</span><span class="n">angle</span><span class="p">:</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">kqn</span><span class="p">:</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">kqs</span><span class="p">:</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">ks</span><span class="p">:</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">ko</span><span class="p">:</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">length</span><span class="p">:</span><span class="n">Tensor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Knobs</span><span class="p">:</span>
-    <span class="n">r</span> <span class="o">=</span> <span class="n">length</span><span class="o">/</span><span class="n">angle</span>
+<span class="k">def</span> <span class="nf">multipole_knobs</span><span class="p">(</span><span class="n">r</span><span class="p">:</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">kqn</span><span class="p">:</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">kqs</span><span class="p">:</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">ks</span><span class="p">:</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">ko</span><span class="p">:</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">length</span><span class="p">:</span><span class="n">Tensor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Knobs</span><span class="p">:</span>
     <span class="n">kqnlr</span> <span class="o">=</span>  <span class="n">kqn</span><span class="o">*</span><span class="n">length</span><span class="o">/</span><span class="n">r</span>
     <span class="n">kqslr</span> <span class="o">=</span>  <span class="n">kqs</span><span class="o">*</span><span class="n">length</span><span class="o">/</span><span class="n">r</span>
     <span class="n">kslr</span> <span class="o">=</span> <span class="n">ks</span><span class="o">*</span><span class="n">length</span><span class="o">/</span><span class="n">r</span>
