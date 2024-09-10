@@ -6,26 +6,31 @@ Collection of symplectic transformations, building blocks for accelerator elemen
 
 calibration_forward[_{knobs, track}] -- calibration transformation (from beam frame to bpm frame)
 calibration_inverse[_{knobs, track}] -- calibration transformation (from bpm frame to beam frame)
-corrector[_{knobs, track}]   -- corrector transformation
-drift[_{knobs, track}]       -- drift transformation
-kinematic[_{knobs, track}]   -- kinematic correction transformation
-fquad[_{knobs, track}]       -- focusing quadrupole transformation
-dquad[_{knobs, track}]       -- defocusing quadrupole transformation
-quadrupole[_{knobs, track}]  -- generic quadrupole transformation
-linear                       -- generic linear transformation
-gradient[_{knobs, track}]    -- thin quadrupole transformation
-sextupole[_{knobs, track}]   -- thin sextupole transformation
-octupole[_{knobs, track}]    -- thin octupole transformation
-dipole[_{knobs, track}]      -- dipole transformation
-bend[_{knobs, track}]        -- generic bend transformation
-wedge[_{knobs, track}]       -- dipole wedge transformation
-multipole[_{knobs, track}]   -- cylindrical multipole error kick upto octupole degree
-tx[_{knobs, track}]          -- TX translation
-ty[_{knobs, track}]          -- TY translation
-tz[_{knobs, track}]          -- TZ translation
-rx[_{knobs, track}]          -- RX rotation
-ry[_{knobs, track}]          -- RY rotation
-rz[_{knobs, track}]          -- RZ rotation
+corrector[_{knobs, track}]           -- corrector transformation
+drift[_{knobs, track}]               -- drift transformation
+kinematic[_{knobs, track}]           -- kinematic correction transformation
+fquad[_{knobs, track}]               -- focusing quadrupole transformation
+dquad[_{knobs, track}]               -- defocusing quadrupole transformation
+quadrupole[_{knobs, track}]          -- generic quadrupole transformation
+linear                               -- generic linear transformation
+gradient[_{knobs, track}]            -- thin quadrupole transformation
+sextupole[_{knobs, track}]           -- thin sextupole transformation
+octupole[_{knobs, track}]            -- thin octupole transformation
+dipole[_{knobs, track}]              -- dipole transformation
+bend[_{knobs, track}]                -- generic linear bend transformation
+wedge[_{knobs, track}]               -- dipole wedge transformation
+sector_bend                          -- exact sector bend body tranformation
+sector_bend_fringe                   -- sector bend fringe transformation
+sector_bend_wedge                    -- sector bend wedge transformation
+polar[_{knobs, track}]               -- polar drift
+cylindrical[_{knobs, track}]         -- cylindrical multipole error kick upto octupole degree
+cylindrical_error[_{knobs, track}]   -- cylindrical multipole error kick upto octupole degree
+tx[_{knobs, track}]                  -- TX translation
+ty[_{knobs, track}]                  -- TY translation
+tz[_{knobs, track}]                  -- TZ translation
+rx[_{knobs, track}]                  -- RX rotation
+ry[_{knobs, track}]                  -- RY rotation
+rz[_{knobs, track}]                  -- RZ rotation
 
 """
 import torch
@@ -35,16 +40,16 @@ type State = Tensor
 type Knobs = Tensor
 
 
-def calibration_forward(state:State, 
-                        gxx:Tensor, 
-                        gxy:Tensor, 
-                        gyx:Tensor, 
+def calibration_forward(state:State,
+                        gxx:Tensor,
+                        gxy:Tensor,
+                        gyx:Tensor,
                         gyy:Tensor) -> State:
     """
     Calibration transformation (from beam frame to bpm frame)
 
     qx -> gxx qx + gxy qy
-    qy -> gyx qx + gyy qy    
+    qy -> gyx qx + gyy qy
 
     Parameters
     ----------
@@ -58,17 +63,17 @@ def calibration_forward(state:State,
         qy coupling
     gyy: Tensor
         qy scaling
-        
+
     Returns
     -------
     State
-    
-    """        
+
+    """
     knobs: Knobs = calibration_forward_knobs(gxx, gxy, gyx, gyy)
     return calibration_forward_track(state, knobs)
 
 
-def calibration_forward_knobs(gxx:Tensor, gxy:Tensor, gyx:Tensor, gyy:Tensor) -> Knobs:   
+def calibration_forward_knobs(gxx:Tensor, gxy:Tensor, gyx:Tensor, gyy:Tensor) -> Knobs:
     det =  gxx*gyy - gxy*gyx
     qxqx = gxx
     qxqy = gxy
@@ -81,7 +86,7 @@ def calibration_forward_knobs(gxx:Tensor, gxy:Tensor, gyx:Tensor, gyy:Tensor) ->
     return torch.stack([qxqx, qxqy, pxpx, pxpy, qyqx, qyqy, pypx, pypy])
 
 
-def calibration_forward_track(state:State, knobs:Knobs) -> State:    
+def calibration_forward_track(state:State, knobs:Knobs) -> State:
     qxqx, qxqy, pxpx, pxpy, qyqx, qyqy, pypx, pypy, *_ = knobs
     qx, px, qy, py = state
     Qx = qx*qxqx + qy*qxqy
@@ -91,10 +96,10 @@ def calibration_forward_track(state:State, knobs:Knobs) -> State:
     return torch.stack([Qx, Px, Qy, Py])
 
 
-def calibration_inverse(state:State, 
-                        gxx:Tensor, 
-                        gxy:Tensor, 
-                        gyx:Tensor, 
+def calibration_inverse(state:State,
+                        gxx:Tensor,
+                        gxy:Tensor,
+                        gyx:Tensor,
                         gyy:Tensor) -> State:
     """
     Calibration transformation (from bpm frame to beam frame)
@@ -111,17 +116,17 @@ def calibration_inverse(state:State,
         qy coupling
     gyy: Tensor
         qy scaling
-        
+
     Returns
     -------
     State
-    
-    """        
+
+    """
     knobs: Knobs = calibration_inverse_knobs(gxx, gxy, gyx, gyy)
     return calibration_inverse_track(state, knobs)
 
 
-def calibration_inverse_knobs(gxx:Tensor, gxy:Tensor, gyx:Tensor, gyy:Tensor) -> Knobs:   
+def calibration_inverse_knobs(gxx:Tensor, gxy:Tensor, gyx:Tensor, gyy:Tensor) -> Knobs:
     det =  gxx*gyy - gxy*gyx
     qxqx = gyy/det
     qxqy = -gxy/det
@@ -134,7 +139,7 @@ def calibration_inverse_knobs(gxx:Tensor, gxy:Tensor, gyx:Tensor, gyy:Tensor) ->
     return torch.stack([qxqx, qxqy, pxpx, pxpy, qyqx, qyqy, pypx, pypy])
 
 
-def calibration_inverse_track(state:State, knobs:Knobs) -> State:    
+def calibration_inverse_track(state:State, knobs:Knobs) -> State:
     qxqx, qxqy, pxpx, pxpy, qyqx, qyqy, pypx, pypy, *_ = knobs
     qx, px, qy, py = state
     Qx = qx*qxqx + qy*qxqy
@@ -144,8 +149,8 @@ def calibration_inverse_track(state:State, knobs:Knobs) -> State:
     return torch.stack([Qx, Px, Qy, Py])
 
 
-def corrector(state:State, 
-              kx:Tensor, 
+def corrector(state:State,
+              kx:Tensor,
               ky:Tensor) -> State:
     """
     Corrector transformation
@@ -161,21 +166,21 @@ def corrector(state:State,
         px kick
     ky: Tensor
         py kick
-        
+
     Returns
     -------
     State
-      
-    """ 
+
+    """
     knobs: Knobs = corrector_knobs(kx, ky)
     return corrector_track(state, knobs)
 
 
-def corrector_knobs(kx:Tensor, ky:Tensor) -> Knobs:    
+def corrector_knobs(kx:Tensor, ky:Tensor) -> Knobs:
     return torch.stack([kx, ky])
 
 
-def corrector_track(state:State, knobs:Knobs) -> State:    
+def corrector_track(state:State, knobs:Knobs) -> State:
     kx, ky, *_ = knobs
     qx, px, qy, py = state
     Qx = qx
@@ -185,8 +190,8 @@ def corrector_track(state:State, knobs:Knobs) -> State:
     return torch.stack([Qx, Px, Qy, Py])
 
 
-def drift(state:State, 
-          dp:Tensor, 
+def drift(state:State,
+          dp:Tensor,
           length:Tensor) -> State:
     """
     Drift transformation
@@ -199,12 +204,12 @@ def drift(state:State,
         momentum deviation
     length: Tensor
         length
-        
+
     Returns
     -------
     State
-    
-    """       
+
+    """
     knobs: Knobs = drift_knobs(dp, length)
     return drift_track(state, knobs)
 
@@ -223,8 +228,8 @@ def drift_track(state:State, knobs:Knobs) -> State:
     return torch.stack([Qx, Px, Qy, Py])
 
 
-def kinematic(state:State, 
-              dp:Tensor, 
+def kinematic(state:State,
+              dp:Tensor,
               length:Tensor) -> State:
     """
     Kinematic correction transformation
@@ -237,15 +242,15 @@ def kinematic(state:State,
         momentum deviation
     length: Tensor
         length
-        
+
     Returns
     -------
     State
-    
-    """      
-    knobs: Knobs = kinematic_knobs(dp, length)    
-    return kinematic_track(state, knobs)   
-    
+
+    """
+    knobs: Knobs = kinematic_knobs(dp, length)
+    return kinematic_track(state, knobs)
+
 
 def kinematic_knobs(dp:Tensor, length:Tensor) -> Knobs:
     return torch.stack([length, 1 + dp])
@@ -262,9 +267,9 @@ def kinematic_track(state:State, knobs:Knobs) -> State:
     return torch.stack([Qx, Px, Qy, Py])
 
 
-def fquad(state:State, 
-          kn:Tensor, 
-          dp:Tensor, 
+def fquad(state:State,
+          kn:Tensor,
+          dp:Tensor,
           length:Tensor) -> State:
     """
     Focusing quadrupole transformation
@@ -279,12 +284,12 @@ def fquad(state:State,
         momentum deviation
     length: Tensor
         length
-        
+
     Returns
     -------
     State
-    
-    """        
+
+    """
     knobs: Knobs = fquad_knobs(kn, dp, length)
     return fquad_track(state, knobs)
 
@@ -305,7 +310,7 @@ def fquad_knobs(kn:Tensor, dp:Tensor, length:Tensor) -> Knobs:
     return torch.stack([qxqx, qxpx, pxpx, pxqx, qyqy, qypy, pypy, pyqy])
 
 
-def fquad_track(state:State, knobs:Knobs) -> State:      
+def fquad_track(state:State, knobs:Knobs) -> State:
     qxqx, qxpx, pxpx, pxqx, qyqy, qypy, pypy, pyqy, *_ = knobs
     qx, px, qy, py = state
     Qx = qx*qxqx + px*qxpx
@@ -315,9 +320,9 @@ def fquad_track(state:State, knobs:Knobs) -> State:
     return torch.stack([Qx, Px, Qy, Py])
 
 
-def dquad(state:State, 
-          kn:Tensor, 
-          dp:Tensor, 
+def dquad(state:State,
+          kn:Tensor,
+          dp:Tensor,
           length:Tensor) -> State:
     """
     Defocusing quadrupole transformation
@@ -332,17 +337,17 @@ def dquad(state:State,
         momentum deviation
     length: Tensor
         length
-        
+
     Returns
     -------
     State
-    
-    """        
+
+    """
     knobs: Knobs = dquad_knobs(kn, dp, length)
     return dquad_track(state, knobs)
 
 
-def dquad_knobs(kn:Tensor, dp:Tensor, length:Tensor) -> Knobs:  
+def dquad_knobs(kn:Tensor, dp:Tensor, length:Tensor) -> Knobs:
     dw = length*(kn/(1 + dp)).sqrt()
     kp = (kn*(1 + dp)).sqrt()
     cos, cosh = dw.cos(), dw.cosh()
@@ -368,10 +373,10 @@ def dquad_track(state:State, knobs:Knobs) -> State:
     return torch.stack([Qx, Px, Qy, Py])
 
 
-def quadrupole(state:State, 
-               kn:Tensor, 
-               ks:Tensor, 
-               dp:Tensor, 
+def quadrupole(state:State,
+               kn:Tensor,
+               ks:Tensor,
+               dp:Tensor,
                length:Tensor) -> State:
     """
     Generic quadrupole transformation
@@ -385,25 +390,25 @@ def quadrupole(state:State,
     kn: Tensor
         normal quadrupole strength
     ks: Tensor
-        skew quadrupole strength   
+        skew quadrupole strength
     dp: Tensor
         momentum deviation
     length: Tensor
         length
-        
+
     Returns
     -------
     State
-    
-    """   
+
+    """
     knobs: Knobs = quadrupole_knobs(kn, ks, dp, length)
     return quadrupole_track(state, knobs)
 
 
-def quadrupole_knobs(kn:Tensor, ks:Tensor, dp:Tensor, length:Tensor) -> Knobs:    
+def quadrupole_knobs(kn:Tensor, ks:Tensor, dp:Tensor, length:Tensor) -> Knobs:
     kq = (kn**2 + ks**2).sqrt()
     kp = (kq/(1 + dp)).sqrt()
-    dw = kp*length    
+    dw = kp*length
     ka = kq + kn
     kb = kq - kn
     ka, kb, ks, kp = ka/kq, kb/kq, ks/kq, kp/kq
@@ -425,14 +430,14 @@ def quadrupole_knobs(kn:Tensor, ks:Tensor, dp:Tensor, length:Tensor) -> Knobs:
     pypx = (cosh - cos)*ks
     pyqy = (ka*sinh - kb*sin)/kp
     pypy = (ka*cosh + kb*cos)
-    return torch.stack([qxqx, qxpx, qxqy, qxpy, 
-                        pxqx, pxpx, pxqy, pxpy, 
-                        qyqx, qypx, qyqy, qypy, 
+    return torch.stack([qxqx, qxpx, qxqy, qxpy,
+                        pxqx, pxpx, pxqy, pxpy,
+                        qyqx, qypx, qyqy, qypy,
                         pyqx, pypx, pyqy, pypy])
 
 
 
-def quadrupole_track(x:Tensor, knobs:Tensor) -> Tensor:       
+def quadrupole_track(x:Tensor, knobs:Tensor) -> Tensor:
     qx, px, qy, py = 0.5*x
     qxqx, qxpx, qxqy, qxpy, \
     pxqx, pxpx, pxqy, pxpy, \
@@ -445,8 +450,8 @@ def quadrupole_track(x:Tensor, knobs:Tensor) -> Tensor:
     return torch.stack([Qx, Px, Qy, Py])
 
 
-def linear(state:State, 
-           vector:Tensor, 
+def linear(state:State,
+           vector:Tensor,
            matrix:Tensor) -> State:
     """
     Generic linear transformation
@@ -459,18 +464,18 @@ def linear(state:State,
         constant vector (dispersion)
     matrix: Tensor
         matrix
-        
+
     Returns
     -------
     State
-    
-    """       
+
+    """
     return vector + matrix @ state
 
 
-def gradient(state:State, 
-             kn:Tensor, 
-             ks:Tensor, 
+def gradient(state:State,
+             kn:Tensor,
+             ks:Tensor,
              length:Tensor) -> State:
     """
     Thin quadrupole transformation
@@ -485,21 +490,21 @@ def gradient(state:State,
         skew strength
     length: Tensor
         length
-        
+
     Returns
     -------
     State
-    
-    """     
+
+    """
     knobs: Knobs = gradient_knobs(kn, ks, length)
-    return gradient_track(state, knobs)  
+    return gradient_track(state, knobs)
 
 
-def gradient_knobs(kn:Tensor, ks:Tensor, length:Tensor) -> Knobs:      
+def gradient_knobs(kn:Tensor, ks:Tensor, length:Tensor) -> Knobs:
     return torch.stack([length*kn, length*ks])
 
 
-def gradient_track(state:State, knobs:Knobs) -> State:       
+def gradient_track(state:State, knobs:Knobs) -> State:
     kn, ks, *_ = knobs
     qx, px, qy, py = state
     Qx = qx
@@ -509,8 +514,8 @@ def gradient_track(state:State, knobs:Knobs) -> State:
     return torch.stack([Qx, Px, Qy, Py])
 
 
-def sextupole(state:State, 
-              ks:Tensor, 
+def sextupole(state:State,
+              ks:Tensor,
               length:Tensor) -> State:
     """
     Thin sextupole transformation
@@ -523,22 +528,22 @@ def sextupole(state:State,
         strength
     length: Tensor
         length
-        
+
     Returns
     -------
     State
-    
-    """     
+
+    """
     knobs: Knobs = sextupole_knobs(ks, length)
-    return sextupole_track(state, knobs)  
+    return sextupole_track(state, knobs)
 
 
-def sextupole_knobs(ks:Tensor, length:Tensor) -> Knobs:      
+def sextupole_knobs(ks:Tensor, length:Tensor) -> Knobs:
     kl = ks*length
     return torch.stack([kl/2.0, kl])
 
 
-def sextupole_track(state:State, knobs:Knobs) -> State:       
+def sextupole_track(state:State, knobs:Knobs) -> State:
     kx, ky, *_ = knobs
     qx, px, qy, py = state
     Qx = qx
@@ -548,8 +553,8 @@ def sextupole_track(state:State, knobs:Knobs) -> State:
     return torch.stack([Qx, Px, Qy, Py])
 
 
-def octupole(state:State, 
-             ko:Tensor, 
+def octupole(state:State,
+             ko:Tensor,
              length:Tensor) -> State:
     """
     Thin octupole transformation
@@ -562,22 +567,22 @@ def octupole(state:State,
         strength
     length: Tensor
         length
-        
+
     Returns
     -------
     State
-    
-    """        
+
+    """
     knobs: Knobs = octupole_knobs(ko, length)
     return octupole_track(state, knobs)
 
 
-def octupole_knobs(ko:Tensor, length:Tensor) -> Knobs:        
+def octupole_knobs(ko:Tensor, length:Tensor) -> Knobs:
     kl = ko*length
     return torch.stack([-kl/6.0])
 
 
-def octupole_track(state:State, knobs:Knobs) -> State:      
+def octupole_track(state:State, knobs:Knobs) -> State:
     kl, *_ = knobs
     qx, px, qy, py = state
     Qx = qx
@@ -587,9 +592,9 @@ def octupole_track(state:State, knobs:Knobs) -> State:
     return torch.stack([Qx, Px, Qy, Py])
 
 
-def dipole(state:State, 
-           r:Tensor, 
-           dp:Tensor, 
+def dipole(state:State,
+           r:Tensor,
+           dp:Tensor,
            length:Tensor) -> State:
     """
     Dipole transformation
@@ -601,15 +606,15 @@ def dipole(state:State,
     r: Tensor
         bending radius
     dp: Tensor
-        momentum deviation        
+        momentum deviation
     length: Tensor
         length
-        
+
     Returns
     -------
     State
-    
-    """       
+
+    """
     knobs: Knobs = dipole_knobs(r, dp, length)
     return dipole_track(state, knobs)
 
@@ -621,7 +626,7 @@ def dipole_knobs(r:Tensor, dp:Tensor, length:Tensor) -> Knobs:
     sin = dw.sin()
     qxcx = dp*r*(1 - cos)
     qxqx = cos
-    qxpx = r*sin/dq 
+    qxpx = r*sin/dq
     pxcx = dp*dq*sin
     pxqx = - dq*sin/r
     pxpx = cos
@@ -629,7 +634,7 @@ def dipole_knobs(r:Tensor, dp:Tensor, length:Tensor) -> Knobs:
     return torch.stack([qxcx, qxqx, qxpx, pxcx, pxqx, pxpx, qypy])
 
 
-def dipole_track(state:State, knobs:Knobs) -> State:     
+def dipole_track(state:State, knobs:Knobs) -> State:
     qxcx, qxqx, qxpx, pxcx, pxqx, pxpx, qypy, *_ = knobs
     qx, px, qy, py = state
     Qx = qxcx + qx*qxqx + px*qxpx
@@ -639,11 +644,11 @@ def dipole_track(state:State, knobs:Knobs) -> State:
     return torch.stack([Qx, Px, Qy, Py])
 
 
-def bend(state:State, 
-         r:Tensor, 
-         kn:Tensor, 
-         ks:Tensor, 
-         dp:Tensor, 
+def bend(state:State,
+         r:Tensor,
+         kn:Tensor,
+         ks:Tensor,
+         dp:Tensor,
          length:Tensor) -> State:
     """
     Combined function bend transformation
@@ -659,17 +664,17 @@ def bend(state:State,
     kn: Tensor
         normal quadrupole strength
     ks: Tensor
-        skew quadrupole strength           
+        skew quadrupole strength
     dp: Tensor
-        momentum deviation        
+        momentum deviation
     length: Tensor
         length
-        
+
     Returns
     -------
     State
-    
-    """       
+
+    """
     knobs: Knobs = bend_knobs(r, kn, ks, dp, length)
     return bend_track(state, knobs)
 
@@ -693,9 +698,9 @@ def bend_knobs(r:Tensor, kn:Tensor, ks:Tensor, dp:Tensor, length:Tensor) -> Knob
     kx = krb**2*kn + 2*kq
     ky = kn - 2*kq + kn*kr
     cos, cosh = wa.cos(), wb.cosh()
-    sin, sinh = wa.sin(), wb.sinh()    
+    sin, sinh = wa.sin(), wb.sinh()
     qxcx = dp*r/kq*(kn - (kx*cos + ky*cosh)/(2*kr))
-    pxcx = dp*dpsq/(4*kq*kr)*(kra*kx*sin - krb*ky*sinh)    
+    pxcx = dp*dpsq/(4*kq*kr)*(kra*kx*sin - krb*ky*sinh)
     qycy = dp*kskr*r/kq*(-kr + krb**2*cos/2 + kra**2*cosh/2)
     pycy = dp*kskr*dpsq*kra*krb/(4*kq)*(kra*sinh - krb*sin)
     qxqx = (kakr*cos + kbkr*cosh)/2
@@ -705,22 +710,22 @@ def bend_knobs(r:Tensor, kn:Tensor, ks:Tensor, dp:Tensor, length:Tensor) -> Knob
     pxqx = (kbkr*sinh/qb - kakr*sin/qa)/4
     pxpx = (kakr*cos + kbkr*cosh)/2
     pxqy = (ksdr*(qb*sin + qa*sinh))/(2*qa*qb)
-    pxpy = (ksdr*(-cos + cosh))    
+    pxpy = (ksdr*(-cos + cosh))
     qyqx = (ksdr*(cosh - cos))
     qypx = (2*ksdr*(qb*sinh- qa*sin))
     qyqy = (kbkr*cos + kakr*cosh)/2
-    qypy = (kbkr*qa*sin + kakr*qb*sinh)    
+    qypy = (kbkr*qa*sin + kakr*qb*sinh)
     pyqx = (ksdr*(qb*sin + qa*sinh))/(2.*qa*qb)
     pypx = (ksdr*(cosh - cos))
     pyqy = (kakr*sinh/qb - kbkr*sin/qa)/4
     pypy = (kbkr*cos + kakr*cosh)/2
-    return torch.stack([qxcx, qxqx, qxpx, qxqy, qxpy, 
-                        pxcx, pxqx, pxpx, pxqy, pxpy, 
-                        qycy, qyqx, qypx, qyqy, qypy, 
+    return torch.stack([qxcx, qxqx, qxpx, qxqy, qxpy,
+                        pxcx, pxqx, pxpx, pxqy, pxpy,
+                        qycy, qyqx, qypx, qyqy, qypy,
                         pycy, pyqx, pypx, pyqy, pypy])
 
 
-def bend_track(state:Tensor, knobs:Tensor) -> Tensor:      
+def bend_track(state:Tensor, knobs:Tensor) -> Tensor:
     qx, px, qy, py = state
     qxcx, qxqx, qxpx, qxqy, qxpy, \
     pxcx, pxqx, pxpx, pxqy, pxpy, \
@@ -734,11 +739,11 @@ def bend_track(state:Tensor, knobs:Tensor) -> Tensor:
 
 
 def wedge(state:State,
-          epsilon:Tensor, 
+          epsilon:Tensor,
           r:Tensor) -> State:
     """
-    Dipole wedge transformation
-    
+    Dipole linear wedge transformation
+
     Parameters
     ----------
     state: State
@@ -747,12 +752,12 @@ def wedge(state:State,
         wedge angle
     r: Tensor
         bending radius
-    
+
     Returns
     -------
     State
-    
-    """      
+
+    """
     knobs: Knobs = wedge_knobs(epsilon, r)
     return wedge_track(state, knobs)
 
@@ -761,7 +766,7 @@ def wedge_knobs(epsilon:Tensor, r:Tensor) -> Knobs:
     return torch.stack([epsilon.tan()/r])
 
 
-def wedge_track(state:State, knobs:Knobs) -> State:  
+def wedge_track(state:State, knobs:Knobs) -> State:
     kw, *_ = knobs
     qx, px, qy, py = state
     Qx = qx
@@ -771,15 +776,220 @@ def wedge_track(state:State, knobs:Knobs) -> State:
     return torch.stack([Qx, Px, Qy, Py])
 
 
-def multipole(state:State, 
-              r:Tensor, 
-              kqn:Tensor, 
-              kqs:Tensor, 
-              ks:Tensor, 
-              ko:Tensor, 
-              length:Tensor) -> State:
-    """ 
+def sector_bend(state:State, r:Tensor, dp:Tensor, length:Tensor) -> State:
+    """
+    Exact sector bend body tranformation
+
+    Parameters
+    ----------
+    state: State
+        initial state
+    r: Tensor
+        bending radius
+    dp: Tensor
+        momentum deviation
+    length: Tensor
+        length
+
+    Returns
+    -------
+    State
+
+    """
+    qx, px, qy, py = state
+    dw = length/r
+    cos = dw.cos()
+    sin = dw.sin()
+    pa = ((1 + dp)**2 - px**2 - py**2).sqrt()
+    pb = ((1 + dp)**2 - py**2).sqrt()
+    pc = (pa - (qx + r)/r)*sin
+    pd = (px*cos + pc)
+    Qx = (-r + (qx + r - pa*r)*cos + r*(px*sin + (pb**2 - pd**2).sqrt()))
+    Px = pd
+    Qy = (qy + py*(length + r*((px/pb).asin() - (pd/pb).asin())))
+    Py = py
+    return torch.stack([Qx, Px, Qy, Py])
+
+
+def sector_bend_fringe(state:State, r:Tensor, dp:Tensor) -> State:
+    """
+    Sector bend fringe transformation
+
+    sector_bend_fringe(state, +r, dp) - entrance fringe
+    sector_bend_fringe(state, -r, dp) - exit fringe
+
+    Parameters
+    ----------
+    state: State
+        initial state
+    r: Tensor
+        bending radius
+    dp: Tensor
+        momentum deviation
+    length: Tensor
+        length
+
+    Returns
+    -------
+    State
+
+    """
+    qx, px, qy, py = state
+    pa = (1 + dp)**2
+    pb = (pa - px**2 - py**2).sqrt()
+    pc = -(pa - px**2)
+    pd = 1 + (1 - (2*px*py*qy)/(pc*pb*r)).sqrt()
+    Qx = (qx - 2*(pa**2*(py**2 - 1) + px**2*(pa + py**2))*qy**2/(pc**2*pb*pd**2*r))
+    Px = px
+    Qy = 2*qy/pd
+    Py = py + 2*px*pb*qy/(r*pc*pd)
+    return torch.stack([Qx, Px, Qy, Py])
+
+
+def sector_bend_wedge(state:State, w:Tensor, r:Tensor, dp:Tensor) -> Tensor:
+    """
+    Sector bend wedge transformation
+
+    Parameters
+    ----------
+    state: State
+        initial state
+    w: Tensor
+        wegde angle
+    r: Tensor
+        bending radius
+    dp: Tensor
+        momentum deviation
+
+    Returns
+    -------
+    State
+
+    """
+
+    qx, px, qy, py = state
+    cos = w.cos()
+    sin = w.sin()
+    pa = ((1 + dp)**2 - px**2 - py**2).sqrt()
+    pb = ((1 + dp)**2 - py**2).sqrt()
+    pc = (pa - qx/r)
+    pd = (px*cos + pc*sin)
+    Qx = (qx*cos - r*(pa*cos - px*sin - (pb**2 - pd**2).sqrt()))
+    Px = (px*cos + pc*sin)
+    Qy = (qy + r*py*(w + (px/pb).asin() - (pd/pb).asin()))
+    Py = py
+    return torch.stack([Qx, Px, Qy, Py])
+
+
+def polar(state:State,
+          angle:Tensor,
+          dp:Tensor) -> State:
+    """
+    Polar drift
+
+    Note, same as rotation around qy axis, but with different angle sign
+
+    Parameters
+    ----------
+    state: State
+        initial state
+    angle: Tensor
+        rotation angle
+    dp: Tensor
+        momentum deviation
+
+    Returns
+    -------
+    State
+
+    """
+    knobs: Knobs = polar_knobs(angle, dp)
+    return polar_track(state, knobs)
+
+
+def polar_knobs(angle:Tensor, dp:Tensor) -> Knobs:
+    kp = (1 + dp)**2
+    cos = angle.cos()
+    sin = angle.sin()
+    tan = sin/cos
+    return torch.stack([kp, cos, sin, tan])
+
+
+def polar_track(state:State, knobs:Knobs) -> State:
+    kp, cos, sin, tan, *_ = knobs
+    qx, px, qy, py = state
+    pz = (kp - px**2 - py**2).sqrt()
+    Qx = qx/cos/(1 - px/pz*tan)
+    Px = px*cos + pz*sin
+    Qy = qy + py*qx*tan/(pz - px*tan)
+    Py = py
+    return torch.stack([Qx, Px, Qy, Py])
+
+
+def cylindrical(state:State,
+                r:Tensor,
+                kqn:Tensor,
+                kqs:Tensor,
+                ks:Tensor,
+                ko:Tensor,
+                dp:Tensor,
+                length:Tensor) -> State:
+    """
     Cylindrical multipole kick upto octupole degree
+
+    Parameters
+    ----------
+    state: State
+        initial state
+    r: Tensor
+        bending radius
+    kqn: Tensor
+        normal quadrupole strength
+    kqs: Tensor
+        skew quadrupole strength
+    ks: Tensor
+        sextupole strength
+    ks: Tensor
+        octupole strength
+    dp: Tensor
+        momentum deviation
+    length: Tensor
+        length
+
+    Returns
+    -------
+    State
+
+    """
+    qx, px, qy, py = state
+    Qx = qx
+    Px = (
+        px
+        + (length*(dp*r - qx))/r**2
+        + (kqn*length*(-2*qx**2 + qy**2 - 2*qx*r))/(2*r)
+        + (kqs*length*qy*(qy**2 + 6*r*(2*qx + r)))/(6*r**2)
+        - (ko*length*(qx**3 - 3*qx*qy**2))/6
+        - (ks*length*(qx**3 - 2*qx*qy**2 + qx**2*r - qy**2*r))/(2*r)
+    )
+    Qy = qy
+    Py = (
+        py
+        + (kqn*length*qy*(qy**2 + 6*r*(qx + r)))/(6*r**2)
+        + (kqs*length*(2*qx**2*r - qy**2*r + qx*(qy**2 + 2*r**2)))/(2*r**2)
+        - (ko*length*qy*(-3*qx**2 + qy**2))/6
+        - (ks*length*qy*(-6*qx**2 + qy**2 - 6*qx*r))/(6*r)
+    )
+    return torch.stack([Qx, Px, Qy, Py])
+
+
+def cylindrical_error(state:State,
+                      r:Tensor, kqn:Tensor,
+                      kqs:Tensor,
+                      ks:Tensor,
+                      ko:Tensor,
+                      length:Tensor) -> State:
+    """
+    Cylindrical multipole kick upto octupole degree without leading order linear part
 
     Parameters
     ----------
@@ -797,17 +1007,17 @@ def multipole(state:State,
         octupole strength
     length: Tensor
         length
-        
+
     Returns
     -------
-    State    
-    
+    State
+
     """
-    knobs: Knobs = multipole_knobs(r, kqn, kqs, ks, ko, length)
-    return multipole_track(state, knobs)
+    knobs: Knobs = cylindrical_error_knobs(r, kqn, kqs, ks, ko, length)
+    return cylindrical_error_track(state, knobs)
 
 
-def multipole_knobs(r:Tensor, kqn:Tensor, kqs:Tensor, ks:Tensor, ko:Tensor, length:Tensor) -> Knobs:
+def cylindrical_error_knobs(r:Tensor, kqn:Tensor, kqs:Tensor, ks:Tensor, ko:Tensor, length:Tensor) -> Knobs:
     kqnlr =  kqn*length/r
     kqslr =  kqs*length/r
     kslr = ks*length/r
@@ -815,7 +1025,7 @@ def multipole_knobs(r:Tensor, kqn:Tensor, kqs:Tensor, ks:Tensor, ko:Tensor, leng
     return torch.stack([r, kqnlr, kqslr, kslr, kol])
 
 
-def multipole_track(state:State, knobs:Knobs) -> State:
+def cylindrical_error_track(state:State, knobs:Knobs) -> State:
     r, kqnlr, kqslr, kslr, kol, *_ = knobs
     qx, px, qy, py = state
     Qx = qx
@@ -829,19 +1039,19 @@ def tx(state:State,
        dx:Tensor) -> State:
     """
     TX translation (sign matches MADX)
-    
+
     Parameters
     ----------
     state: State
         initial state
     dx: Tensor
         qx translation error
-    
+
     Returns
     -------
     State
-    
-    """      
+
+    """
     knobs: Knobs = tx_knobs(dx)
     return tx_track(state, knobs)
 
@@ -864,19 +1074,19 @@ def ty(state:State,
        dy:Tensor) -> State:
     """
     TY translation (sign matches MADX)
-    
+
     Parameters
     ----------
     state: State
         initial state
     dy: Tensor
         qy translation error
-    
+
     Returns
     -------
     State
-    
-    """      
+
+    """
     knobs: Knobs = ty_knobs(dy)
     return ty_track(state, knobs)
 
@@ -900,7 +1110,7 @@ def tz(state:State,
        dp:Tensor) -> State:
     """
     TZ translation (sign matches MADX)
-    
+
     Parameters
     ----------
     state: State
@@ -908,13 +1118,13 @@ def tz(state:State,
     dz: Tensor
         qz translation error
     dp: Tensor
-        momentum deviation           
-    
+        momentum deviation
+
     Returns
     -------
     State
-    
-    """      
+
+    """
     knobs: Knobs = tz_knobs(dz, dp)
     return tz_track(state, knobs)
 
@@ -939,8 +1149,8 @@ def rx(state:State,
        wx:Tensor,
        dp:Tensor) -> State:
     """
-    RX translation (sign matches MADX)
-    
+    RX rotation (sign matches MADX)
+
     Parameters
     ----------
     state: State
@@ -948,13 +1158,13 @@ def rx(state:State,
     wx: Tensor
         qx rotation angle
     dp: Tensor
-        momentum deviation           
-    
+        momentum deviation
+
     Returns
     -------
     State
-    
-    """      
+
+    """
     knobs: Knobs = rx_knobs(wx, dp)
     return rx_track(state, knobs)
 
@@ -982,8 +1192,8 @@ def ry(state:State,
        wy:Tensor,
        dp:Tensor) -> State:
     """
-    RY translation (sign matches MADX)
-    
+    RY rotation (sign matches MADX)
+
     Parameters
     ----------
     state: State
@@ -991,13 +1201,13 @@ def ry(state:State,
     wz: Tensor
         qy rotation angle
     dp: Tensor
-        momentum deviation           
-    
+        momentum deviation
+
     Returns
     -------
     State
-    
-    """      
+
+    """
     knobs: Knobs = ry_knobs(wy, dp)
     return ry_track(state, knobs)
 
@@ -1015,17 +1225,17 @@ def ry_track(state:State, knobs:Knobs) -> State:
     qx, px, qy, py = state
     pz = (kp - px**2 - py**2).sqrt()
     Qx = qx/cos/(1 - px/pz*tan)
-    Px = px*cos + pz*sin 
+    Px = px*cos + pz*sin
     Qy = qy + py*qx*tan/(pz - px*tan)
-    Py = py 
+    Py = py
     return torch.stack([Qx, Px, Qy, Py])
 
 
 def rz(state:State,
        wz:Tensor) -> State:
     """
-    RZ translation (sign matches MADX)
-    
+    RZ rotation (sign matches MADX)
+
     Parameters
     ----------
     state: State
@@ -1033,20 +1243,20 @@ def rz(state:State,
     wz: Tensor
         qz rotation angle
     dp: Tensor
-        momentum deviation           
-    
+        momentum deviation
+
     Returns
     -------
     State
-    
-    """      
+
+    """
     knobs: Knobs = rz_knobs(wz)
     return rz_track(state, knobs)
 
 
 def rz_knobs(wz:Tensor) -> Knobs:
     cos = wz.cos()
-    sin = wz.sin()    
+    sin = wz.sin()
     return torch.stack([cos, sin])
 
 
