@@ -70,7 +70,7 @@ class Multipole(Element):
         ms: float
             sextupole strength
         mo: float
-            octupole strength            
+            octupole strength
         dp: float, default=0.0
             momentum deviation
         ns: int, positive, default=1
@@ -157,21 +157,24 @@ class Multipole(Element):
         tuple[Mapping, ParametricMapping]
 
         """
-        ns: int = self.ns
-        exact:bool = self.exact
-        order:int = self.order
+        _ns: int = self.ns
+        _order:int = self.order
         _ds: Tensor = self.length/self.ns
         _kn: Tensor = self.kn
         _ks: Tensor = self.ks
         _ms: Tensor = self.ms
         _mo: Tensor = self.mo
         _dp: Tensor = self.dp
+
+        exact:bool = self.exact
         insertion:bool = self.insertion
         if insertion:
             lmatrix: Tensor = self._lmatrix
             rmatrix: Tensor = self._rmatrix
         output:bool = self.output
         matrix:bool = self.matrix
+
+        integrator: Callable[[State, Tensor, ...], State]
 
         def quad_wrapper(state:State, ds:Tensor, kn:Tensor, ks:Tensor, ms: Tensor, mo:Tensor, dp:Tensor) -> State:
             return quadrupole(state, kn, ks, dp, ds)
@@ -182,87 +185,89 @@ class Multipole(Element):
         if exact:
             def sqrt_wrapper(state:State, ds:Tensor, kn:Tensor, ks:Tensor, ms: Tensor, mo:Tensor, dp:Tensor) -> State:
                 return kinematic(state, dp, ds)
-        else:
-            def sqrt_wrapper(state:State, ds:Tensor, kn:Tensor, ks:Tensor, ms: Tensor, mo:Tensor, dp:Tensor) -> State:
-                return state
+            integrator = yoshida(0, _order, True, [quad_wrapper, mult_wrapper, sqrt_wrapper])
+
+        if not exact:
+            integrator = yoshida(0, _order, True, [quad_wrapper, mult_wrapper])
+
+        self._data: list[list[int], list[float]] = integrator.table
 
         if insertion:
             def lmatrix_wrapper(state:State) -> State:
                 return lmatrix @ state
             def rmatrix_wrapper(state:State) -> State:
                 return rmatrix @ state
-        else:
-            def lmatrix_wrapper(state:State) -> State:
-                return state
-            def rmatrix_wrapper(state:State) -> State:
-                return state
-
-        integrator: Callable[[State], State, Tensor, ...]
-        integrator = yoshida(0, order, True, [quad_wrapper, mult_wrapper, sqrt_wrapper])
-
-        self._data: list[list[int], list[float]] = integrator.table
-
-        if output and matrix:
             def step(state:State) -> State:
-                container_output = []
-                container_matrix = []
+                if output:
+                    container_output = []
+                if matrix:
+                    container_matrix = []
                 state = lmatrix_wrapper(state)
-                for _ in range(ns):
+                for _ in range(_ns):
                     state = integrator(state, _ds, _kn, _ks, _ms, _mo, _dp)
-                    container_output.append(state)
-                    container_matrix.append(torch.func.jacrev(integrator)(state, _ds, _kn, _ks, _ms, _mo, _dp))
-                self.container_output = torch.stack(container_output)
-                self.container_matrix = torch.stack(container_matrix)
+                    if output:
+                        container_output.append(state)
+                    if matrix:
+                         container_matrix.append(torch.func.jacrev(integrator)(state, _ds, _kn, _ks, _ms, _mo, _dp))
+                if output:
+                    self.container_output = torch.stack(container_output)
+                if matrix:
+                    self.container_matrix = torch.stack(container_matrix)
                 state = rmatrix_wrapper(state)
                 return state
-            def knob(state:State, kn:Tensor, ks:Tensor, ms:Tensor, mo:Tensor, dp:Tensor, dl:Tensor) -> State:
-                container_output = []
-                container_matrix = []
+            def knob(state:State, kn:Tensor, ks:Tensor, ms: Tensor, mo:Tensor, dp:Tensor, dl:Tensor)  -> State:
+                if output:
+                    container_output = []
+                if matrix:
+                    container_matrix = []
                 state = lmatrix_wrapper(state)
-                for _ in range(ns):
-                    state = integrator(state, (_ds + dl/ns), _kn + kn, _ks + ks, _ms + ms, _mo + mo, _dp + dp)
-                    container_output.append(state)
-                    container_matrix.append(torch.func.jacrev(integrator)(state, (_ds + dl/ns), _kn + kn, _ks + ks, _ms + ms, _mo + mo, _dp + dp))
-                self.container_output = torch.stack(container_output)
-                self.container_matrix = torch.stack(container_matrix)
+                for _ in range(_ns):
+                    state = integrator(state, _ds + dl/_ns, _kn + kn, _ks + ks, _ms + ms, _mo + mo, _dp + dp)
+                    if output:
+                        container_output.append(state)
+                    if matrix:
+                        container_matrix.append(torch.func.jacrev(integrator)(state, _ds + dl/_ns, _kn + kn, _ks + ks, _ms + ms, _mo + mo, _dp + dp))
+                if output:
+                    self.container_output = torch.stack(container_output)
+                if matrix:
+                    self.container_matrix = torch.stack(container_matrix)
                 state = rmatrix_wrapper(state)
                 return state
-            return step, knob
 
-        if output:
+        if not insertion:
             def step(state:State) -> State:
-                container_output = []
-                state = lmatrix_wrapper(state)
-                for _ in range(ns):
+                if output:
+                    container_output = []
+                if matrix:
+                     container_matrix = []
+                for _ in range(_ns):
                     state = integrator(state, _ds, _kn, _ks, _ms, _mo, _dp)
-                    container_output.append(state)
-                self.container_output = torch.stack(container_output)
-                state = rmatrix_wrapper(state)
+                    if output:
+                        container_output.append(state)
+                    if matrix:
+                        container_matrix.append(torch.func.jacrev(integrator)(state, _ds, _kn, _ks, _ms, _mo, _dp))
+                if output:
+                    self.container_output = torch.stack(container_output)
+                if matrix:
+                    self.container_matrix = torch.stack(container_matrix)
                 return state
-            def knob(state:State, kn:Tensor, ks:Tensor, ms:Tensor, mo:Tensor, dp:Tensor, dl:Tensor) -> State:
-                container_output = []
-                state = lmatrix_wrapper(state)
-                for _ in range(ns):
-                    state = integrator(state, (_ds + dl/ns), _kn + kn, _ks + ks, _ms + ms, _mo + mo, _dp + dp)
-                    container_output.append(state)
-                self.container_output = torch.stack(container_output)
-                state = rmatrix_wrapper(state)
+            def knob(state:State, kn:Tensor, ks:Tensor, ms: Tensor, mo:Tensor, dp:Tensor, dl:Tensor)  -> State:
+                if output:
+                    container_output = []
+                if matrix:
+                    container_matrix = []
+                for _ in range(_ns):
+                    state = integrator(state, _ds + dl/_ns, _kn + kn, _ks + ks, _ms + ms, _mo + mo, _dp + dp)
+                    if output:
+                        container_output.append(state)
+                    if matrix:
+                        container_matrix.append(torch.func.jacrev(integrator)(state, _ds + dl/_ns, _kn + kn, _ks + ks, _ms + ms, _mo + mo, _dp + dp))
+                if output:
+                    self.container_output = torch.stack(container_output)
+                if matrix:
+                    self.container_matrix = torch.stack(container_matrix)
                 return state
-            return step, knob
 
-
-        def step(state:State) -> State:
-            state = lmatrix_wrapper(state)
-            for _ in range(ns):
-                state = integrator(state, _ds, _kn, _ks, _ms, _mo, _dp)
-            state = rmatrix_wrapper(state)
-            return state
-        def knob(state:State, kn:Tensor, ks:Tensor, ms:Tensor, mo:Tensor, dp:Tensor, dl:Tensor) -> State:
-            state = lmatrix_wrapper(state)
-            for _ in range(ns):
-                state = integrator(state, (_ds + dl/ns), _kn + kn, _ks + ks, _ms + ms, _mo + mo, _dp + dp)
-            state = rmatrix_wrapper(state)
-            return state
         return step, knob
 
 
