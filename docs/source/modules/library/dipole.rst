@@ -1,0 +1,1 @@
+.. automodule:: model.library.dipole
