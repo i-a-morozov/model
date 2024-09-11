@@ -15,7 +15,11 @@ from torch import Tensor
 
 from ndmap.yoshida import yoshida
 
-from model.library.keys import KEY_KN, KEY_KS, KEY_DP, KEY_DL
+from model.library.keys import KEY_KN
+from model.library.keys import KEY_KS
+from model.library.keys import KEY_DP
+from model.library.keys import KEY_DL
+
 from model.library.element import Element
 from model.library.transformations import quadrupole
 from model.library.transformations import kinematic
@@ -74,7 +78,7 @@ class Quadrupole(Element):
         order: int, default=0, non-negative
             Yoshida integration order
         exact: bool, default=False
-            flag to include kinematic term
+            flag to use exact Hamiltonian
         insertion: bool, default=False
             flat to treat element as thin insertion
         output: bool, default=False

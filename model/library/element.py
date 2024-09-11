@@ -21,9 +21,17 @@ from torch import dtype as DataType
 from torch import device as DataDevice
 from torch import float64 as Float64
 
-from model.library.keys import KEY_DP, KEY_DL, KEY_DW
-from model.library.keys import KEY_DX, KEY_DY, KEY_DZ
-from model.library.keys import KEY_WX, KEY_WY, KEY_WZ
+from model.library.keys import KEY_DP
+from model.library.keys import KEY_DL
+from model.library.keys import KEY_DW
+
+from model.library.keys import KEY_DX
+from model.library.keys import KEY_DY
+from model.library.keys import KEY_DZ
+
+from model.library.keys import KEY_WX
+from model.library.keys import KEY_WY
+from model.library.keys import KEY_WZ
 
 from model.library.transformations import tx, ty, tz
 from model.library.transformations import rx, ry, rz
@@ -87,7 +95,7 @@ class Element(ABC):
         order: int, default=0, non-negative
             Yoshida integration order
         exact: bool, default=False
-            flag to include kinematic term
+            flag to use exact Hamiltonian
         insertion: bool, default=False
             flat to treat element as thin insertion
         output: bool, default=False
