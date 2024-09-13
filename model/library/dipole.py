@@ -117,7 +117,7 @@ class Dipole(Element):
         output: bool, default=False
             flag to save output at each step
         matrix: bool, default=False
-            flag to save matrix at each step if output is true
+            flag to save matrix at each step
 
         Returns
         -------

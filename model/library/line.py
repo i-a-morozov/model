@@ -40,8 +40,7 @@ class Line(Element):
     Line
 
     """
-    flag: bool = False
-    keys: list[str] = ['dp', 'dl']
+    keys: list[str] = []
 
 
     def __init__(self,
@@ -60,7 +59,7 @@ class Line(Element):
         name: str
             name
         sequence: list[Element|Line]
-            line sequence
+            line sequence (ordered sequence of elements and/or (nested) lines)
         propagate: bool, default=False
             flat to propagate flags to elements
         dp: float, default=0.0
@@ -70,8 +69,7 @@ class Line(Element):
         output: bool, default=False
             flag to save output at each step
         matrix: bool, default=False
-            flag to save matrix at each step if output is true
-
+            flag to save matrix at each step
 
         Returns
         -------
@@ -79,17 +77,17 @@ class Line(Element):
 
         """
         super().__init__(name=name,
-                         length=0.0,
                          dp=dp,
                          exact=exact,
-                         insertion=False,
                          output=output,
                          matrix=matrix)
 
         self._sequence:list[Element|Line] = sequence
+
         self._exact: bool = exact
         self._output: bool = output
         self._matrix: bool = matrix
+
         self.propagate: bool = propagate
         if self.propagate:
             self.set('dp', dp)
@@ -110,7 +108,7 @@ class Line(Element):
               name:bool=False,
               alignment:bool=True) -> dict[str,dict[str,Tensor]] | dict[str,dict[str,dict[str,Tensor]]]:
         """
-        Generate default deviation table for all elements
+        Generate default deviation table for all unique elements
 
         Parameters
         ----------
@@ -146,7 +144,6 @@ class Line(Element):
         ------
         Element
 
-
         """
         for element in self.sequence:
             if isinstance(element, Line):
@@ -160,7 +157,7 @@ class Line(Element):
                kinds:Optional[list[str]]=None,
                names:Optional[list[str]]=None) -> list[Element]:
         """
-        Select elements with given kinds and/or names
+        Select (filter) elements with given kinds and/or names
 
         Parameters
         ----------
@@ -177,6 +174,7 @@ class Line(Element):
         elements = [element for element in elements if not kinds or element.__class__.__name__ in kinds]
         elements = [element for element in elements if not names or element.name in names]
         return elements
+
 
     def get(self,
             attribute:str, *,
@@ -307,6 +305,18 @@ class Line(Element):
 
 
     @property
+    def unique(self) -> dict[str, tuple[str, Tensor, Tensor]]:
+        default:Tensor = torch.tensor(0.0, dtype=self.dtype, device=self.device)
+        return {
+            element.name : (
+                element.__class__.__name__,
+                getattr(element, 'length', default),
+                getattr(element, 'angle', default)
+            ) for element in self.scan('name')
+        }
+
+
+    @property
     def dp(self) -> Tensor:
         """
         Get momentum deviation
@@ -412,7 +422,7 @@ class Line(Element):
 
         """
         angle: Tensor = torch.zeros_like(self.length)
-        return sum({name: value for name, value in self.get('angle')}.values()) or angle
+        return sum(value for _, value in self.get('angle')) or angle
 
 
     @property
@@ -449,6 +459,47 @@ class Line(Element):
         return {name: value for name, value in self.get('ns')}
 
 
+    @ns.setter
+    def ns(self,
+           value:int|float|tuple[tuple[str,int|float],...]) -> None:
+        """
+        Set number of integration steps
+
+        value: int
+            set given number of steps to all unique elements
+        value: float
+            set ceil(length/value) number of steps to all unique elements
+        value: tuple[str,int],...]
+            set given number of steps to given names and/or elements types
+        value: tuple[str,float],...]
+            set ceil(length/value) number of steps to given names and/or elements types
+
+        Returs
+        ------
+        Note
+
+        """
+        elements:dict[str,Element] = {element.name: element for element in set(self.scan('name'))}
+
+        if isinstance(value, int):
+            for element in elements.values():
+                setattr(element, 'ns', value)
+            return
+
+        if isinstance(value, float):
+            for element in elements.values():
+                setattr(element, 'ns', ceil(element.length/value))
+            return
+
+        for key, parameter in value:
+            if key in elements:
+                element = elements[key]
+                setattr(element, 'ns', parameter if isinstance(parameter, int) else ceil(element.length/parameter))
+                continue
+            for element in self.select(elements.values(), kinds=[key]):
+                setattr(element, 'ns', parameter if isinstance(parameter, int) else ceil(element.length/parameter))
+
+
     @property
     def order(self) -> dict[str, int]:
         """
@@ -466,53 +517,36 @@ class Line(Element):
         return {name: value for name, value in self.get('order')}
 
 
-
-    def change_ns(self,
-                  ds: float, *,
-                  kinds:Optional[list[str]]=None,
-                  names:Optional[list[str]]=None):
+    @order.setter
+    def order(self,
+              value:int|tuple[tuple[str,int],...]) -> None:
         """
-        Change number of integration steps
+        Set number of integration steps
 
-        Parameters
-        ----------
-        ds: float
-            integration step length
-            ns = ceil(length/ds)
-        kinds: Optional[list[str]]
-            list of kinds to select
-        names: Optional[list[str]]
-            list of names to select
+        value: int
+            set given order to all unique elements
+        value: tuple[str,int],...]
+            set given order to given names and/or elements types
+
+        Returs
+        ------
+        Note
 
         """
-        elements:list[Element] = [*self.scan('name')]
-        elements = self.select(elements, kinds=kinds, names=names)
-        for element in elements:
-            setattr(element, 'ns', ceil(element.length/ds))
+        elements:dict[str,Element] = {element.name: element for element in set(self.scan('name'))}
 
+        if isinstance(value, int):
+            for element in elements.values():
+                setattr(element, 'order', value)
+            return
 
-    def change_order(self,
-                     order: int, *,
-                     kinds:Optional[list[str]]=None,
-                     names:Optional[list[str]]=None):
-        """
-        Change integration order
-
-        Parameters
-        ----------
-        ds: float
-            integration step length
-            ns = ceil(length/ds)
-        kinds: Optional[list[str]]
-            list of kinds to select
-        names: Optional[list[str]]
-            list of names to select
-
-        """
-        elements:list[Element] = [*self.scan('name')]
-        elements = self.select(elements, kinds=kinds, names=names)
-        for element in elements:
-            setattr(element, 'order', order)
+        for key, parameter in value:
+            if key in elements:
+                element = elements[key]
+                setattr(element, 'order', parameter)
+                continue
+            for element in self.select(elements.values(), kinds=[key]):
+                setattr(element, 'order', parameter)
 
 
     @property
@@ -597,7 +631,7 @@ class Line(Element):
                  alignment:bool=False) -> State:
         """
         Transform initial input state using attibutes and deviations
-        Deviations and alignment valurs are passed in data
+        Deviations and alignment values are passed in data
         Deviations are added to corresponding parameters
 
         Parameters
@@ -618,8 +652,8 @@ class Line(Element):
 
         if self.output:
             container_output: list[Tensor] = []
-            if self.matrix:
-                container_matrix: list[Tensor] = []
+        if self.matrix:
+            container_matrix: list[Tensor] = []
 
         if not alignment:
             for element in self.sequence:
@@ -640,7 +674,6 @@ class Line(Element):
             if self.matrix:
                 self.container_matrix = torch.vstack(container_matrix)
             return state
-
 
         dp:Tensor = self.dp + data.get(KEY_DP, 0.0)
         length:Tensor = self.length + data.get(KEY_DL, 0.0)
@@ -713,9 +746,9 @@ class Line(Element):
         return '\n'.join([str(element) for element in self.sequence])
 
 
-    def layout(self) -> tuple[list[str], list[str], list[float], list[float]]:
+    def layout(self) -> list[tuple[str,str,Tensor,Tensor]]:
         """
-        Generate data for line layout plotting
+        Generate data for layout plotting
 
         Parameters
         ----------
@@ -723,16 +756,19 @@ class Line(Element):
 
         Returns
         -------
-        tuple[list[str], list[str], list[float], list[float]]
-            lists of elements names, types, lengthes and angles
-            
+        list[tuple[str,str,Tensor,Tensor]]
+            (name,type,length,angle)
+
         """
         default:Tensor = torch.tensor(0.0, dtype=self.dtype, device=self.device)
-        names:list[str] = [element.name for element in self.scan('name')]
-        types:list[str] = [element.__class__.__name__ for element in self.scan('name')]
-        lengths:list[float] = torch.stack([getattr(element, 'length', default) for element in self.scan('name')])
-        angles:list[float]  = torch.stack([getattr(element, 'angle', default) for element in self.scan('name')])
-        return names, types, lengths, angles
+        return [
+            (
+                element.name,
+                element.__class__.__name__,
+                getattr(element, 'length', default),
+                getattr(element, 'angle', default)
+            ) for element in self.scan('name')
+        ]
 
 
 def accumulate(data:dict[str, Tensor|dict[str, Tensor]],
