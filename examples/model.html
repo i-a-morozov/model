@@ -60,6 +60,7 @@
 <li class="toctree-l1"><a class="reference internal" href="#Example-08:-Octupole-(element)">Example-08: Octupole (element)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="#Example-09:-Multipole-(element)">Example-09: Multipole (element)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="#Example-10:-Dipole-(element)">Example-10: Dipole (element)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#Example-11:-Corrector-(element)">Example-11: Corrector (element)</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API:</span></p>
 <ul>
@@ -7719,6 +7720,386 @@ tensor([[ 0.6149,  0.1072],
         [-0.2916, -0.3693]], dtype=torch.float64)
 tensor([ 4.0159e-16, -1.2143e-16], dtype=torch.float64)
 </pre></div></div>
+</div>
+</section>
+<section id="Example-11:-Corrector-(element)">
+<h1>Example-11: Corrector (element)<a class="headerlink" href="#Example-11:-Corrector-(element)" title="Link to this heading"></a></h1>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Comparison of corrector element with MADX-PTC and other features</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span> <span class="nn">os</span> <span class="kn">import</span> <span class="n">system</span>
+
+<span class="kn">import</span> <span class="nn">torch</span>
+<span class="kn">from</span> <span class="nn">model.library.corrector</span> <span class="kn">import</span> <span class="n">Corrector</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Tracking</span>
+
+<span class="n">ptc</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s1">&#39;ptc&#39;</span><span class="p">)</span>
+<span class="n">obs</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s1">&#39;track.obs0001.p0001&#39;</span><span class="p">)</span>
+
+<span class="n">exact</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="n">align</span> <span class="o">=</span> <span class="kc">False</span>
+
+<span class="n">cx</span> <span class="o">=</span> <span class="o">+</span><span class="mf">0.001</span>
+<span class="n">cy</span> <span class="o">=</span> <span class="o">-</span><span class="mf">0.005</span>
+
+<span class="n">dp</span> <span class="o">=</span> <span class="mf">0.005</span>
+
+<span class="n">state</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+<span class="n">qx</span><span class="p">,</span> <span class="n">px</span><span class="p">,</span> <span class="n">qy</span><span class="p">,</span> <span class="n">py</span> <span class="o">=</span> <span class="n">state</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+
+<span class="n">dx</span> <span class="o">=</span> <span class="n">align</span><span class="o">*</span><span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="mf">0.05</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+<span class="n">dy</span> <span class="o">=</span> <span class="n">align</span><span class="o">*</span><span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="o">-</span><span class="mf">0.02</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+<span class="n">dz</span> <span class="o">=</span> <span class="n">align</span><span class="o">*</span><span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="mf">0.05</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+
+<span class="n">wx</span> <span class="o">=</span> <span class="n">align</span><span class="o">*</span><span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="mf">0.005</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+<span class="n">wy</span> <span class="o">=</span> <span class="n">align</span><span class="o">*</span><span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="o">-</span><span class="mf">0.005</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+<span class="n">wz</span> <span class="o">=</span> <span class="n">align</span><span class="o">*</span><span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+
+<span class="n">error</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;dx&#39;</span><span class="p">:</span> <span class="n">dx</span><span class="p">,</span> <span class="s1">&#39;dy&#39;</span><span class="p">:</span> <span class="n">dy</span><span class="p">,</span> <span class="s1">&#39;dz&#39;</span><span class="p">:</span> <span class="n">dz</span><span class="p">,</span> <span class="s1">&#39;wx&#39;</span><span class="p">:</span> <span class="n">wx</span><span class="p">,</span> <span class="s1">&#39;wy&#39;</span><span class="p">:</span> <span class="n">wy</span><span class="p">,</span> <span class="s1">&#39;wz&#39;</span><span class="p">:</span> <span class="n">wz</span><span class="p">}</span>
+
+<span class="n">code</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">cx:hkicker,l=0.0,kick=</span><span class="si">{</span><span class="n">cx</span><span class="si">}</span><span class="s2">;</span>
+<span class="s2">cy:vkicker,l=0.0,kick=</span><span class="si">{</span><span class="n">cy</span><span class="si">}</span><span class="s2">;</span>
+<span class="s2">map:line=(cx, cy) ;</span>
+<span class="s2">beam,energy=1.0E+6,particle=electron ;</span>
+<span class="s2">set,format=&quot;20.20f&quot;,&quot;-20s&quot; ;</span>
+<span class="s2">use,period=map ;</span>
+<span class="s2">select,flag=error,pattern=&quot;mag&quot; ;</span>
+<span class="s2">ealign,dx=</span><span class="si">{</span><span class="n">dx</span><span class="o">.</span><span class="n">item</span><span class="p">()</span><span class="si">}</span><span class="s2">,dy=</span><span class="si">{</span><span class="n">dy</span><span class="o">.</span><span class="n">item</span><span class="p">()</span><span class="si">}</span><span class="s2">,ds=</span><span class="si">{</span><span class="n">dz</span><span class="o">.</span><span class="n">item</span><span class="p">()</span><span class="si">}</span><span class="s2">,dphi=</span><span class="si">{</span><span class="n">wx</span><span class="o">.</span><span class="n">item</span><span class="p">()</span><span class="si">}</span><span class="s2">,dtheta=</span><span class="si">{</span><span class="n">wy</span><span class="o">.</span><span class="n">item</span><span class="p">()</span><span class="si">}</span><span class="s2">,dpsi=</span><span class="si">{</span><span class="n">wz</span><span class="o">.</span><span class="n">item</span><span class="p">()</span><span class="si">}</span><span class="s2"> ;</span>
+<span class="s2">ptc_create_universe,sector_nmul_max=10,sector_nmul=10 ;</span>
+<span class="s2">ptc_create_layout,model=1,method=6,nst=1000,exact=</span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">exact</span><span class="p">)</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="si">}</span><span class="s2"> ;</span>
+<span class="s2">ptc_setswitch,fringe=false,time=true,totalpath=true,exact_mis=true ;</span>
+<span class="s2">ptc_align ;</span>
+<span class="s2">ptc_start,x=</span><span class="si">{</span><span class="n">qx</span><span class="si">}</span><span class="s2">,px=</span><span class="si">{</span><span class="n">px</span><span class="si">}</span><span class="s2">,y=</span><span class="si">{</span><span class="n">qy</span><span class="si">}</span><span class="s2">,py=</span><span class="si">{</span><span class="n">py</span><span class="si">}</span><span class="s2">,pt=</span><span class="si">{</span><span class="n">dp</span><span class="si">}</span><span class="s2">,t=0.0 ;</span>
+<span class="s2">ptc_track,icase=5,deltap=0.,turns=1,file=track,maxaper=</span><span class="se">{{</span><span class="s2">1.,1.,1.,1.,1.,1.</span><span class="se">}}</span><span class="s2"> ;</span>
+<span class="s2">ptc_track_end ;</span>
+<span class="s2">ptc_end ;</span>
+<span class="s2">&quot;&quot;&quot;</span>
+
+<span class="k">with</span> <span class="n">ptc</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">stream</span><span class="p">:</span>
+    <span class="n">stream</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">code</span><span class="p">)</span>
+
+<span class="n">system</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;madx &lt; </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">ptc</span><span class="p">)</span><span class="si">}</span><span class="s1"> &gt; /dev/null&#39;</span><span class="p">)</span>
+
+<span class="k">with</span> <span class="n">obs</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">stream</span><span class="p">:</span>
+    <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">stream</span><span class="p">:</span>
+        <span class="k">continue</span>
+    <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">qx</span><span class="p">,</span> <span class="n">px</span><span class="p">,</span> <span class="n">qy</span><span class="p">,</span> <span class="n">py</span><span class="p">,</span> <span class="o">*</span><span class="n">_</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+
+<span class="n">ref</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="nb">float</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="p">(</span><span class="n">qx</span><span class="p">,</span> <span class="n">px</span><span class="p">,</span> <span class="n">qy</span><span class="p">,</span> <span class="n">py</span><span class="p">)],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+
+<span class="n">C</span> <span class="o">=</span> <span class="n">Corrector</span><span class="p">(</span><span class="s1">&#39;C&#39;</span><span class="p">,</span> <span class="n">cx</span><span class="o">=</span><span class="n">cx</span><span class="p">,</span> <span class="n">cy</span><span class="o">=</span><span class="n">cy</span><span class="p">,</span> <span class="n">dp</span><span class="o">=</span><span class="n">dp</span><span class="p">)</span>
+<span class="n">res</span> <span class="o">=</span> <span class="n">C</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">alignment</span><span class="o">=</span><span class="n">align</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="p">{</span><span class="o">**</span><span class="n">C</span><span class="o">.</span><span class="n">table</span><span class="p">(),</span> <span class="o">**</span><span class="n">error</span><span class="p">})</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">ref</span><span class="o">.</span><span class="n">tolist</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">res</span><span class="o">.</span><span class="n">tolist</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">((</span><span class="n">ref</span> <span class="o">-</span> <span class="n">res</span><span class="p">)</span><span class="o">.</span><span class="n">tolist</span><span class="p">())</span>
+
+<span class="n">ptc</span><span class="o">.</span><span class="n">unlink</span><span class="p">()</span>
+<span class="n">obs</span><span class="o">.</span><span class="n">unlink</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+[0.0, 0.001, 0.0, -0.005]
+[0.0, 0.001, 0.0, -0.005]
+[0.0, 0.0, 0.0, 0.0]
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Tracking (alignment)</span>
+
+<span class="c1"># Only dx and dy alignment errors seems to work as expected in MADX</span>
+<span class="c1"># Also, wz rotation can be assosiated with tilt</span>
+
+<span class="n">ptc</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s1">&#39;ptc&#39;</span><span class="p">)</span>
+<span class="n">obs</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s1">&#39;track.obs0001.p0001&#39;</span><span class="p">)</span>
+
+<span class="n">exact</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="n">align</span> <span class="o">=</span> <span class="kc">True</span>
+
+<span class="n">cx</span> <span class="o">=</span> <span class="o">+</span><span class="mf">0.001</span>
+<span class="n">cy</span> <span class="o">=</span> <span class="o">-</span><span class="mf">0.005</span>
+<span class="n">dp</span> <span class="o">=</span> <span class="mf">0.005</span>
+<span class="n">state</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+<span class="n">qx</span><span class="p">,</span> <span class="n">px</span><span class="p">,</span> <span class="n">qy</span><span class="p">,</span> <span class="n">py</span> <span class="o">=</span> <span class="n">state</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+
+<span class="n">dx</span> <span class="o">=</span> <span class="n">align</span><span class="o">*</span><span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="mf">0.05</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+<span class="n">dy</span> <span class="o">=</span> <span class="n">align</span><span class="o">*</span><span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="o">-</span><span class="mf">0.02</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+<span class="n">dz</span> <span class="o">=</span> <span class="n">align</span><span class="o">*</span><span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+
+<span class="n">wx</span> <span class="o">=</span> <span class="n">align</span><span class="o">*</span><span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+<span class="n">wy</span> <span class="o">=</span> <span class="n">align</span><span class="o">*</span><span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+<span class="n">wz</span> <span class="o">=</span> <span class="n">align</span><span class="o">*</span><span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+
+<span class="n">error</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;dx&#39;</span><span class="p">:</span> <span class="n">dx</span><span class="p">,</span> <span class="s1">&#39;dy&#39;</span><span class="p">:</span> <span class="n">dy</span><span class="p">,</span> <span class="s1">&#39;dz&#39;</span><span class="p">:</span> <span class="n">dz</span><span class="p">,</span> <span class="s1">&#39;wx&#39;</span><span class="p">:</span> <span class="n">wx</span><span class="p">,</span> <span class="s1">&#39;wy&#39;</span><span class="p">:</span> <span class="n">wy</span><span class="p">,</span> <span class="s1">&#39;wz&#39;</span><span class="p">:</span> <span class="n">wz</span><span class="p">}</span>
+
+<span class="n">code</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">cx:hkicker,l=0.0,kick=</span><span class="si">{</span><span class="n">cx</span><span class="si">}</span><span class="s2">,tilt=</span><span class="si">{</span><span class="n">wz</span><span class="o">.</span><span class="n">item</span><span class="p">()</span><span class="si">}</span><span class="s2">;</span>
+<span class="s2">cy:vkicker,l=0.0,kick=</span><span class="si">{</span><span class="n">cy</span><span class="si">}</span><span class="s2">,tilt=</span><span class="si">{</span><span class="n">wz</span><span class="o">.</span><span class="n">item</span><span class="p">()</span><span class="si">}</span><span class="s2">;</span>
+<span class="s2">map:line=(cx, cy) ;</span>
+<span class="s2">beam,energy=1.0E+6,particle=electron ;</span>
+<span class="s2">set,format=&quot;20.20f&quot;,&quot;-20s&quot; ;</span>
+<span class="s2">use,period=map ;</span>
+<span class="s2">select,flag=error,pattern=&quot;mag&quot; ;</span>
+<span class="s2">ealign,dx=</span><span class="si">{</span><span class="n">dx</span><span class="o">.</span><span class="n">item</span><span class="p">()</span><span class="si">}</span><span class="s2">,dy=</span><span class="si">{</span><span class="n">dy</span><span class="o">.</span><span class="n">item</span><span class="p">()</span><span class="si">}</span><span class="s2"> ;</span>
+<span class="s2">ptc_create_universe,sector_nmul_max=10,sector_nmul=10 ;</span>
+<span class="s2">ptc_create_layout,model=1,method=6,nst=1000,exact=</span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">exact</span><span class="p">)</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="si">}</span><span class="s2"> ;</span>
+<span class="s2">ptc_setswitch,fringe=false,time=true,totalpath=true,exact_mis=true ;</span>
+<span class="s2">ptc_align ;</span>
+<span class="s2">ptc_start,x=</span><span class="si">{</span><span class="n">qx</span><span class="si">}</span><span class="s2">,px=</span><span class="si">{</span><span class="n">px</span><span class="si">}</span><span class="s2">,y=</span><span class="si">{</span><span class="n">qy</span><span class="si">}</span><span class="s2">,py=</span><span class="si">{</span><span class="n">py</span><span class="si">}</span><span class="s2">,pt=</span><span class="si">{</span><span class="n">dp</span><span class="si">}</span><span class="s2">,t=0.0 ;</span>
+<span class="s2">ptc_track,icase=5,deltap=0.,turns=1,file=track,maxaper=</span><span class="se">{{</span><span class="s2">1.,1.,1.,1.,1.,1.</span><span class="se">}}</span><span class="s2"> ;</span>
+<span class="s2">ptc_track_end ;</span>
+<span class="s2">ptc_end ;</span>
+<span class="s2">&quot;&quot;&quot;</span>
+
+<span class="k">with</span> <span class="n">ptc</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">stream</span><span class="p">:</span>
+    <span class="n">stream</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">code</span><span class="p">)</span>
+
+<span class="n">system</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;madx &lt; </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">ptc</span><span class="p">)</span><span class="si">}</span><span class="s1"> &gt; /dev/null&#39;</span><span class="p">)</span>
+
+<span class="k">with</span> <span class="n">obs</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">stream</span><span class="p">:</span>
+    <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">stream</span><span class="p">:</span>
+        <span class="k">continue</span>
+    <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">qx</span><span class="p">,</span> <span class="n">px</span><span class="p">,</span> <span class="n">qy</span><span class="p">,</span> <span class="n">py</span><span class="p">,</span> <span class="o">*</span><span class="n">_</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+
+<span class="n">ref</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="nb">float</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="p">(</span><span class="n">qx</span><span class="p">,</span> <span class="n">px</span><span class="p">,</span> <span class="n">qy</span><span class="p">,</span> <span class="n">py</span><span class="p">)],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+
+<span class="n">C</span> <span class="o">=</span> <span class="n">Corrector</span><span class="p">(</span><span class="s1">&#39;C&#39;</span><span class="p">,</span> <span class="n">cx</span><span class="o">=</span><span class="n">cx</span><span class="p">,</span> <span class="n">cy</span><span class="o">=</span><span class="n">cy</span><span class="p">,</span> <span class="n">dp</span><span class="o">=</span><span class="n">dp</span><span class="p">)</span>
+<span class="n">res</span> <span class="o">=</span> <span class="n">C</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">alignment</span><span class="o">=</span><span class="n">align</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="p">{</span><span class="o">**</span><span class="n">C</span><span class="o">.</span><span class="n">table</span><span class="p">(),</span> <span class="o">**</span><span class="n">error</span><span class="p">})</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">ref</span><span class="o">.</span><span class="n">tolist</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">res</span><span class="o">.</span><span class="n">tolist</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">((</span><span class="n">ref</span> <span class="o">-</span> <span class="n">res</span><span class="p">)</span><span class="o">.</span><span class="n">tolist</span><span class="p">())</span>
+
+<span class="n">ptc</span><span class="o">.</span><span class="n">unlink</span><span class="p">()</span>
+<span class="n">obs</span><span class="o">.</span><span class="n">unlink</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+[0.0, 0.0014941712485121669, 0.0, -0.004875187409743301]
+[-6.938893903907228e-18, 0.0014941712485121667, 0.0, -0.004875187409743301]
+[6.938893903907228e-18, 2.168404344971009e-19, 0.0, 0.0]
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Deviation/error variables</span>
+
+<span class="n">cx</span> <span class="o">=</span> <span class="o">+</span><span class="mf">0.001</span>
+<span class="n">cy</span> <span class="o">=</span> <span class="o">-</span><span class="mf">0.005</span>
+<span class="n">dp</span> <span class="o">=</span> <span class="mf">0.005</span>
+<span class="n">state</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+
+<span class="n">dx</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="o">+</span><span class="mf">0.01</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+<span class="n">dy</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="o">-</span><span class="mf">0.01</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+<span class="n">dz</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+
+<span class="n">wx</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+<span class="n">wy</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+<span class="n">wz</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+
+<span class="n">error</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;dx&#39;</span><span class="p">:</span> <span class="n">dx</span><span class="p">,</span> <span class="s1">&#39;dy&#39;</span><span class="p">:</span> <span class="n">dy</span><span class="p">,</span> <span class="s1">&#39;dz&#39;</span><span class="p">:</span> <span class="n">dz</span><span class="p">,</span> <span class="s1">&#39;wx&#39;</span><span class="p">:</span> <span class="n">wx</span><span class="p">,</span> <span class="s1">&#39;wy&#39;</span><span class="p">:</span> <span class="n">wy</span><span class="p">,</span> <span class="s1">&#39;wz&#39;</span><span class="p">:</span> <span class="n">wz</span><span class="p">}</span>
+
+<span class="n">C</span> <span class="o">=</span> <span class="n">Corrector</span><span class="p">(</span><span class="s1">&#39;C&#39;</span><span class="p">,</span> <span class="n">cx</span><span class="p">,</span> <span class="n">cy</span><span class="p">,</span> <span class="n">dp</span><span class="p">)</span>
+
+<span class="c1"># Each element has two variant of a call method</span>
+<span class="c1"># In the first case only state is passed, it is transformed using parameters specified on initializaton</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">C</span><span class="p">(</span><span class="n">state</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">()</span>
+
+<span class="c1"># Deviation errors can be also passed to call method</span>
+<span class="c1"># These variables are added to corresponding parameters specified on initializaton</span>
+<span class="c1"># For example, element lenght can changed</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">C</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="p">{</span><span class="o">**</span><span class="n">C</span><span class="o">.</span><span class="n">table</span><span class="p">(),</span> <span class="o">**</span><span class="p">{</span><span class="s1">&#39;cx&#39;</span><span class="p">:</span> <span class="o">-</span><span class="n">cx</span><span class="p">,</span> <span class="s1">&#39;cy&#39;</span><span class="p">:</span> <span class="o">-</span><span class="n">cy</span><span class="p">}}))</span>
+<span class="nb">print</span><span class="p">()</span>
+
+<span class="c1"># In the above C.table() creates default deviation dictionary (with zero values for each deviaton)</span>
+<span class="c1"># {**C.table(), **{&#39;cx&#39;: -cx, &#39;cy&#39;: -cy}} replaces the &#39;cx&#39; and &#39;cy&#39; key values</span>
+
+<span class="c1"># Additionaly, alignment errors are passed as deivation variables</span>
+<span class="c1"># They are used if alignment flag is raised</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">C</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="p">{</span><span class="o">**</span><span class="n">C</span><span class="o">.</span><span class="n">table</span><span class="p">(),</span> <span class="o">**</span><span class="n">error</span><span class="p">},</span> <span class="n">alignment</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">()</span>
+
+
+<span class="c1"># The following elements can be made equivalent using deviation variables</span>
+
+<span class="n">CA</span> <span class="o">=</span> <span class="n">Corrector</span><span class="p">(</span><span class="s1">&#39;CA&#39;</span><span class="p">,</span> <span class="n">cx</span><span class="p">,</span> <span class="n">cy</span><span class="p">,</span> <span class="n">dp</span><span class="p">)</span>
+<span class="n">CB</span> <span class="o">=</span> <span class="n">Corrector</span><span class="p">(</span><span class="s1">&#39;CB&#39;</span><span class="p">,</span> <span class="n">cx</span> <span class="o">-</span> <span class="mf">0.001</span><span class="p">,</span> <span class="n">cy</span><span class="p">,</span> <span class="n">dp</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">CA</span><span class="p">(</span><span class="n">state</span><span class="p">)</span> <span class="o">-</span> <span class="n">CB</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="p">{</span><span class="o">**</span><span class="n">CB</span><span class="o">.</span><span class="n">table</span><span class="p">(),</span> <span class="o">**</span><span class="p">{</span><span class="s1">&#39;cx&#39;</span><span class="p">:</span> <span class="o">+</span> <span class="mf">0.001</span><span class="p">}}))</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+tensor([ 0.0000,  0.0010,  0.0000, -0.0050], dtype=torch.float64)
+
+tensor([0., 0., 0., 0.], dtype=torch.float64)
+
+tensor([ 0.0000, -0.0010,  0.0000,  0.0050], dtype=torch.float64)
+
+tensor([0., 0., 0., 0.], dtype=torch.float64)
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Mapping over a set of initial conditions</span>
+
+<span class="c1"># Call method can be used to map over a set of initial conditions</span>
+<span class="c1"># Note, device can be set to cpu or gpu via base element classvariables</span>
+
+<span class="n">cx</span> <span class="o">=</span> <span class="o">+</span><span class="mf">0.001</span>
+<span class="n">cy</span> <span class="o">=</span> <span class="o">-</span><span class="mf">0.005</span>
+<span class="n">dp</span> <span class="o">=</span> <span class="mf">0.005</span>
+
+<span class="n">dx</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="o">+</span><span class="mf">0.01</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+<span class="n">dy</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="o">-</span><span class="mf">0.01</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+<span class="n">dz</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+
+<span class="n">wx</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+<span class="n">wy</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+<span class="n">wz</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+
+<span class="n">error</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;dx&#39;</span><span class="p">:</span> <span class="n">dx</span><span class="p">,</span> <span class="s1">&#39;dy&#39;</span><span class="p">:</span> <span class="n">dy</span><span class="p">,</span> <span class="s1">&#39;dz&#39;</span><span class="p">:</span> <span class="n">dz</span><span class="p">,</span> <span class="s1">&#39;wx&#39;</span><span class="p">:</span> <span class="n">wx</span><span class="p">,</span> <span class="s1">&#39;wy&#39;</span><span class="p">:</span> <span class="n">wy</span><span class="p">,</span> <span class="s1">&#39;wz&#39;</span><span class="p">:</span> <span class="n">wz</span><span class="p">}</span>
+
+<span class="n">C</span> <span class="o">=</span> <span class="n">Corrector</span><span class="p">(</span><span class="s1">&#39;C&#39;</span><span class="p">,</span> <span class="n">cx</span><span class="p">,</span> <span class="n">cy</span><span class="p">,</span> <span class="n">dp</span><span class="p">)</span>
+
+<span class="n">state</span> <span class="o">=</span> <span class="mf">1.0E-3</span><span class="o">*</span><span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">((</span><span class="mi">512</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">C</span><span class="o">.</span><span class="n">dtype</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="n">C</span><span class="o">.</span><span class="n">device</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">vmap</span><span class="p">(</span><span class="n">C</span><span class="p">)(</span><span class="n">state</span><span class="p">)</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+
+<span class="c1"># To map over deviations parameters a wrapper function (or a lambda expression) can be used</span>
+
+<span class="k">def</span> <span class="nf">wrapper</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">cx</span><span class="p">,</span> <span class="n">cy</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">C</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="p">{</span><span class="o">**</span><span class="n">C</span><span class="o">.</span><span class="n">table</span><span class="p">(),</span> <span class="o">**</span><span class="p">{</span><span class="s1">&#39;cx&#39;</span><span class="p">:</span> <span class="n">cx</span><span class="p">,</span> <span class="s1">&#39;cy&#39;</span><span class="p">:</span> <span class="n">cy</span><span class="p">}})</span>
+
+<span class="n">cx</span> <span class="o">=</span> <span class="mf">1.0E-3</span><span class="o">*</span><span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">512</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">C</span><span class="o">.</span><span class="n">dtype</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="n">C</span><span class="o">.</span><span class="n">device</span><span class="p">)</span>
+<span class="n">cy</span> <span class="o">=</span> <span class="mf">1.0E-3</span><span class="o">*</span><span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">512</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">C</span><span class="o">.</span><span class="n">dtype</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="n">C</span><span class="o">.</span><span class="n">device</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">vmap</span><span class="p">(</span><span class="n">wrapper</span><span class="p">)(</span><span class="n">state</span><span class="p">,</span> <span class="n">cx</span><span class="p">,</span> <span class="n">cy</span><span class="p">)</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+torch.Size([512, 4])
+torch.Size([512, 4])
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Differentiability</span>
+
+<span class="c1"># Both call methods are differentiable</span>
+<span class="c1"># Derivative with respect to state can be computed directly</span>
+<span class="c1"># For deviation variables, wrapping is required</span>
+
+<span class="n">cx</span> <span class="o">=</span> <span class="o">+</span><span class="mf">0.001</span>
+<span class="n">cy</span> <span class="o">=</span> <span class="o">-</span><span class="mf">0.005</span>
+<span class="n">dp</span> <span class="o">=</span> <span class="mf">0.005</span>
+<span class="n">state</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">0.01</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.005</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.005</span><span class="p">,</span> <span class="mf">0.001</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+
+<span class="n">dx</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="o">+</span><span class="mf">0.01</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+<span class="n">dy</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="o">-</span><span class="mf">0.01</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+<span class="n">dz</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+
+<span class="n">wx</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+<span class="n">wy</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+<span class="n">wz</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+<span class="n">error</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;dx&#39;</span><span class="p">:</span> <span class="n">dx</span><span class="p">,</span> <span class="s1">&#39;dy&#39;</span><span class="p">:</span> <span class="n">dy</span><span class="p">,</span> <span class="s1">&#39;dz&#39;</span><span class="p">:</span> <span class="n">dz</span><span class="p">,</span> <span class="s1">&#39;wx&#39;</span><span class="p">:</span> <span class="n">wx</span><span class="p">,</span> <span class="s1">&#39;wy&#39;</span><span class="p">:</span> <span class="n">wy</span><span class="p">,</span> <span class="s1">&#39;wz&#39;</span><span class="p">:</span> <span class="n">wz</span><span class="p">}</span>
+
+<span class="n">C</span> <span class="o">=</span> <span class="n">Corrector</span><span class="p">(</span><span class="s1">&#39;C&#39;</span><span class="p">,</span> <span class="n">cx</span><span class="p">,</span> <span class="n">cy</span><span class="p">,</span> <span class="n">dp</span><span class="p">)</span>
+
+<span class="c1"># Compute derivative with respect to state</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">func</span><span class="o">.</span><span class="n">jacrev</span><span class="p">(</span><span class="n">C</span><span class="p">)(</span><span class="n">state</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">()</span>
+
+<span class="c1"># Compute derivative with respect to a deviation variable</span>
+
+<span class="n">dcx</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+<span class="n">dcy</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+<span class="n">dc</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span><span class="n">dcx</span><span class="p">,</span> <span class="n">dcy</span><span class="p">])</span>
+
+<span class="k">def</span> <span class="nf">wrapper</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">dc</span><span class="p">):</span>
+    <span class="n">dcx</span><span class="p">,</span> <span class="n">dcy</span> <span class="o">=</span> <span class="n">dc</span>
+    <span class="k">return</span> <span class="n">C</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="p">{</span><span class="o">**</span><span class="n">C</span><span class="o">.</span><span class="n">table</span><span class="p">(),</span> <span class="o">**</span><span class="p">{</span><span class="s1">&#39;cx&#39;</span><span class="p">:</span> <span class="n">dcx</span><span class="p">,</span> <span class="s1">&#39;cy&#39;</span><span class="p">:</span> <span class="n">dcy</span><span class="p">}})</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">func</span><span class="o">.</span><span class="n">jacrev</span><span class="p">(</span><span class="n">wrapper</span><span class="p">,</span> <span class="mi">1</span><span class="p">)(</span><span class="n">state</span><span class="p">,</span> <span class="n">dc</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+tensor([[1., 0., 0., 0.],
+        [0., 1., 0., 0.],
+        [0., 0., 1., 0.],
+        [0., 0., 0., 1.]], dtype=torch.float64)
+
+tensor([[0., 0.],
+        [1., 0.],
+        [0., 0.],
+        [0., 1.]], dtype=torch.float64)
+
+</pre></div></div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
 </div>
 </section>
 
