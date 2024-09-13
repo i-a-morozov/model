@@ -715,7 +715,6 @@ class Line(Element):
             self.container_output = torch.vstack(container_output)
         if self.matrix:
             self.container_matrix = torch.vstack(container_matrix)
-        return state
 
         if element.flag:
             state = ry(state, +angle/2, dp)
