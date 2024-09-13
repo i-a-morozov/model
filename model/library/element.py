@@ -46,7 +46,7 @@ class Element(ABC):
     -------------
 
     """
-    _tolerance: float = 1.0E-16
+    _tolerance: float = 1.0E-15
     _alignment: list[str] = [KEY_DX, KEY_DY, KEY_DZ, KEY_WX, KEY_WY, KEY_WZ]
 
     dtype:DataType = Float64
