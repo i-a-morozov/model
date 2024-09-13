@@ -31,6 +31,8 @@ class Corrector(Element):
     Corrector element
     -----------------
 
+    Zero lenght element, can't be used in insertion mode
+
     Returns
     -------
     Corrector
@@ -63,7 +65,8 @@ class Corrector(Element):
         None
 
         """
-        super().__init__(name=name)
+        super().__init__(name=name,
+                         dp=dp)
 
         self._cx: float = cx
         self._cy: float = cy

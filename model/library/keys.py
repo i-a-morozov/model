@@ -21,9 +21,6 @@ KEY_E2:str = 'e2' # -- dipole exit wedge angle
 KEY_CX:str = 'cx' # -- horizontal corrector kick
 KEY_CY:str = 'cy' # -- vertical corrector kick
 
-KEY_GX:str = 'gx' # -- horizontal gradient kick
-KEY_GY:str = 'gy' # -- vertical gradient kick
-
 KEY_XX:str = 'xx' # -- xx bmp calibration
 KEY_XY:str = 'xy' # -- xy bmp calibration
 KEY_YX:str = 'yx' # -- yx bmp calibration
