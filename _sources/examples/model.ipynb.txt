@@ -8667,12 +8667,389 @@
    ]
   },
   {
+   "cell_type": "markdown",
+   "id": "2d39e1ec-6a49-49f0-be16-7d87e66b4b33",
+   "metadata": {},
+   "source": [
+    "# Example-13: Linear (element)"
+   ]
+  },
+  {
    "cell_type": "code",
-   "execution_count": null,
-   "id": "15d8851c-f142-47a2-b96b-e57c08d7098b",
+   "execution_count": 1,
+   "id": "e3774f55-fcb6-4b32-855f-640856f2abc7",
    "metadata": {},
    "outputs": [],
-   "source": []
+   "source": [
+    "# Can be used to model elements as linear transformations\n",
+    "# Constant offset can be used to model first order dispersion"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 2,
+   "id": "614d15e9-7236-454b-a328-3129e100a722",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "import torch\n",
+    "from model.library.quadrupole import Quadrupole\n",
+    "from model.library.dipole import Dipole\n",
+    "from model.library.linear import Linear"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 3,
+   "id": "4f736fd9-de5b-4f98-9493-9d414d802936",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "[0.012284014325104016, 0.013015328226371463, 0.005866573649483532, 0.01748719571870364]\n",
+      "[0.012284330668424102, 0.013015814342968814, 0.005867420763768485, 0.01748647747810468]\n",
+      "[-3.163433200861071e-07, -4.861165973507608e-07, -8.471142849530294e-07, 7.182405989576701e-07]\n"
+     ]
+    }
+   ],
+   "source": [
+    "# Linear quadrupole\n",
+    "\n",
+    "length = 1.0\n",
+    "kn = - 2.0\n",
+    "ks = + 1.5\n",
+    "dp = 0.0\n",
+    "Q = Quadrupole('Q', length, kn, ks, dp)\n",
+    "\n",
+    "state = torch.tensor([0.0, 0.0, 0.0, 0.0], dtype=torch.float64)\n",
+    "\n",
+    "matrix = torch.func.jacrev(lambda state, dp: Q(state, data={**Q.table(), **{'dp': dp}}), 0)(state, Q.dp)\n",
+    "vector = torch.func.jacrev(lambda state, dp: Q(state, data={**Q.table(), **{'dp': dp}}), 1)(state, Q.dp)\n",
+    "\n",
+    "length = 1.0\n",
+    "kn = - 2.0\n",
+    "ks = + 1.5\n",
+    "dp = 0.0001\n",
+    "Q = Quadrupole('Q', length, kn, ks, dp)\n",
+    "\n",
+    "L = Linear('L', (dp*vector).tolist(), matrix.tolist())\n",
+    "\n",
+    "state = torch.tensor([0.01, -0.005, -0.005, 0.001], dtype=torch.float64)\n",
+    "\n",
+    "print(Q(state).tolist())\n",
+    "print(L(state).tolist())\n",
+    "print((Q(state) - L(state)).tolist())"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 4,
+   "id": "c9d05c2e-a6f0-4dc0-a62a-a62c2c647850",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "[2.8326139356223135e-06, -0.005001000818821848, -0.002994615078158236, 0.001004198140800915]\n",
+      "[9.165104284458664e-06, -0.004994998958072864, -0.002993748697591074, 0.001004997134048961]\n",
+      "[-6.33249034883635e-06, -6.001860748984511e-06, -8.663805671619597e-07, -7.989932480460815e-07]\n"
+     ]
+    }
+   ],
+   "source": [
+    "# Linear dipole\n",
+    "\n",
+    "length = 2.0\n",
+    "angle = 0.05\n",
+    "e1 = 0.025\n",
+    "e2 = 0.025\n",
+    "dp = 0.0\n",
+    "D = Dipole('D', length, angle, e1, e2, dp)\n",
+    "\n",
+    "state = torch.tensor([0.0, 0.0, 0.0, 0.0], dtype=torch.float64)\n",
+    "\n",
+    "matrix = torch.func.jacrev(lambda state, dp: D(state, data={**D.table(), **{'dp': dp}}), 0)(state, D.dp)\n",
+    "vector = torch.func.jacrev(lambda state, dp: D(state, data={**D.table(), **{'dp': dp}}), 1)(state, D.dp)\n",
+    "\n",
+    "length = 2.0\n",
+    "angle = 0.05\n",
+    "e1 = 0.025\n",
+    "e2 = 0.025\n",
+    "dp = 0.0001\n",
+    "D = Dipole('D', length, angle, e1, e2, dp)\n",
+    "\n",
+    "L = Linear('L', (dp*vector).tolist(), matrix.tolist())\n",
+    "\n",
+    "state = torch.tensor([0.01, -0.005, -0.005, 0.001], dtype=torch.float64)\n",
+    "\n",
+    "print(D(state).tolist())\n",
+    "print(L(state).tolist())\n",
+    "print((D(state) - L(state)).tolist())"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "ea354b5c-a05a-4e63-80e8-72432ddbc71a",
+   "metadata": {},
+   "source": [
+    "# Example-14: BPM (element)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 1,
+   "id": "3094cba7-8994-490d-9a9c-cf7c8ea73fbb",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "from pathlib import Path\n",
+    "from os import system\n",
+    "\n",
+    "import torch\n",
+    "from model.library.drift import Drift\n",
+    "from model.library.bpm import BPM"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 2,
+   "id": "2875e9f6-0128-4332-b88d-4a876a6495d0",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "tensor([ 0.0100, -0.0050, -0.0050,  0.0010], dtype=torch.float64)"
+      ]
+     },
+     "execution_count": 2,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "# BPM acts as identity transformation with calibration error\n",
+    "\n",
+    "state = torch.tensor([0.01, -0.005, -0.005, 0.001], dtype=torch.float64)\n",
+    "\n",
+    "B = BPM('B', direction='forward')\n",
+    "B(state)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 3,
+   "id": "fff40a60-4558-40af-8cc1-aa4b7a20a044",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "{'xx': tensor(0., dtype=torch.float64),\n",
+       " 'xy': tensor(0., dtype=torch.float64),\n",
+       " 'yx': tensor(0., dtype=torch.float64),\n",
+       " 'yy': tensor(0., dtype=torch.float64),\n",
+       " 'dx': tensor(0., dtype=torch.float64),\n",
+       " 'dy': tensor(0., dtype=torch.float64),\n",
+       " 'dz': tensor(0., dtype=torch.float64),\n",
+       " 'wx': tensor(0., dtype=torch.float64),\n",
+       " 'wy': tensor(0., dtype=torch.float64),\n",
+       " 'wz': tensor(0., dtype=torch.float64)}"
+      ]
+     },
+     "execution_count": 3,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "# Calibration errors can be passed as deviation variables\n",
+    "\n",
+    "# qx -> xx qx + xy qy\n",
+    "# qy -> yx qx + yy qy\n",
+    "\n",
+    "B.table()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 4,
+   "id": "96342c98-66a8-4828-919c-d6de4148847e",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "tensor([ 0.0100, -0.0050, -0.0050,  0.0010], dtype=torch.float64)\n",
+      "tensor([ 0.0105, -0.0048, -0.0042,  0.0011], dtype=torch.float64)\n",
+      "tensor([ 0.0100, -0.0050, -0.0050,  0.0010], dtype=torch.float64)\n"
+     ]
+    }
+   ],
+   "source": [
+    "# Transform to BPM frame and back to beam frame\n",
+    "\n",
+    "xx = torch.tensor(1.05, dtype=torch.float64)\n",
+    "xy = torch.tensor(0.01, dtype=torch.float64)\n",
+    "yx = torch.tensor(0.05, dtype=torch.float64)\n",
+    "yy = torch.tensor(0.94, dtype=torch.float64)\n",
+    "\n",
+    "B = BPM('B', direction='forward')\n",
+    "\n",
+    "state = torch.tensor([0.01, -0.005, -0.005, 0.001], dtype=torch.float64)\n",
+    "print(state)\n",
+    "\n",
+    "state = B(state, data={**B.table(), **{'xx': xx, 'xy': xy, 'yx': yx, 'yy': yy}})\n",
+    "print(state)\n",
+    "\n",
+    "B.direction = 'inverse'\n",
+    "\n",
+    "state = B(state, data={**B.table(), **{'xx': xx, 'xy': xy, 'yx': yx, 'yy': yy}})\n",
+    "print(state)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 5,
+   "id": "5075d077-bfa4-4065-a765-0dce03220938",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "tensor([ 0.0100, -0.0050, -0.0050,  0.0010], dtype=torch.float64)\n",
+      "tensor([ 0.0105, -0.0048, -0.0042,  0.0011], dtype=torch.float64)\n",
+      "tensor([ 0.0100, -0.0050, -0.0050,  0.0010], dtype=torch.float64)\n"
+     ]
+    }
+   ],
+   "source": [
+    "# Transform to BPM frame and back to beam frame using a pair of BPMS\n",
+    "\n",
+    "xx = torch.tensor(1.05, dtype=torch.float64)\n",
+    "xy = torch.tensor(0.01, dtype=torch.float64)\n",
+    "yx = torch.tensor(0.05, dtype=torch.float64)\n",
+    "yy = torch.tensor(0.94, dtype=torch.float64)\n",
+    "\n",
+    "BA = BPM('B', direction='forward')\n",
+    "BB = BPM('B', direction='inverse')\n",
+    "\n",
+    "state = torch.tensor([0.01, -0.005, -0.005, 0.001], dtype=torch.float64)\n",
+    "print(state)\n",
+    "\n",
+    "state = BA(state, data={**BA.table(), **{'xx': xx, 'xy': xy, 'yx': yx, 'yy': yy}})\n",
+    "print(state)\n",
+    "\n",
+    "state = BB(state, data={**BB.table(), **{'xx': xx, 'xy': xy, 'yx': yx, 'yy': yy}})\n",
+    "print(state)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 6,
+   "id": "ef7f9850-585c-4e64-a9d9-309f7fc517c3",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "tensor([[ 5.0000e-03, -4.0000e-03,  0.0000e+00,  0.0000e+00],\n",
+      "        [ 4.5880e-03, -2.4404e-04, -1.0625e-03,  5.6516e-05],\n",
+      "        [ 0.0000e+00,  0.0000e+00,  5.0000e-03, -4.0000e-03],\n",
+      "        [-4.8809e-05,  5.1249e-03,  1.1303e-05, -1.1868e-03]],\n",
+      "       dtype=torch.float64)\n",
+      "tensor([[ 0.0000e+00,  8.6736e-19,  0.0000e+00, -5.4888e-19],\n",
+      "        [ 0.0000e+00,  0.0000e+00,  3.3881e-20,  0.0000e+00],\n",
+      "        [-2.7105e-19,  0.0000e+00,  8.6736e-19,  0.0000e+00],\n",
+      "        [ 2.1684e-19,  3.9302e-19, -3.3881e-21,  2.1684e-19]],\n",
+      "       dtype=torch.float64)\n"
+     ]
+    }
+   ],
+   "source": [
+    "# Differentiability\n",
+    "\n",
+    "B = BPM('B', direction='forward')\n",
+    "D = Drift('D', 1.0)\n",
+    "\n",
+    "xx = torch.tensor(1.05, dtype=torch.float64)\n",
+    "xy = torch.tensor(0.01, dtype=torch.float64)\n",
+    "yx = torch.tensor(0.05, dtype=torch.float64)\n",
+    "yy = torch.tensor(0.94, dtype=torch.float64)\n",
+    "\n",
+    "error = torch.stack([xx, xy, yx, yy])\n",
+    "\n",
+    "state = torch.tensor([0.01, -0.005, -0.005, 0.001], dtype=torch.float64)\n",
+    "\n",
+    "def line(state, error):\n",
+    "    xx, xy, yx, yy = error\n",
+    "    state = D(state)\n",
+    "    state = B(state, data={**B.table(), **{'xx': xx, 'xy': xy, 'yx': yx, 'yy': yy}})\n",
+    "    return state\n",
+    "    \n",
+    "print(torch.func.jacrev(line, 1)(state, error))\n",
+    "\n",
+    "def line(state, error):\n",
+    "    xx, xy, yx, yy = error\n",
+    "    state = D(state)\n",
+    "    B.direction = 'forward'\n",
+    "    state = B(state, data={**B.table(), **{'xx': xx, 'xy': xy, 'yx': yx, 'yy': yy}})\n",
+    "    B.direction = 'inverse'\n",
+    "    state = B(state, data={**B.table(), **{'xx': xx, 'xy': xy, 'yx': yx, 'yy': yy}})\n",
+    "    return state\n",
+    "    \n",
+    "print(torch.func.jacrev(line, 1)(state, error))"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 7,
+   "id": "38d5bf9c-03dd-4ae9-949f-5024913df66f",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "tensor([ 0.0105, -0.0048, -0.0042,  0.0011], dtype=torch.float64)\n",
+      "tensor([ 0.0086, -0.0048, -0.0082,  0.0008], dtype=torch.float64)\n"
+     ]
+    }
+   ],
+   "source": [
+    "# Alignment support\n",
+    "\n",
+    "xx = torch.tensor(1.05, dtype=torch.float64)\n",
+    "xy = torch.tensor(0.01, dtype=torch.float64)\n",
+    "yx = torch.tensor(0.05, dtype=torch.float64)\n",
+    "yy = torch.tensor(0.94, dtype=torch.float64)\n",
+    "\n",
+    "dx = torch.tensor(0.05, dtype=torch.float64)\n",
+    "dy = torch.tensor(-0.02, dtype=torch.float64)\n",
+    "dz = torch.tensor(0.05, dtype=torch.float64)\n",
+    "\n",
+    "wx = torch.tensor(0.005, dtype=torch.float64)\n",
+    "wy = torch.tensor(-0.005, dtype=torch.float64)\n",
+    "wz = torch.tensor(0.1, dtype=torch.float64)\n",
+    "\n",
+    "error = {'dx': dx, 'dy': dy, 'dz': dz, 'wx': wx, 'wy': wy, 'wz': wz}\n",
+    "\n",
+    "B = BPM('B', direction='forward')\n",
+    "\n",
+    "state = torch.tensor([0.01, -0.005, -0.005, 0.001], dtype=torch.float64)\n",
+    "state = B(state, data={**B.table(), **{'xx': xx, 'xy': xy, 'yx': yx, 'yy': yy}, **error})\n",
+    "print(state)\n",
+    "\n",
+    "state = torch.tensor([0.01, -0.005, -0.005, 0.001], dtype=torch.float64)\n",
+    "state = B(state, data={**B.table(), **{'xx': xx, 'xy': xy, 'yx': yx, 'yy': yy}, **error}, alignment=True)\n",
+    "print(state)"
+   ]
   }
  ],
  "metadata": {
