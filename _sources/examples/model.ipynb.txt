@@ -9050,6 +9050,808 @@
     "state = B(state, data={**B.table(), **{'xx': xx, 'xy': xy, 'yx': yx, 'yy': yy}, **error}, alignment=True)\n",
     "print(state)"
    ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "37e17f59-4312-4476-86b1-090baf77b82a",
+   "metadata": {},
+   "source": [
+    "# Example-15: Line (element)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 1,
+   "id": "99804e4c-198f-4b74-b35d-4da7d066c585",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# In this example line usage is illustrated"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 2,
+   "id": "72ddc9bb-790a-4505-9855-c812ab3c8367",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "from pathlib import Path\n",
+    "from os import system\n",
+    "\n",
+    "import matplotlib\n",
+    "from matplotlib import pyplot as plt\n",
+    "matplotlib.rcParams['text.usetex'] = True\n",
+    "\n",
+    "import torch\n",
+    "\n",
+    "from model.library.drift import Drift\n",
+    "from model.library.quadrupole import Quadrupole\n",
+    "from model.library.sextupole import Sextupole\n",
+    "from model.library.dipole import Dipole\n",
+    "from model.library.line import Line"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 3,
+   "id": "8779d6c6-dd7b-4def-be01-f1c4de04b196",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# Define unique elements\n",
+    "\n",
+    "QF = Quadrupole('QF', 0.5, +0.25)\n",
+    "QD = Quadrupole('QD', 0.5, -0.20)\n",
+    "SF = Sextupole('SF', 0.25)\n",
+    "SD = Sextupole('SD', 0.25)\n",
+    "DR = Drift('DR', 0.25)\n",
+    "BM = Dipole('BM', 3.50, torch.pi/8.0)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 4,
+   "id": "0ab37b81-2203-439f-ad56-a9844b69a4f4",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# Define a line\n",
+    "# With propagate flag, values for other flags will be propagated to all root elements (but not to lines!)\n",
+    "\n",
+    "FODO = Line('FODO', \n",
+    "            [QF, DR, SF, DR, BM, DR, SD, DR, QD, QD, DR, SD, DR, BM, DR, SF, DR, QF], \n",
+    "            propagate=True, \n",
+    "            dp=0.0, \n",
+    "            exact=False, \n",
+    "            output=False,\n",
+    "            matrix = False)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 5,
+   "id": "9373e0b2-186a-4a9e-a5be-d462d80d3478",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "tensor([0., 0., 0., 0.], dtype=torch.float64)\n",
+      "tensor([0., 0., 0., 0.], dtype=torch.float64)\n"
+     ]
+    }
+   ],
+   "source": [
+    "# Similar to elements, lines have to variants of call method\n",
+    "\n",
+    "# 1) without deviation variables\n",
+    "\n",
+    "state = torch.tensor([0.0, 0.0, 0.0, 0.0], dtype=torch.float64)\n",
+    "print(FODO(state))\n",
+    "\n",
+    "# 2) without deviation variables (defaut dictionary)\n",
+    "\n",
+    "state = torch.tensor([0.0, 0.0, 0.0, 0.0], dtype=torch.float64)\n",
+    "print(FODO(state, data=FODO.table()))\n",
+    "\n",
+    "# In both cases, it is possible to apply alignments errors using alignment flag\n",
+    "# Alignment errors can be applied to elements and to line as a whole (see examples below)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 6,
+   "id": "48b097f3-083e-486f-a05c-bcf5c531e793",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "{'QF': {'kn': tensor(0., dtype=torch.float64),\n",
+       "  'ks': tensor(0., dtype=torch.float64),\n",
+       "  'dp': tensor(0., dtype=torch.float64),\n",
+       "  'dl': tensor(0., dtype=torch.float64)},\n",
+       " 'DR': {'dp': tensor(0., dtype=torch.float64),\n",
+       "  'dl': tensor(0., dtype=torch.float64)},\n",
+       " 'SF': {'ms': tensor(0., dtype=torch.float64),\n",
+       "  'dp': tensor(0., dtype=torch.float64),\n",
+       "  'dl': tensor(0., dtype=torch.float64)},\n",
+       " 'BM': {'dw': tensor(0., dtype=torch.float64),\n",
+       "  'e1': tensor(0., dtype=torch.float64),\n",
+       "  'e2': tensor(0., dtype=torch.float64),\n",
+       "  'kn': tensor(0., dtype=torch.float64),\n",
+       "  'ks': tensor(0., dtype=torch.float64),\n",
+       "  'ms': tensor(0., dtype=torch.float64),\n",
+       "  'mo': tensor(0., dtype=torch.float64),\n",
+       "  'dp': tensor(0., dtype=torch.float64),\n",
+       "  'dl': tensor(0., dtype=torch.float64)},\n",
+       " 'SD': {'ms': tensor(0., dtype=torch.float64),\n",
+       "  'dp': tensor(0., dtype=torch.float64),\n",
+       "  'dl': tensor(0., dtype=torch.float64)},\n",
+       " 'QD': {'kn': tensor(0., dtype=torch.float64),\n",
+       "  'ks': tensor(0., dtype=torch.float64),\n",
+       "  'dp': tensor(0., dtype=torch.float64),\n",
+       "  'dl': tensor(0., dtype=torch.float64)}}"
+      ]
+     },
+     "execution_count": 6,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "# Values of deviation variables can be passed only to unique elements\n",
+    "\n",
+    "FODO.table(alignment=False)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 7,
+   "id": "82570947-6828-4512-b786-1403ae4871ff",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "torch.Size([512, 4])\n"
+     ]
+    }
+   ],
+   "source": [
+    "# Mapping over a set of initial conditions\n",
+    "\n",
+    "state = 1.0E-3*torch.randn((512, 4), dtype=FODO.dtype, device=FODO.device)\n",
+    "print(torch.vmap(FODO)(state).shape)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 8,
+   "id": "47fc6727-a7c8-4aea-a070-ce451cdda266",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "torch.Size([512, 4])\n"
+     ]
+    }
+   ],
+   "source": [
+    "# Mapping over a set of initial conditions and parameters\n",
+    "\n",
+    "state = 1.0E-3*torch.randn((512, 4), dtype=FODO.dtype, device=FODO.device)\n",
+    "dknqf = 1.0E-3*torch.randn(512, dtype=FODO.dtype, device=FODO.device)\n",
+    "\n",
+    "def wrapper(state, dknqf):\n",
+    "    data = FODO.table()\n",
+    "    data['QF']['kn'] = dknqf\n",
+    "    return FODO(state, data=data)\n",
+    "\n",
+    "print(torch.vmap(wrapper)(state, dknqf).shape)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 9,
+   "id": "91693306-3aa5-443c-8936-f70d778dac5d",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "tensor([[-0.4395, 15.4433,  0.0000,  0.0000],\n",
+      "        [-0.0522, -0.4395,  0.0000,  0.0000],\n",
+      "        [ 0.0000,  0.0000,  0.4963,  5.3596],\n",
+      "        [ 0.0000,  0.0000, -0.1406,  0.4963]], dtype=torch.float64)\n"
+     ]
+    }
+   ],
+   "source": [
+    "# Differentiability (state)\n",
+    "\n",
+    "state = torch.tensor([0.0, 0.0, 0.0, 0.0], dtype=torch.float64)\n",
+    "\n",
+    "print(torch.func.jacrev(FODO)(state))"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 10,
+   "id": "cfdd131a-2aad-4429-a04e-9d911da90d26",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "tensor([0., 0., 0., 0.], dtype=torch.float64)\n"
+     ]
+    }
+   ],
+   "source": [
+    "# Differentiability (parameter)\n",
+    "\n",
+    "state = torch.tensor([0.0, 0.0, 0.0, 0.0], dtype=torch.float64)\n",
+    "\n",
+    "dknqf = torch.tensor(0.0, dtype=torch.float64)\n",
+    "\n",
+    "def wrapper(dknqf):\n",
+    "    data = FODO.table()\n",
+    "    data['QF']['kn'] = dknqf\n",
+    "    return FODO(state, data=data)\n",
+    "\n",
+    "print(torch.func.jacrev(wrapper)(dknqf))"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 11,
+   "id": "8d7eb47f-b2c6-41b7-99ac-3f4d9bc56b63",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "tensor([[-0.4395, 15.4433,  0.0000,  0.0000],\n",
+      "        [-0.0522, -0.4395,  0.0000,  0.0000],\n",
+      "        [ 0.0000,  0.0000,  0.4963,  5.3596],\n",
+      "        [ 0.0000,  0.0000, -0.1406,  0.4963]], dtype=torch.float64)\n",
+      "tensor([[-7.5649, -3.8172,  0.0000,  0.0000],\n",
+      "        [ 0.4176, -7.5649,  0.0000,  0.0000],\n",
+      "        [ 0.0000,  0.0000,  2.7423,  1.3262],\n",
+      "        [ 0.0000,  0.0000,  0.5426,  2.7423]], dtype=torch.float64)\n"
+     ]
+    }
+   ],
+   "source": [
+    "# Differentiability (composed)\n",
+    "\n",
+    "state = torch.tensor([0.0, 0.0, 0.0, 0.0], dtype=torch.float64)\n",
+    "\n",
+    "dknqf = torch.tensor(0.0, dtype=torch.float64)\n",
+    "\n",
+    "def wrapper(dknqf):\n",
+    "    data = FODO.table()\n",
+    "    data['QF']['kn'] = dknqf\n",
+    "    return torch.func.jacrev(lambda state, data: FODO(state, data=data))(state, data)\n",
+    "\n",
+    "print(wrapper(dknqf))\n",
+    "print(torch.func.jacrev(wrapper)(dknqf))"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 12,
+   "id": "87afaf52-e7aa-4219-93e5-d271c7f15b90",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "CPU times: user 7.24 s, sys: 4.76 ms, total: 7.25 s\n",
+      "Wall time: 7.25 s\n"
+     ]
+    }
+   ],
+   "source": [
+    "%%time\n",
+    "\n",
+    "# Tracking\n",
+    "\n",
+    "# Note, in general tracking is slow\n",
+    "# This is especially the case for exact integration of elements with large number of slices\n",
+    "\n",
+    "qx = torch.linspace(0.0, 0.01, 16, dtype=torch.float64)\n",
+    "px = torch.zeros_like(qx)\n",
+    "qy = torch.zeros_like(qx)\n",
+    "py = torch.zeros_like(qx)\n",
+    "\n",
+    "state = torch.stack([qx, px, qy, py]).T\n",
+    "orbit = []\n",
+    "\n",
+    "for _ in range(2**10):\n",
+    "    state = torch.vmap(FODO)(state)\n",
+    "    orbit.append(state)\n",
+    "\n",
+    "qx, px, *_ = torch.stack(orbit).swapaxes(0, -1)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 13,
+   "id": "a2cf3720-6952-434f-8f21-01beda3bb8d7",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "image/png": "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",
+      "text/plain": [
+       "<Figure size 400x400 with 1 Axes>"
+      ]
+     },
+     "metadata": {},
+     "output_type": "display_data"
+    }
+   ],
+   "source": [
+    "# Plot trajectories\n",
+    "\n",
+    "plt.figure(figsize=(4, 4))\n",
+    "plt.scatter(qx.cpu().numpy(), px.cpu().numpy(), s=1, color='black')\n",
+    "plt.show()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "4dbe0c31-2a03-4dd0-9230-d6663bf8c426",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "%%time\n",
+    "\n",
+    "# Output can be collected at each integration step\n",
+    "# Note, container is overwritten at each call\n",
+    "\n",
+    "FODO.ns = 0.01\n",
+    "FODO.output = True\n",
+    "\n",
+    "state = torch.tensor([+0.01, 0.0, -0.01, 0.0], dtype=torch.float64)\n",
+    "orbit = []\n",
+    "for _ in range(16):\n",
+    "    state = FODO(state)\n",
+    "    orbit.append(FODO.container_output)\n",
+    "qx, _, qy, _  = torch.vstack(orbit).T\n",
+    "\n",
+    "plt.figure(figsize=(8, 2))\n",
+    "plt.scatter(range(len(qx)), qx.cpu().numpy(), s=1, color='blue')\n",
+    "plt.scatter(range(len(qy)), qy.cpu().numpy(), s=1, color='red')\n",
+    "plt.show()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "fc1160cc-c4f4-406e-8731-18629f03c9e3",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "%%time\n",
+    "\n",
+    "# Functions can be compiled, but note that dynamo unrolls loops completely (torch 2.4)\n",
+    "# This leads to very long compilation times\n",
+    "\n",
+    "FODO.ns = 1\n",
+    "\n",
+    "state = torch.tensor([0.0, 0.0, 0.0, 0.0], dtype=torch.float64)\n",
+    "table = 1.0E-3*torch.randn((512, 4), dtype=FODO.dtype, device=FODO.device)\n",
+    "\n",
+    "fodo = torch.compile(FODO)\n",
+    "fodo(state)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "9accb757-afef-43ea-b322-18e1707a3954",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "%%timeit\n",
+    "\n",
+    "FODO(state)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "33ded75c-6342-470f-972b-b883f6295d34",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "%%timeit\n",
+    "\n",
+    "fodo(state)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "9323a3b7-0e75-42f3-a283-46816242eb64",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "%%timeit\n",
+    "\n",
+    "_ = torch.vmap(FODO)(table)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "0fe47bba-3e74-48ff-bff6-37c1f3980ef9",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "%%timeit\n",
+    "\n",
+    "_ = torch.vmap(fodo)(table)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "62632473-9c09-4fb4-a02a-181bd2863eb8",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# Note, compositional operations (map or jacobian seems to break/ignore compiled version)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "3e38cba7-7fbf-46b5-bb62-6b953578d8a9",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# name (property)\n",
+    "# This property can be used to get/set line name\n",
+    "\n",
+    "FODO.name"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "b6d2fc70-f6d1-412c-8ea9-b545de461d26",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# sequence (property)\n",
+    "# Contains ordered sequence of elements\n",
+    "# Elements can be added or removed from it\n",
+    "\n",
+    "len(FODO.sequence)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "9427bf24-8f57-40db-89de-1ae2873760c9",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# unique (property)\n",
+    "# name: (type, length, angle) data for all unique elements\n",
+    "\n",
+    "FODO.unique"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "b93ee2c5-855c-433c-87e9-072a6dcc7e2a",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# length (property)\n",
+    "\n",
+    "FODO.length"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "bae73748-f864-4687-b81b-9eb89a8e0f2f",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# angle (property)\n",
+    "\n",
+    "FODO.angle"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "0469183e-dac9-4792-a190-98b1081eb216",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# ns (property)\n",
+    "# This property can be used to get/set number of integration steps to unique elements\n",
+    "\n",
+    "# Set value integration steps to all elements\n",
+    "\n",
+    "FODO.ns = 10\n",
+    "print(FODO.ns)\n",
+    "\n",
+    "# Set ceil(element.length/value) integration steps to each element\n",
+    "\n",
+    "FODO.ns = 0.1\n",
+    "print(FODO.ns)\n",
+    "\n",
+    "# Set by name or type\n",
+    "\n",
+    "FODO.ns = (('DR', 1), ('Sextupole', 0.01))\n",
+    "print(FODO.ns)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "635af0f5-1cbb-474c-8dff-5e4ad55e2fb3",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# order (property)\n",
+    "# This property can be used to get/set integration order to unique elements\n",
+    "\n",
+    "# Set value integration steps to all elements\n",
+    "\n",
+    "FODO.order = 0\n",
+    "print(FODO.order)\n",
+    "\n",
+    "# Set by name or type\n",
+    "\n",
+    "FODO.order = (('BM', 1), ('Sextupole', 1))\n",
+    "print(FODO.order)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "5fc306a4-8dd9-41e4-acfd-4f31d469f80f",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# Nested lines\n",
+    "# Note, flags for lines are not propagated\n",
+    "\n",
+    "FODO = Line('FODO', [QF, DR, SF, DR, BM, DR, SD, DR, QD, QD, DR, SD, DR, BM, DR, SF, DR, QF], propagate=True, dp=0.0, exact=False, output=False, matrix = False)\n",
+    "RING = Line('RING', 8*[FODO], propagate=True, dp=0.0, exact=False, output=False, matrix = False)\n",
+    "\n",
+    "RING.ns = 1\n",
+    "print(RING.ns)\n",
+    "\n",
+    "RING.order = 0\n",
+    "print(RING.order)\n",
+    "\n",
+    "# Note, sublines are not flattened\n",
+    "\n",
+    "print(len(RING.sequence))"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "dd4c2418-8baf-460d-9fcb-ef989a65c630",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# Tracking, mapping and differentiation is similar to flat lines\n",
+    "\n",
+    "state = torch.tensor([0.0, 0.0, 0.0, 0.0], dtype=torch.float64)\n",
+    "RING(state)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "d41ef33e-c41b-4072-b59c-7a632a7f2ff2",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# Deviation table contains unique lines with unique elements (unique by names)\n",
+    "\n",
+    "RING.table(alignment=False)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "ca15becf-4999-487d-8155-1fc37bde9563",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# If this can be used to pass different values of deviation variables to unique elements\n",
+    "# But values should match for consistent differentiation\n",
+    "\n",
+    "LA = Line('LA', [QF, DR, SF, DR, BM, DR, SD, DR, QD, QD, DR, SD, DR, BM, DR, SF, DR, QF], propagate=True, dp=0.0, exact=False, output=False, matrix = False)\n",
+    "LB = Line('LB', [QF, DR, SF, DR, BM, DR, SD, DR, QD, QD, DR, SD, DR, BM, DR, SF, DR, QF], propagate=True, dp=0.0, exact=False, output=False, matrix = False)\n",
+    "\n",
+    "RING = Line('RING', [LA, LB], propagate=True, dp=0.0, exact=False, output=False, matrix = False)\n",
+    "\n",
+    "state = torch.tensor([0.01, 0.0, 0.01, 0.0], dtype=torch.float64)\n",
+    "\n",
+    "kn = torch.tensor(0.01, dtype=torch.float64)\n",
+    "\n",
+    "data = RING.table()\n",
+    "\n",
+    "data['LA']['QF']['kn'] = kn\n",
+    "data['LB']['QF']['kn'] = kn\n",
+    "\n",
+    "print(RING(state, data=data))\n",
+    "\n",
+    "kna = torch.tensor(+0.01, dtype=torch.float64)\n",
+    "knb = torch.tensor(-0.01, dtype=torch.float64)\n",
+    "\n",
+    "data['LA']['QF']['kn'] = kna\n",
+    "data['LB']['QF']['kn'] = knb\n",
+    "\n",
+    "print(RING(state, data=data))"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "aae17708-cf03-4326-abf3-a8a921b01341",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# Modulation\n",
+    "\n",
+    "FODO = Line('FODO', [QF, DR, SF, DR, BM, DR, SD, DR, QD, QD, DR, SD, DR, BM, DR, SF, DR, QF], propagate=True, dp=0.0, exact=False, output=False, matrix = False)\n",
+    "\n",
+    "dkf = 1.0E-3*torch.randn(2**10, dtype=torch.float64)\n",
+    "dkd = 1.0E-3*torch.randn(2**10, dtype=torch.float64)\n",
+    "\n",
+    "qx = torch.linspace(0.0, 0.01, 8, dtype=torch.float64)\n",
+    "px = torch.zeros_like(qx)\n",
+    "qy = torch.zeros_like(qx)\n",
+    "py = torch.zeros_like(qx)\n",
+    "\n",
+    "state = torch.stack([qx, px, qy, py]).T\n",
+    "orbit = []\n",
+    "\n",
+    "data = FODO.table()\n",
+    "\n",
+    "for i in range(2**10):\n",
+    "    data['QF']['kn'] = dkf[i]\n",
+    "    data['QD']['kn'] = dkd[i]\n",
+    "    state = torch.vmap(lambda state: FODO(state, data=data))(state)\n",
+    "    orbit.append(state)\n",
+    "\n",
+    "qx, px, *_ = torch.stack(orbit).swapaxes(0, -1)\n",
+    "\n",
+    "plt.figure(figsize=(4, 4))\n",
+    "plt.scatter(qx.cpu().numpy(), px.cpu().numpy(), s=1, color='black')\n",
+    "plt.show()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "0aa4bfef-875b-4316-90cc-5da11fcf852b",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# Nested alignment (test without bending)\n",
+    "\n",
+    "QF = Quadrupole('QF', 0.5, +0.25)\n",
+    "QD = Quadrupole('QD', 0.5, -0.20)\n",
+    "SF = Sextupole('SF', 0.25)\n",
+    "SD = Sextupole('SD', 0.25)\n",
+    "DR = Drift('DR', 0.25)\n",
+    "BM = Drift('BM', 3.50)\n",
+    "\n",
+    "FODO = Line('FODO', [QF, DR, SF, DR, BM, DR, SD, DR, QD, QD, DR, SD, DR, BM, DR, SF, DR, QF], propagate=True, dp=0.0, exact=False, output=False, matrix = False)\n",
+    "\n",
+    "state = torch.tensor([+0.01, 0.0, -0.01, 0.0], dtype=torch.float64)\n",
+    "\n",
+    "dx = torch.tensor(0.01, dtype=torch.float64)\n",
+    "\n",
+    "dx_qf = torch.tensor(0.01, dtype=torch.float64)\n",
+    "dx_qd = torch.tensor(0.01, dtype=torch.float64)\n",
+    "\n",
+    "# 2x quadrupoles\n",
+    "\n",
+    "data = FODO.table()\n",
+    "data['dx'] = 0*dx\n",
+    "data['QF']['dx'] = 2*dx_qf\n",
+    "data['QD']['dx'] = 2*dx_qd\n",
+    "\n",
+    "print(FODO(state, data=data, alignment=True).tolist())\n",
+    "\n",
+    "# 1x quadrupoles and 1x fodo\n",
+    "\n",
+    "data['dx'] = 1*dx\n",
+    "data['QF']['dx'] = 1*dx_qf\n",
+    "data['QD']['dx'] = 1*dx_qd\n",
+    "\n",
+    "print(FODO(state, data=data, alignment=True).tolist())"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "9c931b81-529c-4140-974a-443b155015d4",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# Matrix output and twiss parameters\n",
+    "\n",
+    "from twiss import twiss\n",
+    "from twiss import propagate\n",
+    "from twiss import wolski_to_cs\n",
+    "\n",
+    "QF = Quadrupole('QF', 0.5, +0.25)\n",
+    "QD = Quadrupole('QD', 0.5, -0.20)\n",
+    "SF = Sextupole('SF', 0.25)\n",
+    "SD = Sextupole('SD', 0.25)\n",
+    "DR = Drift('DR', 0.25)\n",
+    "BM = Dipole('BM', 3.50, torch.pi/8.0)\n",
+    "\n",
+    "FODO = Line('FODO', [QF, DR, SF, DR, BM, DR, SD, DR, QD, QD, DR, SD, DR, BM, DR, SF, DR, QF], propagate=True, matrix=True)\n",
+    "FODO.ns = 0.01\n",
+    "\n",
+    "state = torch.tensor([0.0, 0.0, 0.0, 0.0], dtype=torch.float64)\n",
+    "\n",
+    "print(torch.func.jacrev(FODO)(state))\n",
+    "print()\n",
+    "\n",
+    "out, *ms = FODO.container_matrix\n",
+    "for m in ms:\n",
+    "   out = m @ out\n",
+    "print(out)\n",
+    "print()\n",
+    "\n",
+    "*_, w = twiss(out)\n",
+    "ws = [w]\n",
+    "\n",
+    "for m in FODO.container_matrix:\n",
+    "    w = propagate(w, m)\n",
+    "    ws.append(w)\n",
+    "\n",
+    "ws = torch.stack(ws)\n",
+    "\n",
+    "_, bx, _, by = torch.vmap(wolski_to_cs)(ws).T\n",
+    "\n",
+    "s = torch.linspace(0.0, 12.0, len(bx), dtype=torch.float64)\n",
+    "\n",
+    "plt.figure(figsize=(8, 4))\n",
+    "plt.scatter(s.cpu().numpy(), bx.cpu().numpy(), s=1, color='blue')\n",
+    "plt.scatter(s.cpu().numpy(), by.cpu().numpy(), s=1, color='red')\n",
+    "plt.show()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "4f49b651-b89b-45e7-b198-19ea182d4bab",
+   "metadata": {},
+   "outputs": [],
+   "source": []
   }
  ],
  "metadata": {
