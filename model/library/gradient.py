@@ -45,7 +45,9 @@ class Gradient(Element):
                  name:str,
                  kn:float=0.0,
                  ks:float=0.0,
-                 dp:float=0.0) -> None:
+                 dp:float=0.0,
+                 output:bool=False,
+                 matrix:bool=False) -> None:
         """
         Gradient instance initialization
 
@@ -61,6 +63,10 @@ class Gradient(Element):
             py -> py + kn*qy + ks*qx
         dp: float, default=0.0
             momentum deviation
+        output: bool, default=False
+            flag to save output at each step
+        matrix: bool, default=False
+            flag to save matrix at each step
 
         Returns
         -------
@@ -68,7 +74,9 @@ class Gradient(Element):
 
         """
         super().__init__(name=name,
-                         dp=dp)
+                         dp=dp,
+                         output=output,
+                         matrix=matrix)
 
         self._kn: float = kn
         self._ks: float = ks

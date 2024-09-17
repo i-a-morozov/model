@@ -45,7 +45,9 @@ class Corrector(Element):
                  name:str,
                  cx:float=0.0,
                  cy:float=0.0,
-                 dp:float=0.0) -> None:
+                 dp:float=0.0,
+                 output:bool=False,
+                 matrix:bool=False) -> None:
         """
         Corrector instance initialization
 
@@ -59,6 +61,10 @@ class Corrector(Element):
             py -> py + cy
         dp: float, default=0.0
             momentum deviation
+        output: bool, default=False
+            flag to save output at each step
+        matrix: bool, default=False
+            flag to save matrix at each step
 
         Returns
         -------
@@ -66,7 +72,9 @@ class Corrector(Element):
 
         """
         super().__init__(name=name,
-                         dp=dp)
+                         dp=dp,
+                         output=output,
+                         matrix=matrix)
 
         self._cx: float = cx
         self._cy: float = cy

@@ -52,7 +52,9 @@ class BPM(Element):
     def __init__(self,
                  name:str,
                  direction:Literal['forward', 'inverse']='forward',
-                 dp:float=0.0) -> None:
+                 dp:float=0.0,
+                 output:bool=False,
+                 matrix:bool=False) -> None:
         """
         BPM instance initialization
 
@@ -62,6 +64,10 @@ class BPM(Element):
             name
         forward: Literal['forward', 'inverse'], default='forward'
             transformation direction
+        output: bool, default=False
+            flag to save output at each step
+        matrix: bool, default=False
+            flag to save matrix at each step
 
         Returns
         -------
@@ -69,7 +75,9 @@ class BPM(Element):
 
         """
         super().__init__(name=name,
-                         dp=dp)
+                         dp=dp,
+                         output=output,
+                         matrix=matrix)
 
         self._direction: Literal['forward', 'inverse'] = direction
 

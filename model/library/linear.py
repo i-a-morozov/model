@@ -44,7 +44,9 @@ class Linear(Element):
     def __init__(self,
                  name:str,
                  v:list[float],
-                 m:list[list[float]]) -> None:
+                 m:list[list[float]],
+                 output:bool=False,
+                 matrix:bool=False) -> None:
         """
         Gradient instance initialization
 
@@ -56,13 +58,19 @@ class Linear(Element):
             constant vector
         m: list[list[float]]
             matrix
+        output: bool, default=False
+            flag to save output at each step
+        matrix: bool, default=False
+            flag to save matrix at each step
 
         Returns
         -------
         None
 
         """
-        super().__init__(name=name)
+        super().__init__(name=name,
+                         output=output,
+                         matrix=matrix)
 
         self._v: list[float] = v
         self._m: list[list[float]] = m
