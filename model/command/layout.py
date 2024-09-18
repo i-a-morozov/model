@@ -68,7 +68,7 @@ class Layout:
     def orbit(self, *,
               start:tuple[float,float] = (0.0, 0.0),
               step:float=0.01,
-              flat:bool=True,
+              flat:bool=False,
               flag:bool=True,
               lengths:Optional[Tensor]=None,
               angles:Optional[Tensor]=None) -> tuple[Tensor,Tensor]|tuple[Tensor,Tensor,Tensor]:
@@ -211,7 +211,12 @@ class Layout:
         return torch.stack([face + i*torch.stack([length/count, self.nul, self.nul]) for i in range(0, count + 1)])
 
 
-    def make_curved_block(self, length:Tensor, angle:Tensor, width:float=1.0, height:float=1.0, count:int=1) -> Tensor:
+    def make_curved_block(self,
+                          length:Tensor,
+                          angle:Tensor,
+                          width:float=1.0,
+                          height:float=1.0,
+                          count:int=1) -> Tensor:
         """
         Generate straight block
 
@@ -544,12 +549,12 @@ class Layout:
             name = element.name
             kind = element.__class__.__name__
             length = element.length/element.ns
-            angle = element.angle if element.flag else torch.zeros_like(length)
+            angle = element.angle/element.ns if element.flag else torch.zeros_like(length)
             for _ in range(element.ns):
                 names.append(name)
                 kinds.append(kind)
                 lengths.append(length)
                 angles.append(angle)
-        x, y, z = self.orbit(step=0.0, flat=False, flag=False, lengths=lengths, angles=angles)
+        x, y, z = self.orbit(step=None, flat=False, flag=False, lengths=lengths, angles=angles)
         *points, _ = torch.stack([x, y, z]).T
         return names, kinds, torch.stack(lengths), torch.stack(angles), torch.stack(points)
