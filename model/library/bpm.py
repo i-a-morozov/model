@@ -144,7 +144,7 @@ class BPM(Element):
                 container_output.append(state)
                 self.container_output = torch.stack(container_output)
             if matrix:
-                container_matrix.append(torch.func.jacrev(integrator)(state))
+                container_matrix.append(torch.func.jacrev(lambda state: state)(state))
                 self.container_matrix = torch.stack(container_matrix)
             return state
 
