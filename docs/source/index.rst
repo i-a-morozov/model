@@ -17,8 +17,12 @@ Simple accelerator lattice model: linear optics errors, closed orbit and Twiss p
    modules/util.rst
    modules/external.rst
    modules/build.rst
-   modules/transformations.rst
-   modules/library/transformations.rst
+
+   modules/library/bpm.rst
+   modules/library/corrector.rst
+   modules/library/gradient.rst
+   modules/library/linear.rst
+   modules/library/line.rst
    modules/library/keys.rst
    modules/library/element.rst
    modules/library/drift.rst
@@ -27,6 +31,9 @@ Simple accelerator lattice model: linear optics errors, closed orbit and Twiss p
    modules/library/octupole.rst
    modules/library/multipole.rst
    modules/library/dipole.rst
+   modules/library/transformations.rst
+
+   modules/command/layout.rst
 
 Indices and tables
 ==================
