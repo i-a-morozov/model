@@ -36,6 +36,7 @@
           
           <a href="../../index.html" class="icon icon-home">
             model
+              <img src="../../_static/logo.png" class="logo" alt="Logo"/>
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
@@ -211,8 +212,8 @@ rz[_{knobs, track}]                  – RZ rotation</p>
 <dt class="sig sig-object py" id="model.library.transformations.calibration_forward">
 <span class="sig-prename descclassname"><span class="pre">model.library.transformations.</span></span><span class="sig-name descname"><span class="pre">calibration_forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">state</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">State</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gxx</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">torch.Tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gxy</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">torch.Tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gyx</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">torch.Tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gyy</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">torch.Tensor</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">State</span></span></span><a class="reference internal" href="../../_modules/model/library/transformations.html#calibration_forward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#model.library.transformations.calibration_forward" title="Link to this definition"></a></dt>
 <dd><p>Calibration transformation (from beam frame to bpm frame)</p>
-<p>qx -&gt; gxx qx + gxy qy
-qy -&gt; gyx qx + gyy qy</p>
+<p>qx -&gt; (1 + gxx) qx + gxy qy
+qy -&gt; gyx qx + (1 + gyy) qy</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">

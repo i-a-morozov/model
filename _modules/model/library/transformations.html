@@ -33,6 +33,7 @@
           
           <a href="../../../index.html" class="icon icon-home">
             model
+              <img src="../../../_static/logo.png" class="logo" alt="Logo"/>
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -204,8 +205,8 @@
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Calibration transformation (from beam frame to bpm frame)</span>
 
-<span class="sd">    qx -&gt; gxx qx + gxy qy</span>
-<span class="sd">    qy -&gt; gyx qx + gyy qy</span>
+<span class="sd">    qx -&gt; (1 + gxx) qx + gxy qy</span>
+<span class="sd">    qy -&gt; gyx qx + (1 + gyy) qy</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -231,6 +232,8 @@
 
 
 <span class="k">def</span> <span class="nf">calibration_forward_knobs</span><span class="p">(</span><span class="n">gxx</span><span class="p">:</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">gxy</span><span class="p">:</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">gyx</span><span class="p">:</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">gyy</span><span class="p">:</span><span class="n">Tensor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Knobs</span><span class="p">:</span>
+    <span class="n">gxx</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">+</span> <span class="n">gxx</span>
+    <span class="n">gyy</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">+</span> <span class="n">gyy</span>
     <span class="n">det</span> <span class="o">=</span>  <span class="n">gxx</span><span class="o">*</span><span class="n">gyy</span> <span class="o">-</span> <span class="n">gxy</span><span class="o">*</span><span class="n">gyx</span>
     <span class="n">qxqx</span> <span class="o">=</span> <span class="n">gxx</span>
     <span class="n">qxqy</span> <span class="o">=</span> <span class="n">gxy</span>
@@ -287,6 +290,8 @@
 
 
 <span class="k">def</span> <span class="nf">calibration_inverse_knobs</span><span class="p">(</span><span class="n">gxx</span><span class="p">:</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">gxy</span><span class="p">:</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">gyx</span><span class="p">:</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">gyy</span><span class="p">:</span><span class="n">Tensor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Knobs</span><span class="p">:</span>
+    <span class="n">gxx</span> <span class="o">=</span> <span class="n">gxx</span> <span class="o">+</span> <span class="mi">1</span>
+    <span class="n">gyy</span> <span class="o">=</span> <span class="n">gyy</span> <span class="o">+</span> <span class="mi">1</span>
     <span class="n">det</span> <span class="o">=</span>  <span class="n">gxx</span><span class="o">*</span><span class="n">gyy</span> <span class="o">-</span> <span class="n">gxy</span><span class="o">*</span><span class="n">gyx</span>
     <span class="n">qxqx</span> <span class="o">=</span> <span class="n">gyy</span><span class="o">/</span><span class="n">det</span>
     <span class="n">qxqy</span> <span class="o">=</span> <span class="o">-</span><span class="n">gxy</span><span class="o">/</span><span class="n">det</span>
