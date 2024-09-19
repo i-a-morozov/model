@@ -6,9 +6,9 @@
 
 Simple accelerator lattice model with composable derivatives in pytorch.
 
-Computation of parametrix closed orbit, Twiss parameters and other pbservables.
+Computation of parametrix closed orbit, Twiss parameters and other observables.
 
-# Install & build
+# Install 
 
 ```
 $ pip install git+https://github.com/i-a-morozov/model.git@main
