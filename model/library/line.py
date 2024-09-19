@@ -40,7 +40,7 @@ class Line(Element):
     Line
 
     """
-    keys: list[str] = []
+    keys: list[str] = [KEY_DP, KEY_DL, KEY_DW]
 
 
     def __init__(self,
