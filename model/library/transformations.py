@@ -48,8 +48,8 @@ def calibration_forward(state:State,
     """
     Calibration transformation (from beam frame to bpm frame)
 
-    qx -> gxx qx + gxy qy
-    qy -> gyx qx + gyy qy
+    qx -> (1 + gxx) qx + gxy qy
+    qy -> gyx qx + (1 + gyy) qy
 
     Parameters
     ----------
@@ -74,6 +74,8 @@ def calibration_forward(state:State,
 
 
 def calibration_forward_knobs(gxx:Tensor, gxy:Tensor, gyx:Tensor, gyy:Tensor) -> Knobs:
+    gxx = 1 + gxx
+    gyy = 1 + gyy
     det =  gxx*gyy - gxy*gyx
     qxqx = gxx
     qxqy = gxy
@@ -127,6 +129,8 @@ def calibration_inverse(state:State,
 
 
 def calibration_inverse_knobs(gxx:Tensor, gxy:Tensor, gyx:Tensor, gyy:Tensor) -> Knobs:
+    gxx = gxx + 1
+    gyy = gyy + 1
     det =  gxx*gyy - gxy*gyx
     qxqx = gyy/det
     qxqy = -gxy/det
