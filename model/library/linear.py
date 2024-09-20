@@ -15,6 +15,8 @@ from typing import Callable
 import torch
 from torch import Tensor
 
+from model.library.keys import KEY_DP
+
 from model.library.element import Element
 
 from model.library.transformations import linear
@@ -39,12 +41,13 @@ class Linear(Element):
 
     """
     flag: bool = False
-    keys: list[str] = []
+    keys: list[str] = [KEY_DP]
 
     def __init__(self,
                  name:str,
                  v:list[float],
                  m:list[list[float]],
+                 dp:float=0.0,
                  output:bool=False,
                  matrix:bool=False) -> None:
         """
@@ -58,6 +61,8 @@ class Linear(Element):
             constant vector
         m: list[list[float]]
             matrix
+        dp: float, default=0.0
+            momentum deviation
         output: bool, default=False
             flag to save output at each step
         matrix: bool, default=False
@@ -69,6 +74,7 @@ class Linear(Element):
 
         """
         super().__init__(name=name,
+                         dp=dp,
                          output=output,
                          matrix=matrix)
 
@@ -144,7 +150,7 @@ class Linear(Element):
                 self.container_matrix = torch.stack(container_matrix)
             return state
 
-        def knob(state:State) -> State:
+        def knob(state:State, dp:Tensor) -> State:
             if output:
                 container_output = []
             if matrix:

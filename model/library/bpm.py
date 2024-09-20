@@ -2,7 +2,7 @@
 BPM
 ---
 
-BPM Element
+BPM element
 
 Represents a BPM element
 Calibration errors are deviation variables (not specified on initialization)
@@ -22,6 +22,7 @@ from model.library.keys import KEY_XX
 from model.library.keys import KEY_XY
 from model.library.keys import KEY_YX
 from model.library.keys import KEY_YY
+from model.library.keys import KEY_DP
 
 from model.library.element import Element
 
@@ -46,7 +47,7 @@ class BPM(Element):
 
     """
     flag: bool = False
-    keys: list[str] = [KEY_XX, KEY_XY, KEY_YX, KEY_YY]
+    keys: list[str] = [KEY_XX, KEY_XY, KEY_YX, KEY_YY, KEY_DP]
 
 
     def __init__(self,
@@ -62,8 +63,10 @@ class BPM(Element):
         ----------
         name: str
             name
-        forward: Literal['forward', 'inverse'], default='forward'
+        direction: Literal['forward', 'inverse'], default='forward'
             transformation direction
+        dp: float, default=0.0
+            momentum deviation
         output: bool, default=False
             flag to save output at each step
         matrix: bool, default=False
@@ -148,7 +151,7 @@ class BPM(Element):
                 self.container_matrix = torch.stack(container_matrix)
             return state
 
-        def knob(state:State, xx:Tensor, xy:Tensor, yx:Tensor, yy:Tensor) -> State:
+        def knob(state:State, xx:Tensor, xy:Tensor, yx:Tensor, yy:Tensor, dp:Tensor) -> State:
             if output:
                 container_output = []
             if matrix:

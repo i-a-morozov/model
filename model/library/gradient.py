@@ -17,6 +17,7 @@ from torch import Tensor
 
 from model.library.keys import KEY_KN
 from model.library.keys import KEY_KS
+from model.library.keys import KEY_DP
 
 from model.library.element import Element
 
@@ -39,7 +40,7 @@ class Gradient(Element):
 
     """
     flag: bool = False
-    keys: list[str] = [KEY_KN, KEY_KS]
+    keys: list[str] = [KEY_KN, KEY_KS, KEY_DP]
 
     def __init__(self,
                  name:str,
@@ -150,7 +151,7 @@ class Gradient(Element):
                 self.container_matrix = torch.stack(container_matrix)
             return state
 
-        def knob(state:State, kn:Tensor, ks:Tensor) -> State:
+        def knob(state:State, kn:Tensor, ks:Tensor, dp:Tensor) -> State:
             if output:
                 container_output = []
             if matrix:
