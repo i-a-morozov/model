@@ -119,7 +119,10 @@ class Layout:
             radius = length/angle
             xc = x - radius*current_angle.sin()
             yc = y + radius*current_angle.cos()
-            arc_angles = torch.linspace(0, angle, ceil(angle/step), dtype=self.dtype, device=self.device) if step else [angle]
+            if step and step < angle.abs():
+                arc_angles = torch.linspace(0, angle, ceil(angle.abs()/step), dtype=self.dtype, device=self.device)
+            else:
+                arc_angles = [angle]
             for arc_angle in arc_angles:
                 arc_x = xc + radius*(current_angle + arc_angle).sin()
                 arc_y = yc - radius*(current_angle + arc_angle).cos()
