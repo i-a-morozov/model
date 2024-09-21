@@ -39,7 +39,8 @@ class Layout:
         'Corrector' : {'color': 'gray' , 'width': 0.25, 'height': 0.25, 'opacity': 0.20},
         'Gradient'  : {'color': 'gray' , 'width': 0.25, 'height': 0.25, 'opacity': 0.20},
         'Linear'    : {'color': 'gray' , 'width': 0.25, 'height': 0.25, 'opacity': 0.20},
-        'BPM'       : {'color': 'gray' , 'width': 1.00, 'height': 0.75, 'opacity': 0.10}
+        'BPM'       : {'color': 'gray' , 'width': 1.00, 'height': 0.75, 'opacity': 0.10},
+        'Marker'    : {'color': 'gray' , 'width': 1.00, 'height': 0.75, 'opacity': 0.10}
     }
 
     def __init__(self, line:Line) -> None:
