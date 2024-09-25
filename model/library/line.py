@@ -94,6 +94,10 @@ class Line(Element):
             self.set('exact', exact)
             self.set('output', output)
             self.set('matrix', matrix)
+            for element in self.sequence:
+                if isinstance(element, Line):
+                    element.output = output
+                    element.matrix = matrix
 
 
     def make_step(self):
@@ -585,7 +589,9 @@ class Line(Element):
         self._output = output
         if self.propagate:
             self.set('output', output)
-
+            for element in self.sequence:
+                if isinstance(element, Line):
+                    element.output = output
 
     @property
     def matrix(self) -> bool:
@@ -623,6 +629,9 @@ class Line(Element):
         self._matrix = matrix
         if self.propagate:
             self.set('matrix', matrix)
+            for element in self.sequence:
+                if isinstance(element, Line):
+                    element.matrix = matrix
 
 
     def __call__(self,
@@ -743,7 +752,7 @@ class Line(Element):
 
     def __len__(self) -> int:
         """
-        Get number of (first level) elements (sequence length) 
+        Get number of (first level) elements (sequence length)
 
         Parameters
         ----------
