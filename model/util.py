@@ -83,8 +83,8 @@ def cast(value:str) -> str|int|float:
     -------
     str|int|float
 
-    """    
-    try: 
+    """
+    try:
         return int(value)
     except ValueError:
         try:
@@ -105,7 +105,7 @@ def load(path:Path) -> Table:
     Returns
     -------
     Table
-    
+
     """
     with path.open() as stream:
         table = yaml.safe_load(stream)
@@ -127,18 +127,18 @@ def save(table:Table,
     Returns
     -------
     None
-    
+
     """
     with path.open('w') as stream:
         yaml.dump(table, stream, Dumper=_yaml_dumper, default_flow_style=False, sort_keys=False)
 
 
-def rename(table:Table, 
+def rename(table:Table,
            rule:dict[str,str], *,
            drop:bool=True) -> Table:
     """
     Rename keys
-    
+
     Parameters
     ----------
     table: Table
@@ -151,7 +151,7 @@ def rename(table:Table,
     Returns
     -------
     Table
-    
+
     """
     result:Table = {}
     for location, data in table.items():
@@ -164,7 +164,7 @@ def select(table:Table,
            keep:bool=False) -> dict[str,str|int|float|dict]:
     """
     Select key
-    
+
     Parameters
     ----------
     table: Table
@@ -177,7 +177,7 @@ def select(table:Table,
     Returns
     -------
     dict[str,str|int|float|dict]
-    
+
     """
     table:Table = rename(table, {key: key}, drop=True)
     if keep:
@@ -190,7 +190,7 @@ def select(table:Table,
 def insert(table:Table,
            key:str,
            locations:dict[str,str|int|float|dict], *,
-           replace:bool=True, 
+           replace:bool=True,
            apply:Optional[Callable]=None) -> Table:
     """
     Insert key
@@ -207,11 +207,11 @@ def insert(table:Table,
         flag to replace existing values
     apply: Optional[Callable]
         function to apply to shared keys values
-        
+
     Returns
     -------
     Table
-    
+
     """
     if not apply:
         apply:Callable = list
@@ -224,7 +224,7 @@ def insert(table:Table,
     return table
 
 
-def remove(table:Table, 
+def remove(table:Table,
            key:str, *,
            locations:Optional[list[str]]=None) -> Table:
     """
@@ -242,7 +242,7 @@ def remove(table:Table,
     Returns
     -------
     Table
-    
+
     """
     table: Table = deepcopy(table)
     for location in (locations if locations else table):
@@ -264,14 +264,14 @@ def mingle(probe:Table,
     other: Table
         other table
     replace: bool, default=True
-        flag to replace existing values        
+        flag to replace existing values
     apply: Optional[Callable]
         function to apply to shared keys values
 
     Returns
     -------
-    Table        
-    
+    Table
+
     """
     if not apply:
         apply:Callable = list

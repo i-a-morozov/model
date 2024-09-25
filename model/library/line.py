@@ -179,7 +179,7 @@ class Line(Element):
     def get(self,
             attribute:str, *,
             kinds:Optional[list[str]]=None,
-            names:Optional[list[str]]=None) -> list[str, Any]:
+            names:Optional[list[str]]=None) -> list[tuple[str, Any]]:
         """
         Get given attribute from selected elements
 
@@ -194,7 +194,7 @@ class Line(Element):
 
         Returns
         -------
-        list[str, Any]
+        list[tuple[str, Any]]
 
         """
         elements:list[Element] = [*self.scan(attribute)]
@@ -739,6 +739,65 @@ class Line(Element):
             state = tz(state, +length, dp)
 
         return state
+
+
+    def __len__(self) -> int:
+        """
+        Get number of (first level) elements (sequence length) 
+
+        Parameters
+        ----------
+        None
+
+        Returns
+        -------
+        int
+
+        """
+        return len(self.sequence)
+
+
+    def __getitem__(self, index: int) -> Element:
+        """
+        Get (first level) element by index
+
+        Parameters
+        ----------
+        index: int
+            element index|name
+
+        Returns
+        -------
+        Element
+
+        """
+        if isinstance(index, int):
+            return self.sequence[index]
+        for element in self.sequence:
+            if element.name == index:
+                return element
+
+    def __setitem__(self, index: int|str, element: Element) -> None:
+        """
+        Set (first level) element by index|name
+
+        Parameters
+        ----------
+        index: int|str
+            element index|name to replace
+        element: Element
+            element
+
+        Returns
+        -------
+        None
+
+        """
+        if isinstance(index, int):
+            self.sequence[index] = element
+        for element in self.sequence:
+            if element.name == index:
+                self.sequence[index] = element
 
 
     def __repr__(self) -> str:
