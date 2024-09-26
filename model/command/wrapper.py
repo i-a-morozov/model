@@ -11,6 +11,7 @@ from typing import Callable
 from torch import Tensor
 
 from model.library.element import Element
+from model.library.line import Line
 
 def wrapper(element:Element,
             *groups:tuple[list[str]|None, list[str]|None, str],
@@ -18,7 +19,7 @@ def wrapper(element:Element,
             alignment:bool=True,
             verbose:bool=False) -> Callable[[Tensor, ...], Tensor] | tuple[Callable[[Tensor, ...], Tensor], dict]:
     """
-    Generate wrapper function for an element
+    Generate wrapper function for an element/line
 
     Parameters
     ----------
@@ -50,6 +51,77 @@ def wrapper(element:Element,
                 _update(select, parameter, value[position], flag=False, name=name)
         return element(state, data=data) if not verbose else (element(state, data=data), data)
     return wrapper
+
+
+def group(line:Line,
+          start:int|str,
+          end:int|str,
+          *groups:tuple[str, list[str]|None, list[str]|None, list[str|None]],
+          root:bool=False,
+          name:str='LINE') -> tuple[Callable[[Tensor, ...], Tensor], list[tuple[None, list[str], str]], Line]:
+    """
+    Generate group wrapper (one or more elements/lines)
+
+    Parameters
+    ----------
+    line: Line
+        input line
+    start: int|str
+        start element index or name (first occurance position)
+    end: int|str
+        end element index or name name (first occurance position)
+    *groups: tuple[str, list[str]|None, list[str]|None, list[str|None]]
+        groups specification
+        kinds, names, clean (list of element names)
+    root: bool, default=False
+        flat to extract names from original line
+    name: str, default='LINE'
+        constructed line name
+
+    Returns
+    -------
+    tuple[Callable[[Tensor, ...], Tensor], list[tuple[str|None, list[str], str]], Line]
+    wrapper, tabel, line
+
+    """
+    if isinstance(start, str):
+        count = 0
+        for element in line.sequence:
+            if element.name == start:
+                start = count
+                break
+            count +=1
+
+    if isinstance(end, str):
+        count = 0
+        for element in line.sequence:
+            if element.name == end:
+                end = count
+                break
+            count +=1
+
+    local = Line(name=name,
+                 sequence=line.sequence[start:end + 1],
+                 propagate=line.propagate,
+                 dp=line.dp.item(),
+                 exact=line.exact, output=line.output,
+                 matrix=line.matrix)
+
+    table:list[tuple[str|None, list[str], str]] = []
+    value:Line = line if root else local
+    for group in groups:
+        key, kinds, names, clean = group
+        kinds = kinds if isinstance(kinds, list) else []
+        names = names if isinstance(names, list) else []
+        clean = clean if isinstance(clean, list) else []
+        for kind in kinds:
+            for name in value.itemize(kind):
+                if name not in clean:
+                    names.append(name)
+        table.append((None, names if names else None, key))
+
+    return wrapper(local, *table), table, local
+
 
 
 def _update(data:dict,
