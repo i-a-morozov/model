@@ -320,6 +320,23 @@ class Line(Element):
         }
 
 
+    def itemize(self, select:str) -> list[str]:
+        """
+        Get list of all elements with matching kind
+
+        Parameters
+        ----------
+        select: str
+            kind
+
+        Returns
+        -------
+        list[str]
+
+        """
+        return [key for key, (kind, *_) in self.unique.items() if kind == select]
+
+
     @property
     def dp(self) -> Tensor:
         """
