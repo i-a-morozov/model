@@ -9,6 +9,9 @@ from typing import Optional
 from typing import Callable
 
 from torch import Tensor
+from torch.nn import Module
+from torch.nn import Parameter
+from torch.nn import ParameterList
 
 from model.library.element import Element
 from model.library.line import Line
@@ -125,6 +128,35 @@ def group(line:Line,
 
     return wrapper(local, *table, alignment=alignment), table, local
 
+class Wrapper(Module):
+    """
+    Wrap function into torcm module
+
+    """
+    def __init__(self, 
+                 objective:Callable[[Tensor, ...], Tensor], 
+                 *args:tuple[Tensor, ...]) -> None:
+        """
+        Initialization
+
+        Parameters
+        ----------
+        objective: Callable[[Tensor, ...], Tensor]
+            objective function
+        *args: tuple[Tensor, ...]
+            arguments to pass to the objective function
+
+        Returns
+        -------
+        None
+
+        """
+        super().__init__()
+        self.objective = objective
+        self.args = ParameterList([Parameter(arg) for arg in args])
+
+    def forward(self, *args):
+        return self.objective(*args, *self.args)
 
 
 def _update(data:dict,
