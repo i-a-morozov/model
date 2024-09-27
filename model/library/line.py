@@ -308,6 +308,21 @@ class Line(Element):
         self._sequence = sequence
 
 
+    def flatten(self) -> None:
+        """
+        Flatten line (all levels)
+
+        Parameters
+        ----------
+        None
+
+        Returns
+        -------
+        None
+        """
+        self.sequence = [*self.scan('name')]
+
+
     @property
     def unique(self) -> dict[str, tuple[str, Tensor, Tensor]]:
         default:Tensor = torch.tensor(0.0, dtype=self.dtype, device=self.device)
