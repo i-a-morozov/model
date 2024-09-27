@@ -49,7 +49,7 @@ def wrapper(element:Element,
             select = _select(data, path) if path else data
             for position, name in enumerate(names):
                 _update(select, parameter, value[position], flag=False, name=name)
-        return element(state, data=data) if not verbose else (element(state, data=data), data)
+        return element(state, data=data, alignment=alignment) if not verbose else (element(state, data=data, alignment=alignment), data)
     return wrapper
 
 
@@ -58,7 +58,8 @@ def group(line:Line,
           end:int|str,
           *groups:tuple[str, list[str]|None, list[str]|None, list[str|None]],
           root:bool=False,
-          name:str='LINE') -> tuple[Callable[[Tensor, ...], Tensor], list[tuple[None, list[str], str]], Line]:
+          name:str='LINE',
+          alignment:bool=True) -> tuple[Callable[[Tensor, ...], Tensor], list[tuple[None, list[str], str]], Line]:
     """
     Generate group wrapper (one or more elements/lines)
 
@@ -77,6 +78,8 @@ def group(line:Line,
         flat to extract names from original line
     name: str, default='LINE'
         constructed line name
+    alignment: bool, default=True
+        flag to include the alignment parameters in the default deviation table
 
     Returns
     -------
@@ -120,7 +123,7 @@ def group(line:Line,
                     names.append(name)
         table.append((None, names if names else None, key))
 
-    return wrapper(local, *table), table, local
+    return wrapper(local, *table, alignment=alignment), table, local
 
 
 
