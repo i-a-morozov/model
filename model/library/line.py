@@ -597,7 +597,7 @@ class Line(Element):
 
         if isinstance(value, float):
             for element in elements.values():
-                setattr(element, 'ns', ceil(element.length/value))
+                setattr(element, 'ns', ceil(element.length/value) or 1)
             return
 
         for key, parameter in value:

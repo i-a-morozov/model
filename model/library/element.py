@@ -112,7 +112,7 @@ class Element(ABC):
         self._name: str = name
         self._length: float = length
         self._dp: float = dp
-        self._ns: int = ceil(self._length/ds) if ds else ns
+        self._ns: int = (ceil(self._length/ds) or 1) if ds else ns
         self._order: int = order
         self._exact: bool = exact
         self._insertion: bool = insertion
@@ -475,6 +475,7 @@ class Element(ABC):
         """
         self._output = output
         self._step, self._knob = self.make_step()
+
 
     @property
     def matrix(self) -> bool:
