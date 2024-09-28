@@ -19,7 +19,7 @@ from model.library.line import Line
 def wrapper(element:Element,
             *groups:tuple[list[str]|None, list[str]|None, str],
             name:bool=False,
-            alignment:bool=True,
+            alignment:bool=False,
             verbose:bool=False) -> Callable[[Tensor, ...], Tensor] | tuple[Callable[[Tensor, ...], Tensor], dict]:
     """
     Generate wrapper function for an element/line
@@ -32,7 +32,7 @@ def wrapper(element:Element,
         groups of deviation parameters to update
     name: bool, default=False
         flag to include the element name in the default deviation table
-    alignment: bool, default=True
+    alignment: bool, default=False
         flag to include the alignment parameters in the default deviation table
     verbose: bool, default=False
         flag to return the deviation table
