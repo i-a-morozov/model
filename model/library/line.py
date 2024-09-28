@@ -324,6 +324,79 @@ class Line(Element):
 
 
     @property
+    def names(self) -> list[str]:
+        """
+        Get list of first level element names
+
+        Parameters
+        ----------
+        None
+
+        Returns
+        -------
+        list[str]
+
+        """
+        return [element.name for element in self.sequence]
+
+
+    def position(self, name:str) -> int:
+        """
+        Get the first element position in sequence
+
+        Parameters
+        ----------
+        name: str
+            element name
+
+        Returns
+        -------
+        int
+
+        """
+        for index, element in enumerate(self.sequence):
+            if element.name == name:
+                return index
+
+    @property
+    def start(self) -> str:
+        """
+        Get the first element
+
+        Parameters
+        ----------
+        None
+
+        Returns
+        -------
+        str
+
+        """
+        element, *_ = self.sequence
+        return element.name
+
+
+    @start.setter
+    def start(self,
+              start:str) -> None:
+        """
+        Set the first element
+
+        Parameters
+        ----------
+        start: str
+            element name
+
+        Returns
+        -------
+        None
+
+        """
+        index = self.position(start)
+        self.sequence = self.sequence[index:] + self.sequence[:index]
+
+
+    @property
     def unique(self) -> dict[str, tuple[str, Tensor, Tensor]]:
         default:Tensor = torch.tensor(0.0, dtype=self.dtype, device=self.device)
         return {
