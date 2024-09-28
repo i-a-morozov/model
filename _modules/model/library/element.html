@@ -276,7 +276,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">name</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_length</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">length</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_dp</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">dp</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_ns</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">ceil</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_length</span><span class="o">/</span><span class="n">ds</span><span class="p">)</span> <span class="k">if</span> <span class="n">ds</span> <span class="k">else</span> <span class="n">ns</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_ns</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="p">(</span><span class="n">ceil</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_length</span><span class="o">/</span><span class="n">ds</span><span class="p">)</span> <span class="ow">or</span> <span class="mi">1</span><span class="p">)</span> <span class="k">if</span> <span class="n">ds</span> <span class="k">else</span> <span class="n">ns</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_order</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">order</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_exact</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="n">exact</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_insertion</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="n">insertion</span>
@@ -648,6 +648,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_output</span> <span class="o">=</span> <span class="n">output</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_step</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_knob</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">make_step</span><span class="p">()</span>
+
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">matrix</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
