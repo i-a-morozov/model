@@ -115,13 +115,16 @@
 <li class="toctree-l2"><a class="reference internal" href="#model.library.line.Line.make_step"><code class="docutils literal notranslate"><span class="pre">Line.make_step()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#model.library.line.Line.matrix"><code class="docutils literal notranslate"><span class="pre">Line.matrix</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#model.library.line.Line.name"><code class="docutils literal notranslate"><span class="pre">Line.name</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#model.library.line.Line.names"><code class="docutils literal notranslate"><span class="pre">Line.names</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#model.library.line.Line.ns"><code class="docutils literal notranslate"><span class="pre">Line.ns</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#model.library.line.Line.order"><code class="docutils literal notranslate"><span class="pre">Line.order</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#model.library.line.Line.output"><code class="docutils literal notranslate"><span class="pre">Line.output</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#model.library.line.Line.position"><code class="docutils literal notranslate"><span class="pre">Line.position()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#model.library.line.Line.scan"><code class="docutils literal notranslate"><span class="pre">Line.scan()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#model.library.line.Line.select"><code class="docutils literal notranslate"><span class="pre">Line.select()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#model.library.line.Line.sequence"><code class="docutils literal notranslate"><span class="pre">Line.sequence</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#model.library.line.Line.set"><code class="docutils literal notranslate"><span class="pre">Line.set()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#model.library.line.Line.start"><code class="docutils literal notranslate"><span class="pre">Line.start</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#model.library.line.Line.table"><code class="docutils literal notranslate"><span class="pre">Line.table()</span></code></a></li>
 </ul>
 </li>
@@ -388,6 +391,20 @@
 </dd></dl>
 
 <dl class="py property">
+<dt class="sig sig-object py" id="model.library.line.Line.names">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">names</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#model.library.line.Line.names" title="Link to this definition"></a></dt>
+<dd><p>Get list of first level element names</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>None</strong></p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>list[str]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
 <dt class="sig sig-object py" id="model.library.line.Line.ns">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ns</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#model.library.line.Line.ns" title="Link to this definition"></a></dt>
 <dd><p>Get number of integration steps for all unique elements</p>
@@ -425,6 +442,20 @@
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="model.library.line.Line.position">
+<span class="sig-name descname"><span class="pre">position</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="reference internal" href="../../_modules/model/library/line.html#Line.position"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#model.library.line.Line.position" title="Link to this definition"></a></dt>
+<dd><p>Get the first element position in sequence</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>name</strong> (<em>str</em>) – element name</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>int</p>
 </dd>
 </dl>
 </dd></dl>
@@ -491,6 +522,20 @@
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="model.library.line.Line.start">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">start</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#model.library.line.Line.start" title="Link to this definition"></a></dt>
+<dd><p>Get the first element</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>None</strong></p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
 </dd>
 </dl>
 </dd></dl>
