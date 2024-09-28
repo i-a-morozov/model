@@ -513,7 +513,7 @@ class Line(Element):
         Tensor
 
         """
-        return  sum(value for name, value in self.get('length'))
+        return sum(value for name, value in self.get('length'))
 
 
     @property
@@ -871,13 +871,13 @@ class Line(Element):
         return len(self.sequence)
 
 
-    def __getitem__(self, index: int) -> Element:
+    def __getitem__(self, index: int|str) -> Element:
         """
         Get (first level) element by index
 
         Parameters
         ----------
-        index: int
+        index: int|str
             element index|name
 
         Returns
@@ -890,6 +890,7 @@ class Line(Element):
         for element in self.sequence:
             if element.name == index:
                 return element
+
 
     def __setitem__(self, index: int|str, element: Element) -> None:
         """
@@ -909,9 +910,8 @@ class Line(Element):
         """
         if isinstance(index, int):
             self.sequence[index] = element
-        for element in self.sequence:
-            if element.name == index:
-                self.sequence[index] = element
+            return
+        self.sequence[self.position(index)] = element
 
 
     def __repr__(self) -> str:
