@@ -128,13 +128,90 @@ def group(line:Line,
 
     return wrapper(local, *table, alignment=alignment), table, local
 
+
+def forward(parameters:list[Tensor],
+            bounds:list[tuple[float|None, float|None]]) -> list[Tensor]:
+    """
+    Forward normalizaton
+
+    Parameters
+    ----------
+    parameters: list[Tensor]
+        parameters
+    bounds: list[tuple[float|None,float|None]]
+        bounds
+
+    Returns
+    -------
+    list[Tensor]
+
+    """
+    result = []
+    for i, (parameter, bound) in enumerate(zip(parameters, bounds)):
+        lb, ub = bound
+        if all([lb, ub]):
+            result.append(_forward(parameter, lb, ub))
+            continue
+        result.append(parameter)
+    return result
+
+
+def inverse(parameters:list[Tensor],
+            bounds:list[tuple[float|None, float|None]]) -> list[Tensor]:
+    """
+    Inverse normalizaton
+
+    Parameters
+    ----------
+    parameters: list[Tensor]
+        parameters
+    bounds: list[tuple[float|None,float|None]]
+        bounds
+
+    Returns
+    -------
+    list[Tensor]
+
+    """
+    result = []
+    for i, (parameter, bound) in enumerate(zip(parameters, bounds)):
+        lb, ub = bound
+        if all([lb, ub]):
+            result.append(_inverse(parameter, lb, ub))
+            continue
+        result.append(parameter)
+    return result
+
+
+def normalize(function:Callable[[Tensor, ...], Tensor],
+              bounds:list[tuple[float|None, float|None]]) -> Callable[[Tensor, ...], Tensor]:
+    """
+    Generate normalizaton wrapper
+
+    Parameters
+    ----------
+    function: Callable[[Tensor, ...], Tensor]
+        function
+    bounds: list[tuple[float|None, float|None]]
+        bounds
+
+    Returns
+    -------
+    Callable[[Tensor, ...], Tensor]
+
+    """
+    def wrapper(*parameters):
+        return function(*inverse(parameters, bounds))
+    return wrapper
+
+
 class Wrapper(Module):
     """
     Wrap function into torcm module
 
     """
-    def __init__(self, 
-                 objective:Callable[[Tensor, ...], Tensor], 
+    def __init__(self,
+                 objective:Callable[[Tensor, ...], Tensor],
                  *args:tuple[Tensor, ...]) -> None:
         """
         Initialization
@@ -227,3 +304,49 @@ def _select(data:dict,
             return {}
         data = data[name]
     return data
+
+
+def _forward(x:Tensor,
+             lb:float,
+             ub:float) -> Tensor:
+    """
+    Scale a tensor from [lb, ub] to [0, 1]
+
+    Parameters
+    ----------
+    x: Tensor
+        input tensor
+    lb: float
+        lower bound
+    ub: float
+        upper bound
+
+    Returns
+    -------
+    Tensor
+
+    """
+    return (x - lb)/(ub - lb)
+
+
+def _inverse(x:Tensor,
+             lb:float,
+             ub:float) -> Tensor:
+    """
+    Scale a tensor from [0, 1] to [lb, ub]
+
+    Parameters
+    ----------
+    x: Tensor
+        input tensor
+    lb: float
+        lower bound
+    ub: float
+        upper bound
+
+    Returns
+    -------
+    Tensor
+
+    """
+    return lb + x*(ub - lb)
