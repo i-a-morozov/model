@@ -14,6 +14,7 @@ from typing import Optional
 from typing import Callable
 
 from math import ceil
+from copy import deepcopy
 
 import torch
 from torch import Tensor
@@ -128,6 +129,22 @@ class Element(ABC):
 
         self.container_output:Tensor
         self.container_matrix:Tensor
+
+
+    def clone(self) -> Element:
+        """
+        Clone element
+
+        Parameters
+        ----------
+        None
+
+        Returns
+        -------
+        Element
+
+        """
+        return deepcopy(self)
 
 
     def table(self, *,

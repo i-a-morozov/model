@@ -340,7 +340,8 @@ class Line(Element):
         return [element.name for element in self.sequence]
 
 
-    def position(self, name:str) -> int:
+    def position(self,
+                 name:str) -> int:
         """
         Get the first element position in sequence
 
@@ -357,6 +358,24 @@ class Line(Element):
         for index, element in enumerate(self.sequence):
             if element.name == name:
                 return index
+
+    def positions(self,
+                  name:str) -> list[int]:
+        """
+        Get all element position in sequence
+
+        Parameters
+        ----------
+        name: str
+            element name
+
+        Returns
+        -------
+        list[int]
+
+        """
+        return [index for index, element in enumerate(self.sequence) if element.name == name]
+
 
     @property
     def start(self) -> str:
