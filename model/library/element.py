@@ -69,6 +69,12 @@ class Element(ABC):
                  name:str,
                  length:float=0.0,
                  dp:float=0.0, *,
+                 dx:float=0.0,
+                 dy:float=0.0,
+                 dz:float=0.0,
+                 wx:float=0.0,
+                 wy:float=0.0,
+                 wz:float=0.0,
                  ns:int=1,
                  ds:Optional[float]=None,
                  order:int=0,
@@ -87,6 +93,18 @@ class Element(ABC):
             length
         dp: float, default=0.0
             momentum deviation
+        dx: float, default=0.0
+            dx alignment error
+        dy: float, default=0.0
+            dy alignment error
+        dz: float, default=0.0
+            dz alignment error
+        wx: float, default=0.0
+            wx alignment error
+        wy: float, default=0.0
+            wy alignment error
+        wz: float, default=0.0
+            wz alignment error
         ns: int, positive, default=1
             number of integrtion steps
         ds: Optional[float], positive
@@ -113,6 +131,12 @@ class Element(ABC):
         self._name: str = name
         self._length: float = length
         self._dp: float = dp
+        self._dx: float = dx
+        self._dy: float = dy
+        self._dz: float = dz
+        self._wx: float = wx
+        self._wy: float = wy
+        self._wz: float = wz
         self._ns: int = (ceil(self._length/ds) or 1) if ds else ns
         self._order: int = order
         self._exact: bool = exact
@@ -312,6 +336,216 @@ class Element(ABC):
         self._dp = dp
         self._lmatrix, self._rmatrix = self.make_matrix()
         self._step, self._knob = self.make_step()
+
+
+    @property
+    def dx(self) -> Tensor:
+        """
+        Get dx aligment error
+
+        Parameters
+        ----------
+        None
+
+        Returns
+        -------
+        Tensor
+
+        """
+        return torch.tensor(self._dx, dtype=self.dtype, device=self.device)
+
+
+    @dx.setter
+    def dx(self, dx:float) -> None:
+        """
+        Set dx aligment error
+
+        Parameters
+        ----------
+        dx: float
+            dx aligment error
+
+        Returns
+        -------
+        None
+
+        """
+        self._dx = dx
+
+
+    @property
+    def dy(self) -> Tensor:
+        """
+        Get dy aligment error
+
+        Parameters
+        ----------
+        None
+
+        Returns
+        -------
+        Tensor
+
+        """
+        return torch.tensor(self._dy, dtype=self.dtype, device=self.device)
+
+
+    @dy.setter
+    def dy(self, dy:float) -> None:
+        """
+        Set dy aligment error
+
+        Parameters
+        ----------
+        dy: float
+            dy aligment error
+
+        Returns
+        -------
+        None
+
+        """
+        self._dy = dy
+
+
+    @property
+    def dz(self) -> Tensor:
+        """
+        Get dz aligment error
+
+        Parameters
+        ----------
+        None
+
+        Returns
+        -------
+        Tensor
+
+        """
+        return torch.tensor(self._dz, dtype=self.dtype, device=self.device)
+
+
+    @dz.setter
+    def dz(self, dz:float) -> None:
+        """
+        Set dz aligment error
+
+        Parameters
+        ----------
+        dz: float
+            dz aligment error
+
+        Returns
+        -------
+        None
+
+        """
+        self._dz = dz
+
+
+    @property
+    def wx(self) -> Tensor:
+        """
+        Get wx aligment error
+
+        Parameters
+        ----------
+        None
+
+        Returns
+        -------
+        Tensor
+
+        """
+        return torch.tensor(self._wx, dtype=self.dtype, device=self.device)
+
+
+    @wx.setter
+    def wx(self, wx:float) -> None:
+        """
+        Set wx aligment error
+
+        Parameters
+        ----------
+        wx: float
+            wx aligment error
+
+        Returns
+        -------
+        None
+
+        """
+        self._wx = wx
+
+
+    @property
+    def wy(self) -> Tensor:
+        """
+        Get wy aligment error
+
+        Parameters
+        ----------
+        None
+
+        Returns
+        -------
+        Tensor
+
+        """
+        return torch.tensor(self._wy, dtype=self.dtype, device=self.device)
+
+
+    @wy.setter
+    def wy(self, wy:float) -> None:
+        """
+        Set wy aligment error
+
+        Parameters
+        ----------
+        wy: float
+            wy aligment error
+
+        Returns
+        -------
+        None
+
+        """
+        self._wy = wy
+
+
+    @property
+    def wz(self) -> Tensor:
+        """
+        Get wz aligment error
+
+        Parameters
+        ----------
+        None
+
+        Returns
+        -------
+        Tensor
+
+        """
+        return torch.tensor(self._wz, dtype=self.dtype, device=self.device)
+
+
+    @wz.setter
+    def wz(self, wz:float) -> None:
+        """
+        Set wz aligment error
+
+        Parameters
+        ----------
+        wz: float
+            wz aligment error
+
+        Returns
+        -------
+        None
+
+        """
+        self._wz = wz
 
 
     @property
@@ -592,11 +826,17 @@ def transform(element:Element,
     dy:Tensor
     dz:Tensor
     dx, dy, dz = [data[key] for key in [KEY_DX, KEY_DY, KEY_DZ]]
+    dx = dx + element.dx
+    dy = dy + element.dy
+    dz = dz + element.dz
 
     wx:Tensor
     wy:Tensor
     wz:Tensor
     wx, wy, wz = [data[key] for key in [KEY_WX, KEY_WY, KEY_WZ]]
+    wx = wx + element.wx
+    wy = wy + element.wy
+    wz = wz + element.wz    
 
     state = tx(state, +dx)
     state = ty(state, +dy)

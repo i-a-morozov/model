@@ -47,7 +47,13 @@ class Line(Element):
                  name:str,
                  sequence:list[Element|Line],
                  propagate:bool=False,
-                 dp:float=0.0,
+                 dp:float=0.0, *,
+                 dx:float=0.0,
+                 dy:float=0.0,
+                 dz:float=0.0,
+                 wx:float=0.0,
+                 wy:float=0.0,
+                 wz:float=0.0,
                  exact:bool=False,
                  output:bool=False,
                  matrix:bool=False) -> None:
@@ -64,6 +70,18 @@ class Line(Element):
             flat to propagate flags to elements
         dp: float, default=0.0
             momentum deviation
+        dx: float, default=0.0
+            dx alignment error
+        dy: float, default=0.0
+            dy alignment error
+        dz: float, default=0.0
+            dz alignment error
+        wx: float, default=0.0
+            wx alignment error
+        wy: float, default=0.0
+            wy alignment error
+        wz: float, default=0.0
+            wz alignment error
         exact: bool, default=False
             flag to include kinematic term
         output: bool, default=False
@@ -78,6 +96,12 @@ class Line(Element):
         """
         super().__init__(name=name,
                          dp=dp,
+                         dx=dx,
+                         dy=dy,
+                         dz=dz,
+                         wx=wx,
+                         wy=wy,
+                         wz=wz,
                          exact=exact,
                          output=output,
                          matrix=matrix)
@@ -817,11 +841,17 @@ class Line(Element):
         dy:Tensor
         dz:Tensor
         dx, dy, dz = [data[key] for key in [KEY_DX, KEY_DY, KEY_DZ]]
+        dx = dx + self.dx
+        dy = dy + self.dy
+        dz = dz + self.dz
 
         wx:Tensor
         wy:Tensor
         wz:Tensor
         wx, wy, wz = [data[key] for key in [KEY_WX, KEY_WY, KEY_WZ]]
+        wx = wx + self.wx
+        wy = wy + self.wy
+        wz = wz + self.wz
 
         state = tx(state, +dx)
         state = ty(state, +dy)

@@ -54,6 +54,12 @@ class Multipole(Element):
                  ms:float=0.0,
                  mo:float=0.0,
                  dp:float=0.0, *,
+                 dx:float=0.0,
+                 dy:float=0.0,
+                 dz:float=0.0,
+                 wx:float=0.0,
+                 wy:float=0.0,
+                 wz:float=0.0,
                  ns:int=1,
                  ds:Optional[float]=None,
                  order:int=0,
@@ -80,6 +86,18 @@ class Multipole(Element):
             octupole strength
         dp: float, default=0.0
             momentum deviation
+        dx: float, default=0.0
+            dx alignment error
+        dy: float, default=0.0
+            dy alignment error
+        dz: float, default=0.0
+            dz alignment error
+        wx: float, default=0.0
+            wx alignment error
+        wy: float, default=0.0
+            wy alignment error
+        wz: float, default=0.0
+            wz alignment error
         ns: int, positive, default=1
             number of integrtion steps
         ds: Optional[float], positive
@@ -105,6 +123,12 @@ class Multipole(Element):
         super().__init__(name=name,
                          length=length,
                          dp=dp,
+                         dx=dx,
+                         dy=dy,
+                         dz=dz,
+                         wx=wx,
+                         wy=wy,
+                         wz=wz,
                          ns=ns,
                          ds=ds,
                          order=order,

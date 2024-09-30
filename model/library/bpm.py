@@ -53,7 +53,13 @@ class BPM(Element):
     def __init__(self,
                  name:str,
                  direction:Literal['forward', 'inverse']='forward',
-                 dp:float=0.0,
+                 dp:float=0.0, *,
+                 dx:float=0.0,
+                 dy:float=0.0,
+                 dz:float=0.0,
+                 wx:float=0.0,
+                 wy:float=0.0,
+                 wz:float=0.0,
                  output:bool=False,
                  matrix:bool=False) -> None:
         """
@@ -67,6 +73,18 @@ class BPM(Element):
             transformation direction
         dp: float, default=0.0
             momentum deviation
+        dx: float, default=0.0
+            dx alignment error
+        dy: float, default=0.0
+            dy alignment error
+        dz: float, default=0.0
+            dz alignment error
+        wx: float, default=0.0
+            wx alignment error
+        wy: float, default=0.0
+            wy alignment error
+        wz: float, default=0.0
+            wz alignment error
         output: bool, default=False
             flag to save output at each step
         matrix: bool, default=False
@@ -79,6 +97,11 @@ class BPM(Element):
         """
         super().__init__(name=name,
                          dp=dp,
+                         dy=dy,
+                         dz=dz,
+                         wx=wx,
+                         wy=wy,
+                         wz=wz,
                          output=output,
                          matrix=matrix)
 
