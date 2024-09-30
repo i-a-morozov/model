@@ -60,16 +60,15 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../examples/model.html#Example-13:-Linear-(element)">Example-13: Linear (element)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../examples/model.html#Example-14:-BPM-(element)">Example-14: BPM (element)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../examples/model.html#Example-15:-Line-(element)">Example-15: Line (element)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../examples/model.html#Example-16:-Inverse-tracking">Example-16: Inverse tracking</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../examples/model.html#Example-17:-Layout">Example-17: Layout</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../examples/model.html#Example-18:-LOGO">Example-18: LOGO</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../examples/model.html#Example-19:-Build-MADX-and-ELEGANT-style-lattice">Example-19: Build MADX and ELEGANT style lattice</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../examples/model.html#Example-20:-Wrapper">Example-20: Wrapper</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../examples/model.html#Example-21:-Group">Example-21: Group</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../examples/model.html#Example-22:-Module">Example-22: Module</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../examples/model.html#Example-23:-Normalize">Example-23: Normalize</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../examples/model.html#Example-24:-Orbit-(fixed-point-computation)">Example-24: Orbit (fixed point computation)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../examples/model.html#Example-25:-Orbit-(effect-of-transverse-shift)">Example-25: Orbit (effect of transverse shift)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../examples/model.html#Example-16:-Layout">Example-16: Layout</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../examples/model.html#Example-17:-LOGO">Example-17: LOGO</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../examples/model.html#Example-18:-Build-MADX-and-ELEGANT-style-lattice">Example-18: Build MADX and ELEGANT style lattice</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../examples/model.html#Example-19:-Wrapper">Example-19: Wrapper</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../examples/model.html#Example-20:-Group">Example-20: Group</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../examples/model.html#Example-21:-Module">Example-21: Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../examples/model.html#Example-22:-Normalize">Example-22: Normalize</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../examples/model.html#Example-23:-Orbit-(fixed-point-computation)">Example-23: Orbit (fixed point computation)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../examples/model.html#Example-24:-Orbit-(effect-of-transverse-shift)">Example-24: Orbit (effect of transverse shift)</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API:</span></p>
 <ul>
@@ -281,28 +280,6 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_step</span><span class="p">:</span> <span class="n">Mapping</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_knob</span><span class="p">:</span> <span class="n">ParametricMapping</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_step</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_knob</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">make_step</span><span class="p">()</span>
-
-
-<div class="viewcode-block" id="BPM.inverse">
-<a class="viewcode-back" href="../../../modules/library/bpm.html#model.library.bpm.BPM.inverse">[docs]</a>
-    <span class="k">def</span> <span class="nf">inverse</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Element</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Inverse element</span>
-
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">        None</span>
-
-<span class="sd">        Returns</span>
-<span class="sd">        -------</span>
-<span class="sd">        Element</span>
-
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">element</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">clone</span><span class="p">()</span>
-        <span class="n">element</span><span class="o">.</span><span class="n">is_inversed</span> <span class="o">=</span> <span class="ow">not</span> <span class="n">element</span><span class="o">.</span><span class="n">is_inversed</span>
-        <span class="n">element</span><span class="o">.</span><span class="n">direction</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;forward&#39;</span><span class="p">:</span> <span class="s1">&#39;inverse&#39;</span><span class="p">,</span> <span class="s1">&#39;inverse&#39;</span><span class="p">:</span> <span class="s1">&#39;forward&#39;</span><span class="p">}[</span><span class="n">element</span><span class="o">.</span><span class="n">direction</span><span class="p">]</span>
-        <span class="k">return</span> <span class="n">element</span></div>
-
 
 
 <div class="viewcode-block" id="BPM.make_matrix">
