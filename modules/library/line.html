@@ -63,15 +63,16 @@
 <li class="toctree-l1"><a class="reference internal" href="../../examples/model.html#Example-13:-Linear-(element)">Example-13: Linear (element)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../examples/model.html#Example-14:-BPM-(element)">Example-14: BPM (element)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../examples/model.html#Example-15:-Line-(element)">Example-15: Line (element)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../examples/model.html#Example-16:-Layout">Example-16: Layout</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../examples/model.html#Example-17:-LOGO">Example-17: LOGO</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../examples/model.html#Example-18:-Build-MADX-and-ELEGANT-style-lattice">Example-18: Build MADX and ELEGANT style lattice</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../examples/model.html#Example-19:-Wrapper">Example-19: Wrapper</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../examples/model.html#Example-20:-Group">Example-20: Group</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../examples/model.html#Example-21:-Module">Example-21: Module</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../examples/model.html#Example-22:-Normalize">Example-22: Normalize</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../examples/model.html#Example-23:-Orbit-(fixed-point-computation)">Example-23: Orbit (fixed point computation)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../examples/model.html#Example-24:-Orbit-(effect-of-transverse-shift)">Example-24: Orbit (effect of transverse shift)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../examples/model.html#Example-16:-Inverse-tracking">Example-16: Inverse tracking</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../examples/model.html#Example-17:-Layout">Example-17: Layout</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../examples/model.html#Example-18:-LOGO">Example-18: LOGO</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../examples/model.html#Example-19:-Build-MADX-and-ELEGANT-style-lattice">Example-19: Build MADX and ELEGANT style lattice</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../examples/model.html#Example-20:-Wrapper">Example-20: Wrapper</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../examples/model.html#Example-21:-Group">Example-21: Group</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../examples/model.html#Example-22:-Module">Example-22: Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../examples/model.html#Example-23:-Normalize">Example-23: Normalize</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../examples/model.html#Example-24:-Orbit-(fixed-point-computation)">Example-24: Orbit (fixed point computation)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../examples/model.html#Example-25:-Orbit-(effect-of-transverse-shift)">Example-25: Orbit (effect of transverse shift)</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API:</span></p>
 <ul class="current">
@@ -110,6 +111,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#model.library.line.Line.flag"><code class="docutils literal notranslate"><span class="pre">Line.flag</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#model.library.line.Line.flatten"><code class="docutils literal notranslate"><span class="pre">Line.flatten()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#model.library.line.Line.get"><code class="docutils literal notranslate"><span class="pre">Line.get()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#model.library.line.Line.inverse"><code class="docutils literal notranslate"><span class="pre">Line.inverse()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#model.library.line.Line.itemize"><code class="docutils literal notranslate"><span class="pre">Line.itemize()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#model.library.line.Line.layout"><code class="docutils literal notranslate"><span class="pre">Line.layout()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#model.library.line.Line.length"><code class="docutils literal notranslate"><span class="pre">Line.length</span></code></a></li>
@@ -288,6 +290,20 @@
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p>list[tuple[str, Any]]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="model.library.line.Line.inverse">
+<span class="sig-name descname"><span class="pre">inverse</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#model.library.line.Line" title="model.library.line.Line"><span class="pre">Line</span></a></span></span><a class="reference internal" href="../../_modules/model/library/line.html#Line.inverse"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#model.library.line.Line.inverse" title="Link to this definition"></a></dt>
+<dd><p>Inverse line</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>None</strong></p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="element.html#model.library.element.Element" title="model.library.element.Element">Element</a></p>
 </dd>
 </dl>
 </dd></dl>
