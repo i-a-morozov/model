@@ -212,7 +212,13 @@
                  <span class="n">name</span><span class="p">:</span><span class="nb">str</span><span class="p">,</span>
                  <span class="n">sequence</span><span class="p">:</span><span class="nb">list</span><span class="p">[</span><span class="n">Element</span><span class="o">|</span><span class="n">Line</span><span class="p">],</span>
                  <span class="n">propagate</span><span class="p">:</span><span class="nb">bool</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-                 <span class="n">dp</span><span class="p">:</span><span class="nb">float</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>
+                 <span class="n">dp</span><span class="p">:</span><span class="nb">float</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span>
+                 <span class="n">dx</span><span class="p">:</span><span class="nb">float</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>
+                 <span class="n">dy</span><span class="p">:</span><span class="nb">float</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>
+                 <span class="n">dz</span><span class="p">:</span><span class="nb">float</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>
+                 <span class="n">wx</span><span class="p">:</span><span class="nb">float</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>
+                 <span class="n">wy</span><span class="p">:</span><span class="nb">float</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>
+                 <span class="n">wz</span><span class="p">:</span><span class="nb">float</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>
                  <span class="n">exact</span><span class="p">:</span><span class="nb">bool</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
                  <span class="n">output</span><span class="p">:</span><span class="nb">bool</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
                  <span class="n">matrix</span><span class="p">:</span><span class="nb">bool</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
@@ -229,6 +235,18 @@
 <span class="sd">            flat to propagate flags to elements</span>
 <span class="sd">        dp: float, default=0.0</span>
 <span class="sd">            momentum deviation</span>
+<span class="sd">        dx: float, default=0.0</span>
+<span class="sd">            dx alignment error</span>
+<span class="sd">        dy: float, default=0.0</span>
+<span class="sd">            dy alignment error</span>
+<span class="sd">        dz: float, default=0.0</span>
+<span class="sd">            dz alignment error</span>
+<span class="sd">        wx: float, default=0.0</span>
+<span class="sd">            wx alignment error</span>
+<span class="sd">        wy: float, default=0.0</span>
+<span class="sd">            wy alignment error</span>
+<span class="sd">        wz: float, default=0.0</span>
+<span class="sd">            wz alignment error</span>
 <span class="sd">        exact: bool, default=False</span>
 <span class="sd">            flag to include kinematic term</span>
 <span class="sd">        output: bool, default=False</span>
@@ -243,6 +261,12 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span>
                          <span class="n">dp</span><span class="o">=</span><span class="n">dp</span><span class="p">,</span>
+                         <span class="n">dx</span><span class="o">=</span><span class="n">dx</span><span class="p">,</span>
+                         <span class="n">dy</span><span class="o">=</span><span class="n">dy</span><span class="p">,</span>
+                         <span class="n">dz</span><span class="o">=</span><span class="n">dz</span><span class="p">,</span>
+                         <span class="n">wx</span><span class="o">=</span><span class="n">wx</span><span class="p">,</span>
+                         <span class="n">wy</span><span class="o">=</span><span class="n">wy</span><span class="p">,</span>
+                         <span class="n">wz</span><span class="o">=</span><span class="n">wz</span><span class="p">,</span>
                          <span class="n">exact</span><span class="o">=</span><span class="n">exact</span><span class="p">,</span>
                          <span class="n">output</span><span class="o">=</span><span class="n">output</span><span class="p">,</span>
                          <span class="n">matrix</span><span class="o">=</span><span class="n">matrix</span><span class="p">)</span>
@@ -531,7 +555,8 @@
 
 <div class="viewcode-block" id="Line.position">
 <a class="viewcode-back" href="../../../modules/library/line.html#model.library.line.Line.position">[docs]</a>
-    <span class="k">def</span> <span class="nf">position</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span><span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">position</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                 <span class="n">name</span><span class="p">:</span><span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Get the first element position in sequence</span>
 
@@ -548,6 +573,27 @@
         <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">element</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sequence</span><span class="p">):</span>
             <span class="k">if</span> <span class="n">element</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="n">name</span><span class="p">:</span>
                 <span class="k">return</span> <span class="n">index</span></div>
+
+
+<div class="viewcode-block" id="Line.positions">
+<a class="viewcode-back" href="../../../modules/library/line.html#model.library.line.Line.positions">[docs]</a>
+    <span class="k">def</span> <span class="nf">positions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                  <span class="n">name</span><span class="p">:</span><span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get all element position in sequence</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        name: str</span>
+<span class="sd">            element name</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        list[int]</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">index</span> <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">element</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sequence</span><span class="p">)</span> <span class="k">if</span> <span class="n">element</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="n">name</span><span class="p">]</span></div>
+
 
 
     <span class="nd">@property</span>
@@ -993,11 +1039,17 @@
         <span class="n">dy</span><span class="p">:</span><span class="n">Tensor</span>
         <span class="n">dz</span><span class="p">:</span><span class="n">Tensor</span>
         <span class="n">dx</span><span class="p">,</span> <span class="n">dy</span><span class="p">,</span> <span class="n">dz</span> <span class="o">=</span> <span class="p">[</span><span class="n">data</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="p">[</span><span class="n">KEY_DX</span><span class="p">,</span> <span class="n">KEY_DY</span><span class="p">,</span> <span class="n">KEY_DZ</span><span class="p">]]</span>
+        <span class="n">dx</span> <span class="o">=</span> <span class="n">dx</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">dx</span>
+        <span class="n">dy</span> <span class="o">=</span> <span class="n">dy</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">dy</span>
+        <span class="n">dz</span> <span class="o">=</span> <span class="n">dz</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">dz</span>
 
         <span class="n">wx</span><span class="p">:</span><span class="n">Tensor</span>
         <span class="n">wy</span><span class="p">:</span><span class="n">Tensor</span>
         <span class="n">wz</span><span class="p">:</span><span class="n">Tensor</span>
         <span class="n">wx</span><span class="p">,</span> <span class="n">wy</span><span class="p">,</span> <span class="n">wz</span> <span class="o">=</span> <span class="p">[</span><span class="n">data</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="p">[</span><span class="n">KEY_WX</span><span class="p">,</span> <span class="n">KEY_WY</span><span class="p">,</span> <span class="n">KEY_WZ</span><span class="p">]]</span>
+        <span class="n">wx</span> <span class="o">=</span> <span class="n">wx</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">wx</span>
+        <span class="n">wy</span> <span class="o">=</span> <span class="n">wy</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">wy</span>
+        <span class="n">wz</span> <span class="o">=</span> <span class="n">wz</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">wz</span>
 
         <span class="n">state</span> <span class="o">=</span> <span class="n">tx</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="o">+</span><span class="n">dx</span><span class="p">)</span>
         <span class="n">state</span> <span class="o">=</span> <span class="n">ty</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="o">+</span><span class="n">dy</span><span class="p">)</span>
