@@ -63,8 +63,9 @@
 <li class="toctree-l1"><a class="reference internal" href="../../examples/model.html#Example-13:-Linear-(element)">Example-13: Linear (element)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../examples/model.html#Example-14:-BPM-(element)">Example-14: BPM (element)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../examples/model.html#Example-15:-Line-(element)">Example-15: Line (element)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../examples/model.html#Example-16:-Layout">Example-16: Layout</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../examples/model.html#Example-17:-LOGO">Example-17: LOGO</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../examples/model.html#Example-16:-Inverse-tracking">Example-16: Inverse tracking</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../examples/model.html#Example-17:-Layout">Example-17: Layout</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../examples/model.html#Example-18:-LOGO">Example-18: LOGO</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../examples/model.html#Example-18:-Build-MADX-and-ELEGANT-style-lattice">Example-18: Build MADX and ELEGANT style lattice</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../examples/model.html#Example-19:-Wrapper">Example-19: Wrapper</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../examples/model.html#Example-20:-Group">Example-20: Group</a></li>
@@ -109,12 +110,14 @@
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Element</a></li>
 <li class="toctree-l1"><a class="reference internal" href="#model.library.element.Element"><code class="docutils literal notranslate"><span class="pre">Element</span></code></a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#model.library.element.Element.clone"><code class="docutils literal notranslate"><span class="pre">Element.clone()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#model.library.element.Element.data"><code class="docutils literal notranslate"><span class="pre">Element.data()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#model.library.element.Element.dp"><code class="docutils literal notranslate"><span class="pre">Element.dp</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#model.library.element.Element.dx"><code class="docutils literal notranslate"><span class="pre">Element.dx</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#model.library.element.Element.dy"><code class="docutils literal notranslate"><span class="pre">Element.dy</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#model.library.element.Element.dz"><code class="docutils literal notranslate"><span class="pre">Element.dz</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#model.library.element.Element.exact"><code class="docutils literal notranslate"><span class="pre">Element.exact</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#model.library.element.Element.insertion"><code class="docutils literal notranslate"><span class="pre">Element.insertion</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#model.library.element.Element.inverse"><code class="docutils literal notranslate"><span class="pre">Element.inverse()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#model.library.element.Element.length"><code class="docutils literal notranslate"><span class="pre">Element.length</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#model.library.element.Element.make_matrix"><code class="docutils literal notranslate"><span class="pre">Element.make_matrix()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#model.library.element.Element.make_step"><code class="docutils literal notranslate"><span class="pre">Element.make_step()</span></code></a></li>
@@ -123,7 +126,6 @@
 <li class="toctree-l2"><a class="reference internal" href="#model.library.element.Element.ns"><code class="docutils literal notranslate"><span class="pre">Element.ns</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#model.library.element.Element.order"><code class="docutils literal notranslate"><span class="pre">Element.order</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#model.library.element.Element.output"><code class="docutils literal notranslate"><span class="pre">Element.output</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="#model.library.element.Element.table"><code class="docutils literal notranslate"><span class="pre">Element.table()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#model.library.element.Element.wx"><code class="docutils literal notranslate"><span class="pre">Element.wx</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#model.library.element.Element.wy"><code class="docutils literal notranslate"><span class="pre">Element.wy</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#model.library.element.Element.wz"><code class="docutils literal notranslate"><span class="pre">Element.wz</span></code></a></li>
@@ -203,6 +205,20 @@
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p><a class="reference internal" href="#model.library.element.Element" title="model.library.element.Element">Element</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="model.library.element.Element.data">
+<span class="sig-name descname"><span class="pre">data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alignment</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">torch.Tensor</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">torch.Tensor</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../_modules/model/library/element.html#Element.data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#model.library.element.Element.data" title="Link to this definition"></a></dt>
+<dd><p>Generate default deviation data</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>None</strong></p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>dict[str, dict[str,Tensor]] | dict[str,Tensor]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -291,6 +307,20 @@
 </dl>
 </dd></dl>
 
+<dl class="py method">
+<dt class="sig sig-object py" id="model.library.element.Element.inverse">
+<span class="sig-name descname"><span class="pre">inverse</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#model.library.element.Element" title="model.library.element.Element"><span class="pre">Element</span></a></span></span><a class="reference internal" href="../../_modules/model/library/element.html#Element.inverse"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#model.library.element.Element.inverse" title="Link to this definition"></a></dt>
+<dd><p>Inverse element</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>None</strong></p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="#model.library.element.Element" title="model.library.element.Element">Element</a></p>
+</dd>
+</dl>
+</dd></dl>
+
 <dl class="py property">
 <dt class="sig sig-object py" id="model.library.element.Element.length">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">length</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">torch.Tensor</span></em><a class="headerlink" href="#model.library.element.Element.length" title="Link to this definition"></a></dt>
@@ -321,14 +351,14 @@
 
 <dl class="py method">
 <dt class="sig sig-object py" id="model.library.element.Element.make_step">
-<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">make_step</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">Mapping</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">ParametricMapping</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../_modules/model/library/element.html#Element.make_step"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#model.library.element.Element.make_step" title="Link to this definition"></a></dt>
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">make_step</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Mapping</span></span></span><a class="reference internal" href="../../_modules/model/library/element.html#Element.make_step"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#model.library.element.Element.make_step" title="Link to this definition"></a></dt>
 <dd><p>Generate integration step</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>None</strong></p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>tuple[Mapping, ParametricMapping]</p>
+<dd class="field-even"><p>Mapping</p>
 </dd>
 </dl>
 </dd></dl>
@@ -399,20 +429,6 @@
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p>bool</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="model.library.element.Element.table">
-<span class="sig-name descname"><span class="pre">table</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alignment</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">torch.Tensor</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">torch.Tensor</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../_modules/model/library/element.html#Element.table"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#model.library.element.Element.table" title="Link to this definition"></a></dt>
-<dd><p>Generate default deviation table</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>None</strong></p>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>dict[str, dict[str,Tensor]] | dict[str,Tensor]</p>
 </dd>
 </dl>
 </dd></dl>

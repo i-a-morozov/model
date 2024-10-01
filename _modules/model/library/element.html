@@ -60,8 +60,9 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../examples/model.html#Example-13:-Linear-(element)">Example-13: Linear (element)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../examples/model.html#Example-14:-BPM-(element)">Example-14: BPM (element)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../examples/model.html#Example-15:-Line-(element)">Example-15: Line (element)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../examples/model.html#Example-16:-Layout">Example-16: Layout</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../examples/model.html#Example-17:-LOGO">Example-17: LOGO</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../examples/model.html#Example-16:-Inverse-tracking">Example-16: Inverse tracking</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../examples/model.html#Example-17:-Layout">Example-17: Layout</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../examples/model.html#Example-18:-LOGO">Example-18: LOGO</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../examples/model.html#Example-18:-Build-MADX-and-ELEGANT-style-lattice">Example-18: Build MADX and ELEGANT style lattice</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../examples/model.html#Example-19:-Wrapper">Example-19: Wrapper</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../examples/model.html#Example-20:-Group">Example-20: Group</a></li>
@@ -201,8 +202,7 @@
 <span class="kn">from</span> <span class="nn">model.library.transformations</span> <span class="kn">import</span> <span class="n">rx</span><span class="p">,</span> <span class="n">ry</span><span class="p">,</span> <span class="n">rz</span>
 
 <span class="nb">type</span> <span class="n">State</span> <span class="o">=</span> <span class="n">Tensor</span>
-<span class="nb">type</span> <span class="n">Mapping</span> <span class="o">=</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">State</span><span class="p">],</span> <span class="n">State</span><span class="p">]</span>
-<span class="nb">type</span> <span class="n">ParametricMapping</span> <span class="o">=</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">State</span><span class="p">,</span> <span class="n">Tensor</span><span class="p">,</span> <span class="o">...</span><span class="p">],</span> <span class="n">State</span><span class="p">]</span>
+<span class="nb">type</span> <span class="n">Mapping</span> <span class="o">=</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">State</span><span class="p">,</span> <span class="n">Tensor</span><span class="p">,</span> <span class="o">...</span><span class="p">],</span> <span class="n">State</span><span class="p">]</span>
 
 <div class="viewcode-block" id="Element">
 <a class="viewcode-back" href="../../../modules/library/element.html#model.library.element.Element">[docs]</a>
@@ -274,7 +274,7 @@
 <span class="sd">            number of integrtion steps</span>
 <span class="sd">        ds: Optional[float], positive</span>
 <span class="sd">            integration step length</span>
-<span class="sd">            if given, input ns value is ignored and ds is used to compute ns = ceil(length/ds)</span>
+<span class="sd">            if given, input ns value is ignored and ds is used to compute ns = ceil(length/ds) or 1</span>
 <span class="sd">            actual integration step is not ds, but length/ns</span>
 <span class="sd">        order: int, default=0, non-negative</span>
 <span class="sd">            Yoshida integration order</span>
@@ -285,7 +285,7 @@
 <span class="sd">        output: bool, default=False</span>
 <span class="sd">            flag to save output at each step</span>
 <span class="sd">        matrix: bool, default=False</span>
-<span class="sd">            flag to save matrix at each step if output is true</span>
+<span class="sd">            flag to save matrix at each step</span>
 
 
 <span class="sd">        Returns</span>
@@ -309,15 +309,16 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_output</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="n">output</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_matrix</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="n">matrix</span>
 
+        <span class="bp">self</span><span class="o">.</span><span class="n">is_inversed</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
+
         <span class="bp">self</span><span class="o">.</span><span class="n">_lmatrix</span><span class="p">:</span> <span class="n">Tensor</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_rmatrix</span><span class="p">:</span> <span class="n">Tensor</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span> <span class="nb">list</span><span class="p">[</span><span class="nb">float</span><span class="p">]]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_step</span><span class="p">:</span> <span class="n">Mapping</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_knob</span><span class="p">:</span> <span class="n">ParametricMapping</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">container_output</span><span class="p">:</span><span class="n">Tensor</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">container_matrix</span><span class="p">:</span><span class="n">Tensor</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">container_output</span><span class="p">:</span> <span class="n">Tensor</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">container_matrix</span><span class="p">:</span> <span class="n">Tensor</span>
 
 
 <div class="viewcode-block" id="Element.clone">
@@ -339,13 +340,35 @@
 
 
 
-<div class="viewcode-block" id="Element.table">
-<a class="viewcode-back" href="../../../modules/library/element.html#model.library.element.Element.table">[docs]</a>
-    <span class="k">def</span> <span class="nf">table</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span>
-              <span class="n">name</span><span class="p">:</span><span class="nb">bool</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-              <span class="n">alignment</span><span class="p">:</span><span class="nb">bool</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span><span class="n">Tensor</span><span class="p">]]</span> <span class="o">|</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span><span class="n">Tensor</span><span class="p">]:</span>
+<div class="viewcode-block" id="Element.inverse">
+<a class="viewcode-back" href="../../../modules/library/element.html#model.library.element.Element.inverse">[docs]</a>
+    <span class="k">def</span> <span class="nf">inverse</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Element</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Generate default deviation table</span>
+<span class="sd">        Inverse element</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        None</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        Element</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">element</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">clone</span><span class="p">()</span>
+        <span class="n">element</span><span class="o">.</span><span class="n">is_inversed</span> <span class="o">=</span> <span class="ow">not</span> <span class="n">element</span><span class="o">.</span><span class="n">is_inversed</span>
+        <span class="n">element</span><span class="o">.</span><span class="n">length</span> <span class="o">=</span> <span class="o">-</span> <span class="n">element</span><span class="o">.</span><span class="n">length</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">element</span></div>
+
+
+
+<div class="viewcode-block" id="Element.data">
+<a class="viewcode-back" href="../../../modules/library/element.html#model.library.element.Element.data">[docs]</a>
+    <span class="k">def</span> <span class="nf">data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span>
+             <span class="n">name</span><span class="p">:</span><span class="nb">bool</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+             <span class="n">alignment</span><span class="p">:</span><span class="nb">bool</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span><span class="n">Tensor</span><span class="p">]]</span> <span class="o">|</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span><span class="n">Tensor</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Generate default deviation data</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -357,12 +380,12 @@
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">zeros</span><span class="p">:</span> <span class="n">Tensor</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">keys</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dtype</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">device</span><span class="p">)</span>
-        <span class="n">table</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Tensor</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="n">value</span> <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">keys</span><span class="p">,</span> <span class="n">zeros</span><span class="p">)}</span>
+        <span class="n">data</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Tensor</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="n">value</span> <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">keys</span><span class="p">,</span> <span class="n">zeros</span><span class="p">)}</span>
         <span class="k">if</span> <span class="n">alignment</span><span class="p">:</span>
             <span class="n">keys</span><span class="p">:</span><span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_alignment</span>
             <span class="n">zeros</span><span class="p">:</span> <span class="n">Tensor</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">keys</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dtype</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">device</span><span class="p">)</span>
-            <span class="n">table</span> <span class="o">=</span> <span class="p">{</span><span class="o">**</span><span class="n">table</span><span class="p">,</span> <span class="o">**</span><span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="n">value</span> <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">keys</span><span class="p">,</span> <span class="n">zeros</span><span class="p">)}}</span>
-        <span class="k">return</span> <span class="n">table</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">name</span> <span class="k">else</span> <span class="p">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">:</span> <span class="n">table</span><span class="p">}</span></div>
+            <span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="o">**</span><span class="n">data</span><span class="p">,</span> <span class="o">**</span><span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="n">value</span> <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">keys</span><span class="p">,</span> <span class="n">zeros</span><span class="p">)}}</span>
+        <span class="k">return</span> <span class="n">data</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">name</span> <span class="k">else</span> <span class="p">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">:</span> <span class="n">data</span><span class="p">}</span></div>
 
 
 
@@ -389,7 +412,7 @@
 <div class="viewcode-block" id="Element.make_step">
 <a class="viewcode-back" href="../../../modules/library/element.html#model.library.element.Element.make_step">[docs]</a>
     <span class="nd">@abstractmethod</span>
-    <span class="k">def</span> <span class="nf">make_step</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">Mapping</span><span class="p">,</span> <span class="n">ParametricMapping</span><span class="p">]:</span>
+    <span class="k">def</span> <span class="nf">make_step</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Mapping</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Generate integration step</span>
 
@@ -399,7 +422,7 @@
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">        tuple[Mapping, ParametricMapping]</span>
+<span class="sd">        Mapping</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">pass</span></div>
@@ -475,7 +498,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_length</span> <span class="o">=</span> <span class="n">length</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_lmatrix</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rmatrix</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">make_matrix</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_step</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_knob</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">make_step</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_step</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">make_step</span><span class="p">()</span>
 
 
     <span class="nd">@property</span>
@@ -512,7 +535,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_dp</span> <span class="o">=</span> <span class="n">dp</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_lmatrix</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rmatrix</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">make_matrix</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_step</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_knob</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">make_step</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_step</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">make_step</span><span class="p">()</span>
 
 
     <span class="nd">@property</span>
@@ -758,7 +781,7 @@
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_ns</span> <span class="o">=</span> <span class="n">ns</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_step</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_knob</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">make_step</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_step</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">make_step</span><span class="p">()</span>
 
 
     <span class="nd">@property</span>
@@ -794,7 +817,7 @@
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_order</span> <span class="o">=</span> <span class="n">order</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_step</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_knob</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">make_step</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_step</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">make_step</span><span class="p">()</span>
 
 
     <span class="nd">@property</span>
@@ -830,7 +853,7 @@
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_exact</span> <span class="o">=</span> <span class="n">exact</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_step</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_knob</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">make_step</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_step</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">make_step</span><span class="p">()</span>
 
 
     <span class="nd">@property</span>
@@ -866,7 +889,7 @@
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_insertion</span> <span class="o">=</span> <span class="n">insertion</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_step</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_knob</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">make_step</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_step</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">make_step</span><span class="p">()</span>
 
 
     <span class="nd">@property</span>
@@ -902,7 +925,7 @@
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_output</span> <span class="o">=</span> <span class="n">output</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_step</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_knob</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">make_step</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_step</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">make_step</span><span class="p">()</span>
 
 
     <span class="nd">@property</span>
@@ -938,7 +961,7 @@
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_matrix</span> <span class="o">=</span> <span class="n">matrix</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_step</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_knob</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">make_step</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_step</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">make_step</span><span class="p">()</span>
 
 
     <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
@@ -964,10 +987,9 @@
 <span class="sd">        State</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">data</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Tensor</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span> <span class="k">if</span> <span class="n">data</span> <span class="k">else</span> <span class="p">{}</span>
+        <span class="n">data</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Tensor</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span> <span class="k">if</span> <span class="n">data</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">()</span>
         <span class="n">knob</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Tensor</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="n">data</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">keys</span> <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">data</span><span class="p">}</span>
-        <span class="n">step</span><span class="p">:</span> <span class="n">Mapping</span> <span class="o">|</span> <span class="n">ParametricMapping</span>
-        <span class="n">step</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_knob</span> <span class="k">if</span> <span class="n">knob</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">_step</span>
+        <span class="n">step</span><span class="p">:</span> <span class="n">Mapping</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_step</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">alignment</span><span class="p">:</span>
             <span class="n">state</span> <span class="o">=</span> <span class="n">step</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="o">**</span><span class="n">knob</span><span class="p">)</span>
             <span class="k">return</span> <span class="n">state</span>
@@ -1002,53 +1024,81 @@
     <span class="k">if</span> <span class="n">element</span><span class="o">.</span><span class="n">flag</span><span class="p">:</span>
         <span class="n">angle</span><span class="p">:</span><span class="n">Tensor</span> <span class="o">=</span> <span class="n">element</span><span class="o">.</span><span class="n">angle</span> <span class="o">+</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">KEY_DW</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)</span>
 
-    <span class="n">dx</span><span class="p">:</span><span class="n">Tensor</span>
-    <span class="n">dy</span><span class="p">:</span><span class="n">Tensor</span>
-    <span class="n">dz</span><span class="p">:</span><span class="n">Tensor</span>
-    <span class="n">dx</span><span class="p">,</span> <span class="n">dy</span><span class="p">,</span> <span class="n">dz</span> <span class="o">=</span> <span class="p">[</span><span class="n">data</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="p">[</span><span class="n">KEY_DX</span><span class="p">,</span> <span class="n">KEY_DY</span><span class="p">,</span> <span class="n">KEY_DZ</span><span class="p">]]</span>
-    <span class="n">dx</span> <span class="o">=</span> <span class="n">dx</span> <span class="o">+</span> <span class="n">element</span><span class="o">.</span><span class="n">dx</span>
-    <span class="n">dy</span> <span class="o">=</span> <span class="n">dy</span> <span class="o">+</span> <span class="n">element</span><span class="o">.</span><span class="n">dy</span>
-    <span class="n">dz</span> <span class="o">=</span> <span class="n">dz</span> <span class="o">+</span> <span class="n">element</span><span class="o">.</span><span class="n">dz</span>
+    <span class="n">dx</span><span class="p">:</span><span class="n">Tensor</span> <span class="o">=</span> <span class="n">element</span><span class="o">.</span><span class="n">dx</span> <span class="o">+</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">KEY_DX</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)</span>
+    <span class="n">dy</span><span class="p">:</span><span class="n">Tensor</span> <span class="o">=</span> <span class="n">element</span><span class="o">.</span><span class="n">dy</span> <span class="o">+</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">KEY_DY</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)</span>
+    <span class="n">dz</span><span class="p">:</span><span class="n">Tensor</span> <span class="o">=</span> <span class="n">element</span><span class="o">.</span><span class="n">dz</span> <span class="o">+</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">KEY_DZ</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)</span>
 
-    <span class="n">wx</span><span class="p">:</span><span class="n">Tensor</span>
-    <span class="n">wy</span><span class="p">:</span><span class="n">Tensor</span>
-    <span class="n">wz</span><span class="p">:</span><span class="n">Tensor</span>
-    <span class="n">wx</span><span class="p">,</span> <span class="n">wy</span><span class="p">,</span> <span class="n">wz</span> <span class="o">=</span> <span class="p">[</span><span class="n">data</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="p">[</span><span class="n">KEY_WX</span><span class="p">,</span> <span class="n">KEY_WY</span><span class="p">,</span> <span class="n">KEY_WZ</span><span class="p">]]</span>
-    <span class="n">wx</span> <span class="o">=</span> <span class="n">wx</span> <span class="o">+</span> <span class="n">element</span><span class="o">.</span><span class="n">wx</span>
-    <span class="n">wy</span> <span class="o">=</span> <span class="n">wy</span> <span class="o">+</span> <span class="n">element</span><span class="o">.</span><span class="n">wy</span>
-    <span class="n">wz</span> <span class="o">=</span> <span class="n">wz</span> <span class="o">+</span> <span class="n">element</span><span class="o">.</span><span class="n">wz</span>    
+    <span class="n">wx</span><span class="p">:</span><span class="n">Tensor</span> <span class="o">=</span> <span class="n">element</span><span class="o">.</span><span class="n">wx</span> <span class="o">+</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">KEY_WX</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)</span>
+    <span class="n">wy</span><span class="p">:</span><span class="n">Tensor</span> <span class="o">=</span> <span class="n">element</span><span class="o">.</span><span class="n">wy</span> <span class="o">+</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">KEY_WY</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)</span>
+    <span class="n">wz</span><span class="p">:</span><span class="n">Tensor</span> <span class="o">=</span> <span class="n">element</span><span class="o">.</span><span class="n">wz</span> <span class="o">+</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">KEY_WZ</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)</span>
 
-    <span class="n">state</span> <span class="o">=</span> <span class="n">tx</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="o">+</span><span class="n">dx</span><span class="p">)</span>
-    <span class="n">state</span> <span class="o">=</span> <span class="n">ty</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="o">+</span><span class="n">dy</span><span class="p">)</span>
-    <span class="n">state</span> <span class="o">=</span> <span class="n">tz</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="o">+</span><span class="n">dz</span><span class="p">,</span> <span class="n">dp</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">element</span><span class="o">.</span><span class="n">is_inversed</span><span class="p">:</span>
 
-    <span class="n">state</span> <span class="o">=</span> <span class="n">rx</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="o">+</span><span class="n">wx</span><span class="p">,</span> <span class="n">dp</span><span class="p">)</span>
-    <span class="n">state</span> <span class="o">=</span> <span class="n">ry</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="o">+</span><span class="n">wy</span><span class="p">,</span> <span class="n">dp</span><span class="p">)</span>
-    <span class="n">state</span> <span class="o">=</span> <span class="n">rz</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="o">+</span><span class="n">wz</span><span class="p">)</span>
+        <span class="n">state</span> <span class="o">=</span> <span class="n">tx</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="o">+</span><span class="n">dx</span><span class="p">)</span>
+        <span class="n">state</span> <span class="o">=</span> <span class="n">ty</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="o">+</span><span class="n">dy</span><span class="p">)</span>
+        <span class="n">state</span> <span class="o">=</span> <span class="n">tz</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="o">+</span><span class="n">dz</span><span class="p">,</span> <span class="n">dp</span><span class="p">)</span>
 
-    <span class="n">state</span> <span class="o">=</span> <span class="n">element</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">,</span> <span class="n">alignment</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="n">state</span> <span class="o">=</span> <span class="n">rx</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="o">+</span><span class="n">wx</span><span class="p">,</span> <span class="n">dp</span><span class="p">)</span>
+        <span class="n">state</span> <span class="o">=</span> <span class="n">ry</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="o">+</span><span class="n">wy</span><span class="p">,</span> <span class="n">dp</span><span class="p">)</span>
+        <span class="n">state</span> <span class="o">=</span> <span class="n">rz</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="o">+</span><span class="n">wz</span><span class="p">)</span>
 
-    <span class="k">if</span> <span class="n">element</span><span class="o">.</span><span class="n">flag</span><span class="p">:</span>
-        <span class="n">state</span> <span class="o">=</span> <span class="n">ry</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="o">+</span><span class="n">angle</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">dp</span><span class="p">)</span>
-        <span class="n">state</span> <span class="o">=</span> <span class="n">tz</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="o">-</span><span class="mf">2.0</span><span class="o">*</span><span class="n">length</span><span class="o">/</span><span class="n">angle</span><span class="o">*</span><span class="p">(</span><span class="n">angle</span><span class="o">/</span><span class="mf">2.0</span><span class="p">)</span><span class="o">.</span><span class="n">sin</span><span class="p">(),</span> <span class="n">dp</span><span class="p">)</span>
-        <span class="n">state</span> <span class="o">=</span> <span class="n">ry</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="o">+</span><span class="n">angle</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">dp</span><span class="p">)</span>
+        <span class="n">state</span> <span class="o">=</span> <span class="n">element</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">,</span> <span class="n">alignment</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">element</span><span class="o">.</span><span class="n">flag</span><span class="p">:</span>
+            <span class="n">state</span> <span class="o">=</span> <span class="n">ry</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="o">+</span><span class="n">angle</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">dp</span><span class="p">)</span>
+            <span class="n">state</span> <span class="o">=</span> <span class="n">tz</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="o">-</span><span class="mf">2.0</span><span class="o">*</span><span class="n">length</span><span class="o">/</span><span class="n">angle</span><span class="o">*</span><span class="p">(</span><span class="n">angle</span><span class="o">/</span><span class="mf">2.0</span><span class="p">)</span><span class="o">.</span><span class="n">sin</span><span class="p">(),</span> <span class="n">dp</span><span class="p">)</span>
+            <span class="n">state</span> <span class="o">=</span> <span class="n">ry</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="o">+</span><span class="n">angle</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">dp</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">state</span> <span class="o">=</span> <span class="n">tz</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="o">-</span><span class="n">length</span><span class="p">,</span> <span class="n">dp</span><span class="p">)</span>
+
+        <span class="n">state</span> <span class="o">=</span> <span class="n">rz</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="o">-</span><span class="n">wz</span><span class="p">)</span>
+        <span class="n">state</span> <span class="o">=</span> <span class="n">ry</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="o">-</span><span class="n">wy</span><span class="p">,</span> <span class="n">dp</span><span class="p">)</span>
+        <span class="n">state</span> <span class="o">=</span> <span class="n">rx</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="o">-</span><span class="n">wx</span><span class="p">,</span> <span class="n">dp</span><span class="p">)</span>
+
+        <span class="n">state</span> <span class="o">=</span> <span class="n">tz</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="o">-</span><span class="n">dz</span><span class="p">,</span> <span class="n">dp</span><span class="p">)</span>
+        <span class="n">state</span> <span class="o">=</span> <span class="n">ty</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="o">-</span><span class="n">dy</span><span class="p">)</span>
+        <span class="n">state</span> <span class="o">=</span> <span class="n">tx</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="o">-</span><span class="n">dx</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">element</span><span class="o">.</span><span class="n">flag</span><span class="p">:</span>
+            <span class="n">state</span> <span class="o">=</span> <span class="n">ry</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="o">-</span><span class="n">angle</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">dp</span><span class="p">)</span>
+            <span class="n">state</span> <span class="o">=</span> <span class="n">tz</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="o">+</span><span class="mf">2.0</span><span class="o">*</span><span class="n">length</span><span class="o">/</span><span class="n">angle</span><span class="o">*</span><span class="p">(</span><span class="n">angle</span><span class="o">/</span><span class="mf">2.0</span><span class="p">)</span><span class="o">.</span><span class="n">sin</span><span class="p">(),</span> <span class="n">dp</span><span class="p">)</span>
+            <span class="n">state</span> <span class="o">=</span> <span class="n">ry</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="o">-</span><span class="n">angle</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">dp</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">state</span> <span class="o">=</span> <span class="n">tz</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="o">+</span><span class="n">length</span><span class="p">,</span> <span class="n">dp</span><span class="p">)</span>
+
     <span class="k">else</span><span class="p">:</span>
-        <span class="n">state</span> <span class="o">=</span> <span class="n">tz</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="o">-</span><span class="n">length</span><span class="p">,</span> <span class="n">dp</span><span class="p">)</span>
 
-    <span class="n">state</span> <span class="o">=</span> <span class="n">rz</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="o">-</span><span class="n">wz</span><span class="p">)</span>
-    <span class="n">state</span> <span class="o">=</span> <span class="n">ry</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="o">-</span><span class="n">wy</span><span class="p">,</span> <span class="n">dp</span><span class="p">)</span>
-    <span class="n">state</span> <span class="o">=</span> <span class="n">rx</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="o">-</span><span class="n">wx</span><span class="p">,</span> <span class="n">dp</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">element</span><span class="o">.</span><span class="n">flag</span><span class="p">:</span>
+            <span class="n">state</span> <span class="o">=</span> <span class="n">ry</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="o">+</span><span class="n">angle</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">dp</span><span class="p">)</span>
+            <span class="n">state</span> <span class="o">=</span> <span class="n">tz</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="o">+</span><span class="mf">2.0</span><span class="o">*</span><span class="n">length</span><span class="o">/</span><span class="n">angle</span><span class="o">*</span><span class="p">(</span><span class="n">angle</span><span class="o">/</span><span class="mf">2.0</span><span class="p">)</span><span class="o">.</span><span class="n">sin</span><span class="p">(),</span> <span class="n">dp</span><span class="p">)</span>
+            <span class="n">state</span> <span class="o">=</span> <span class="n">ry</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="o">+</span><span class="n">angle</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">dp</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">state</span> <span class="o">=</span> <span class="n">tz</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="o">+</span><span class="n">length</span><span class="p">,</span> <span class="n">dp</span><span class="p">)</span>
 
-    <span class="n">state</span> <span class="o">=</span> <span class="n">tz</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="o">-</span><span class="n">dz</span><span class="p">,</span> <span class="n">dp</span><span class="p">)</span>
-    <span class="n">state</span> <span class="o">=</span> <span class="n">ty</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="o">-</span><span class="n">dy</span><span class="p">)</span>
-    <span class="n">state</span> <span class="o">=</span> <span class="n">tx</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="o">-</span><span class="n">dx</span><span class="p">)</span>
+        <span class="n">state</span> <span class="o">=</span> <span class="n">tx</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="o">+</span><span class="n">dx</span><span class="p">)</span>
+        <span class="n">state</span> <span class="o">=</span> <span class="n">ty</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="o">+</span><span class="n">dy</span><span class="p">)</span>
+        <span class="n">state</span> <span class="o">=</span> <span class="n">tz</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="o">+</span><span class="n">dz</span><span class="p">,</span> <span class="n">dp</span><span class="p">)</span>
 
-    <span class="k">if</span> <span class="n">element</span><span class="o">.</span><span class="n">flag</span><span class="p">:</span>
-        <span class="n">state</span> <span class="o">=</span> <span class="n">ry</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="o">-</span><span class="n">angle</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">dp</span><span class="p">)</span>
-        <span class="n">state</span> <span class="o">=</span> <span class="n">tz</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="o">+</span><span class="mf">2.0</span><span class="o">*</span><span class="n">length</span><span class="o">/</span><span class="n">angle</span><span class="o">*</span><span class="p">(</span><span class="n">angle</span><span class="o">/</span><span class="mf">2.0</span><span class="p">)</span><span class="o">.</span><span class="n">sin</span><span class="p">(),</span> <span class="n">dp</span><span class="p">)</span>
-        <span class="n">state</span> <span class="o">=</span> <span class="n">ry</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="o">-</span><span class="n">angle</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">dp</span><span class="p">)</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="n">state</span> <span class="o">=</span> <span class="n">tz</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="o">+</span><span class="n">length</span><span class="p">,</span> <span class="n">dp</span><span class="p">)</span>
+        <span class="n">state</span> <span class="o">=</span> <span class="n">rx</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="o">+</span><span class="n">wx</span><span class="p">,</span> <span class="n">dp</span><span class="p">)</span>
+        <span class="n">state</span> <span class="o">=</span> <span class="n">ry</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="o">+</span><span class="n">wy</span><span class="p">,</span> <span class="n">dp</span><span class="p">)</span>
+        <span class="n">state</span> <span class="o">=</span> <span class="n">rz</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="o">+</span><span class="n">wz</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">element</span><span class="o">.</span><span class="n">flag</span><span class="p">:</span>
+            <span class="n">state</span> <span class="o">=</span> <span class="n">ry</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="o">-</span><span class="n">angle</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">dp</span><span class="p">)</span>
+            <span class="n">state</span> <span class="o">=</span> <span class="n">tz</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="o">-</span><span class="mf">2.0</span><span class="o">*</span><span class="n">length</span><span class="o">/</span><span class="n">angle</span><span class="o">*</span><span class="p">(</span><span class="n">angle</span><span class="o">/</span><span class="mf">2.0</span><span class="p">)</span><span class="o">.</span><span class="n">sin</span><span class="p">(),</span> <span class="n">dp</span><span class="p">)</span>
+            <span class="n">state</span> <span class="o">=</span> <span class="n">ry</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="o">-</span><span class="n">angle</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">dp</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">state</span> <span class="o">=</span> <span class="n">tz</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="o">-</span><span class="n">length</span><span class="p">,</span> <span class="n">dp</span><span class="p">)</span>
+
+        <span class="n">state</span> <span class="o">=</span> <span class="n">element</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">,</span> <span class="n">alignment</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+        <span class="n">state</span> <span class="o">=</span> <span class="n">rz</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="o">-</span><span class="n">wz</span><span class="p">)</span>
+        <span class="n">state</span> <span class="o">=</span> <span class="n">ry</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="o">-</span><span class="n">wy</span><span class="p">,</span> <span class="n">dp</span><span class="p">)</span>
+        <span class="n">state</span> <span class="o">=</span> <span class="n">rx</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="o">-</span><span class="n">wx</span><span class="p">,</span> <span class="n">dp</span><span class="p">)</span>
+
+        <span class="n">state</span> <span class="o">=</span> <span class="n">tz</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="o">-</span><span class="n">dz</span><span class="p">,</span> <span class="n">dp</span><span class="p">)</span>
+        <span class="n">state</span> <span class="o">=</span> <span class="n">ty</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="o">-</span><span class="n">dy</span><span class="p">)</span>
+        <span class="n">state</span> <span class="o">=</span> <span class="n">tx</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="o">-</span><span class="n">dx</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">state</span></div>
 

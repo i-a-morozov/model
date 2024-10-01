@@ -60,8 +60,9 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../examples/model.html#Example-13:-Linear-(element)">Example-13: Linear (element)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../examples/model.html#Example-14:-BPM-(element)">Example-14: BPM (element)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../examples/model.html#Example-15:-Line-(element)">Example-15: Line (element)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../examples/model.html#Example-16:-Layout">Example-16: Layout</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../examples/model.html#Example-17:-LOGO">Example-17: LOGO</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../examples/model.html#Example-16:-Inverse-tracking">Example-16: Inverse tracking</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../examples/model.html#Example-17:-Layout">Example-17: Layout</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../examples/model.html#Example-18:-LOGO">Example-18: LOGO</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../examples/model.html#Example-18:-Build-MADX-and-ELEGANT-style-lattice">Example-18: Build MADX and ELEGANT style lattice</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../examples/model.html#Example-19:-Wrapper">Example-19: Wrapper</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../examples/model.html#Example-20:-Group">Example-20: Group</a></li>
@@ -187,8 +188,7 @@
 <span class="kn">from</span> <span class="nn">model.library.transformations</span> <span class="kn">import</span> <span class="n">gradient</span>
 
 <span class="nb">type</span> <span class="n">State</span> <span class="o">=</span> <span class="n">Tensor</span>
-<span class="nb">type</span> <span class="n">Mapping</span> <span class="o">=</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">State</span><span class="p">],</span> <span class="n">State</span><span class="p">]</span>
-<span class="nb">type</span> <span class="n">ParametricMapping</span> <span class="o">=</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">State</span><span class="p">,</span> <span class="n">Tensor</span><span class="p">,</span> <span class="o">...</span><span class="p">],</span> <span class="n">State</span><span class="p">]</span>
+<span class="nb">type</span> <span class="n">Mapping</span> <span class="o">=</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">State</span><span class="p">,</span> <span class="n">Tensor</span><span class="p">,</span> <span class="o">...</span><span class="p">],</span> <span class="n">State</span><span class="p">]</span>
 
 <div class="viewcode-block" id="Gradient">
 <a class="viewcode-back" href="../../../modules/library/gradient.html#model.library.gradient.Gradient">[docs]</a>
@@ -275,9 +275,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_lmatrix</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rmatrix</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">make_matrix</span><span class="p">()</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span> <span class="nb">list</span><span class="p">[</span><span class="nb">float</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_step</span><span class="p">:</span> <span class="n">Mapping</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_knob</span><span class="p">:</span> <span class="n">ParametricMapping</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_step</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_knob</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">make_step</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_step</span><span class="p">:</span> <span class="n">Mapping</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">make_step</span><span class="p">()</span>
 
 
 <div class="viewcode-block" id="Gradient.make_matrix">
@@ -297,7 +295,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">state</span><span class="p">:</span> <span class="n">State</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dtype</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">device</span><span class="p">)</span>
 
-        <span class="n">matrix</span><span class="p">:</span> <span class="n">Tensor</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">func</span><span class="o">.</span><span class="n">jacrev</span><span class="p">(</span><span class="n">gradient</span><span class="p">)(</span><span class="n">state</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">kn</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ks</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.5</span><span class="p">)</span>
+        <span class="n">matrix</span><span class="p">:</span> <span class="n">Tensor</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">func</span><span class="o">.</span><span class="n">jacrev</span><span class="p">(</span><span class="k">lambda</span> <span class="n">state</span><span class="p">:</span> <span class="n">state</span><span class="p">)(</span><span class="n">state</span><span class="p">)</span>
 
         <span class="n">lmatrix</span><span class="p">:</span> <span class="n">Tensor</span> <span class="o">=</span> <span class="n">matrix</span>
         <span class="n">rmatrix</span><span class="p">:</span> <span class="n">Tensor</span> <span class="o">=</span> <span class="n">matrix</span>
@@ -308,7 +306,7 @@
 
 <div class="viewcode-block" id="Gradient.make_step">
 <a class="viewcode-back" href="../../../modules/library/gradient.html#model.library.gradient.Gradient.make_step">[docs]</a>
-    <span class="k">def</span> <span class="nf">make_step</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">Mapping</span><span class="p">,</span> <span class="n">ParametricMapping</span><span class="p">]:</span>
+    <span class="k">def</span> <span class="nf">make_step</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Mapping</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Generate integration step</span>
 
@@ -318,11 +316,15 @@
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">        tuple[Mapping, ParametricMapping]</span>
+<span class="sd">        Mapping</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">_kn</span><span class="p">:</span> <span class="n">Tensor</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">kn</span>
         <span class="n">_ks</span><span class="p">:</span> <span class="n">Tensor</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ks</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_inversed</span><span class="p">:</span>
+            <span class="n">_kn</span> <span class="o">=</span> <span class="o">-</span><span class="n">_kn</span>
+            <span class="n">_ks</span> <span class="o">=</span> <span class="o">-</span><span class="n">_ks</span>
 
         <span class="n">output</span><span class="p">:</span><span class="nb">bool</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">output</span>
         <span class="n">matrix</span><span class="p">:</span><span class="nb">bool</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">matrix</span>
@@ -330,21 +332,7 @@
         <span class="k">def</span> <span class="nf">integrator</span><span class="p">(</span><span class="n">state</span><span class="p">:</span><span class="n">State</span><span class="p">,</span> <span class="n">kn</span><span class="p">:</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">ks</span><span class="p">:</span><span class="n">Tensor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">State</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">gradient</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">kn</span><span class="p">,</span> <span class="n">ks</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
 
-        <span class="k">def</span> <span class="nf">step</span><span class="p">(</span><span class="n">state</span><span class="p">:</span><span class="n">State</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">State</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">output</span><span class="p">:</span>
-                <span class="n">container_output</span> <span class="o">=</span> <span class="p">[]</span>
-            <span class="k">if</span> <span class="n">matrix</span><span class="p">:</span>
-                 <span class="n">container_matrix</span> <span class="o">=</span> <span class="p">[]</span>
-            <span class="n">state</span> <span class="o">=</span> <span class="n">integrator</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">_kn</span><span class="p">,</span> <span class="n">_ks</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">output</span><span class="p">:</span>
-                <span class="n">container_output</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">state</span><span class="p">)</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">container_output</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="n">container_output</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">matrix</span><span class="p">:</span>
-                <span class="n">container_matrix</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">func</span><span class="o">.</span><span class="n">jacrev</span><span class="p">(</span><span class="n">integrator</span><span class="p">)(</span><span class="n">state</span><span class="p">,</span> <span class="n">_kn</span><span class="p">,</span> <span class="n">_ks</span><span class="p">))</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">container_matrix</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="n">container_matrix</span><span class="p">)</span>
-            <span class="k">return</span> <span class="n">state</span>
-
-        <span class="k">def</span> <span class="nf">knob</span><span class="p">(</span><span class="n">state</span><span class="p">:</span><span class="n">State</span><span class="p">,</span> <span class="n">kn</span><span class="p">:</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">ks</span><span class="p">:</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">dp</span><span class="p">:</span><span class="n">Tensor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">State</span><span class="p">:</span>
+        <span class="k">def</span> <span class="nf">step</span><span class="p">(</span><span class="n">state</span><span class="p">:</span><span class="n">State</span><span class="p">,</span> <span class="n">kn</span><span class="p">:</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">ks</span><span class="p">:</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">dp</span><span class="p">:</span><span class="n">Tensor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">State</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">output</span><span class="p">:</span>
                 <span class="n">container_output</span> <span class="o">=</span> <span class="p">[]</span>
             <span class="k">if</span> <span class="n">matrix</span><span class="p">:</span>
@@ -358,7 +346,7 @@
                 <span class="bp">self</span><span class="o">.</span><span class="n">container_matrix</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="n">container_matrix</span><span class="p">)</span>
             <span class="k">return</span> <span class="n">state</span>
 
-        <span class="k">return</span> <span class="n">step</span><span class="p">,</span> <span class="n">knob</span></div>
+        <span class="k">return</span> <span class="n">step</span></div>
 
 
 
@@ -397,7 +385,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_kn</span> <span class="o">=</span> <span class="n">kn</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_lmatrix</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rmatrix</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">make_matrix</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_step</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_knob</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">make_step</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_step</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">make_step</span><span class="p">()</span>
 
 
     <span class="nd">@property</span>
@@ -435,7 +423,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_ks</span> <span class="o">=</span> <span class="n">ks</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_lmatrix</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rmatrix</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">make_matrix</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_step</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_knob</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">make_step</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_step</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">make_step</span><span class="p">()</span>
 
 
     <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
