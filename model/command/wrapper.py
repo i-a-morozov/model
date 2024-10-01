@@ -57,8 +57,8 @@ def wrapper(element:Element,
 
 
 def group(line:Line,
-          start:int|str,
-          end:int|str,
+          probe:int|str,
+          other:int|str,
           *groups:tuple[str, list[str]|None, list[str]|None, list[str|None]],
           root:bool=False,
           name:str='LINE',
@@ -66,13 +66,23 @@ def group(line:Line,
     """
     Generate group wrapper (one or more elements/lines)
 
+    Note, all elements are cloned, changes do not effect the original lattice
+
+    String values can be passed to probe/other, in this case it is equivalent to group(line, line.position(probe:str), line.position(other:str))
+    First occurrance will be matched if line contains several elements with identical names
+
+    For integer values of probe/other, any integer values can be passed
+    This can be used to construct transformation from the start of one element to the end of the other element
+
+    For the probe > other case, inverse transformation is constructed
+
     Parameters
     ----------
     line: Line
         input line
-    start: int|str
+    probe: int|str
         start element index or name (first occurance position)
-    end: int|str
+    other: int|str
         end element index or name name (first occurance position)
     *groups: tuple[str, list[str]|None, list[str]|None, list[str|None]]
         groups specification
@@ -89,25 +99,41 @@ def group(line:Line,
     tuple[Callable[[Tensor, ...], Tensor], list[tuple[str|None, list[str], str]], Line]
     wrapper, tabel, line
 
-    """
-    if isinstance(start, str):
-        count = 0
-        for element in line.sequence:
-            if element.name == start:
-                start = count
-                break
-            count +=1
+    Details
+    -------
 
-    if isinstance(end, str):
-        count = 0
-        for element in line.sequence:
-            if element.name == end:
-                end = count
-                break
-            count +=1
+    [QF, DF, QD, DD]
+    [ 0,  1,  2,  3]
+
+    (QF, QF) -> [QF]
+    (QF, DF) -> [QF, DF]
+    (QF, QD) -> [QF, DF, QD]
+    (QF, DD) -> [QF, DF, QD, DD]
+    ( 0,  3) -> [QF, DF, QD, DD]
+
+    (DD, QF) -> [DD.inverse(), QD.inverse(), DF.inverse(), QF.inverse()]
+    ( 3,  0) -> [DD.inverse(), QD.inverse(), DF.inverse(), QF.inverse()]
+
+    [..., QF, DF, QD, DD, QF, DF, QD, DD, QF, DF, QD, DD, ...]
+    [..., -4, -3, -2, -1,  0,  1,  2,  3,  4,  5,  6,  7, ...]
+    [...,  0,  1,  2,  3,  0,  1,  2,  3,  0,  1,  2,  3, ...]
+
+    (-1,  0) -> [DD, QF]
+    (-2,  5) -> [QD, DD, QF, DF, QD, DD, QF, DF]
+    (-3,  2) -> [DF, QD, DD, QF, DF, QD]
+    ( 2, -3) -> [QD.inverse(), DF.inverse(), QF.inverse(), DD.inverse(), QD.inverse(), DF.inverse()]
+
+    """
+    if isinstance(probe, str):
+        probe = line.position(probe)
+
+    if isinstance(other, str):
+        other = line.position(other)
+
+    sequence:list[Element|Line] = _construct(probe, other, line.sequence)
 
     local = Line(name=name,
-                 sequence=line.sequence[start:end + 1],
+                 sequence=sequence,
                  propagate=line.propagate,
                  dp=line.dp.item(),
                  exact=line.exact, output=line.output,
@@ -304,6 +330,35 @@ def _select(data:dict,
             return {}
         data = data[name]
     return data
+
+
+def _construct(probe:int,
+               other:int,
+               sequence:list[Element|Line], *,
+               inverse:bool=False) -> list[Element|Line]:
+    """
+    Construct a transformation from one element to another
+
+    Parameters
+    ----------
+    probe: int
+        start element index
+    other: int
+        end element index
+    sequence: list[Element|Line]
+        sequence of elements or lines
+    inverse: bool, default=False
+        flag to invert the transformation
+
+    Returns
+    -------
+    list[Element|Line]
+
+    """
+    if probe > other:
+        return list(reversed(_construct(other, probe, sequence, inverse=True)))
+    n = len(sequence)
+    return [sequence[i % n].inverse() if inverse else sequence[i % n].clone() for i in range(probe, other + 1)]
 
 
 def _forward(x:Tensor,
