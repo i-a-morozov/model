@@ -24,8 +24,7 @@ from model.library.element import Element
 from model.library.transformations import gradient
 
 type State = Tensor
-type Mapping = Callable[[State], State]
-type ParametricMapping = Callable[[State, Tensor, ...], State]
+type Mapping = Callable[[State, Tensor, ...], State]
 
 class Gradient(Element):
     """
@@ -110,9 +109,7 @@ class Gradient(Element):
         self._lmatrix, self._rmatrix = self.make_matrix()
 
         self._data: list[list[int], list[float]] = None
-        self._step: Mapping
-        self._knob: ParametricMapping
-        self._step, self._knob = self.make_step()
+        self._step: Mapping = self.make_step()
 
 
     def make_matrix(self) -> tuple[Tensor, Tensor]:
@@ -130,7 +127,7 @@ class Gradient(Element):
         """
         state: State = torch.tensor([0.0, 0.0, 0.0, 0.0], dtype=self.dtype, device=self.device)
 
-        matrix: Tensor = torch.func.jacrev(gradient)(state, self.kn, self.ks, -0.5)
+        matrix: Tensor = torch.func.jacrev(lambda state: state)(state)
 
         lmatrix: Tensor = matrix
         rmatrix: Tensor = matrix
@@ -138,7 +135,7 @@ class Gradient(Element):
         return lmatrix, rmatrix
 
 
-    def make_step(self) -> tuple[Mapping, ParametricMapping]:
+    def make_step(self) -> Mapping:
         """
         Generate integration step
 
@@ -148,11 +145,15 @@ class Gradient(Element):
 
         Returns
         -------
-        tuple[Mapping, ParametricMapping]
+        Mapping
 
         """
         _kn: Tensor = self.kn
         _ks: Tensor = self.ks
+
+        if self.is_inversed:
+            _kn = -_kn
+            _ks = -_ks
 
         output:bool = self.output
         matrix:bool = self.matrix
@@ -160,21 +161,7 @@ class Gradient(Element):
         def integrator(state:State, kn:Tensor, ks:Tensor) -> State:
             return gradient(state, kn, ks, 1.0)
 
-        def step(state:State) -> State:
-            if output:
-                container_output = []
-            if matrix:
-                 container_matrix = []
-            state = integrator(state, _kn, _ks)
-            if output:
-                container_output.append(state)
-                self.container_output = torch.stack(container_output)
-            if matrix:
-                container_matrix.append(torch.func.jacrev(integrator)(state, _kn, _ks))
-                self.container_matrix = torch.stack(container_matrix)
-            return state
-
-        def knob(state:State, kn:Tensor, ks:Tensor, dp:Tensor) -> State:
+        def step(state:State, kn:Tensor, ks:Tensor, dp:Tensor) -> State:
             if output:
                 container_output = []
             if matrix:
@@ -188,7 +175,7 @@ class Gradient(Element):
                 self.container_matrix = torch.stack(container_matrix)
             return state
 
-        return step, knob
+        return step
 
 
     @property
@@ -226,7 +213,7 @@ class Gradient(Element):
         """
         self._kn = kn
         self._lmatrix, self._rmatrix = self.make_matrix()
-        self._step, self._knob = self.make_step()
+        self._step = self.make_step()
 
 
     @property
@@ -264,7 +251,7 @@ class Gradient(Element):
         """
         self._ks = ks
         self._lmatrix, self._rmatrix = self.make_matrix()
-        self._step, self._knob = self.make_step()
+        self._step = self.make_step()
 
 
     def __repr__(self) -> str:

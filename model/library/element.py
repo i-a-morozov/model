@@ -38,8 +38,7 @@ from model.library.transformations import tx, ty, tz
 from model.library.transformations import rx, ry, rz
 
 type State = Tensor
-type Mapping = Callable[[State], State]
-type ParametricMapping = Callable[[State, Tensor, ...], State]
+type Mapping = Callable[[State, Tensor, ...], State]
 
 class Element(ABC):
     """
@@ -109,7 +108,7 @@ class Element(ABC):
             number of integrtion steps
         ds: Optional[float], positive
             integration step length
-            if given, input ns value is ignored and ds is used to compute ns = ceil(length/ds)
+            if given, input ns value is ignored and ds is used to compute ns = ceil(length/ds) or 1
             actual integration step is not ds, but length/ns
         order: int, default=0, non-negative
             Yoshida integration order
@@ -120,7 +119,7 @@ class Element(ABC):
         output: bool, default=False
             flag to save output at each step
         matrix: bool, default=False
-            flag to save matrix at each step if output is true
+            flag to save matrix at each step
 
 
         Returns
@@ -144,15 +143,16 @@ class Element(ABC):
         self._output: bool = output
         self._matrix: bool = matrix
 
+        self.is_inversed: bool = False
+
         self._lmatrix: Tensor
         self._rmatrix: Tensor
 
         self._data: list[list[int], list[float]]
         self._step: Mapping
-        self._knob: ParametricMapping
 
-        self.container_output:Tensor
-        self.container_matrix:Tensor
+        self.container_output: Tensor
+        self.container_matrix: Tensor
 
 
     def clone(self) -> Element:
@@ -171,11 +171,30 @@ class Element(ABC):
         return deepcopy(self)
 
 
-    def table(self, *,
-              name:bool=False,
-              alignment:bool=True) -> dict[str, dict[str,Tensor]] | dict[str,Tensor]:
+    def inverse(self) -> Element:
         """
-        Generate default deviation table
+        Inverse element
+
+        Parameters
+        ----------
+        None
+
+        Returns
+        -------
+        Element
+
+        """
+        element = self.clone()
+        element.is_inversed = not element.is_inversed
+        element.length = - element.length.item()
+        return element
+
+
+    def data(self, *,
+             name:bool=False,
+             alignment:bool=True) -> dict[str, dict[str,Tensor]] | dict[str,Tensor]:
+        """
+        Generate default deviation data
 
         Parameters
         ----------
@@ -187,12 +206,12 @@ class Element(ABC):
 
         """
         zeros: Tensor = torch.zeros(len(self.keys), dtype=self.dtype, device=self.device)
-        table: dict[str, Tensor] = {key: value for key, value in zip(self.keys, zeros)}
+        data: dict[str, Tensor] = {key: value for key, value in zip(self.keys, zeros)}
         if alignment:
             keys:list[str] = self._alignment
             zeros: Tensor = torch.zeros(len(keys), dtype=self.dtype, device=self.device)
-            table = {**table, **{key: value for key, value in zip(keys, zeros)}}
-        return table if not name else {self.name: table}
+            data = {**data, **{key: value for key, value in zip(keys, zeros)}}
+        return data if not name else {self.name: data}
 
 
     @abstractmethod
@@ -213,7 +232,7 @@ class Element(ABC):
 
 
     @abstractmethod
-    def make_step(self) -> tuple[Mapping, ParametricMapping]:
+    def make_step(self) -> Mapping:
         """
         Generate integration step
 
@@ -223,7 +242,7 @@ class Element(ABC):
 
         Returns
         -------
-        tuple[Mapping, ParametricMapping]
+        Mapping
 
         """
         pass
@@ -298,7 +317,7 @@ class Element(ABC):
         """
         self._length = length
         self._lmatrix, self._rmatrix = self.make_matrix()
-        self._step, self._knob = self.make_step()
+        self._step = self.make_step()
 
 
     @property
@@ -335,7 +354,7 @@ class Element(ABC):
         """
         self._dp = dp
         self._lmatrix, self._rmatrix = self.make_matrix()
-        self._step, self._knob = self.make_step()
+        self._step = self.make_step()
 
 
     @property
@@ -581,7 +600,7 @@ class Element(ABC):
 
         """
         self._ns = ns
-        self._step, self._knob = self.make_step()
+        self._step = self.make_step()
 
 
     @property
@@ -617,7 +636,7 @@ class Element(ABC):
 
         """
         self._order = order
-        self._step, self._knob = self.make_step()
+        self._step = self.make_step()
 
 
     @property
@@ -653,7 +672,7 @@ class Element(ABC):
 
         """
         self._exact = exact
-        self._step, self._knob = self.make_step()
+        self._step = self.make_step()
 
 
     @property
@@ -689,7 +708,7 @@ class Element(ABC):
 
         """
         self._insertion = insertion
-        self._step, self._knob = self.make_step()
+        self._step = self.make_step()
 
 
     @property
@@ -725,7 +744,7 @@ class Element(ABC):
 
         """
         self._output = output
-        self._step, self._knob = self.make_step()
+        self._step = self.make_step()
 
 
     @property
@@ -761,7 +780,7 @@ class Element(ABC):
 
         """
         self._matrix = matrix
-        self._step, self._knob = self.make_step()
+        self._step = self.make_step()
 
 
     def __call__(self,
@@ -787,10 +806,9 @@ class Element(ABC):
         State
 
         """
-        data: dict[str, Tensor] = data if data else {}
+        data: dict[str, Tensor] = data if data else self.data()
         knob: dict[str, Tensor] = {key: data[key] for key in self.keys if key in data}
-        step: Mapping | ParametricMapping
-        step = self._knob if knob else self._step
+        step: Mapping = self._step
         if not alignment:
             state = step(state, **knob)
             return state
@@ -822,52 +840,80 @@ def transform(element:Element,
     if element.flag:
         angle:Tensor = element.angle + data.get(KEY_DW, 0.0)
 
-    dx:Tensor
-    dy:Tensor
-    dz:Tensor
-    dx, dy, dz = [data[key] for key in [KEY_DX, KEY_DY, KEY_DZ]]
-    dx = dx + element.dx
-    dy = dy + element.dy
-    dz = dz + element.dz
+    dx:Tensor = element.dx + data.get(KEY_DX, 0.0)
+    dy:Tensor = element.dy + data.get(KEY_DY, 0.0)
+    dz:Tensor = element.dz + data.get(KEY_DZ, 0.0)
 
-    wx:Tensor
-    wy:Tensor
-    wz:Tensor
-    wx, wy, wz = [data[key] for key in [KEY_WX, KEY_WY, KEY_WZ]]
-    wx = wx + element.wx
-    wy = wy + element.wy
-    wz = wz + element.wz    
+    wx:Tensor = element.wx + data.get(KEY_WX, 0.0)
+    wy:Tensor = element.wy + data.get(KEY_WY, 0.0)
+    wz:Tensor = element.wz + data.get(KEY_WZ, 0.0)
 
-    state = tx(state, +dx)
-    state = ty(state, +dy)
-    state = tz(state, +dz, dp)
+    if not element.is_inversed:
 
-    state = rx(state, +wx, dp)
-    state = ry(state, +wy, dp)
-    state = rz(state, +wz)
+        state = tx(state, +dx)
+        state = ty(state, +dy)
+        state = tz(state, +dz, dp)
 
-    state = element(state, data=data, alignment=False)
+        state = rx(state, +wx, dp)
+        state = ry(state, +wy, dp)
+        state = rz(state, +wz)
 
-    if element.flag:
-        state = ry(state, +angle/2, dp)
-        state = tz(state, -2.0*length/angle*(angle/2.0).sin(), dp)
-        state = ry(state, +angle/2, dp)
+        state = element(state, data=data, alignment=False)
+
+        if element.flag:
+            state = ry(state, +angle/2, dp)
+            state = tz(state, -2.0*length/angle*(angle/2.0).sin(), dp)
+            state = ry(state, +angle/2, dp)
+        else:
+            state = tz(state, -length, dp)
+
+        state = rz(state, -wz)
+        state = ry(state, -wy, dp)
+        state = rx(state, -wx, dp)
+
+        state = tz(state, -dz, dp)
+        state = ty(state, -dy)
+        state = tx(state, -dx)
+
+        if element.flag:
+            state = ry(state, -angle/2, dp)
+            state = tz(state, +2.0*length/angle*(angle/2.0).sin(), dp)
+            state = ry(state, -angle/2, dp)
+        else:
+            state = tz(state, +length, dp)
+
     else:
-        state = tz(state, -length, dp)
 
-    state = rz(state, -wz)
-    state = ry(state, -wy, dp)
-    state = rx(state, -wx, dp)
+        if element.flag:
+            state = ry(state, +angle/2, dp)
+            state = tz(state, +2.0*length/angle*(angle/2.0).sin(), dp)
+            state = ry(state, +angle/2, dp)
+        else:
+            state = tz(state, +length, dp)
 
-    state = tz(state, -dz, dp)
-    state = ty(state, -dy)
-    state = tx(state, -dx)
+        state = tx(state, +dx)
+        state = ty(state, +dy)
+        state = tz(state, +dz, dp)
 
-    if element.flag:
-        state = ry(state, -angle/2, dp)
-        state = tz(state, +2.0*length/angle*(angle/2.0).sin(), dp)
-        state = ry(state, -angle/2, dp)
-    else:
-        state = tz(state, +length, dp)
+        state = rx(state, +wx, dp)
+        state = ry(state, +wy, dp)
+        state = rz(state, +wz)
+
+        if element.flag:
+            state = ry(state, -angle/2, dp)
+            state = tz(state, -2.0*length/angle*(angle/2.0).sin(), dp)
+            state = ry(state, -angle/2, dp)
+        else:
+            state = tz(state, -length, dp)
+
+        state = element(state, data=data, alignment=False)
+
+        state = rz(state, -wz)
+        state = ry(state, -wy, dp)
+        state = rx(state, -wx, dp)
+
+        state = tz(state, -dz, dp)
+        state = ty(state, -dy)
+        state = tx(state, -dx)
 
     return state

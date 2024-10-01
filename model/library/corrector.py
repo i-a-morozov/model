@@ -24,8 +24,7 @@ from model.library.element import Element
 from model.library.transformations import corrector
 
 type State = Tensor
-type Mapping = Callable[[State], State]
-type ParametricMapping = Callable[[State, Tensor, ...], State]
+type Mapping = Callable[[State, Tensor, ...], State]
 
 class Corrector(Element):
     """
@@ -109,9 +108,7 @@ class Corrector(Element):
         self._lmatrix, self._rmatrix = self.make_matrix()
 
         self._data: list[list[int], list[float]] = None
-        self._step: Mapping
-        self._knob: ParametricMapping
-        self._step, self._knob = self.make_step()
+        self._step: Mapping = self.make_step()
 
 
     def make_matrix(self) -> tuple[Tensor, Tensor]:
@@ -137,7 +134,7 @@ class Corrector(Element):
         return lmatrix, rmatrix
 
 
-    def make_step(self) -> tuple[Mapping, ParametricMapping]:
+    def make_step(self) -> Mapping:
         """
         Generate integration step
 
@@ -147,11 +144,15 @@ class Corrector(Element):
 
         Returns
         -------
-        tuple[Mapping, ParametricMapping]
+        Mapping
 
         """
         _cx: Tensor = self.cx
         _cy: Tensor = self.cy
+
+        if self.is_inversed:
+            _cx = - self.cx
+            _cy = - self.cy
 
         output:bool = self.output
         matrix:bool = self.matrix
@@ -159,21 +160,7 @@ class Corrector(Element):
         def integrator(state:State, cx:Tensor, cy:Tensor) -> State:
             return corrector(state, cx, cy)
 
-        def step(state:State) -> State:
-            if output:
-                container_output = []
-            if matrix:
-                 container_matrix = []
-            state = integrator(state, _cx, _cy)
-            if output:
-                container_output.append(state)
-                self.container_output = torch.stack(container_output)
-            if matrix:
-                container_matrix.append(torch.func.jacrev(integrator)(state, _cx, _cy))
-                self.container_matrix = torch.stack(container_matrix)
-            return state
-
-        def knob(state:State, cx:Tensor, cy:Tensor, dp:Tensor) -> State:
+        def step(state:State, cx:Tensor, cy:Tensor, dp:Tensor) -> State:
             if output:
                 container_output = []
             if matrix:
@@ -187,7 +174,7 @@ class Corrector(Element):
                 self.container_matrix = torch.stack(container_matrix)
             return state
 
-        return step, knob
+        return step
 
 
     @property
@@ -224,7 +211,7 @@ class Corrector(Element):
 
         """
         self._cx = cx
-        self._step, self._knob = self.make_step()
+        self._step = self.make_step()
 
 
     @property
@@ -261,7 +248,7 @@ class Corrector(Element):
 
         """
         self._cy = cy
-        self._step, self._knob = self.make_step()
+        self._step = self.make_step()
 
 
     def __repr__(self) -> str:

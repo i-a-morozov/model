@@ -22,8 +22,7 @@ from model.library.element import Element
 from model.library.transformations import linear
 
 type State = Tensor
-type Mapping = Callable[[State], State]
-type ParametricMapping = Callable[[State, Tensor, ...], State]
+type Mapping = Callable[[State, Tensor, ...], State]
 
 
 class Linear(Element):
@@ -32,8 +31,6 @@ class Linear(Element):
     ----------------------
 
     Zero lenght element, can't be used in insertion mode
-    Note, linear transformation has no deviation variables
-
 
     Returns
     -------
@@ -109,9 +106,7 @@ class Linear(Element):
         self._lmatrix, self._rmatrix = self.make_matrix()
 
         self._data: list[list[int], list[float]] = None
-        self._step: Mapping
-        self._knob: ParametricMapping
-        self._step, self._knob = self.make_step()
+        self._step: Mapping = self.make_step()
 
 
     def make_matrix(self) -> tuple[Tensor, Tensor]:
@@ -137,7 +132,7 @@ class Linear(Element):
         return lmatrix, rmatrix
 
 
-    def make_step(self) -> tuple[Mapping, ParametricMapping]:
+    def make_step(self) -> Mapping:
         """
         Generate integration step
 
@@ -147,11 +142,14 @@ class Linear(Element):
 
         Returns
         -------
-        tuple[Mapping, ParametricMapping]
+        Mapping
 
         """
         _v: Tensor = self.v
         _m: Tensor = self.m
+
+        if self.is_inversed:
+            _m = self.m.inverse()
 
         output:bool = self.output
         matrix:bool = self.matrix
@@ -159,7 +157,7 @@ class Linear(Element):
         def integrator(state:State, vector:Tensor, matrix:Tensor) -> State:
             return linear(state, vector, matrix)
 
-        def step(state:State) -> State:
+        def step(state:State, dp:Tensor) -> State:
             if output:
                 container_output = []
             if matrix:
@@ -173,21 +171,7 @@ class Linear(Element):
                 self.container_matrix = torch.stack(container_matrix)
             return state
 
-        def knob(state:State, dp:Tensor) -> State:
-            if output:
-                container_output = []
-            if matrix:
-                 container_matrix = []
-            state = integrator(state, _v, _m)
-            if output:
-                container_output.append(state)
-                self.container_output = torch.stack(container_output)
-            if matrix:
-                container_matrix.append(torch.func.jacrev(integrator)(state, _v, _m))
-                self.container_matrix = torch.stack(container_matrix)
-            return state
-
-        return step, knob
+        return step
 
 
     @property
@@ -224,7 +208,7 @@ class Linear(Element):
 
         """
         self._v = v
-        self._step, self._knob = self.make_step()
+        self._step = self.make_step()
 
 
     @property
@@ -261,7 +245,7 @@ class Linear(Element):
 
         """
         self._m = m
-        self._step, self._knob = self.make_step()
+        self._step = self.make_step()
 
 
     def __repr__(self) -> str:

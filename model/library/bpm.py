@@ -30,8 +30,7 @@ from model.library.transformations import calibration_forward
 from model.library.transformations import calibration_inverse
 
 type State = Tensor
-type Mapping = Callable[[State], State]
-type ParametricMapping = Callable[[State, Tensor, ...], State]
+type Mapping = Callable[[State, Tensor, ...], State]
 
 
 class BPM(Element):
@@ -112,9 +111,26 @@ class BPM(Element):
         self._lmatrix, self._rmatrix = self.make_matrix()
 
         self._data: list[list[int], list[float]] = None
-        self._step: Mapping
-        self._knob: ParametricMapping
-        self._step, self._knob = self.make_step()
+        self._step: Mapping = self.make_step()
+
+
+    def inverse(self) -> Element:
+        """
+        Inverse element
+
+        Parameters
+        ----------
+        None
+
+        Returns
+        -------
+        Element
+
+        """
+        element = self.clone()
+        element.is_inversed = not element.is_inversed
+        element.direction = {'forward': 'inverse', 'inverse': 'forward'}[element.direction]
+        return element
 
 
     def make_matrix(self) -> tuple[Tensor, Tensor]:
@@ -140,7 +156,7 @@ class BPM(Element):
         return lmatrix, rmatrix
 
 
-    def make_step(self) -> tuple[Mapping, ParametricMapping]:
+    def make_step(self) -> Mapping:
         """
         Generate integration step
 
@@ -150,7 +166,7 @@ class BPM(Element):
 
         Returns
         -------
-        tuple[Mapping, ParametricMapping]
+        Mapping
 
         """
         output:bool = self.output
@@ -161,20 +177,8 @@ class BPM(Element):
         def integrator(state:State, xx:Tensor, xy:Tensor, yx:Tensor, yy:Tensor) -> State:
             return calibration(state, xx, xy, yx, yy)
 
-        def step(state:State) -> State:
-            if output:
-                container_output = []
-            if matrix:
-                 container_matrix = []
-            if output:
-                container_output.append(state)
-                self.container_output = torch.stack(container_output)
-            if matrix:
-                container_matrix.append(torch.func.jacrev(lambda state: state)(state))
-                self.container_matrix = torch.stack(container_matrix)
-            return state
 
-        def knob(state:State, xx:Tensor, xy:Tensor, yx:Tensor, yy:Tensor, dp:Tensor) -> State:
+        def step(state:State, xx:Tensor, xy:Tensor, yx:Tensor, yy:Tensor, dp:Tensor) -> State:
             if output:
                 container_output = []
             if matrix:
@@ -188,7 +192,7 @@ class BPM(Element):
                 self.container_matrix = torch.stack(container_matrix)
             return state
 
-        return step, knob
+        return step
 
     @property
     def direction(self) -> Tensor:
@@ -224,7 +228,7 @@ class BPM(Element):
 
         """
         self._direction = direction
-        self._step, self._knob = self.make_step()
+        self._step = self.make_step()
 
 
     def __repr__(self) -> str:

@@ -36,8 +36,7 @@ from model.library.transformations import sector_bend_fringe
 from model.library.transformations import sector_bend_wedge
 
 type State = Tensor
-type Mapping = Callable[[State], State]
-type ParametricMapping = Callable[[State, Tensor, ...], State]
+type Mapping = Callable[[State, Tensor, ...], State]
 
 
 class Dipole(Element):
@@ -124,7 +123,7 @@ class Dipole(Element):
             number of integrtion steps
         ds: Optional[float], positive
             integration step length
-            if given, input ns value is ignored and ds is used to compute ns = ceil(length/ds)
+            if given, input ns value is ignored and ds is used to compute ns = ceil(length/ds) or 1
             actual integration step is not ds, but length/ns
         order: int, default=0, non-negative
             Yoshida integration order
@@ -172,9 +171,7 @@ class Dipole(Element):
         self._lmatrix, self._rmatrix = self.make_matrix()
 
         self._data: list[list[int], list[float]] = None
-        self._step: Callable[[State], State]
-        self._knob: Callable[[State, Tensor, ...], State]
-        self._step, self._knob = self.make_step()
+        self._step: Mapping = self.make_step()
 
 
     def make_matrix(self) -> tuple[Tensor, Tensor]:
@@ -192,18 +189,26 @@ class Dipole(Element):
         """
         state: State = torch.tensor([0.0, 0.0, 0.0, 0.0], dtype=self.dtype, device=self.device)
 
-        matrix: Tensor = torch.func.jacrev(bend)(state, self.length/self.angle, self.kn, self.ks, self.dp, -0.5*self.length)
+        radius: Tensor = self.length.abs()/self.angle
 
-        lwedge: Tensor = torch.func.jacrev(wedge)(state, self.e1, self.length/self.angle).inverse()
-        rwedge: Tensor = torch.func.jacrev(wedge)(state, self.e2, self.length/self.angle).inverse()
+        matrix: Tensor = torch.func.jacrev(bend)(state, radius, self.kn, self.ks, self.dp, -0.5*self.length)
 
-        lmatrix: Tensor = lwedge @ matrix
-        rmatrix: Tensor = matrix @ rwedge
+        if self.is_inversed:
+            lwedge: Tensor = torch.func.jacrev(wedge)(state, self.e1, radius)
+            rwedge: Tensor = torch.func.jacrev(wedge)(state, self.e2, radius)
+            rmatrix: Tensor = matrix @ lwedge
+            lmatrix: Tensor = rwedge @ matrix
+
+        if not self.is_inversed:
+            lwedge: Tensor = torch.func.jacrev(wedge)(state, self.e1, radius).inverse()
+            rwedge: Tensor = torch.func.jacrev(wedge)(state, self.e2, radius).inverse()
+            lmatrix: Tensor = lwedge @ matrix
+            rmatrix: Tensor = matrix @ rwedge
 
         return lmatrix, rmatrix
 
 
-    def make_step(self) -> tuple[Mapping, ParametricMapping]:
+    def make_step(self) -> Mapping:
         """
         Generate integration step
 
@@ -213,11 +218,11 @@ class Dipole(Element):
 
         Returns
         -------
-        tuple[Mapping, ParametricMapping]
+        Mapping
 
         """
         _ns: int = self.ns
-        _order:int = self.order
+        _ny: int = self.order
         _ds: Tensor = self.length/self.ns
         _dw: Tensor = self.angle
         _e1: Tensor = self.e1
@@ -227,8 +232,12 @@ class Dipole(Element):
         _ms: Tensor = self.ms
         _mo: Tensor = self.mo
         _dp: Tensor = self.dp
-        _dl: Tensor = self.length
-        _r: Tensor = _dl/_dw
+        _dl: Tensor = self.length.abs()
+        _r : Tensor = _dl/_dw
+
+        if self.is_inversed:
+            _e1 = -self.e2
+            _e2 = -self.e1
 
         exact:bool = self.exact
         insertion:bool = self.insertion
@@ -247,16 +256,28 @@ class Dipole(Element):
             return cylindrical_error(state, r, kn, ks, ms, mo, ds)
 
         if exact:
-            def lwedge_wrapper(state:State, epsilon:Tensor, r:Tensor, dp:Tensor) -> State:
-                state = polar(state, epsilon, dp)
-                state = sector_bend_fringe(state, +r, dp)
-                state = sector_bend_wedge(state, -epsilon, r, dp)
-                return state
-            def rwedge_wrapper(state:State, epsilon:Tensor, r:Tensor, dp:Tensor) -> State:
-                state = sector_bend_wedge(state, -epsilon, r, dp)
-                state = sector_bend_fringe(state, -r, dp)
-                state = polar(state, epsilon, dp)
-                return state
+            if self.is_inversed:
+                def rwedge_wrapper(state:State, epsilon:Tensor, r:Tensor, dp:Tensor) -> State:
+                    state = sector_bend_wedge(state, -epsilon, r, dp)
+                    state = sector_bend_fringe(state, -r, dp)
+                    state = polar(state, epsilon, dp)
+                    return state
+                def lwedge_wrapper(state:State, epsilon:Tensor, r:Tensor, dp:Tensor) -> State:
+                    state = polar(state, epsilon, dp)
+                    state = sector_bend_fringe(state, +r, dp)
+                    state = sector_bend_wedge(state, -epsilon, r, dp)
+                    return state
+            if not self.is_inversed:
+                def lwedge_wrapper(state:State, epsilon:Tensor, r:Tensor, dp:Tensor) -> State:
+                    state = polar(state, epsilon, dp)
+                    state = sector_bend_fringe(state, +r, dp)
+                    state = sector_bend_wedge(state, -epsilon, r, dp)
+                    return state
+                def rwedge_wrapper(state:State, epsilon:Tensor, r:Tensor, dp:Tensor) -> State:
+                    state = sector_bend_wedge(state, -epsilon, r, dp)
+                    state = sector_bend_fringe(state, -r, dp)
+                    state = polar(state, epsilon, dp)
+                    return state
             def sqrt_wrapper(state:Tensor, ds:Tensor, r:Tensor, kn:Tensor, ks:Tensor, ms:Tensor, mo:Tensor, dp:Tensor) -> State:
                 return kinematic(state, dp, ds)
             def drif_wrapper(state:Tensor, ds:Tensor, r:Tensor, kn:Tensor, ks:Tensor, ms:Tensor, mo:Tensor, dp:Tensor) -> State:
@@ -264,14 +285,14 @@ class Dipole(Element):
             def kick_wrapper(state:Tensor, ds:Tensor, r:Tensor, kn:Tensor, ks:Tensor, ms:Tensor, mo:Tensor, dp:Tensor) -> State:
                 qx, px, qy, py = state
                 return torch.stack([qx, px - (1 + dp)/r*ds, qy, py])
-            integrator = yoshida(0,  _order, True, [bend_wrapper, sqrt_wrapper, kick_wrapper, drif_wrapper, mult_wrapper])
+            integrator = yoshida(0,  _ny, True, [bend_wrapper, sqrt_wrapper, kick_wrapper, drif_wrapper, mult_wrapper])
 
         if not exact:
             def lwedge_wrapper(state:State, epsilon:Tensor, r:Tensor, dp:Tensor) -> State:
                 return wedge(state, epsilon, r)
             def rwedge_wrapper(state:State, epsilon:Tensor, r:Tensor, dp:Tensor) -> State:
                 return wedge(state, epsilon, r)
-            integrator = yoshida(0, _order, True, [bend_wrapper, mult_wrapper])
+            integrator = yoshida(0, _ny, True, [bend_wrapper, mult_wrapper])
 
         self._data: list[list[int], list[float]] = integrator.table
 
@@ -280,27 +301,7 @@ class Dipole(Element):
                 return lmatrix @ state
             def rmatrix_wrapper(state:State) -> State:
                 return rmatrix @ state
-            def step(state:State) -> State:
-                if output:
-                    container_output = []
-                if matrix:
-                    container_matrix = []
-                state = lmatrix_wrapper(state)
-                state = lwedge_wrapper(state, _e1, _r, _dp)
-                for _ in range(_ns):
-                    state = integrator(state, _ds, _r, _kn, _ks, _ms, _mo, _dp)
-                    if output:
-                        container_output.append(state)
-                    if matrix:
-                         container_matrix.append(torch.func.jacrev(integrator)(state, _ds, _r, _kn, _ks, _ms, _mo, _dp))
-                if output:
-                    self.container_output = torch.stack(container_output)
-                if matrix:
-                    self.container_matrix = torch.stack(container_matrix)
-                state = rwedge_wrapper(state, _e2, _r, _dp)
-                state = rmatrix_wrapper(state)
-                return state
-            def knob(state:State, dw:Tensor, e1:Tensor, e2:Tensor, kn:Tensor, ks:Tensor, ms: Tensor, mo:Tensor, dp:Tensor, dl:Tensor)  -> State:
+            def step(state:State, dw:Tensor, e1:Tensor, e2:Tensor, kn:Tensor, ks:Tensor, ms: Tensor, mo:Tensor, dp:Tensor, dl:Tensor)  -> State:
                 if output:
                     container_output = []
                 if matrix:
@@ -322,25 +323,7 @@ class Dipole(Element):
                 return state
 
         if not insertion:
-            def step(state:State) -> State:
-                if output:
-                    container_output = []
-                if matrix:
-                    container_matrix = []
-                state = lwedge_wrapper(state, _e1, _r, _dp)
-                for _ in range(_ns):
-                    state = integrator(state, _ds, _r, _kn, _ks, _ms, _mo, _dp)
-                    if output:
-                        container_output.append(state)
-                    if matrix:
-                         container_matrix.append(torch.func.jacrev(integrator)(state, _ds, _r, _kn, _ks, _ms, _mo, _dp))
-                if output:
-                    self.container_output = torch.stack(container_output)
-                if matrix:
-                    self.container_matrix = torch.stack(container_matrix)
-                state = rwedge_wrapper(state, _e2, _r, _dp)
-                return state
-            def knob(state:State, dw:Tensor, e1:Tensor, e2:Tensor, kn:Tensor, ks:Tensor, ms: Tensor, mo:Tensor, dp:Tensor, dl:Tensor)  -> State:
+            def step(state:State, dw:Tensor, e1:Tensor, e2:Tensor, kn:Tensor, ks:Tensor, ms: Tensor, mo:Tensor, dp:Tensor, dl:Tensor)  -> State:
                 if output:
                     container_output = []
                 if matrix:
@@ -359,7 +342,7 @@ class Dipole(Element):
                 state = rwedge_wrapper(state, _e2 + e2,(_dl + dl)/(_dw + dw), _dp + dp)
                 return state
 
-        return step, knob
+        return step
 
 
     @property
@@ -397,7 +380,7 @@ class Dipole(Element):
         """
         self._angle = angle
         self._lmatrix, self._rmatrix = self.make_matrix()
-        self._step, self._knob = self.make_step()
+        self._step = self.make_step()
 
 
     @property
@@ -435,7 +418,7 @@ class Dipole(Element):
         """
         self._e1 = e1
         self._lmatrix, self._rmatrix = self.make_matrix()
-        self._step, self._knob = self.make_step()
+        self._step = self.make_step()
 
 
     @property
@@ -473,7 +456,7 @@ class Dipole(Element):
         """
         self._e2 = e2
         self._lmatrix, self._rmatrix = self.make_matrix()
-        self._step, self._knob = self.make_step()
+        self._step = self.make_step()
 
 
     @property
@@ -511,7 +494,7 @@ class Dipole(Element):
         """
         self._kn = kn
         self._lmatrix, self._rmatrix = self.make_matrix()
-        self._step, self._knob = self.make_step()
+        self._step = self.make_step()
 
 
     @property
@@ -549,7 +532,7 @@ class Dipole(Element):
         """
         self._ks = ks
         self._lmatrix, self._rmatrix = self.make_matrix()
-        self._step, self._knob = self.make_step()
+        self._step = self.make_step()
 
 
     @property
@@ -586,7 +569,7 @@ class Dipole(Element):
 
         """
         self._ms = ms
-        self._step, self._knob = self.make_step()
+        self._step = self.make_step()
 
 
     @property
@@ -623,7 +606,7 @@ class Dipole(Element):
 
         """
         self._mo = mo
-        self._step, self._knob = self.make_step()
+        self._step = self.make_step()
 
 
     def __repr__(self) -> str:

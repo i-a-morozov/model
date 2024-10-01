@@ -17,8 +17,7 @@ from model.library.keys import KEY_DP
 from model.library.element import Element
 
 type State = Tensor
-type Mapping = Callable[[State], State]
-type ParametricMapping = Callable[[State, Tensor, ...], State]
+type Mapping = Callable[[State, Tensor, ...], State]
 
 
 class Marker(Element):
@@ -94,9 +93,7 @@ class Marker(Element):
         self._lmatrix, self._rmatrix = self.make_matrix()
 
         self._data: list[list[int], list[float]] = None
-        self._step: Mapping
-        self._knob: ParametricMapping
-        self._step, self._knob = self.make_step()
+        self._step: Mapping = self.make_step()
 
 
     def make_matrix(self) -> tuple[Tensor, Tensor]:
@@ -122,7 +119,7 @@ class Marker(Element):
         return lmatrix, rmatrix
 
 
-    def make_step(self) -> tuple[Mapping, ParametricMapping]:
+    def make_step(self) -> Mapping:
         """
         Generate integration step
 
@@ -132,13 +129,13 @@ class Marker(Element):
 
         Returns
         -------
-        tuple[Mapping, ParametricMapping]
+        Mapping
 
         """
         output:bool = self.output
         matrix:bool = self.matrix
 
-        def step(state:State) -> State:
+        def step(state:State, dp:Tensor) -> State:
             if output:
                 container_output = []
             if matrix:
@@ -151,20 +148,7 @@ class Marker(Element):
                 self.container_matrix = torch.stack(container_matrix)
             return state
 
-        def knob(state:State, dp:Tensor) -> State:
-            if output:
-                container_output = []
-            if matrix:
-                 container_matrix = []
-            if output:
-                container_output.append(state)
-                self.container_output = torch.stack(container_output)
-            if matrix:
-                container_matrix.append(torch.func.jacrev(lambda state: state)(state))
-                self.container_matrix = torch.stack(container_matrix)
-            return state
-
-        return step, knob
+        return step
 
 
     def __repr__(self) -> str:

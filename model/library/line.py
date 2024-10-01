@@ -18,16 +18,8 @@ from torch import Tensor
 
 from model.library.element import Element
 
-from model.library.keys import KEY_DP, KEY_DL, KEY_DW
-from model.library.keys import KEY_DX, KEY_DY, KEY_DZ
-from model.library.keys import KEY_WX, KEY_WY, KEY_WZ
-
-from model.library.transformations import tx, ty, tz
-from model.library.transformations import rx, ry, rz
-
 type State = Tensor
-type Mapping = Callable[[State], State]
-type ParametricMapping = Callable[[State, Tensor, ...], State]
+type Mapping = Callable[[State, Tensor, ...], State]
 
 
 class Line(Element):
@@ -40,7 +32,7 @@ class Line(Element):
     Line
 
     """
-    keys: list[str] = [KEY_DP, KEY_DL, KEY_DW]
+    keys: list[str] = []
 
 
     def __init__(self,
@@ -48,12 +40,6 @@ class Line(Element):
                  sequence:list[Element|Line],
                  propagate:bool=False,
                  dp:float=0.0, *,
-                 dx:float=0.0,
-                 dy:float=0.0,
-                 dz:float=0.0,
-                 wx:float=0.0,
-                 wy:float=0.0,
-                 wz:float=0.0,
                  exact:bool=False,
                  output:bool=False,
                  matrix:bool=False) -> None:
@@ -70,18 +56,6 @@ class Line(Element):
             flat to propagate flags to elements
         dp: float, default=0.0
             momentum deviation
-        dx: float, default=0.0
-            dx alignment error
-        dy: float, default=0.0
-            dy alignment error
-        dz: float, default=0.0
-            dz alignment error
-        wx: float, default=0.0
-            wx alignment error
-        wy: float, default=0.0
-            wy alignment error
-        wz: float, default=0.0
-            wz alignment error
         exact: bool, default=False
             flag to include kinematic term
         output: bool, default=False
@@ -96,12 +70,6 @@ class Line(Element):
         """
         super().__init__(name=name,
                          dp=dp,
-                         dx=dx,
-                         dy=dy,
-                         dz=dz,
-                         wx=wx,
-                         wy=wy,
-                         wz=wz,
                          exact=exact,
                          output=output,
                          matrix=matrix)
@@ -124,6 +92,28 @@ class Line(Element):
                     element.matrix = matrix
 
 
+    def inverse(self) -> Line:
+        """
+        Inverse line
+
+        Parameters
+        ----------
+        None
+
+        Returns
+        -------
+        Element
+
+        """
+        line = self.clone()
+        line.is_inversed = not line.is_inversed
+        sequence = []
+        for element in reversed(line.sequence):
+            sequence.append(element.inverse())
+        line.sequence = sequence
+        return line
+
+
     def make_step(self):
         raise NotImplementedError
 
@@ -132,11 +122,11 @@ class Line(Element):
         raise NotImplementedError
 
 
-    def table(self, *,
-              name:bool=False,
-              alignment:bool=True) -> dict[str,dict[str,Tensor]] | dict[str,dict[str,dict[str,Tensor]]]:
+    def data(self, *,
+             name:bool=False,
+             alignment:bool=True) -> dict[str,dict[str,Tensor]] | dict[str,dict[str,dict[str,Tensor]]]:
         """
-        Generate default deviation table for all unique elements
+        Generate default deviation data for all unique elements
 
         Parameters
         ----------
@@ -147,15 +137,11 @@ class Line(Element):
         dict[str,dict[str,Tensor]] | dict[str,dict[str,dict[str,Tensor]]]
 
         """
-        table: dict[str, dict[str, Tensor]]
-        table = {element.name: element.table(name=False, alignment=alignment) for element in self.sequence}
+        data: dict[str, dict[str, Tensor]]
+        data = {element.name: element.data(name=False, alignment=alignment) for element in self.sequence}
         zeros: Tensor = torch.zeros(len(self.keys), dtype=self.dtype, device=self.device)
-        table = {**table, **{key: value for key, value in zip(self.keys, zeros)}}
-        if alignment:
-            keys:list[str] = self._alignment
-            zeros: Tensor = torch.zeros(len(keys), dtype=self.dtype, device=self.device)
-            table = {**table, **{key: value for key, value in zip(keys, zeros)}}
-        return table if not name else {self.name: table}
+        data = {**data, **{key: value for key, value in zip(self.keys, zeros)}}
+        return data if not name else {self.name: data}
 
 
     def scan(self,
@@ -382,6 +368,7 @@ class Line(Element):
         for index, element in enumerate(self.sequence):
             if element.name == name:
                 return index
+
 
     def positions(self,
                   name:str) -> list[int]:
@@ -798,7 +785,7 @@ class Line(Element):
         data: Optional[dict[str, Tensor]]
             deviation and alignment table
         alignment: bool, default=False
-            flag to apply alignment error
+            flag to apply alignment error (passed to elements)
 
         Returns
         -------
@@ -811,55 +798,6 @@ class Line(Element):
             container_output: list[Tensor] = []
         if self.matrix:
             container_matrix: list[Tensor] = []
-
-        if not alignment:
-            for element in self.sequence:
-                state = element(state, alignment=alignment, data=data.get(element.name))
-                if self.output:
-                    if self.propagate:
-                        container_output.append(element.container_output)
-                    else:
-                        container_output.append(state)
-                if self.matrix:
-                    if self.propagate:
-                        container_matrix.append(element.container_matrix)
-                    else:
-                        matrix = torch.func.jacrev(lambda state: element(state, alignment=alignment, data=data.get(element.name)))(state)
-                        container_matrix.append(matrix)
-            if self.output:
-                self.container_output = torch.vstack(container_output)
-            if self.matrix:
-                self.container_matrix = torch.vstack(container_matrix)
-            return state
-
-        dp:Tensor = self.dp + data.get(KEY_DP, 0.0)
-        length:Tensor = self.length + data.get(KEY_DL, 0.0)
-        if self.flag:
-            angle:Tensor = self.angle + data.get(KEY_DW, 0.0)
-
-        dx:Tensor
-        dy:Tensor
-        dz:Tensor
-        dx, dy, dz = [data[key] for key in [KEY_DX, KEY_DY, KEY_DZ]]
-        dx = dx + self.dx
-        dy = dy + self.dy
-        dz = dz + self.dz
-
-        wx:Tensor
-        wy:Tensor
-        wz:Tensor
-        wx, wy, wz = [data[key] for key in [KEY_WX, KEY_WY, KEY_WZ]]
-        wx = wx + self.wx
-        wy = wy + self.wy
-        wz = wz + self.wz
-
-        state = tx(state, +dx)
-        state = ty(state, +dy)
-        state = tz(state, +dz, dp)
-
-        state = rx(state, +wx, dp)
-        state = ry(state, +wy, dp)
-        state = rz(state, +wz)
 
         for element in self.sequence:
             state = element(state, alignment=alignment, data=data.get(element.name))
@@ -874,32 +812,11 @@ class Line(Element):
                 else:
                     matrix = torch.func.jacrev(lambda state: element(state, alignment=alignment, data=data.get(element.name)))(state)
                     container_matrix.append(matrix)
+
         if self.output:
             self.container_output = torch.vstack(container_output)
         if self.matrix:
             self.container_matrix = torch.vstack(container_matrix)
-
-        if element.flag:
-            state = ry(state, +angle/2, dp)
-            state = tz(state, -2.0*length/angle*(angle/2.0).sin(), dp)
-            state = ry(state, +angle/2, dp)
-        else:
-            state = tz(state, -length, dp)
-
-        state = rz(state, -wz)
-        state = ry(state, -wy, dp)
-        state = rx(state, -wx, dp)
-
-        state = tz(state, -dz, dp)
-        state = ty(state, -dy)
-        state = tx(state, -dx)
-
-        if element.flag:
-            state = ry(state, -angle/2, dp)
-            state = tz(state, +2.0*length/angle*(angle/2.0).sin(), dp)
-            state = ry(state, -angle/2, dp)
-        else:
-            state = tz(state, +length, dp)
 
         return state
 

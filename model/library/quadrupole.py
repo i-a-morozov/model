@@ -25,8 +25,7 @@ from model.library.transformations import quadrupole
 from model.library.transformations import kinematic
 
 type State = Tensor
-type Mapping = Callable[[State], State]
-type ParametricMapping = Callable[[State, Tensor, ...], State]
+type Mapping = Callable[[State, Tensor, ...], State]
 
 class Quadrupole(Element):
     """
@@ -91,7 +90,7 @@ class Quadrupole(Element):
             number of integrtion steps
         ds: Optional[float], positive
             integration step length
-            if given, input ns value is ignored and ds is used to compute ns = ceil(length/ds)
+            if given, input ns value is ignored and ds is used to compute ns = ceil(length/ds) or 1
             actual integration step is not ds, but length/ns
         order: int, default=0, non-negative
             Yoshida integration order
@@ -134,9 +133,7 @@ class Quadrupole(Element):
         self._lmatrix, self._rmatrix = self.make_matrix()
 
         self._data: list[list[int], list[float]] = None
-        self._step: Mapping
-        self._knob: ParametricMapping
-        self._step, self._knob = self.make_step()
+        self._step: Mapping = self.make_step()
 
 
     def make_matrix(self) -> tuple[Tensor, Tensor]:
@@ -162,7 +159,7 @@ class Quadrupole(Element):
         return lmatrix, rmatrix
 
 
-    def make_step(self) -> tuple[Mapping, ParametricMapping]:
+    def make_step(self) -> Mapping:
         """
         Generate integration step
 
@@ -172,11 +169,11 @@ class Quadrupole(Element):
 
         Returns
         -------
-        tuple[Mapping, ParametricMapping]
+        Mapping
 
         """
         _ns: int = self.ns
-        _order:int = self.order
+        _ny: int = self.order
         _ds: Tensor = self.length/self.ns
         _kn: Tensor = self.kn
         _ks: Tensor = self.ks
@@ -198,7 +195,7 @@ class Quadrupole(Element):
         if exact:
             def sqrt_wrapper(state:State, ds:Tensor, kn:Tensor, ks:Tensor, dp:Tensor) -> State:
                 return kinematic(state, dp, ds)
-            integrator = yoshida(0, _order, True, [quad_wrapper, sqrt_wrapper])
+            integrator = yoshida(0, _ny, True, [quad_wrapper, sqrt_wrapper])
             self._data: list[list[int], list[float]] = integrator.table
 
         if not exact:
@@ -210,25 +207,7 @@ class Quadrupole(Element):
                 return lmatrix @ state
             def rmatrix_wrapper(state:State) -> State:
                 return rmatrix @ state
-            def step(state:State) -> State:
-                if output:
-                    container_output = []
-                if matrix:
-                    container_matrix = []
-                state = lmatrix_wrapper(state)
-                for _ in range(_ns):
-                    state = integrator(state, _ds, _kn, _ks, _dp)
-                    if output:
-                        container_output.append(state)
-                    if matrix:
-                         container_matrix.append(torch.func.jacrev(integrator)(state, _ds, _kn, _ks, _dp))
-                if output:
-                    self.container_output = torch.stack(container_output)
-                if matrix:
-                    self.container_matrix = torch.stack(container_matrix)
-                state = rmatrix_wrapper(state)
-                return state
-            def knob(state:State, kn:Tensor, ks:Tensor, dp:Tensor, dl:Tensor) -> State:
+            def step(state:State, kn:Tensor, ks:Tensor, dp:Tensor, dl:Tensor) -> State:
                 if output:
                     container_output = []
                 if matrix:
@@ -248,23 +227,7 @@ class Quadrupole(Element):
                 return state
 
         if not insertion:
-            def step(state:State) -> State:
-                if output:
-                    container_output = []
-                if matrix:
-                     container_matrix = []
-                for _ in range(_ns):
-                    state = integrator(state, _ds, _kn, _ks, _dp)
-                    if output:
-                        container_output.append(state)
-                    if matrix:
-                        container_matrix.append(torch.func.jacrev(integrator)(state, _ds, _kn, _ks, _dp))
-                if output:
-                    self.container_output = torch.stack(container_output)
-                if matrix:
-                    self.container_matrix = torch.stack(container_matrix)
-                return state
-            def knob(state:State, kn:Tensor, ks:Tensor, dp:Tensor, dl:Tensor) -> State:
+            def step(state:State, kn:Tensor, ks:Tensor, dp:Tensor, dl:Tensor) -> State:
                 if output:
                     container_output = []
                 if matrix:
@@ -281,7 +244,7 @@ class Quadrupole(Element):
                     self.container_matrix = torch.stack(container_matrix)
                 return state
 
-        return step, knob
+        return step
 
 
     @property
@@ -319,7 +282,7 @@ class Quadrupole(Element):
         """
         self._kn = kn
         self._lmatrix, self._rmatrix = self.make_matrix()
-        self._step, self._knob = self.make_step()
+        self._step = self.make_step()
 
 
     @property
@@ -357,7 +320,7 @@ class Quadrupole(Element):
         """
         self._ks = ks
         self._lmatrix, self._rmatrix = self.make_matrix()
-        self._step, self._knob = self.make_step()
+        self._step = self.make_step()
 
 
     def __repr__(self) -> str:

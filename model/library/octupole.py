@@ -26,8 +26,7 @@ from model.library.transformations import octupole
 from model.library.transformations import kinematic
 
 type State = Tensor
-type Mapping = Callable[[State], State]
-type ParametricMapping = Callable[[State, Tensor, ...], State]
+type Mapping = Callable[[State, Tensor, ...], State]
 
 class Octupole(Element):
     """
@@ -89,7 +88,7 @@ class Octupole(Element):
             number of integrtion steps
         ds: Optional[float], positive
             integration step length
-            if given, input ns value is ignored and ds is used to compute ns = ceil(length/ds)
+            if given, input ns value is ignored and ds is used to compute ns = ceil(length/ds) or 1
             actual integration step is not ds, but length/ns
         order: int, default=0, non-negative
             Yoshida integration order
@@ -131,9 +130,7 @@ class Octupole(Element):
         self._lmatrix, self._rmatrix = self.make_matrix()
 
         self._data: list[list[int], list[float]] = None
-        self._step: Mapping
-        self._knob: ParametricMapping
-        self._step, self._knob = self.make_step()
+        self._step: Mapping = self.make_step()
 
 
     def make_matrix(self) -> tuple[Tensor, Tensor]:
@@ -159,7 +156,7 @@ class Octupole(Element):
         return lmatrix, rmatrix
 
 
-    def make_step(self) -> tuple[Mapping, ParametricMapping]:
+    def make_step(self) -> Mapping:
         """
         Generate integration step
 
@@ -169,11 +166,11 @@ class Octupole(Element):
 
         Returns
         -------
-        tuple[Mapping, ParametricMapping]
+        Mappping
 
         """
         _ns: int = self.ns
-        _order:int = self.order
+        _ny: int = self.order
         _ds: Tensor = self.length/self.ns
         _mo: Tensor = self.mo
         _dp: Tensor = self.dp
@@ -197,10 +194,10 @@ class Octupole(Element):
         if exact:
             def sqrt_wrapper(state:State, ds:Tensor, mo:Tensor, dp:Tensor) -> State:
                 return kinematic(state, dp, ds)
-            integrator = yoshida(0, _order, True, [drif_wrapper, octu_wrapper, sqrt_wrapper])
+            integrator = yoshida(0, _ny, True, [drif_wrapper, octu_wrapper, sqrt_wrapper])
 
         if not exact:
-            integrator = yoshida(0, _order, True, [drif_wrapper, octu_wrapper])
+            integrator = yoshida(0, _ny, True, [drif_wrapper, octu_wrapper])
 
         self._data: list[list[int], list[float]] = integrator.table
 
@@ -209,25 +206,7 @@ class Octupole(Element):
                 return lmatrix @ state
             def rmatrix_wrapper(state:State) -> State:
                 return rmatrix @ state
-            def step(state:State) -> State:
-                if output:
-                    container_output = []
-                if matrix:
-                    container_matrix = []
-                state = lmatrix_wrapper(state)
-                for _ in range(_ns):
-                    state = integrator(state, _ds, _mo, _dp)
-                    if output:
-                        container_output.append(state)
-                    if matrix:
-                         container_matrix.append(torch.func.jacrev(integrator)(state, _ds, _mo, _dp))
-                if output:
-                    self.container_output = torch.stack(container_output)
-                if matrix:
-                    self.container_matrix = torch.stack(container_matrix)
-                state = rmatrix_wrapper(state)
-                return state
-            def knob(state:State, mo:Tensor, dp:Tensor, dl:Tensor)  -> State:
+            def step(state:State, mo:Tensor, dp:Tensor, dl:Tensor)  -> State:
                 if output:
                     container_output = []
                 if matrix:
@@ -247,23 +226,7 @@ class Octupole(Element):
                 return state
 
         if not insertion:
-            def step(state:State) -> State:
-                if output:
-                    container_output = []
-                if matrix:
-                     container_matrix = []
-                for _ in range(_ns):
-                    state = integrator(state, _ds, _mo, _dp)
-                    if output:
-                        container_output.append(state)
-                    if matrix:
-                        container_matrix.append(torch.func.jacrev(integrator)(state, _ds, _mo, _dp))
-                if output:
-                    self.container_output = torch.stack(container_output)
-                if matrix:
-                    self.container_matrix = torch.stack(container_matrix)
-                return state
-            def knob(state:State, mo:Tensor, dp:Tensor, dl:Tensor)  -> State:
+            def step(state:State, mo:Tensor, dp:Tensor, dl:Tensor)  -> State:
                 if output:
                     container_output = []
                 if matrix:
@@ -280,7 +243,7 @@ class Octupole(Element):
                     self.container_matrix = torch.stack(container_matrix)
                 return state
 
-        return step, knob
+        return step
 
 
     @property

@@ -42,7 +42,7 @@ def wrapper(element:Element,
     Callable[[Tensor, ...], Tensor] | tuple[Callable[[Tensor, ...], Tensor], dict]
 
     """
-    data = element.table(name=name, alignment=alignment)
+    data = element.data(name=name, alignment=alignment)
     def wrapper(state, *values):
         for (group, value) in zip(groups, values):
             path, names, parameter = group
@@ -62,7 +62,7 @@ def group(line:Line,
           *groups:tuple[str, list[str]|None, list[str]|None, list[str|None]],
           root:bool=False,
           name:str='LINE',
-          alignment:bool=True) -> tuple[Callable[[Tensor, ...], Tensor], list[tuple[None, list[str], str]], Line]:
+          alignment:bool=False) -> tuple[Callable[[Tensor, ...], Tensor], list[tuple[None, list[str], str]], Line]:
     """
     Generate group wrapper (one or more elements/lines)
 
