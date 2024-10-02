@@ -24,9 +24,6 @@ def wrapper(element:Element,
     """
     Generate wrapper function for an element/line
 
-    Note, several tensors can be binded to selected deviation parameters
-    In this case, the final values is given by the sum of the tensors
-
     Parameters
     ----------
     element : Element
@@ -297,12 +294,12 @@ def _update(data:dict,
             if isinstance(value, dict):
                 _update(value, parameter, target, flag=True)
             if key == parameter:
-                data[key] = data[key] + target
+                data[key] = target
                 return
         return
     if name in data:
         if parameter in data[name]:
-            data[name][parameter] = data[name][parameter] + target
+            data[name][parameter] = target
             return
     for key, value in data.items():
         if isinstance(value, dict):
