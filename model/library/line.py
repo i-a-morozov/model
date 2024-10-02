@@ -408,21 +408,21 @@ class Line(Element):
 
     @start.setter
     def start(self,
-              start:str) -> None:
+              start:int|str) -> None:
         """
         Set the first element
 
         Parameters
         ----------
-        start: str
-            element name
+        start: int|str
+            element position|name
 
         Returns
         -------
         None
 
         """
-        index = self.position(start)
+        index = self.position(start) if isinstance(start, str) else start
         self.sequence = self.sequence[index:] + self.sequence[:index]
 
 
