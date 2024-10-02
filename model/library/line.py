@@ -8,6 +8,7 @@ Group ordered sequence of elements or (nested) lines
 from __future__ import annotations
 
 from math import ceil
+from collections import Counter
 
 from typing import Callable
 from typing import Optional
@@ -333,6 +334,102 @@ class Line(Element):
         self.sequence = [*self.scan('name')]
 
 
+    def rename(self,
+               old:str,
+               new:str) -> None:
+        """
+        Rename first levelelement
+
+        Parameters
+        ----------
+        old: str
+            old name
+        new: str
+            new name
+
+        Returns
+        -------
+        None
+
+        """
+        self[old].name = new
+
+
+    def append(self,
+               element:Element) -> None:
+        """
+        Append element
+
+        Parameters
+        ----------
+        element: Element
+            element
+
+        Returns
+        -------
+        None
+
+        """
+        self.sequence.append(element)
+
+
+    def insert(self,
+               element:Element,
+               name:str) -> None:
+        """
+        Insert element after the element with given name
+
+        Parameters
+        ----------
+        element: Element
+            element
+        name: str
+            name
+
+        Returns
+        -------
+        None
+
+        """
+        self.sequence.insert(self.position(name) + 1, element)
+
+
+    def remove(self,
+               name:str) -> None:
+        """
+        Remove first occurrance of element with given name
+
+        Parameters
+        ----------
+        name: str
+            element name
+
+        Returns
+        -------
+        None
+
+        """
+        self.sequence.remove(self[name])
+
+    def replace(self, name:str, element:Element) -> None:
+        """
+        Replace first occurrance of element with given name
+
+        Parameters
+        ----------
+        name: str
+            element name
+        element: Element
+            element
+
+        Returns
+        -------
+        None
+
+        """
+        self.sequence[self.position(name)] = element
+
+
     @property
     def names(self) -> list[str]:
         """
@@ -438,6 +535,23 @@ class Line(Element):
         }
 
 
+    @property
+    def duplicates(self) -> bool:
+        """
+        Check for first level duplicates (elements with same name)
+
+        Parameters
+        ----------
+        None
+
+        Returns
+        -------
+        bool
+
+        """
+        return len(self.names) != len(set(self.names))
+
+
     def itemize(self, select:str) -> list[str]:
         """
         Get list of all elements with matching kind
@@ -453,6 +567,24 @@ class Line(Element):
 
         """
         return [key for key, (kind, *_) in self.unique.items() if kind == select]
+
+
+    @property
+    def describe(self) -> dict[str, int]:
+        """
+        Return number of elements (with unique names) for each kind
+
+        Parameters
+        ----------
+        None
+
+        Returns
+        -------
+        dict[str, int]
+
+        """
+        kinds, *_ = zip(*self.unique.values())
+        return dict(Counter(kinds))
 
 
     @property
