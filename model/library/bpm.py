@@ -232,4 +232,4 @@ class BPM(Element):
 
 
     def __repr__(self) -> str:
-        return f'{self.__class__.__name__}(name="{self._name}", direction={self._direction})'
+        return f'{self.__class__.__name__}(name="{self._name}", direction="{self._direction}")'
