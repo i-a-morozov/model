@@ -11,7 +11,11 @@ from typing import Callable
 import torch
 from torch import Tensor
 
+from ndmap.series import series
+from ndmap.propagate import identity
+from ndmap.propagate import propagate
 from ndmap.pfp import fixed_point
+from ndmap.pfp import parametric_fixed_point
 
 from model.library.line import Line
 
