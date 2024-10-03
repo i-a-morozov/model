@@ -19,10 +19,10 @@ add_rc       : Add RC from lattice to configuration table
 
 External
 
-rename (util)
-insert (util)
-select (util)
-cast   (util)
+rename (command.util)
+insert (command.util)
+select (command.util)
+cast   (command.util)
 
 """
 from __future__ import annotations
@@ -35,10 +35,10 @@ from copy import deepcopy
 
 from math import pi
 
-from model.util import Table
-from model.util import cast
-from model.util import rename
-from model.util import insert
+from model.command.util import Table
+from model.command.util import cast
+from model.command.util import rename
+from model.command.util import insert
 
 def load_tfs(path:Path, *,
              postfix:str='_') -> tuple[dict[str, str|int|float], dict[str, dict[str, str|int|float]]]:
@@ -57,7 +57,7 @@ def load_tfs(path:Path, *,
     tuple[dict[str, str|int|float], dict[str, dict[str, str|int|float]]]
         {key: value} (parameters)
         {location: {key: value}} (columns)
-    
+
     """
     parameters:dict[str, str|int|float] = {}
     columns:dict[str, dict[str, str|int|float]] = {}
@@ -103,7 +103,7 @@ def load_sdds(path:Path, *,
     tuple[dict[str, str|int|float], dict[str, dict[str, str|int|float]]]
         {key: value} (parameters)
         {location: {key: value}} (columns)
-    
+
     """
     parameters:dict[str, str|int|float] = {}
     columns:dict[str, dict[str, str|int|float]] = {}
@@ -121,7 +121,7 @@ def load_sdds(path:Path, *,
                 continue
             if line.startswith('&parameter'):
                 np += 1
-                _, name, *_, unit, _ = line.split()    
+                _, name, *_, unit, _ = line.split()
                 _, name = name.split('=')
                 name, _ = name.split(',')
                 _, unit = unit.split('=')
@@ -131,14 +131,14 @@ def load_sdds(path:Path, *,
                 up.append(unit)
                 continue
             if line.startswith('&column'):
-                _, name, *_, unit, _ = line.split()    
+                _, name, *_, unit, _ = line.split()
                 _, name = name.split('=')
                 name, _ = name.split(',')
                 _, unit = unit.split('=')
                 unit, _ = unit.split(',')
                 unit = {'string': str, 'long': int, 'double': float}[unit]
                 kc.append(name)
-                uc.append(unit)                
+                uc.append(unit)
                 continue
             if line.startswith('&data'):
                 continue
@@ -160,15 +160,15 @@ def load_sdds(path:Path, *,
                 size = 1
                 while f'{name}_{size}' in columns:
                     size +=1
-                name = f'{name}{postfix}{size}'            
+                name = f'{name}{postfix}{size}'
             columns[name] = values
     return parameters, columns
 
 
-def convert(columns: dict[str, dict[str, str|int|float]], 
+def convert(columns: dict[str, dict[str, str|int|float]],
             kind:Literal['TFS', 'SDDS'],
             kind_monitor:list[str],
-            kind_virtual:list[str], *, 
+            kind_virtual:list[str], *,
             dispersion:bool=False,
             rc:bool=False,
             name_monitor:Optional[list[str]]=None,
@@ -206,38 +206,38 @@ def convert(columns: dict[str, dict[str, str|int|float]],
         virtual kind
     rule: Optional[dict[str, str]]
         keys rename rule (appended to default rules)
-        
+
     Returns
     -------
     Table
-        
+
     """
     rule_tfs:dict[str, str] = {
         'KEYWORD': 'TYPE',
-        'S'      : 'S'  , 
-        'ALFX'   : 'AX' , 
-        'BETX'   : 'BX' , 
-        'MUX'    : 'FX' , 
-        'ALFY'   : 'AY' , 
-        'BETY'   : 'BY' , 
-        'MUY'    : 'FY' , 
-        'DX'     : 'DQX', 
-        'DPX'    : 'DPX', 
-        'DY'     : 'DQY', 
-        'DPY'    : 'DPY',      
+        'S'      : 'S'  ,
+        'ALFX'   : 'AX' ,
+        'BETX'   : 'BX' ,
+        'MUX'    : 'FX' ,
+        'ALFY'   : 'AY' ,
+        'BETY'   : 'BY' ,
+        'MUY'    : 'FY' ,
+        'DX'     : 'DQX',
+        'DPX'    : 'DPX',
+        'DY'     : 'DQY',
+        'DPY'    : 'DPY',
     }
     rule_sdds:dict[str, str] = {
         'ElementType' : 'TYPE',
-        's'           : 'S'  , 
-        'alphax'      : 'AX' , 
-        'betax'       : 'BX' , 
-        'psix'        : 'FX' , 
-        'alphay'      : 'AY' , 
-        'betay'       : 'BY' , 
-        'psiy'        : 'FY' , 
-        'etax'        : 'DQX', 
-        'etaxp'       : 'DPX', 
-        'etay'        : 'DQY', 
+        's'           : 'S'  ,
+        'alphax'      : 'AX' ,
+        'betax'       : 'BX' ,
+        'psix'        : 'FX' ,
+        'alphay'      : 'AY' ,
+        'betay'       : 'BY' ,
+        'psiy'        : 'FY' ,
+        'etax'        : 'DQX',
+        'etaxp'       : 'DPX',
+        'etay'        : 'DQY',
         'etayp'       : 'DPY',
         'R11'         : 'T11',
         'R12'         : 'T12',
@@ -254,11 +254,11 @@ def convert(columns: dict[str, dict[str, str|int|float]],
         'R41'         : 'T41',
         'R42'         : 'T42',
         'R43'         : 'T43',
-        'R44'         : 'T44',         
+        'R44'         : 'T44',
     }
     rule:dict[str, str] = {**({'TFS': rule_tfs, 'SDDS': rule_sdds}[kind]), **(rule if rule else {})}
     name_monitor:list[str] = name_monitor if name_monitor else []
-    name_virtual:list[str] = name_virtual if name_virtual else []    
+    name_virtual:list[str] = name_virtual if name_virtual else []
     table:Table = deepcopy(columns)
     head:str
     tail:str
@@ -275,14 +275,14 @@ def convert(columns: dict[str, dict[str, str|int|float]],
             table[location][source] = monitor
             continue
         if value in kind_virtual or location in name_virtual:
-            table[location][source] = virtual    
+            table[location][source] = virtual
             continue
     table = rename(table, rule, drop=True)
     if kind == 'TFS':
         scale:float = 2.0*pi
         for location in table.keys():
             table[location]['FX'] *= scale
-            table[location]['FY'] *= scale    
+            table[location]['FY'] *= scale
     if dispersion:
         locations:dict[str, float] = {location: 0.0 for location in table.keys()}
         table = insert(table, 'DQX', locations, replace=False, apply=sum)
@@ -293,12 +293,12 @@ def convert(columns: dict[str, dict[str, str|int|float]],
         locations:dict[str, float] = {location: None for location in table.keys()}
         table = insert(table, 'RC', locations, replace=True)
     table['HEAD']['TYPE'] = virtual
-    table['TAIL']['TYPE'] = virtual    
+    table['TAIL']['TYPE'] = virtual
     locations:list[str] = sorted(table.keys(), key=lambda location: table[location]['S'] - (location == 'HEAD') + (location == 'TAIL'))
     return {location: table[location] for location in locations}
 
 
-def parse(line:str, *, 
+def parse(line:str, *,
           rc:bool=False) -> list[str, dict[str, str|int|float]]:
     """
     Parse MADX or ELEGANT element or line
@@ -325,10 +325,10 @@ def parse(line:str, *,
     Returns
     -------
     list[str, dict[str, str|int|float]]
-    
-    """ 
+
+    """
     name, *data = line.split(',')
-    *name, kind = name.split(':')    
+    *name, kind = name.split(':')
     name = ':'.join(name).strip()
     if ':LINE=' in line.replace(' ', '').upper():
         _, data = (kind + ',' + ','.join(data)).split('=', 1)
@@ -356,15 +356,15 @@ def load_lattice(path:Path, *,
     Parameters
     ----------
     path: Path
-        input path 
+        input path
     rc: bool, default=False
-        flag to parse comment as element        
+        flag to parse comment as element
 
     Returns
     -------
     dict[str,dict[str,str|int|float|dict]]
-    
-    """ 
+
+    """
     lattice: dict[str,dict[str,str|int|float|dict]] = {}
     name:str
     data:dict[str, str|int|float]
@@ -377,7 +377,7 @@ def load_lattice(path:Path, *,
 
 
 def text_lattice(kind:Literal['MADX', 'LTE'],
-                 lattice:dict[str,dict[str,str|int|float|dict]], *, 
+                 lattice:dict[str,dict[str,str|int|float|dict]], *,
                  rc:bool=False) -> str:
     """
     Convert MADX or ELEGANT data to text
@@ -389,12 +389,12 @@ def text_lattice(kind:Literal['MADX', 'LTE'],
     lattice: dict[str,dict[str,str|int|float|dict]]
         lattice data
     rc: bool, default=False
-        flag to parse RC as comment          
+        flag to parse RC as comment
 
     Returns
     -------
     str
-    
+
     """
     text:str = ''
     line:str
@@ -413,7 +413,7 @@ def text_lattice(kind:Literal['MADX', 'LTE'],
                         continue
                     name, data = value
                     if not name:
-                        continue    
+                        continue
                     last = f' ! {text_lattice(kind, {name: data}, rc=False).rstrip('\n')}'
                 continue
             if key == 'KIND':
@@ -431,11 +431,11 @@ def rift_lattice(lattice:dict[str,dict[str,str|int|float|dict]],
                  monitor:str,
                  virtual:str,
                  kind_monitor:list[str],
-                 kind_virtual:list[str], *, 
+                 kind_virtual:list[str], *,
                  include_monitor:Optional[list[str]]=None,
                  include_virtual:Optional[list[str]]=None,
                  exclude_monitor:Optional[list[str]]=None,
-                 exclude_virtual:Optional[list[str]]=None,                 
+                 exclude_virtual:Optional[list[str]]=None,
                  prefix_monitor:str='M',
                  prefix_virtual:str='V') -> dict[str,dict[str,str|int|float|dict]]:
     """
@@ -467,20 +467,20 @@ def rift_lattice(lattice:dict[str,dict[str,str|int|float|dict]],
         list of element names to exclude form virtual locations
     prefix_monitor: str, default='M'
         monitor rename prefix
-    prefix_virtual: str, default='V' 
+    prefix_virtual: str, default='V'
         virtual rename prefix
 
     Returns
     -------
     dict[str,dict[str,str|int|float|dict]]
-    
+
     """
     result:dict[str,dict[str,str|int|float|dict]] = {}
     lattice:dict[str,dict[str,str|int|float|dict]] = deepcopy(lattice)
     include_monitor:list[str] = include_monitor if include_monitor else []
-    include_virtual:list[str] = include_virtual if include_virtual else []  
+    include_virtual:list[str] = include_virtual if include_virtual else []
     exclude_monitor:list[str] = exclude_monitor if exclude_monitor else []
-    exclude_virtual:list[str] = exclude_virtual if exclude_virtual else []  
+    exclude_virtual:list[str] = exclude_virtual if exclude_virtual else []
     element:str
     data:dict[str,str|int|float|dict]
     for element, data in lattice.items():
@@ -499,16 +499,16 @@ def rift_lattice(lattice:dict[str,dict[str,str|int|float|dict]],
         data.pop('RC')
         result[f'{prefix}_{element}'] = {'KIND': select, 'RC': [element, data]}
         data = data.copy()
-        if 'L' in data: 
+        if 'L' in data:
             data['L'] /= 2.0
-        if 'ANGLE' in data: 
+        if 'ANGLE' in data:
             data['ANGLE'] /= 2.0
         result[f'H_{element}'] = data
-        result[element] = {'KIND': 'LINE', 'SEQUENCE': [f'H_{element}', f'{prefix}_{element}', f'H_{element}']} 
+        result[element] = {'KIND': 'LINE', 'SEQUENCE': [f'H_{element}', f'{prefix}_{element}', f'H_{element}']}
     return result
 
 
-def add_rc(table:Table, 
+def add_rc(table:Table,
            lattice:dict[str,dict[str,str|int|float|dict]], *,
            monitor:str='MONITOR',
            virtual:str='VIRTUAL') -> Table:
@@ -523,12 +523,12 @@ def add_rc(table:Table,
         lattice data
     monitor: str, default='MONITOR'
         monitor kind
-    virtual: str, default='VIRTUAL'        
+    virtual: str, default='VIRTUAL'
 
     Returns
     -------
     Table
-    
+
     """
     table:Table = deepcopy(table)
     location:str

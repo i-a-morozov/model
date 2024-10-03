@@ -8,16 +8,16 @@ Compute closed orbit and twiss parameters
 
 External
 
-mod          (util)
-load         (util)
-save         (util)
-insert       (util)
+mod          (command.util)
+load         (command.util)
+save         (command.util)
+insert       (command.util)
 
-load_tfs     (external)
-oad_sdds     (external)
-convert      (external)
-load_lattice (external)
-add_rc       (external)
+load_tfs     (command.external)
+oad_sdds     (command.external)
+convert      (command.external)
+load_lattice (command.external)
+add_rc       (command.external)
 
 """
 from __future__ import annotations
@@ -29,6 +29,7 @@ from typing import Callable
 from pathlib import Path
 
 from multimethod import multimethod
+
 from torch import Tensor
 from torch import dtype as DataType
 from torch import device as DataDevice
@@ -48,31 +49,31 @@ from twiss import twiss
 from twiss import propagate
 from twiss import advance
 
-from model.util import mod
-from model.util import load
-from model.util import save
-from model.util import insert
+from model.command.util import mod
+from model.command.util import load
+from model.command.util import save
+from model.command.util import insert
 
-from model.external import load_tfs
-from model.external import load_sdds
-from model.external import convert
-from model.external import load_lattice
-from model.external import add_rc
+from model.command.external import load_tfs
+from model.command.external import load_sdds
+from model.command.external import convert
+from model.command.external import load_lattice
+from model.command.external import add_rc
 
 
-class Model:    
+class Model:
     """
-    
+
     Returns
     ----------
     Model class instance
-    
+
     """
     _epsilon:float = 1.0E-12
-    
+
     _virtual:str = 'VIRTUAL'
     _monitor:str = 'MONITOR'
-    
+
     _head:str = 'HEAD'
     _tail:str = 'TAIL'
 
@@ -85,25 +86,25 @@ class Model:
     _rc_cs:list[str] = [
         'AX', 'BX', 'AY', 'BY'
     ]
-    
+
     _rc_nm:list[str] = [
-        'N11', 'N12', 'N13', 'N14', 
-        'N21', 'N22', 'N23', 'N24', 
-        'N31', 'N32', 'N33', 'N34', 
+        'N11', 'N12', 'N13', 'N14',
+        'N21', 'N22', 'N23', 'N24',
+        'N31', 'N32', 'N33', 'N34',
         'N41', 'N42', 'N43', 'N44'
     ]
 
     _rc_tm:list[str] = [
-        'T11', 'T12', 'T13', 'T14', 
-        'T21', 'T22', 'T23', 'T24', 
-        'T31', 'T32', 'T33', 'T34', 
+        'T11', 'T12', 'T13', 'T14',
+        'T21', 'T22', 'T23', 'T24',
+        'T31', 'T32', 'T33', 'T34',
         'T41', 'T42', 'T43', 'T44'
     ]
 
     _rc_dp:list[str] = [
         'DQX', 'DPX', 'DQY', 'DPY'
     ]
-    
+
     _index:dict[str, list[str]] = {
         'CS': [*_rc, *_rc_mu, *_rc_cs, *_rc_dp, 'RC'],
         'NM': [*_rc, *_rc_mu, *_rc_nm, *_rc_dp, 'RC'],
@@ -111,7 +112,7 @@ class Model:
     }
 
 
-    def __init__(self, 
+    def __init__(self,
                  model:Literal['CS', 'NM', 'TM'] = 'CS', *,
                  rc:bool=True,
                  table:Optional[Path | dict[str, dict[str, str | int | float | dict]]] = None,
@@ -119,7 +120,7 @@ class Model:
                  device:DataDevice = DataDevice('cpu')) -> None:
         """
         Model instance initialization
-        
+
         Parameters
         ----------
         model: Literal['CS', 'NM', 'TM'], default='CS'
@@ -140,9 +141,9 @@ class Model:
         """
         self.dtype:DataType = dtype
         self.device:DataDevice = device
-            
+
         self.model:str = model
-        
+
         self.table:Path|dict[str,dict[str,str|int|float|dict]]|None = table
         self.empty:bool = False
         if not self.table:
@@ -151,7 +152,7 @@ class Model:
 
         self.dict:dict[str,dict[str,str|int|float|dict]]
         if isinstance(self.table, dict):
-            self.dict = self.table   
+            self.dict = self.table
         if isinstance(self.table, Path):
             self.dict = load(self.table)
             if rc:
@@ -166,7 +167,7 @@ class Model:
         *_, self.size = self.data_frame.shape
 
         self.name:list[str] = [*self.data_frame.columns]
-        
+
         self.type:list[str] = [*self.data_frame.loc['TYPE'].values]
 
         self.s:list[float] = [*self.data_frame.loc['S'].values]
@@ -189,7 +190,7 @@ class Model:
             'TM': self._set_tm_attributes
         }
         set_attibutes[self.model]()
-        
+
         self.mux:Tensor
         self.muy:Tensor
         *_, (self.mux, self.muy) = self.mu
@@ -201,7 +202,7 @@ class Model:
         self.probe:Tensor = torch.tensor(self.mi, dtype=torch.int64, device=self.device)
         self.other:Tensor = self.probe.roll(-1)
         for location, _ in enumerate(self.other):
-            while self.other[location] < self.other[location - 1]: 
+            while self.other[location] < self.other[location - 1]:
                 self.other[location:].add_(self.size)
         phase:Tensor = torch.vmap(self.advance)(self.probe, self.other)
         self.dmu:Tensor =  mod(phase*(phase.abs() > self._epsilon), 2.0*torch.pi).abs()
@@ -211,16 +212,16 @@ class Model:
 
         for element in self._rc_dp:
             self.__dict__[element.lower()] = torch.tensor(
-                self.data_frame.loc[element].to_numpy(dtype=numpy.float64), 
-                dtype=self.dtype, 
+                self.data_frame.loc[element].to_numpy(dtype=numpy.float64),
+                dtype=self.dtype,
                 device=self.device
             )
-        
+
         self.rc:list[dict] = [*self.data_frame.loc['RC'].values]
 
         self.update()
 
-    
+
     def _set_cs_attributes(self) -> None:
         """
         Set CS model attributes
@@ -236,8 +237,8 @@ class Model:
         """
         for element in self._rc_mu:
             self.__dict__[element.lower()] = torch.tensor(
-                self.data_frame.loc[element].to_numpy(dtype=numpy.float64), 
-                dtype=self.dtype, 
+                self.data_frame.loc[element].to_numpy(dtype=numpy.float64),
+                dtype=self.dtype,
                 device=self.device
             )
 
@@ -245,13 +246,13 @@ class Model:
 
         for element in self._rc_cs:
             self.__dict__[element.lower()] = torch.tensor(
-                self.data_frame.loc[element].to_numpy(dtype=numpy.float64), 
-                dtype=self.dtype, 
+                self.data_frame.loc[element].to_numpy(dtype=numpy.float64),
+                dtype=self.dtype,
                 device=self.device
             )
-        
+
         self.cs:Tensor = torch.stack([self.__dict__[element.lower()] for element in self._rc_cs]).T
-                
+
         self.nm:Tensor = torch.vmap(cs_normal)(self.cs)
 
         for element, value in zip(self._rc_nm, self.nm.reshape(self.size, -1).swapaxes(0, 1)):
@@ -280,8 +281,8 @@ class Model:
         """
         for element in self._rc_mu:
             self.__dict__[element.lower()] = torch.tensor(
-                self.data_frame.loc[element].to_numpy(dtype=numpy.float64), 
-                dtype=self.dtype, 
+                self.data_frame.loc[element].to_numpy(dtype=numpy.float64),
+                dtype=self.dtype,
                 device=self.device
             )
 
@@ -289,13 +290,13 @@ class Model:
 
         for element in self._rc_nm:
             self.__dict__[element.lower()] = torch.tensor(
-                self.data_frame.loc[element].to_numpy(dtype=numpy.float64), 
-                dtype=self.dtype, 
+                self.data_frame.loc[element].to_numpy(dtype=numpy.float64),
+                dtype=self.dtype,
                 device=self.device
             )
 
         self.nm:Tensor = torch.tensor(
-            self.data_frame.loc[self._rc_nm].to_numpy(dtype=numpy.float64), 
+            self.data_frame.loc[self._rc_nm].to_numpy(dtype=numpy.float64),
             dtype=self.dtype, device=self.device
         ).T.reshape(self.size, 4, 4)
 
@@ -303,7 +304,7 @@ class Model:
 
         for element, value in zip(self._rc_cs, self.cs.T):
             self.__dict__[element.lower()] = value
-            
+
         start:Tensor
         start, *_ = self.nm
         self.tm:Tensor = torch.vmap(lambda probe, fx, fy: transport(start, probe, fx, fy))(self.nm, *self.mu.T)
@@ -311,7 +312,7 @@ class Model:
         for element, value in zip(self._rc_tm, self.tm.reshape(self.size, -1).swapaxes(0, 1)):
             self.__dict__[element.lower()] = value
 
-    
+
     def _set_tm_attributes(self) -> None:
         """
         Set TM model attributes
@@ -327,13 +328,13 @@ class Model:
         """
         for element in self._rc_tm:
             self.__dict__[element.lower()] = torch.tensor(
-                self.data_frame.loc[element].to_numpy(dtype=numpy.float64), 
-                dtype=self.dtype, 
+                self.data_frame.loc[element].to_numpy(dtype=numpy.float64),
+                dtype=self.dtype,
                 device=self.device
             )
 
         self.tm:Tensor = torch.tensor(
-            self.data_frame.loc[self._rc_tm].to_numpy(dtype=numpy.float64), 
+            self.data_frame.loc[self._rc_tm].to_numpy(dtype=numpy.float64),
             dtype=self.dtype, device=self.device
         ).T.reshape(self.size, 4, 4)
 
@@ -356,7 +357,7 @@ class Model:
         for element, value in zip(self._rc_mu, mu.T):
             self.__dict__[element.lower()] = value
             for location in range(1, self.size):
-                while self.__dict__[element.lower()][location] < self.__dict__[element.lower()][location - 1]: 
+                while self.__dict__[element.lower()][location] < self.__dict__[element.lower()][location - 1]:
                     self.__dict__[element.lower()][location:].add_(2.0*torch.pi)
 
         self.mu:Tensor = torch.stack([self.__dict__[element.lower()] for element in self._rc_mu]).T
@@ -372,7 +373,7 @@ class Model:
                 other:Tensor) -> Tensor:
         """
         Compute phase advance from probe to other
-            
+
         Both indices can have any integer (tensor) values
         Advance is negative, if the other location is before the probe location
 
@@ -396,30 +397,30 @@ class Model:
         delta = phase.T.diff().squeeze()
         return delta
 
-    
+
     @multimethod
     def advance(self, probe:int, other:int) -> Tensor:
         probe = torch.tensor(probe, dtype=torch.int64, device=self.device)
         other = torch.tensor(other, dtype=torch.int64, device=self.device)
         return self.advance(probe, other)
 
-    
+
     @multimethod
     def advance(self, probe:str, other:str) -> Tensor:
         probe = self.name.index(probe)
         other = self.name.index(other)
         return self.advance(probe, other)
 
-    
+
     @multimethod
     def matrix(self,
                probe:Tensor,
                other:Tensor) -> Tensor:
         """
         Compute transport matrix from probe to other
-            
+
         Both indices can have any integer (tensor) values
-        Inverse of the matrix is computed, if the other location is before the probe location        
+        Inverse of the matrix is computed, if the other location is before the probe location
         One-turn matrix at the probe location is returned if other == probe + size
         If other == probe, identity matrix is returned
 
@@ -439,23 +440,23 @@ class Model:
         group = torch.stack([probe, other])
         index = mod(group, self.size).to(torch.int64)
         return transport(*self.nm[index], *self.advance(probe, other))
-        
-        
+
+
     @multimethod
     def matrix(self, probe:int, other:int) -> Tensor:
         probe = torch.tensor(probe, dtype=torch.int64, device=self.device)
         other = torch.tensor(other, dtype=torch.int64, device=self.device)
         return self.matrix(probe, other)
-        
-    
+
+
     @multimethod
     def matrix(self, probe:str, other:str) -> Tensor:
         probe = self.name.index(probe)
         other = self.name.index(other)
         return self.matrix(probe, other)
 
-    
-    def update(self) -> None: 
+
+    def update(self) -> None:
         """
         Update configuration
 
@@ -466,7 +467,7 @@ class Model:
         Returns
         -------
         None
-        
+
         """
         key:str
         for key in self._rc:
@@ -488,13 +489,13 @@ class Model:
         Returns
         -------
         None
-        
+
         """
         self.update()
         save(self.data_frame.to_dict(), path)
 
 
-    def compare(self, 
+    def compare(self,
                 model:Model, *,
                 rc:bool=False,
                 atol:Optional[float]=None,
@@ -519,7 +520,7 @@ class Model:
         Returns
         -------
         bool
-        
+
         """
         if not atol:
             atol = self._epsilon
@@ -529,19 +530,19 @@ class Model:
 
         ldf:DataFrame = (self.data_frame if rc else self.data_frame.drop('RC')).sort_index()
         rdf:DataFrame = (model.data_frame if rc else model.data_frame.drop('RC')).sort_index()
-        
+
         try:
             assert_frame_equal(ldf, rdf, atol=atol, rtol=rtol, **kwargs)
         except AssertionError:
             return False
-        
+
         return True
 
 
     @classmethod
     def from_table(cls,
                    kind:Literal['TFS', 'SDDS'],
-                   path:Path, 
+                   path:Path,
                    kind_monitor:list[str],
                    kind_virtual:list[str], *,
                    model:Literal['CS', 'NM', 'TM'] = 'CS',
@@ -570,15 +571,15 @@ class Model:
         model: Literal['CS', 'NM', 'TM'], default='CS'
             model type
         dispersion: bool, default=False
-            flag to insert zero dispersion   
+            flag to insert zero dispersion
         name_monitor: Optional[list[str]]
             list of element names for monitor locations
         name_virtual: Optional[list[str]]
-            list of element names for virtual locations 
+            list of element names for virtual locations
         rule: dict[str, str]
-            rename rule        
+            rename rule
         postfix: str, default=''
-            rename duplicate postfix   
+            rename duplicate postfix
         rc: bool, default=True
             flag to set RC
         lattice: Optional[Path]
@@ -591,15 +592,15 @@ class Model:
         Returns
         -------
         Lattice
-        
+
         """
         parameters: dict[str, str|int|float]
         columns: dict[str, dict[str, str|int|float]]
         parameters, columns = {'TFS': load_tfs, 'SDDS': load_sdds}[kind](path, postfix=postfix)
 
-        table: dict[str, dict[str, str|int|float]] = convert(columns, 
-                                                             kind, 
-                                                             kind_monitor, 
+        table: dict[str, dict[str, str|int|float]] = convert(columns,
+                                                             kind,
+                                                             kind_monitor,
                                                              kind_virtual,
                                                              dispersion=dispersion,
                                                              rc=rc,
@@ -611,13 +612,13 @@ class Model:
         if lattice:
             lattice:dict[str,dict[str,str|int|float|dict]] = load_lattice(lattice, rc=True)
             table = add_rc(table, lattice)
-        
+
         result:Model = Model(model, rc=rc, table=table, dtype=dtype, device=device)
-        
+
         result.parameters: dict[str, str|int|float] = parameters
         result.columns: dict[str, dict[str, str|int|float]] = columns
-        
+
         if lattice:
             result.lattice:dict[str,dict[str,str|int|float|dict]] = lattice
-        
+
         return result

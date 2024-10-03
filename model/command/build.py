@@ -10,8 +10,8 @@ from typing import Literal
 
 from pathlib import Path
 
-from model.util import save
-from model.util import load
+from model.command.util import save
+from model.command.util import load
 
 from model.library.element    import Element
 from model.library.drift      import Drift
