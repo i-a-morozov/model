@@ -129,6 +129,8 @@ def _traverse(table:dict) -> Line:
         case 'Marker':
             table.pop('kind')
             return Marker(**table)
+        case _:
+            return Drift(name=table['name'], length=table['length'])            
 
 
 def build(target:str,
