@@ -373,6 +373,24 @@ class Line(Element):
         self.sequence.append(element)
 
 
+    def extend(self,
+               line:Line) -> None:
+        """
+        Extend line
+
+        Parameters
+        ----------
+        line: Line
+            line
+
+        Returns
+        -------
+        None
+
+        """
+        self.sequence.extend(line.sequence)
+
+
     def insert(self,
                element:Element,
                name:str) -> None:
@@ -523,6 +541,24 @@ class Line(Element):
         self.sequence = self.sequence[index:] + self.sequence[:index]
 
 
+    def roll(self,
+             shift:int) -> None:
+        """
+        Roll first level sequence
+
+        Parameters
+        ----------
+        shift: int
+            shift value
+
+        Returns
+        -------
+        None
+
+        """
+        self.sequence = self.sequence[shift:] + self.sequence[:shift]
+
+
     @property
     def unique(self) -> dict[str, tuple[str, Tensor, Tensor]]:
         default:Tensor = torch.tensor(0.0, dtype=self.dtype, device=self.device)
@@ -585,6 +621,197 @@ class Line(Element):
         """
         kinds, *_ = zip(*self.unique.values())
         return dict(Counter(kinds))
+
+
+    def split(self,
+              group:tuple[int, list[str]|None, list[str]|None, list[str]|None], *,
+              paste:Optional[list[Element]]=None,
+              mangle:bool=False) -> None:
+        """
+        Split elements
+
+        Note, BPM elements are splitted into two parts
+        The first part has original direction, in the second direction is switched
+        Other zero length elements are not intended to be splitted and are skipped
+
+        Elements with nonzero length are splitted by length (and angle if present)
+        For dipoles, this results in additional overhead (edge transformations between parts)
+        Wedge angles are not taken into account
+
+        Parameters
+        ----------
+        group: tuple[int, list[str]|None, list[str]|None, list[str]|None]
+            split group
+            count, kinds, names to include, names to exclude
+            count is the number of elements, not splits
+        paste: Optional[list[Element]]
+            elements to paste between parts
+
+        Returns
+        -------
+        None
+
+        """
+        sequence:list[Element] = []
+        count, kinds, names, clean = group
+        count = count or 1
+        kinds = kinds or []
+        names = names or []
+        clean = clean or []
+        paste = paste or []
+        for index, element in enumerate(self.sequence):
+            if (element.__class__.__name__ in kinds or element.name in names) and (element.name not in clean):
+                if element.__class__.__name__ == 'BPM':
+                    head = element.clone()
+                    tail = element.clone()
+                    tail.direction = {'forward': 'inverse', 'inverse': 'forward'}[tail.direction]
+                    sequence.extend([head, *paste,tail])
+                    continue
+                if element.length == 0.0:
+                    continue
+                element = element.clone()
+                element.length = element.length.item()/count
+                if element.flag:
+                    element.angle = element.angle.item()/count
+                *local, _ = count*[element, *paste]
+                sequence.extend(local)
+                continue
+            sequence.append(element)
+        self.sequence = sequence
+
+
+    def clean(self,
+              group:tuple[float|None, list[str]|None, list[str]|None, list[str]|None]) -> None:
+        """
+        Clean first level sequence (remove elements by length/kind/name)
+
+        Parameters
+        ----------
+        group: tuple[float|None, list[str]|None, list[str]|None, list[str]|None]
+            clean group
+            length, kinds, names to include, names to exclude
+
+        Returns
+        -------
+        None
+
+        """
+        length, kinds, names, clean = group
+        kinds = kinds or []
+        names = names or []
+        clean = clean or []
+        sequence:list[Element] = []
+        for index, element in enumerate(self.sequence):
+            if (element.__class__.__name__ in kinds or element.name in names) and (element.name not in clean):
+                continue
+            if length and element.length <= length:
+                continue
+            sequence.append(element)
+        self.sequence = sequence
+
+
+    def merge(self, *,
+              name:str='DR',
+              size:int=3) -> None:
+        """
+        Merge and rename drifts
+
+        Parameters
+        ----------
+        name: str, default='DR'
+            root name
+        size: int, default=3
+            number of zeros to prepend
+
+        Returns
+        -------
+        float
+
+        """
+        sequence:list[Element] = []
+        count:int = 0
+        local:list[Element] = []
+        for index, element in enumerate(self.sequence):
+            if element.__class__.__name__ == 'Drift':
+                if not local:
+                    count += 1
+                    current = element.clone()
+                    current.name = f'{name}{count:0{size}}'
+                    local = [current]
+                    continue
+                current, *_ = local
+                current.length = (current.length + element.length).item()
+                local = [current]
+                continue
+            sequence.extend([*local, element])
+            local = []
+        self.sequence = sequence
+
+
+    def mangle(self,
+               kind:str, *,
+               names:Optional[list[str]]=None,
+               size:int=3) -> None:
+        """
+        Mangle names
+
+        Parameters
+        ----------
+        kind: str
+            element kind to mangle
+        names: Optional[list[str]]
+            element names to skip
+        size: int
+            number of zeros to prepend
+
+        Returns
+        -------
+        None
+
+        """
+        names = names or []
+        sequence:list[Element] = []
+        total:dict[str, int] = dict(Counter(self.names))
+        table:dict[str, int] = dict.fromkeys(self.names, 1)
+        for element in self.sequence:
+            current = element.clone()
+            if element.name not in names and element.__class__.__name__ == kind and total[element.name] != 1:
+                current.name = f'{element.name}_{table[element.name]:0{size}}'
+                table[element.name] += 1
+            sequence.append(current)
+        self.sequence = sequence
+
+
+    def splice(self) -> None:
+        """
+        Splice line
+
+        Given a line with splitted BPMs, create lines between them
+        Note, sequence is expected to start and end with BPMs
+        [BPM_I, ..., BPM_F, BPM_I, ..., BPM_F] -> [[BPM_I, ..., BPM_F], ..., [BPM_I, ..., BPM_F]]
+
+        Parameters
+        ----------
+        None
+
+        Returns
+        -------
+        None
+
+        """
+        line:list[Element] = []
+        sequence:list[Element] = []
+        flag:bool = True
+        for element in self.sequence:
+            if element.__class__.__name__ == 'BPM':
+                flag = not flag
+            line.append(element)
+            if flag:
+                head, *_, tail = line
+                sequence.append(Line(name=f'{head.name}_{tail.name}', sequence=line))
+                line = []
+        self.sequence = sequence
+
 
 
     @property
@@ -969,25 +1196,28 @@ class Line(Element):
         return len(self.sequence)
 
 
-    def __getitem__(self, index: int|str) -> Element:
+    def __getitem__(self, key: int|str|slice) -> Element | list[Element]:
         """
-        Get (first level) element by index
+        Get (first level) element by key
 
         Parameters
         ----------
-        index: int|str
-            element index|name
+        key: int|str|slice
+            element index|name|slice
 
         Returns
         -------
-        Element
+        Element | list[Element]
 
         """
-        if isinstance(index, int):
-            return self.sequence[index]
-        for element in self.sequence:
-            if element.name == index:
-                return element
+        if isinstance(key, int):
+            return self.sequence[key]
+        if isinstance(key, str):
+            for element in self.sequence:
+                if element.name == key:
+                    return element
+        if isinstance(key, slice):
+            return [self[index] for index in range(*key.indices(len(self)))]
 
 
     def __setitem__(self, index: int|str, element: Element) -> None:
