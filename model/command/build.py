@@ -3,16 +3,26 @@ Build
 -----
 
 Build MADX or ELEGANT lattice
+Save and load YAML lattice
 
 """
 from typing import Literal
+
+from pathlib import Path
+
+from model.util import save
+from model.util import load
 
 from model.library.element    import Element
 from model.library.drift      import Drift
 from model.library.quadrupole import Quadrupole
 from model.library.sextupole  import Sextupole
 from model.library.octupole   import Octupole
+from model.library.multipole  import Multipole
 from model.library.dipole     import Dipole
+from model.library.corrector  import Corrector
+from model.library.gradient   import Gradient
+from model.library.linear     import Linear
 from model.library.bpm        import BPM
 from model.library.marker     import Marker
 from model.library.line       import Line
@@ -39,6 +49,86 @@ _translation_lte: dict[str, dict[str, str]] = {
     'MONI'      : {},
     'MARK'      : {}
 }
+
+
+def save_line(line:Line,
+              path:Path) -> None:
+    """
+    Save line to YAML
+
+    Parameters
+    ----------
+    path: Path
+        path
+    line: Line
+        line
+
+    Returns
+    -------
+    None
+
+    """
+    save(line.serialize, path)
+
+
+def load_line(path:Path) -> Line:
+    """
+    Load line from YAML
+
+    Parameters
+    ----------
+    path: Path
+        path
+
+    Returns
+    -------
+    Line
+
+    """
+    table = load(path)
+    return _traverse(table)
+
+
+def _traverse(table:dict) -> Line:
+    table.get('kind')
+    match table.get('kind'):
+        case 'Line':
+            table.pop('kind')
+            sequence = [_traverse(element) for element in table.pop('sequence')]
+            return Line(sequence=sequence, **table)
+        case 'Drift':
+            table.pop('kind')
+            return Drift(**table)
+        case 'Quadrupole':
+            table.pop('kind')
+            return Quadrupole(**table)
+        case 'Sextupole':
+            table.pop('kind')
+            return Sextupole(**table)
+        case 'Octupole':
+            table.pop('kind')
+            return Octupole(**table)
+        case 'Multipole':
+            table.pop('kind')
+            return Multipole(**table)
+        case 'Dipole':
+            table.pop('kind')
+            return Dipole(**table)
+        case 'Corrector':
+            table.pop('kind')
+            return Corrector(**table)
+        case 'Gradient':
+            table.pop('kind')
+            return Gradient(**table)
+        case 'Linear':
+            table.pop('kind')
+            return Linear(**table)
+        case 'BPM':
+            table.pop('kind')
+            return BPM(**table)
+        case 'Marker':
+            table.pop('kind')
+            return Marker(**table)
 
 
 def build(target:str,
@@ -219,3 +309,5 @@ def _build_lte(target:str,
                 name=target,
                 length=data.get(select['length'], 0.0)
             )
+
+
