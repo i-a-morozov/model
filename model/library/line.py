@@ -4,6 +4,55 @@ Line
 
 Group ordered sequence of elements or (nested) lines
 
+Methods and properties
+
+__init__    : line instance initialization
+serialize   : (property) serialize line
+inverse     : inverse line
+data        : generate default deviation data for all unique elements
+scan        : scan line and yeild (with duplicates) all elements with given attribute
+select      : (static) select elements
+get         : get given attribute from selected elements
+set         : set value to a given attribute for selected elements
+name        : (property) get/set name of the line
+sequence    : (property) get/set sequence
+flatten     : flatten line (all levels)
+rename      : rename first level element
+append      : append element
+extend      : extend line
+insert      : insert element
+remove      : remove first occurrance of element with given name
+replace     : replace first occurrance of element with given name
+names       : (property) get list of first level element names
+position    : get element position in sequence
+positions   : get all element position in sequence
+start       : (property) set/get the first element
+roll        : roll first level sequence
+unique      : (property) get unique elements
+duplicate   : (property) get duplicate elements
+itemize     : get list of all elements with matching kind
+describe    : (property) return number of elements (with unique names) for each kind
+split       : split elements
+clean       : clean first level sequence
+merge       : merge elements
+mangle      : mangle elements
+splice      : splice line
+dp          : (property) get/set momentum deviation
+exact       : (property) get/set exact flag
+length      : (property) get line length
+angle       : (property) get line angle
+flag        : (property) get layout flag
+ns          : (property) get/set number of integration steps
+order       : (property) get/set integration order
+output      : (property) get/set output flag
+matrix      : (property) get/set matrix flag
+__call__    : transform state
+__len__     : get number of elements (first level)
+__getitem__ : get (first level) element by key
+__setitem__ : set (first level) element by key
+__repr__    : print line
+layout      : generate data for layout plotting
+
 """
 from __future__ import annotations
 
@@ -358,7 +407,7 @@ class Line(Element):
                old:str,
                new:str) -> None:
         """
-        Rename first levelelement
+        Rename first level element
 
         Parameters
         ----------
@@ -488,7 +537,7 @@ class Line(Element):
     def position(self,
                  name:str) -> int:
         """
-        Get the first element position in sequence
+        Get element position in sequence
 
         Parameters
         ----------
