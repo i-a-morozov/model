@@ -174,6 +174,24 @@ class Dipole(Element):
         self._step: Mapping = self.make_step()
 
 
+    @property
+    def serialize(self) -> dict[str, str|int|float|bool]:
+        """
+        Serialize element
+
+        Parameters
+        ----------
+        None
+
+        Returns
+        -------
+        dict[str, str|int|float|bool]
+
+        """
+        table:dict[str, str|int|float|bool] = super().serialize
+        return {**table, 'angle': self.angle.item(), 'e1': self.e1.item(), 'e2': self.e2.item(), 'kn': self.kn.item(), 'ks': self.ks.item(), 'ms': self.ms.item(), 'mo': self.mo.item()}
+
+
     def make_matrix(self) -> tuple[Tensor, Tensor]:
         """
         Generate transformation matrices (error element)

@@ -155,6 +155,37 @@ class Element(ABC):
         self.container_matrix: Tensor
 
 
+    @property
+    def serialize(self) -> dict[str, str|int|float|bool]:
+        """
+        Serialize element
+
+        Parameters
+        ----------
+        None
+
+        Returns
+        -------
+        dict[str, str|int|float|bool]
+
+        """
+        return {'name': self.name,
+                'length': self.length.item(),
+                'dp': self.dp.item(),
+                'dx': self.dx.item(),
+                'dy': self.dy.item(),
+                'dz': self.dz.item(),
+                'wx': self.wx.item(),
+                'wy': self.wy.item(),
+                'wz': self.wz.item(),
+                'ns': self.ns,
+                'order': self.order,
+                'exact': self.exact,
+                'insertion': self.insertion,
+                'output': self.output,
+                'matrix': self.matrix}
+
+
     def clone(self) -> Element:
         """
         Clone element

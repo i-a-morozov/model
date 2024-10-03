@@ -133,6 +133,24 @@ class Octupole(Element):
         self._step: Mapping = self.make_step()
 
 
+    @property
+    def serialize(self) -> dict[str, str|int|float|bool]:
+        """
+        Serialize element
+
+        Parameters
+        ----------
+        None
+
+        Returns
+        -------
+        dict[str, str|int|float|bool]
+
+        """
+        table:dict[str, str|int|float|bool] = super().serialize
+        return {**table, 'mo': self.mo.item()}
+
+
     def make_matrix(self) -> tuple[Tensor, Tensor]:
         """
         Generate transformation matrices (error element)

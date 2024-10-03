@@ -93,6 +93,26 @@ class Line(Element):
                     element.matrix = matrix
 
 
+    @property
+    def serialize(self) -> dict:
+        """
+        Serialize line
+
+        Parameters
+        ----------
+        None
+
+        Returns
+        -------
+        dict
+
+        """
+        sequence = []
+        for element in self.sequence:
+            sequence.append({'kind': element.__class__.__name__, **element.serialize})
+        return {'name': self.name, 'sequence': sequence, 'propagate': self.propagate, 'dp': self.dp.item(), 'exact': self.exact, 'output': self.output, 'matrix': self.matrix}
+
+
     def inverse(self) -> Line:
         """
         Inverse line

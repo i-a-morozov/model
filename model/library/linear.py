@@ -42,8 +42,8 @@ class Linear(Element):
 
     def __init__(self,
                  name:str,
-                 v:list[float],
-                 m:list[list[float]],
+                 v:list[float]=4*[0.0],
+                 m:list[list[float]]=4*[4*[0.0]],
                  dp:float=0.0, *,
                  dx:float=0.0,
                  dy:float=0.0,
@@ -107,6 +107,29 @@ class Linear(Element):
 
         self._data: list[list[int], list[float]] = None
         self._step: Mapping = self.make_step()
+
+
+    @property
+    def serialize(self) -> dict[str, str|int|float|bool]:
+        """
+        Serialize element
+
+        Parameters
+        ----------
+        None
+
+        Returns
+        -------
+        dict[str, str|int|float|bool]
+
+        """
+        table:dict[str, str|int|float|bool] = super().serialize
+        table.pop('length', None)
+        table.pop('ns', None)
+        table.pop('order', None)
+        table.pop('exact', None)
+        table.pop('insertion', None)
+        return {**table, 'v': self.v.tolist(), 'm': self.m.tolist()}
 
 
     def make_matrix(self) -> tuple[Tensor, Tensor]:

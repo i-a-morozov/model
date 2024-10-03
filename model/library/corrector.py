@@ -111,6 +111,29 @@ class Corrector(Element):
         self._step: Mapping = self.make_step()
 
 
+    @property
+    def serialize(self) -> dict[str, str|int|float|bool]:
+        """
+        Serialize element
+
+        Parameters
+        ----------
+        None
+
+        Returns
+        -------
+        dict[str, str|int|float|bool]
+
+        """
+        table:dict[str, str|int|float|bool] = super().serialize
+        table.pop('length', None)
+        table.pop('ns', None)
+        table.pop('order', None)
+        table.pop('exact', None)
+        table.pop('insertion', None)
+        return {**table, 'cx': self.cx.item(), 'cy': self.cy.item()}
+
+
     def make_matrix(self) -> tuple[Tensor, Tensor]:
         """
         Generate transformation matrices (error element)
