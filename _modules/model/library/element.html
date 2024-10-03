@@ -322,6 +322,37 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">container_matrix</span><span class="p">:</span> <span class="n">Tensor</span>
 
 
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">serialize</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="o">|</span><span class="nb">int</span><span class="o">|</span><span class="nb">float</span><span class="o">|</span><span class="nb">bool</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Serialize element</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        None</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        dict[str, str|int|float|bool]</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">{</span><span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+                <span class="s1">&#39;length&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">length</span><span class="o">.</span><span class="n">item</span><span class="p">(),</span>
+                <span class="s1">&#39;dp&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">dp</span><span class="o">.</span><span class="n">item</span><span class="p">(),</span>
+                <span class="s1">&#39;dx&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">dx</span><span class="o">.</span><span class="n">item</span><span class="p">(),</span>
+                <span class="s1">&#39;dy&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">dy</span><span class="o">.</span><span class="n">item</span><span class="p">(),</span>
+                <span class="s1">&#39;dz&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">dz</span><span class="o">.</span><span class="n">item</span><span class="p">(),</span>
+                <span class="s1">&#39;wx&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">wx</span><span class="o">.</span><span class="n">item</span><span class="p">(),</span>
+                <span class="s1">&#39;wy&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">wy</span><span class="o">.</span><span class="n">item</span><span class="p">(),</span>
+                <span class="s1">&#39;wz&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">wz</span><span class="o">.</span><span class="n">item</span><span class="p">(),</span>
+                <span class="s1">&#39;ns&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">ns</span><span class="p">,</span>
+                <span class="s1">&#39;order&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">order</span><span class="p">,</span>
+                <span class="s1">&#39;exact&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">exact</span><span class="p">,</span>
+                <span class="s1">&#39;insertion&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">insertion</span><span class="p">,</span>
+                <span class="s1">&#39;output&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">output</span><span class="p">,</span>
+                <span class="s1">&#39;matrix&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">matrix</span><span class="p">}</span>
+
+
 <div class="viewcode-block" id="Element.clone">
 <a class="viewcode-back" href="../../../modules/library/element.html#model.library.element.Element.clone">[docs]</a>
     <span class="k">def</span> <span class="nf">clone</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Element</span><span class="p">:</span>

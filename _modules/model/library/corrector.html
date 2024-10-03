@@ -278,6 +278,29 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_step</span><span class="p">:</span> <span class="n">Mapping</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">make_step</span><span class="p">()</span>
 
 
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">serialize</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="o">|</span><span class="nb">int</span><span class="o">|</span><span class="nb">float</span><span class="o">|</span><span class="nb">bool</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Serialize element</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        None</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        dict[str, str|int|float|bool]</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">table</span><span class="p">:</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="o">|</span><span class="nb">int</span><span class="o">|</span><span class="nb">float</span><span class="o">|</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">serialize</span>
+        <span class="n">table</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;length&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="n">table</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;ns&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="n">table</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;order&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="n">table</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;exact&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="n">table</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;insertion&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">{</span><span class="o">**</span><span class="n">table</span><span class="p">,</span> <span class="s1">&#39;cx&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">cx</span><span class="o">.</span><span class="n">item</span><span class="p">(),</span> <span class="s1">&#39;cy&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">cy</span><span class="o">.</span><span class="n">item</span><span class="p">()}</span>
+
+
 <div class="viewcode-block" id="Corrector.make_matrix">
 <a class="viewcode-back" href="../../../modules/library/corrector.html#model.library.corrector.Corrector.make_matrix">[docs]</a>
     <span class="k">def</span> <span class="nf">make_matrix</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Tensor</span><span class="p">]:</span>
