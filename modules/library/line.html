@@ -211,6 +211,53 @@
   <section id="line">
 <span id="module-model.library.line"></span><h1>Line<a class="headerlink" href="#line" title="Link to this heading"></a></h1>
 <p>Group ordered sequence of elements or (nested) lines</p>
+<p>Methods and properties</p>
+<p>__init__    : line instance initialization
+serialize   : (property) serialize line
+inverse     : inverse line
+data        : generate default deviation data for all unique elements
+scan        : scan line and yeild (with duplicates) all elements with given attribute
+select      : (static) select elements
+get         : get given attribute from selected elements
+set         : set value to a given attribute for selected elements
+name        : (property) get/set name of the line
+sequence    : (property) get/set sequence
+flatten     : flatten line (all levels)
+rename      : rename first level element
+append      : append element
+extend      : extend line
+insert      : insert element
+remove      : remove first occurrance of element with given name
+replace     : replace first occurrance of element with given name
+names       : (property) get list of first level element names
+position    : get element position in sequence
+positions   : get all element position in sequence
+start       : (property) set/get the first element
+roll        : roll first level sequence
+unique      : (property) get unique elements
+duplicate   : (property) get duplicate elements
+itemize     : get list of all elements with matching kind
+describe    : (property) return number of elements (with unique names) for each kind
+split       : split elements
+clean       : clean first level sequence
+merge       : merge elements
+mangle      : mangle elements
+splice      : splice line
+dp          : (property) get/set momentum deviation
+exact       : (property) get/set exact flag
+length      : (property) get line length
+angle       : (property) get line angle
+flag        : (property) get layout flag
+ns          : (property) get/set number of integration steps
+order       : (property) get/set integration order
+output      : (property) get/set output flag
+matrix      : (property) get/set matrix flag
+__call__    : transform state
+__len__     : get number of elements (first level)
+__getitem__ : get (first level) element by key
+__setitem__ : set (first level) element by key
+__repr__    : print line
+layout      : generate data for layout plotting</p>
 </section>
 <dl class="py class">
 <dt class="sig sig-object py" id="model.library.line.Line">
@@ -621,7 +668,7 @@ length, kinds, names to include, names to exclude</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="model.library.line.Line.position">
 <span class="sig-name descname"><span class="pre">position</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="reference internal" href="../../_modules/model/library/line.html#Line.position"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#model.library.line.Line.position" title="Link to this definition"></a></dt>
-<dd><p>Get the first element position in sequence</p>
+<dd><p>Get element position in sequence</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>name</strong> (<em>str</em>) – element name</p>
@@ -663,7 +710,7 @@ length, kinds, names to include, names to exclude</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="model.library.line.Line.rename">
 <span class="sig-name descname"><span class="pre">rename</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">old</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">new</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../../_modules/model/library/line.html#Line.rename"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#model.library.line.Line.rename" title="Link to this definition"></a></dt>
-<dd><p>Rename first levelelement</p>
+<dd><p>Rename first level element</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">

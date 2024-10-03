@@ -169,6 +169,55 @@
 
 <span class="sd">Group ordered sequence of elements or (nested) lines</span>
 
+<span class="sd">Methods and properties</span>
+
+<span class="sd">__init__    : line instance initialization</span>
+<span class="sd">serialize   : (property) serialize line</span>
+<span class="sd">inverse     : inverse line</span>
+<span class="sd">data        : generate default deviation data for all unique elements</span>
+<span class="sd">scan        : scan line and yeild (with duplicates) all elements with given attribute</span>
+<span class="sd">select      : (static) select elements</span>
+<span class="sd">get         : get given attribute from selected elements</span>
+<span class="sd">set         : set value to a given attribute for selected elements</span>
+<span class="sd">name        : (property) get/set name of the line</span>
+<span class="sd">sequence    : (property) get/set sequence</span>
+<span class="sd">flatten     : flatten line (all levels)</span>
+<span class="sd">rename      : rename first level element</span>
+<span class="sd">append      : append element</span>
+<span class="sd">extend      : extend line</span>
+<span class="sd">insert      : insert element</span>
+<span class="sd">remove      : remove first occurrance of element with given name</span>
+<span class="sd">replace     : replace first occurrance of element with given name</span>
+<span class="sd">names       : (property) get list of first level element names</span>
+<span class="sd">position    : get element position in sequence</span>
+<span class="sd">positions   : get all element position in sequence</span>
+<span class="sd">start       : (property) set/get the first element</span>
+<span class="sd">roll        : roll first level sequence</span>
+<span class="sd">unique      : (property) get unique elements</span>
+<span class="sd">duplicate   : (property) get duplicate elements</span>
+<span class="sd">itemize     : get list of all elements with matching kind</span>
+<span class="sd">describe    : (property) return number of elements (with unique names) for each kind</span>
+<span class="sd">split       : split elements</span>
+<span class="sd">clean       : clean first level sequence</span>
+<span class="sd">merge       : merge elements</span>
+<span class="sd">mangle      : mangle elements</span>
+<span class="sd">splice      : splice line</span>
+<span class="sd">dp          : (property) get/set momentum deviation</span>
+<span class="sd">exact       : (property) get/set exact flag</span>
+<span class="sd">length      : (property) get line length</span>
+<span class="sd">angle       : (property) get line angle</span>
+<span class="sd">flag        : (property) get layout flag</span>
+<span class="sd">ns          : (property) get/set number of integration steps</span>
+<span class="sd">order       : (property) get/set integration order</span>
+<span class="sd">output      : (property) get/set output flag</span>
+<span class="sd">matrix      : (property) get/set matrix flag</span>
+<span class="sd">__call__    : transform state</span>
+<span class="sd">__len__     : get number of elements (first level)</span>
+<span class="sd">__getitem__ : get (first level) element by key</span>
+<span class="sd">__setitem__ : set (first level) element by key</span>
+<span class="sd">__repr__    : print line</span>
+<span class="sd">layout      : generate data for layout plotting</span>
+
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
 
@@ -277,7 +326,7 @@
         <span class="n">sequence</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">sequence</span><span class="p">:</span>
             <span class="n">sequence</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s1">&#39;kind&#39;</span><span class="p">:</span> <span class="n">element</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span> <span class="o">**</span><span class="n">element</span><span class="o">.</span><span class="n">serialize</span><span class="p">})</span>
-        <span class="k">return</span> <span class="p">{</span><span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="s1">&#39;sequence&#39;</span><span class="p">:</span> <span class="n">sequence</span><span class="p">,</span> <span class="s1">&#39;propagate&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">propagate</span><span class="p">,</span> <span class="s1">&#39;dp&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">dp</span><span class="o">.</span><span class="n">item</span><span class="p">(),</span> <span class="s1">&#39;exact&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">exact</span><span class="p">,</span> <span class="s1">&#39;output&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">output</span><span class="p">,</span> <span class="s1">&#39;matrix&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">matrix</span><span class="p">}</span>
+        <span class="k">return</span> <span class="p">{</span><span class="s1">&#39;kind&#39;</span><span class="p">:</span> <span class="s1">&#39;Line&#39;</span><span class="p">,</span> <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="s1">&#39;sequence&#39;</span><span class="p">:</span> <span class="n">sequence</span><span class="p">,</span> <span class="s1">&#39;propagate&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">propagate</span><span class="p">,</span> <span class="s1">&#39;dp&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">dp</span><span class="o">.</span><span class="n">item</span><span class="p">(),</span> <span class="s1">&#39;exact&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">exact</span><span class="p">,</span> <span class="s1">&#39;output&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">output</span><span class="p">,</span> <span class="s1">&#39;matrix&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">matrix</span><span class="p">}</span>
 
 
 <div class="viewcode-block" id="Line.inverse">
@@ -554,7 +603,7 @@
                <span class="n">old</span><span class="p">:</span><span class="nb">str</span><span class="p">,</span>
                <span class="n">new</span><span class="p">:</span><span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Rename first levelelement</span>
+<span class="sd">        Rename first level element</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -702,7 +751,7 @@
     <span class="k">def</span> <span class="nf">position</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
                  <span class="n">name</span><span class="p">:</span><span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Get the first element position in sequence</span>
+<span class="sd">        Get element position in sequence</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -1479,14 +1528,14 @@
             <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="o">*</span><span class="n">key</span><span class="o">.</span><span class="n">indices</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">)))]</span>
 
 
-    <span class="k">def</span> <span class="fm">__setitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">:</span> <span class="nb">int</span><span class="o">|</span><span class="nb">str</span><span class="p">,</span> <span class="n">element</span><span class="p">:</span> <span class="n">Element</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__setitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="nb">int</span><span class="o">|</span><span class="nb">str</span><span class="o">|</span><span class="nb">slice</span><span class="p">,</span> <span class="n">element</span><span class="p">:</span> <span class="n">Element</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Set (first level) element by index|name</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        index: int|str</span>
-<span class="sd">            element index|name to replace</span>
+<span class="sd">        key: int|str|slice</span>
+<span class="sd">            element index|name|slice to replace</span>
 <span class="sd">        element: Element</span>
 <span class="sd">            element</span>
 
@@ -1495,10 +1544,14 @@
 <span class="sd">        None</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">index</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">sequence</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="o">=</span> <span class="n">element</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">sequence</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">element</span>
             <span class="k">return</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">sequence</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">position</span><span class="p">(</span><span class="n">index</span><span class="p">)]</span> <span class="o">=</span> <span class="n">element</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">sequence</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">position</span><span class="p">(</span><span class="n">key</span><span class="p">)]</span> <span class="o">=</span> <span class="n">element</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="nb">slice</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">item</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="o">*</span><span class="n">key</span><span class="o">.</span><span class="n">indices</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sequence</span><span class="p">))),</span> <span class="n">element</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">sequence</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="o">=</span> <span class="n">item</span>
 
 
     <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
