@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>External &mdash; model  documentation</title>
+  <title>&lt;no title&gt; &mdash; model  documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
 
@@ -23,7 +23,7 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="&lt;no title&gt;" href="build.html" />
-    <link rel="prev" title="Util" href="util.html" /> 
+    <link rel="prev" title="&lt;no title&gt;" href="util.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -76,26 +76,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../examples/model.html#Example-26:-Orbit-(effect-of-transverse-shift)">Example-26: Orbit (effect of transverse shift)</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API:</span></p>
-<ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="util.html">Util</a></li>
-<li class="toctree-l1"><a class="reference internal" href="util.html#model.util.cast"><code class="docutils literal notranslate"><span class="pre">cast()</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="util.html#model.util.insert"><code class="docutils literal notranslate"><span class="pre">insert()</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="util.html#model.util.load"><code class="docutils literal notranslate"><span class="pre">load()</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="util.html#model.util.mingle"><code class="docutils literal notranslate"><span class="pre">mingle()</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="util.html#model.util.mod"><code class="docutils literal notranslate"><span class="pre">mod()</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="util.html#model.util.remove"><code class="docutils literal notranslate"><span class="pre">remove()</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="util.html#model.util.rename"><code class="docutils literal notranslate"><span class="pre">rename()</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="util.html#model.util.save"><code class="docutils literal notranslate"><span class="pre">save()</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="util.html#model.util.select"><code class="docutils literal notranslate"><span class="pre">select()</span></code></a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">External</a></li>
-<li class="toctree-l1"><a class="reference internal" href="#model.external.add_rc"><code class="docutils literal notranslate"><span class="pre">add_rc()</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="#model.external.convert"><code class="docutils literal notranslate"><span class="pre">convert()</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="#model.external.load_lattice"><code class="docutils literal notranslate"><span class="pre">load_lattice()</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="#model.external.load_sdds"><code class="docutils literal notranslate"><span class="pre">load_sdds()</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="#model.external.load_tfs"><code class="docutils literal notranslate"><span class="pre">load_tfs()</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="#model.external.parse"><code class="docutils literal notranslate"><span class="pre">parse()</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="#model.external.rift_lattice"><code class="docutils literal notranslate"><span class="pre">rift_lattice()</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="#model.external.text_lattice"><code class="docutils literal notranslate"><span class="pre">text_lattice()</span></code></a></li>
+<ul>
 <li class="toctree-l1"><a class="reference internal" href="library/bpm.html">BPM</a></li>
 <li class="toctree-l1"><a class="reference internal" href="library/bpm.html#model.library.bpm.BPM"><code class="docutils literal notranslate"><span class="pre">BPM</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="library/corrector.html">Corrector</a></li>
@@ -155,7 +136,7 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
-      <li class="breadcrumb-item active">External</li>
+      <li class="breadcrumb-item active">&lt;no title&gt;</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../_sources/modules/external.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -165,211 +146,12 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="external">
-<span id="module-model.external"></span><h1>External<a class="headerlink" href="#external" title="Link to this heading"></a></h1>
-<p>External model
-Generate configuration table from MADX or ELEGANT output
-Insert locations into MADX or ELEGANT lattice files</p>
-<p>Functions</p>
-<p>load_tfs     : Load TFS style table
-load_sdds    : Load SDDS style table
-convert      : Convert (sorted) columns to configuration table
-parse        : Parse MADX or ELEGANT element or line
-load_lattice : Load MADX or ELEGANT lattice file
-text_lattice : Convert MADX or ELEGANT data to text
-rift_lattice : Rift MADX or ELEGANT lattice data (insert monitor or virtual locations)
-add_rc       : Add RC from lattice to configuration table</p>
-<p>External</p>
-<p>rename (util)
-insert (util)
-select (util)
-cast   (util)</p>
-</section>
-<dl class="py function">
-<dt class="sig sig-object py" id="model.external.add_rc">
-<span class="sig-prename descclassname"><span class="pre">model.external.</span></span><span class="sig-name descname"><span class="pre">add_rc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">table</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Table</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lattice</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">monitor</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'MONITOR'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">virtual</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'VIRTUAL'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Table</span></span></span><a class="reference internal" href="../_modules/model/external.html#add_rc"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#model.external.add_rc" title="Link to this definition"></a></dt>
-<dd><p>Add RC from lattice to configuration table</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>table</strong> (<em>Table</em>) – configuration table</p></li>
-<li><p><strong>lattice</strong> (<em>dict</em><em>[</em><em>str</em><em>,</em><em>dict</em><em>[</em><em>str</em><em>,</em><em>str</em><em>|</em><em>int</em><em>|</em><em>float</em><em>|</em><em>dict</em><em>]</em><em>]</em>) – lattice data</p></li>
-<li><p><strong>monitor</strong> (<em>str</em><em>, </em><em>default='MONITOR'</em>) – monitor kind</p></li>
-<li><p><strong>virtual</strong> (<em>str</em><em>, </em><em>default='VIRTUAL'</em>)</p></li>
-</ul>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>Table</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="model.external.convert">
-<span class="sig-prename descclassname"><span class="pre">model.external.</span></span><span class="sig-name descname"><span class="pre">convert</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">columns</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kind</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'TFS'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'SDDS'</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kind_monitor</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kind_virtual</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dispersion</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rc</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name_monitor</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name_virtual</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">monitor</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'MONITOR'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">virtual</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'VIRTUAL'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rule</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Table</span></span></span><a class="reference internal" href="../_modules/model/external.html#convert"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#model.external.convert" title="Link to this definition"></a></dt>
-<dd><p>Convert (sorted) columns to configuration table</p>
-<p>TFS parameters (MADX) can be used to setup CS model
-SDDS parameters (ELEGANT) can be used to setup CS and TM models</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>columns</strong> (<em>dict</em><em>[</em><em>str</em><em>, </em><em>dict</em><em>[</em><em>str</em><em>, </em><em>str</em><em>|</em><em>int</em><em>|</em><em>float</em><em>]</em><em>]</em>) – columns to convert (sorted locations are assumed)</p></li>
-<li><p><strong>kind</strong> (<em>Literal</em><em>[</em><em>'TFS'</em><em>, </em><em>'SDDS'</em><em>]</em>) – columns kind</p></li>
-<li><p><strong>kind_monitor</strong> (<em>list</em><em>[</em><em>str</em><em>]</em>) – list of element types to identify with monitor locations</p></li>
-<li><p><strong>kind_virtual</strong> (<em>list</em><em>[</em><em>str</em><em>]</em>) – list of element types to identify with virtual locations</p></li>
-<li><p><strong>dispersion</strong> (<em>bool</em><em>, </em><em>default=False</em>) – flag to insert zero dispersion values (original values are kept if present)</p></li>
-<li><p><strong>rc</strong> (<em>bool</em><em>, </em><em>default=False</em>) – flat to add RC key</p></li>
-<li><p><strong>name_monitor</strong> (<em>Optional</em><em>[</em><em>list</em><em>[</em><em>str</em><em>]</em><em>]</em>) – list of element names to set as monitor locations</p></li>
-<li><p><strong>name_virtual</strong> (<em>Optional</em><em>[</em><em>list</em><em>[</em><em>str</em><em>]</em><em>]</em>) – list of element names to set as virtual locations</p></li>
-<li><p><strong>monitor</strong> (<em>str</em><em>, </em><em>default='MONITOR'</em>) – monitor kind</p></li>
-<li><p><strong>virtual</strong> (<em>str</em><em>, </em><em>default='VIRTUAL'</em>) – virtual kind</p></li>
-<li><p><strong>rule</strong> (<em>Optional</em><em>[</em><em>dict</em><em>[</em><em>str</em><em>, </em><em>str</em><em>]</em><em>]</em>) – keys rename rule (appended to default rules)</p></li>
-</ul>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>Table</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="model.external.load_lattice">
-<span class="sig-prename descclassname"><span class="pre">model.external.</span></span><span class="sig-name descname"><span class="pre">load_lattice</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Path</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rc</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/model/external.html#load_lattice"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#model.external.load_lattice" title="Link to this definition"></a></dt>
-<dd><p>Load MADX or ELEGANT lattice file</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>path</strong> (<em>Path</em>) – input path</p></li>
-<li><p><strong>rc</strong> (<em>bool</em><em>, </em><em>default=False</em>) – flag to parse comment as element</p></li>
-</ul>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>dict[str,dict[str,str|int|float|dict]]</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="model.external.load_sdds">
-<span class="sig-prename descclassname"><span class="pre">model.external.</span></span><span class="sig-name descname"><span class="pre">load_sdds</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Path</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">postfix</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'_'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/model/external.html#load_sdds"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#model.external.load_sdds" title="Link to this definition"></a></dt>
-<dd><p>Load SDDS style table</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>path</strong> (<em>Path</em>) – input path</p></li>
-<li><p><strong>postfix</strong> (<em>str</em><em>, </em><em>default=''</em>) – rename duplicate locations postfix</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>{key: value} (parameters)
-{location: {key: value}} (columns)</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>tuple[dict[str, str|int|float], dict[str, dict[str, str|int|float]]]</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="model.external.load_tfs">
-<span class="sig-prename descclassname"><span class="pre">model.external.</span></span><span class="sig-name descname"><span class="pre">load_tfs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Path</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">postfix</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'_'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/model/external.html#load_tfs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#model.external.load_tfs" title="Link to this definition"></a></dt>
-<dd><p>Load TFS style table</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>path</strong> (<em>Path</em>) – input path</p></li>
-<li><p><strong>postfix</strong> (<em>str</em><em>, </em><em>default=''</em>) – rename duplicate locations postfix</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>{key: value} (parameters)
-{location: {key: value}} (columns)</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>tuple[dict[str, str|int|float], dict[str, dict[str, str|int|float]]]</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="model.external.parse">
-<span class="sig-prename descclassname"><span class="pre">model.external.</span></span><span class="sig-name descname"><span class="pre">parse</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rc</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/model/external.html#parse"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#model.external.parse" title="Link to this definition"></a></dt>
-<dd><p>Parse MADX or ELEGANT element or line</p>
-<p>Note, full definition is assumed to be on a singe line
-Element or line name should not contain ‘!’, ‘:’ or ‘”’
-All elements should contain</p>
-<p>name : line=(element, element, …) [;] [! comment]
-name : kind, [key=value, key=value, …] [;] [! comment]</p>
-<p>Note, comma after element kind in mandatory
-If comment to be parsed as element it is assumed to match</p>
-<p>name : kind, [key=value, key=value, …]</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>line</strong> (<em>str</em>) – input line</p></li>
-<li><p><strong>rc</strong> (<em>bool</em><em>, </em><em>default=False</em>) – flag to parse comment as element</p></li>
-</ul>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>list[str, dict[str, str|int|float]]</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="model.external.rift_lattice">
-<span class="sig-prename descclassname"><span class="pre">model.external.</span></span><span class="sig-name descname"><span class="pre">rift_lattice</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lattice</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">monitor</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">virtual</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kind_monitor</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kind_virtual</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">include_monitor</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">include_virtual</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exclude_monitor</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exclude_virtual</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prefix_monitor</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'M'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prefix_virtual</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'V'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/model/external.html#rift_lattice"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#model.external.rift_lattice" title="Link to this definition"></a></dt>
-<dd><p>Rift MADX or ELEGANT lattice data (insert monitor or virtual locations)</p>
-<p>Elements with matching kinds or names are splitted in half (angle and length are halved)
-Observaton (monitor or virtual) location is inserted between parts
-Elements with zero length are also splitted
-Original parameters are added to location RC
-Old element is replaced by a line</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>monitor</strong> (<em>str</em>) – monitor type to use (e.g. MONITOR or MONI)</p></li>
-<li><p><strong>virtual</strong> (<em>str</em>) – virtual type to use (e.g. MARKER or MARK)</p></li>
-<li><p><strong>kind_monitor</strong> (<em>list</em><em>[</em><em>str</em><em>]</em>) – list of element types to insert monitor locations</p></li>
-<li><p><strong>kind_virtual</strong> (<em>list</em><em>[</em><em>str</em><em>]</em>) – list of element types to insert virtual locations</p></li>
-<li><p><strong>include_monitor</strong> (<em>Optional</em><em>[</em><em>list</em><em>[</em><em>str</em><em>]</em><em>]</em>) – list of element names to insert monitor locations</p></li>
-<li><p><strong>include_virtual</strong> (<em>Optional</em><em>[</em><em>list</em><em>[</em><em>str</em><em>]</em><em>]</em>) – list of element names to insert virtual locations</p></li>
-<li><p><strong>exclude_monitor</strong> (<em>Optional</em><em>[</em><em>list</em><em>[</em><em>str</em><em>]</em><em>]</em>) – list of element names to exclude from monitor locations</p></li>
-<li><p><strong>exclude_virtual</strong> (<em>Optional</em><em>[</em><em>list</em><em>[</em><em>str</em><em>]</em><em>]</em>) – list of element names to exclude form virtual locations</p></li>
-<li><p><strong>prefix_monitor</strong> (<em>str</em><em>, </em><em>default='M'</em>) – monitor rename prefix</p></li>
-<li><p><strong>prefix_virtual</strong> (<em>str</em><em>, </em><em>default='V'</em>) – virtual rename prefix</p></li>
-</ul>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>dict[str,dict[str,str|int|float|dict]]</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="model.external.text_lattice">
-<span class="sig-prename descclassname"><span class="pre">model.external.</span></span><span class="sig-name descname"><span class="pre">text_lattice</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">kind</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'MADX'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'LTE'</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lattice</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rc</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../_modules/model/external.html#text_lattice"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#model.external.text_lattice" title="Link to this definition"></a></dt>
-<dd><p>Convert MADX or ELEGANT data to text</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>kind</strong> (<em>Literal</em><em>[</em><em>'MADX'</em><em>, </em><em>'LTE'</em><em>]</em>) – lattice lind</p></li>
-<li><p><strong>lattice</strong> (<em>dict</em><em>[</em><em>str</em><em>,</em><em>dict</em><em>[</em><em>str</em><em>,</em><em>str</em><em>|</em><em>int</em><em>|</em><em>float</em><em>|</em><em>dict</em><em>]</em><em>]</em>) – lattice data</p></li>
-<li><p><strong>rc</strong> (<em>bool</em><em>, </em><em>default=False</em>) – flag to parse RC as comment</p></li>
-</ul>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>str</p>
-</dd>
-</dl>
-</dd></dl>
-
-
+  
 
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="util.html" class="btn btn-neutral float-left" title="Util" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="util.html" class="btn btn-neutral float-left" title="&lt;no title&gt;" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
         <a href="build.html" class="btn btn-neutral float-right" title="&lt;no title&gt;" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
