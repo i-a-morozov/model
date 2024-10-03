@@ -1240,14 +1240,14 @@ class Line(Element):
             return [self[index] for index in range(*key.indices(len(self)))]
 
 
-    def __setitem__(self, index: int|str, element: Element) -> None:
+    def __setitem__(self, key: int|str|slice, element: Element) -> None:
         """
         Set (first level) element by index|name
 
         Parameters
         ----------
-        index: int|str
-            element index|name to replace
+        key: int|str|slice
+            element index|name|slice to replace
         element: Element
             element
 
@@ -1256,10 +1256,14 @@ class Line(Element):
         None
 
         """
-        if isinstance(index, int):
-            self.sequence[index] = element
+        if isinstance(key, int):
+            self.sequence[key] = element
             return
-        self.sequence[self.position(index)] = element
+        if isinstance(key, str):
+            self.sequence[self.position(key)] = element
+        if isinstance(key, slice):
+            for index, item in zip(range(*key.indices(len(self.sequence))), element):
+                self.sequence[index] = item
 
 
     def __repr__(self) -> str:
