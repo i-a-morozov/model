@@ -694,8 +694,7 @@ class Line(Element):
 
     def split(self,
               group:tuple[int, list[str]|None, list[str]|None, list[str]|None], *,
-              paste:Optional[list[Element]]=None,
-              mangle:bool=False) -> None:
+              paste:Optional[list[Element]]=None) -> None:
         """
         Split elements
 
@@ -734,7 +733,10 @@ class Line(Element):
                     head = element.clone()
                     tail = element.clone()
                     tail.direction = {'forward': 'inverse', 'inverse': 'forward'}[tail.direction]
-                    sequence.extend([head, *paste,tail])
+                    sequence.extend([head, *paste, tail])
+                    continue
+                if count == 1:
+                    sequence.append(element)
                     continue
                 if element.length == 0.0:
                     continue
@@ -742,7 +744,9 @@ class Line(Element):
                 element.length = element.length.item()/count
                 if element.flag:
                     element.angle = element.angle.item()/count
-                *local, _ = count*[element, *paste]
+                local = count*[element]
+                if paste:
+                    *local, _ = [item for pair in zip(local, count*[*paste]) for item in pair]
                 sequence.extend(local)
                 continue
             sequence.append(element)
@@ -773,7 +777,7 @@ class Line(Element):
         for index, element in enumerate(self.sequence):
             if (element.__class__.__name__ in kinds or element.name in names) and (element.name not in clean):
                 continue
-            if length and element.length <= length:
+            if length and element.length and element.length.abs() <= length:
                 continue
             sequence.append(element)
         self.sequence = sequence
