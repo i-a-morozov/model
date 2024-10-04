@@ -65,13 +65,14 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../examples/model.html#Example-18:-LOGO">Example-18: LOGO</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../examples/model.html#Example-19:-Build-MADX-and-ELEGANT-style-lattice">Example-19: Build MADX and ELEGANT style lattice</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../examples/model.html#Example-20:-Line-serialization-and-deserialization-(YAML)">Example-20: Line serialization and deserialization (YAML)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../examples/model.html#Example-21:-Wrapper">Example-21: Wrapper</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../examples/model.html#Example-22:-Group">Example-22: Group</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../examples/model.html#Example-23:-Module">Example-23: Module</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../examples/model.html#Example-24:-Normalize">Example-24: Normalize</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../examples/model.html#Example-25:-Transformation">Example-25: Transformation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../examples/model.html#Example-26:-Orbit-(fixed-point-computation)">Example-26: Orbit (fixed point computation)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../examples/model.html#Example-27:-Orbit-(effect-of-transverse-shift)">Example-27: Orbit (effect of transverse shift)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../examples/model.html#Example-21:-Advanced-line-editing">Example-21: Advanced line editing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../examples/model.html#Example-22:-Wrapper">Example-22: Wrapper</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../examples/model.html#Example-23:-Group">Example-23: Group</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../examples/model.html#Example-24:-Module">Example-24: Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../examples/model.html#Example-25:-Normalize">Example-25: Normalize</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../examples/model.html#Example-26:-Transformation">Example-26: Transformation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../examples/model.html#Example-27:-Orbit-(fixed-point-computation)">Example-27: Orbit (fixed point computation)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../examples/model.html#Example-28:-Orbit-(effect-of-transverse-shift)">Example-28: Orbit (effect of transverse shift)</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API:</span></p>
 <ul>
@@ -197,6 +198,7 @@
 <span class="sd">__len__     : get number of elements (first level)</span>
 <span class="sd">__getitem__ : get (first level) element by key</span>
 <span class="sd">__setitem__ : set (first level) element by key</span>
+<span class="sd">__delitem__ : del (first level) element by key</span>
 <span class="sd">__repr__    : print line</span>
 <span class="sd">layout      : generate data for layout plotting</span>
 
@@ -902,8 +904,7 @@
 <a class="viewcode-back" href="../../../modules/library/line.html#model.library.line.Line.split">[docs]</a>
     <span class="k">def</span> <span class="nf">split</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
               <span class="n">group</span><span class="p">:</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span><span class="o">|</span><span class="kc">None</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span><span class="o">|</span><span class="kc">None</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span><span class="o">|</span><span class="kc">None</span><span class="p">],</span> <span class="o">*</span><span class="p">,</span>
-              <span class="n">paste</span><span class="p">:</span><span class="n">Optional</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="n">Element</span><span class="p">]]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-              <span class="n">mangle</span><span class="p">:</span><span class="nb">bool</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+              <span class="n">paste</span><span class="p">:</span><span class="n">Optional</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="n">Element</span><span class="p">]]</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Split elements</span>
 
@@ -942,7 +943,10 @@
                     <span class="n">head</span> <span class="o">=</span> <span class="n">element</span><span class="o">.</span><span class="n">clone</span><span class="p">()</span>
                     <span class="n">tail</span> <span class="o">=</span> <span class="n">element</span><span class="o">.</span><span class="n">clone</span><span class="p">()</span>
                     <span class="n">tail</span><span class="o">.</span><span class="n">direction</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;forward&#39;</span><span class="p">:</span> <span class="s1">&#39;inverse&#39;</span><span class="p">,</span> <span class="s1">&#39;inverse&#39;</span><span class="p">:</span> <span class="s1">&#39;forward&#39;</span><span class="p">}[</span><span class="n">tail</span><span class="o">.</span><span class="n">direction</span><span class="p">]</span>
-                    <span class="n">sequence</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="n">head</span><span class="p">,</span> <span class="o">*</span><span class="n">paste</span><span class="p">,</span><span class="n">tail</span><span class="p">])</span>
+                    <span class="n">sequence</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="n">head</span><span class="p">,</span> <span class="o">*</span><span class="n">paste</span><span class="p">,</span> <span class="n">tail</span><span class="p">])</span>
+                    <span class="k">continue</span>
+                <span class="k">if</span> <span class="n">count</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                    <span class="n">sequence</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">element</span><span class="p">)</span>
                     <span class="k">continue</span>
                 <span class="k">if</span> <span class="n">element</span><span class="o">.</span><span class="n">length</span> <span class="o">==</span> <span class="mf">0.0</span><span class="p">:</span>
                     <span class="k">continue</span>
@@ -950,7 +954,9 @@
                 <span class="n">element</span><span class="o">.</span><span class="n">length</span> <span class="o">=</span> <span class="n">element</span><span class="o">.</span><span class="n">length</span><span class="o">.</span><span class="n">item</span><span class="p">()</span><span class="o">/</span><span class="n">count</span>
                 <span class="k">if</span> <span class="n">element</span><span class="o">.</span><span class="n">flag</span><span class="p">:</span>
                     <span class="n">element</span><span class="o">.</span><span class="n">angle</span> <span class="o">=</span> <span class="n">element</span><span class="o">.</span><span class="n">angle</span><span class="o">.</span><span class="n">item</span><span class="p">()</span><span class="o">/</span><span class="n">count</span>
-                <span class="o">*</span><span class="n">local</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">count</span><span class="o">*</span><span class="p">[</span><span class="n">element</span><span class="p">,</span> <span class="o">*</span><span class="n">paste</span><span class="p">]</span>
+                <span class="n">local</span> <span class="o">=</span> <span class="n">count</span><span class="o">*</span><span class="p">[</span><span class="n">element</span><span class="p">]</span>
+                <span class="k">if</span> <span class="n">paste</span><span class="p">:</span>
+                    <span class="o">*</span><span class="n">local</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="p">[</span><span class="n">item</span> <span class="k">for</span> <span class="n">pair</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">local</span><span class="p">,</span> <span class="n">count</span><span class="o">*</span><span class="p">[</span><span class="o">*</span><span class="n">paste</span><span class="p">])</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">pair</span><span class="p">]</span>
                 <span class="n">sequence</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">local</span><span class="p">)</span>
                 <span class="k">continue</span>
             <span class="n">sequence</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">element</span><span class="p">)</span>
@@ -984,7 +990,7 @@
         <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">element</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sequence</span><span class="p">):</span>
             <span class="k">if</span> <span class="p">(</span><span class="n">element</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span> <span class="ow">in</span> <span class="n">kinds</span> <span class="ow">or</span> <span class="n">element</span><span class="o">.</span><span class="n">name</span> <span class="ow">in</span> <span class="n">names</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">element</span><span class="o">.</span><span class="n">name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">clean</span><span class="p">):</span>
                 <span class="k">continue</span>
-            <span class="k">if</span> <span class="n">length</span> <span class="ow">and</span> <span class="n">element</span><span class="o">.</span><span class="n">length</span> <span class="o">&lt;=</span> <span class="n">length</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">length</span> <span class="ow">and</span> <span class="n">element</span><span class="o">.</span><span class="n">length</span> <span class="ow">and</span> <span class="n">element</span><span class="o">.</span><span class="n">length</span><span class="o">.</span><span class="n">abs</span><span class="p">()</span> <span class="o">&lt;=</span> <span class="n">length</span><span class="p">:</span>
                 <span class="k">continue</span>
             <span class="n">sequence</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">element</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">sequence</span> <span class="o">=</span> <span class="n">sequence</span></div>
@@ -1536,14 +1542,49 @@
             <span class="k">return</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">sequence</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">position</span><span class="p">(</span><span class="n">key</span><span class="p">)]</span> <span class="o">=</span> <span class="n">element</span>
+            <span class="k">return</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="nb">slice</span><span class="p">):</span>
             <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">item</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="o">*</span><span class="n">key</span><span class="o">.</span><span class="n">indices</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sequence</span><span class="p">))),</span> <span class="n">element</span><span class="p">):</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">sequence</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="o">=</span> <span class="n">item</span>
+            <span class="k">return</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>
             <span class="n">current</span> <span class="o">=</span> <span class="bp">self</span>
             <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="n">key</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]:</span>
                 <span class="n">current</span> <span class="o">=</span> <span class="n">current</span><span class="p">[</span><span class="n">index</span><span class="p">]</span>
             <span class="n">current</span><span class="p">[</span><span class="n">key</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]]</span> <span class="o">=</span> <span class="n">element</span>
+            <span class="k">return</span>
+
+
+    <span class="k">def</span> <span class="fm">__delitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="nb">int</span><span class="o">|</span><span class="nb">str</span><span class="o">|</span><span class="nb">slice</span><span class="o">|</span><span class="nb">tuple</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Del (first level) element by index|name|slice|tuple</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        key: int|str|slice</span>
+<span class="sd">            element index|name|slice|tuple to replace</span>
+<span class="sd">        element: Element</span>
+<span class="sd">            element</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        None</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
+            <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">sequence</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+            <span class="k">return</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">sequence</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">position</span><span class="p">(</span><span class="n">key</span><span class="p">)]</span>
+            <span class="k">return</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="nb">slice</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="o">*</span><span class="n">key</span><span class="o">.</span><span class="n">indices</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sequence</span><span class="p">))):</span>
+                <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">sequence</span><span class="p">[</span><span class="n">index</span><span class="p">]</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>
+            <span class="n">current</span> <span class="o">=</span> <span class="bp">self</span>
+            <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="n">key</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]:</span>
+                <span class="n">current</span> <span class="o">=</span> <span class="n">current</span><span class="p">[</span><span class="n">index</span><span class="p">]</span>
+            <span class="k">del</span> <span class="n">current</span><span class="p">[</span><span class="n">key</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]]</span>
 
 
     <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
