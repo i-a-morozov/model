@@ -50,6 +50,7 @@ __call__    : transform state
 __len__     : get number of elements (first level)
 __getitem__ : get (first level) element by key
 __setitem__ : set (first level) element by key
+__delitem__ : del (first level) element by key
 __repr__    : print line
 layout      : generate data for layout plotting
 
@@ -1319,14 +1320,49 @@ class Line(Element):
             return
         if isinstance(key, str):
             self.sequence[self.position(key)] = element
+            return
         if isinstance(key, slice):
             for index, item in zip(range(*key.indices(len(self.sequence))), element):
                 self.sequence[index] = item
+            return
         if isinstance(key, tuple):
             current = self
             for index in key[:-1]:
                 current = current[index]
             current[key[-1]] = element
+            return
+
+
+    def __delitem__(self, key: int|str|slice|tuple) -> None:
+        """
+        Del (first level) element by index|name|slice|tuple
+
+        Parameters
+        ----------
+        key: int|str|slice
+            element index|name|slice|tuple to replace
+        element: Element
+            element
+
+        Returns
+        -------
+        None
+
+        """
+        if isinstance(key, int):
+            del self.sequence[key]
+            return
+        if isinstance(key, str):
+            del self.sequence[self.position(key)]
+            return
+        if isinstance(key, slice):
+            for index in range(*key.indices(len(self.sequence))):
+                del self.sequence[index]
+        if isinstance(key, tuple):
+            current = self
+            for index in key[:-1]:
+                current = current[index]
+            del current[key[-1]]
 
 
     def __repr__(self) -> str:
