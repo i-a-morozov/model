@@ -175,4 +175,4 @@ class Marker(Element):
 
 
     def __repr__(self) -> str:
-        return f'{self.__class__.__name__}(name="{self._name}")'
+        return f'{self.__class__.__name__}(name="{self._name}", dp={self._dp})'
