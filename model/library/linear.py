@@ -272,4 +272,4 @@ class Linear(Element):
 
 
     def __repr__(self) -> str:
-        return f'{self.__class__.__name__}(name="{self._name}", v={self._v}, m={self._m})'
+        return f'{self.__class__.__name__}(name="{self._name}", v={self._v}, m={self._m}, dp={self._dp})'

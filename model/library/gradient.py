@@ -235,7 +235,6 @@ class Gradient(Element):
 
         """
         self._kn = kn
-        self._lmatrix, self._rmatrix = self.make_matrix()
         self._step = self.make_step()
 
 
@@ -273,9 +272,8 @@ class Gradient(Element):
 
         """
         self._ks = ks
-        self._lmatrix, self._rmatrix = self.make_matrix()
         self._step = self.make_step()
 
 
     def __repr__(self) -> str:
-        return f'{self.__class__.__name__}(name="{self._name}", kn={self._kn}, ks={self._ks})'
+        return f'{self.__class__.__name__}(name="{self._name}", kn={self._kn}, ks={self._ks}, dp={self._dp})'

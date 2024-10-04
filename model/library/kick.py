@@ -1,11 +1,9 @@
 """
-Corrector
----------
+Gradient
+--------
 
-Corrector element (thin dipole kick)
+Kick element (thin sextuple and/or octupole kick)
 
-px -> px + kx
-py -> py + ky
 
 """
 from __future__ import annotations
@@ -15,36 +13,37 @@ from typing import Callable
 import torch
 from torch import Tensor
 
-from model.library.keys import KEY_CX
-from model.library.keys import KEY_CY
+from model.library.keys import KEY_MS
+from model.library.keys import KEY_MO
 from model.library.keys import KEY_DP
 
 from model.library.element import Element
 
-from model.library.transformations import corrector
+from model.library.transformations import sextupole
+from model.library.transformations import octupole
 
 type State = Tensor
 type Mapping = Callable[[State, Tensor, ...], State]
 
-class Corrector(Element):
+class Kick(Element):
     """
-    Corrector element
-    -----------------
+    Kick element
+    ------------
 
     Zero lenght element, can't be used in insertion mode
 
     Returns
     -------
-    Corrector
+    Gradient
 
     """
     flag: bool = False
-    keys: list[str] = [KEY_CX, KEY_CY, KEY_DP]
+    keys: list[str] = [KEY_MS, KEY_MO, KEY_DP]
 
     def __init__(self,
                  name:str,
-                 cx:float=0.0,
-                 cy:float=0.0,
+                 ms:float=0.0,
+                 mo:float=0.0,
                  dp:float=0.0, *,
                  dx:float=0.0,
                  dy:float=0.0,
@@ -55,16 +54,16 @@ class Corrector(Element):
                  output:bool=False,
                  matrix:bool=False) -> None:
         """
-        Corrector instance initialization
+        Gradient instance initialization
 
         Parameters
         ----------
         name: str
             name
-        cx: float, default=0.0
-            px -> px + cx
-        cy: float, default=0.0
-            py -> py + cy
+        ms: float, default=0.0
+            sextupole strength (knl)
+        mo: float, default=0.0
+            octupole strength (knl)
         dp: float, default=0.0
             momentum deviation
         dx: float, default=0.0
@@ -91,7 +90,6 @@ class Corrector(Element):
         """
         super().__init__(name=name,
                          dp=dp,
-                         dx=dx,
                          dy=dy,
                          dz=dz,
                          wx=wx,
@@ -100,8 +98,8 @@ class Corrector(Element):
                          output=output,
                          matrix=matrix)
 
-        self._cx: float = cx
-        self._cy: float = cy
+        self._ms: float = ms
+        self._mo: float = mo
 
         self._lmatrix: Tensor
         self._rmatrix: Tensor
@@ -131,7 +129,7 @@ class Corrector(Element):
         table.pop('order', None)
         table.pop('exact', None)
         table.pop('insertion', None)
-        return {**table, 'cx': self.cx.item(), 'cy': self.cy.item()}
+        return {**table, 'ms': self.ms.item(), 'mo': self.mo.item()}
 
 
     def make_matrix(self) -> tuple[Tensor, Tensor]:
@@ -170,30 +168,30 @@ class Corrector(Element):
         Mapping
 
         """
-        _cx: Tensor = self.cx
-        _cy: Tensor = self.cy
+        _ms: Tensor = self.ms
+        _mo: Tensor = self.mo
 
         if self.is_inversed:
-            _cx = - self.cx
-            _cy = - self.cy
+            _ms = -_ms
+            _mo = -_mo
 
         output:bool = self.output
         matrix:bool = self.matrix
 
-        def integrator(state:State, cx:Tensor, cy:Tensor) -> State:
-            return corrector(state, cx, cy)
+        def integrator(state:State, ms:Tensor, mo:Tensor) -> State:
+            return octupole(sextupole(state, ms, 1.0), mo, 1.0)
 
-        def step(state:State, cx:Tensor, cy:Tensor, dp:Tensor) -> State:
+        def step(state:State, ms:Tensor, mo:Tensor, dp:Tensor) -> State:
             if output:
                 container_output = []
             if matrix:
                 container_matrix = []
-            state = integrator(state, _cx + cx, _cy + cy)
+            state = integrator(state, _ms + ms, _mo + mo)
             if output:
                 container_output.append(state)
                 self.container_output = torch.stack(container_output)
             if matrix:
-                container_matrix.append(torch.func.jacrev(integrator)(state, _cx + cx, _cy + cy))
+                container_matrix.append(torch.func.jacrev(integrator)(state, _ms + ms, _mo + mo))
                 self.container_matrix = torch.stack(container_matrix)
             return state
 
@@ -201,9 +199,9 @@ class Corrector(Element):
 
 
     @property
-    def cx(self) -> Tensor:
+    def ms(self) -> Tensor:
         """
-        Get cx
+        Get ms
 
         Parameters
         ----------
@@ -214,33 +212,33 @@ class Corrector(Element):
         Tensor
 
         """
-        return torch.tensor(self._cx, dtype=self.dtype, device=self.device)
+        return torch.tensor(self._ms, dtype=self.dtype, device=self.device)
 
 
-    @cx.setter
-    def cx(self,
-           cx:float) -> None:
+    @ms.setter
+    def ms(self,
+           ms:float) -> None:
         """
-        Set cx
+        Set ms
 
         Parameters
         ----------
-        cx: float
-            cx
+        ms: float
+            ms
 
         Returns
         -------
         None
 
         """
-        self._cx = cx
+        self._ms = ms
         self._step = self.make_step()
 
 
     @property
-    def cy(self) -> Tensor:
+    def mo(self) -> Tensor:
         """
-        Get cy
+        Get mo
 
         Parameters
         ----------
@@ -251,28 +249,28 @@ class Corrector(Element):
         Tensor
 
         """
-        return torch.tensor(self._cy, dtype=self.dtype, device=self.device)
+        return torch.tensor(self._mo, dtype=self.dtype, device=self.device)
 
 
-    @cy.setter
-    def cy(self,
-           cy:float) -> None:
+    @mo.setter
+    def mo(self,
+           mo:float) -> None:
         """
-        Set cy
+        Set mo deviation
 
         Parameters
         ----------
-        cy: float
-            cy
+        mo: float
+            mo
 
         Returns
         -------
         None
 
         """
-        self._cy = cy
+        self._mo = mo
         self._step = self.make_step()
 
 
     def __repr__(self) -> str:
-        return f'{self.__class__.__name__}(name="{self._name}", cx={self._cx}, cy={self._cy}, dp={self._dp})'
+        return f'{self.__class__.__name__}(name="{self._name}", ms={self._ms}, mo={self._mo}, dp={self._dp})'

@@ -4,6 +4,12 @@ Element
 
 Abstract element
 
+Adding new elements:
+
+1. add new keys to library.keys if any
+2. add to command.build  (build from external and serializaton)
+3. add to command.layout (graphical representation settings)
+
 """
 from __future__ import annotations
 
