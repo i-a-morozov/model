@@ -75,6 +75,8 @@ class Dipole(Element):
                  wx:float=0.0,
                  wy:float=0.0,
                  wz:float=0.0,
+                 e1_on:bool=True,
+                 e2_on:bool=True,
                  ns:int=1,
                  ds:Optional[float]=None,
                  order:int=0,
@@ -119,6 +121,10 @@ class Dipole(Element):
             wy alignment error
         wz: float, default=0.0
             wz alignment error
+        e1_on: bool, default=True
+            flag to include entrance wedge
+        e2_on: bool, default=True
+            flag to include exit wedge
         ns: int, positive, default=1
             number of integrtion steps
         ds: Optional[float], positive
@@ -166,6 +172,9 @@ class Dipole(Element):
         self._ms: float = ms
         self._mo: float = mo
 
+        self._e1_on : bool = e1_on
+        self._e2_on : bool = e2_on
+
         self._lmatrix: Tensor
         self._rmatrix: Tensor
         self._lmatrix, self._rmatrix = self.make_matrix()
@@ -189,7 +198,7 @@ class Dipole(Element):
 
         """
         table:dict[str, str|int|float|bool] = super().serialize
-        return {**table, 'angle': self.angle.item(), 'e1': self.e1.item(), 'e2': self.e2.item(), 'kn': self.kn.item(), 'ks': self.ks.item(), 'ms': self.ms.item(), 'mo': self.mo.item()}
+        return {**table, 'angle': self.angle.item(), 'e1': self.e1.item(), 'e2': self.e2.item(), 'kn': self.kn.item(), 'ks': self.ks.item(), 'ms': self.ms.item(), 'mo': self.mo.item(), 'e1_on': self.e1_on, 'e2_on': self.e2_on}
 
 
     def make_matrix(self) -> tuple[Tensor, Tensor]:
@@ -275,27 +284,47 @@ class Dipole(Element):
 
         if exact:
             if self.is_inversed:
-                def rwedge_wrapper(state:State, epsilon:Tensor, r:Tensor, dp:Tensor) -> State:
-                    state = sector_bend_wedge(state, -epsilon, r, dp)
-                    state = sector_bend_fringe(state, -r, dp)
-                    state = polar(state, epsilon, dp)
-                    return state
-                def lwedge_wrapper(state:State, epsilon:Tensor, r:Tensor, dp:Tensor) -> State:
-                    state = polar(state, epsilon, dp)
-                    state = sector_bend_fringe(state, +r, dp)
-                    state = sector_bend_wedge(state, -epsilon, r, dp)
-                    return state
+                if self.e1_on:
+                    def lwedge_wrapper(state:State, epsilon:Tensor, r:Tensor, dp:Tensor) -> State:
+                        state = polar(state, epsilon, dp)
+                        state = sector_bend_fringe(state, +r, dp)
+                        state = sector_bend_wedge(state, -epsilon, r, dp)
+                        return state
+                else:
+                    def lwedge_wrapper(state:State, epsilon:Tensor, r:Tensor, dp:Tensor) -> State:
+                        state = sector_bend_fringe(state, +r, dp)
+                        return state
+                if self.e2_on:
+                    def rwedge_wrapper(state:State, epsilon:Tensor, r:Tensor, dp:Tensor) -> State:
+                        state = sector_bend_wedge(state, -epsilon, r, dp)
+                        state = sector_bend_fringe(state, -r, dp)
+                        state = polar(state, epsilon, dp)
+                        return state
+                else:
+                    def rwedge_wrapper(state:State, epsilon:Tensor, r:Tensor, dp:Tensor) -> State:
+                        state = sector_bend_fringe(state, -r, dp)
+                        return state
             if not self.is_inversed:
-                def lwedge_wrapper(state:State, epsilon:Tensor, r:Tensor, dp:Tensor) -> State:
-                    state = polar(state, epsilon, dp)
-                    state = sector_bend_fringe(state, +r, dp)
-                    state = sector_bend_wedge(state, -epsilon, r, dp)
-                    return state
-                def rwedge_wrapper(state:State, epsilon:Tensor, r:Tensor, dp:Tensor) -> State:
-                    state = sector_bend_wedge(state, -epsilon, r, dp)
-                    state = sector_bend_fringe(state, -r, dp)
-                    state = polar(state, epsilon, dp)
-                    return state
+                if self.e1_on:
+                    def lwedge_wrapper(state:State, epsilon:Tensor, r:Tensor, dp:Tensor) -> State:
+                        state = polar(state, epsilon, dp)
+                        state = sector_bend_fringe(state, +r, dp)
+                        state = sector_bend_wedge(state, -epsilon, r, dp)
+                        return state
+                else:
+                    def lwedge_wrapper(state:State, epsilon:Tensor, r:Tensor, dp:Tensor) -> State:
+                        state = sector_bend_fringe(state, +r, dp)
+                        return state
+                if self.e2_on:
+                    def rwedge_wrapper(state:State, epsilon:Tensor, r:Tensor, dp:Tensor) -> State:
+                        state = sector_bend_wedge(state, -epsilon, r, dp)
+                        state = sector_bend_fringe(state, -r, dp)
+                        state = polar(state, epsilon, dp)
+                        return state
+                else:
+                    def rwedge_wrapper(state:State, epsilon:Tensor, r:Tensor, dp:Tensor) -> State:
+                        state = sector_bend_fringe(state, -r, dp)
+                        return state
             def sqrt_wrapper(state:Tensor, ds:Tensor, r:Tensor, kn:Tensor, ks:Tensor, ms:Tensor, mo:Tensor, dp:Tensor) -> State:
                 return kinematic(state, dp, ds)
             def drif_wrapper(state:Tensor, ds:Tensor, r:Tensor, kn:Tensor, ks:Tensor, ms:Tensor, mo:Tensor, dp:Tensor) -> State:
@@ -306,10 +335,18 @@ class Dipole(Element):
             integrator = yoshida(0,  _ny, True, [bend_wrapper, sqrt_wrapper, kick_wrapper, drif_wrapper, mult_wrapper])
 
         if not exact:
-            def lwedge_wrapper(state:State, epsilon:Tensor, r:Tensor, dp:Tensor) -> State:
-                return wedge(state, epsilon, r)
-            def rwedge_wrapper(state:State, epsilon:Tensor, r:Tensor, dp:Tensor) -> State:
-                return wedge(state, epsilon, r)
+            if self.e1_on:
+                def lwedge_wrapper(state:State, epsilon:Tensor, r:Tensor, dp:Tensor) -> State:
+                    return wedge(state, epsilon, r)
+            else:
+                def lwedge_wrapper(state:State, epsilon:Tensor, r:Tensor, dp:Tensor) -> State:
+                    return state
+            if self.e2_on:
+                def rwedge_wrapper(state:State, epsilon:Tensor, r:Tensor, dp:Tensor) -> State:
+                    return wedge(state, epsilon, r)
+            else:
+                def rwedge_wrapper(state:State, epsilon:Tensor, r:Tensor, dp:Tensor) -> State:
+                    return state
             integrator = yoshida(0, _ny, True, [bend_wrapper, mult_wrapper])
 
         self._data: list[list[int], list[float]] = integrator.table
@@ -627,5 +664,79 @@ class Dipole(Element):
         self._step = self.make_step()
 
 
+    @property
+    def e1_on(self) -> bool:
+        """
+        Get e1 flag
+
+        Parameters
+        ----------
+        None
+
+        Returns
+        -------
+        bool
+
+        """
+        return self._e1_on
+
+
+    @e1_on.setter
+    def e1_on(self,
+           flag:bool) -> None:
+        """
+        Set e1 flag
+
+        Parameters
+        ----------
+        flag: bool
+            flag
+
+        Returns
+        -------
+        None
+
+        """
+        self._e1_on = flag
+        self._step = self.make_step()
+
+
+    @property
+    def e2_on(self) -> bool:
+        """
+        Get e1 flag
+
+        Parameters
+        ----------
+        None
+
+        Returns
+        -------
+        bool
+
+        """
+        return self._e2_on
+
+
+    @e2_on.setter
+    def e2_on(self,
+           flag:bool) -> None:
+        """
+        Set e1 flag
+
+        Parameters
+        ----------
+        flag: bool
+            flag
+
+        Returns
+        -------
+        None
+
+        """
+        self._e2_on = flag
+        self._step = self.make_step()
+
+
     def __repr__(self) -> str:
-        return f'{self.__class__.__name__}(name="{self._name}", length={self._length}, angle={self._angle}, e1={self._e1}, e2={self._e2}, kn={self._kn}, ks={self._ks}, ms={self._ms}, mo={self._mo}, dp={self._dp}, exact={self.exact}, ns={self._ns}, order={self.order})'
+        return f'{self.__class__.__name__}(name="{self._name}", length={self._length}, angle={self._angle}, e1={self._e1}, e1_on={self._e1_on}, e2={self._e2}, e2_on={self._e2_on}, kn={self._kn}, ks={self._ks}, ms={self._ms}, mo={self._mo}, dp={self._dp}, exact={self.exact}, ns={self._ns}, order={self.order})'
