@@ -188,7 +188,7 @@ def forward(parameters:list[Tensor],
 
     """
     result = []
-    for i, (parameter, bound) in enumerate(zip(parameters, bounds)):
+    for _, (parameter, bound) in enumerate(zip(parameters, bounds)):
         lb, ub = bound
         if all([lb, ub]):
             result.append(_forward(parameter, lb, ub))
@@ -215,7 +215,7 @@ def inverse(parameters:list[Tensor],
 
     """
     result = []
-    for i, (parameter, bound) in enumerate(zip(parameters, bounds)):
+    for _, (parameter, bound) in enumerate(zip(parameters, bounds)):
         lb, ub = bound
         if all([lb, ub]):
             result.append(_inverse(parameter, lb, ub))

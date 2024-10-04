@@ -1265,14 +1265,14 @@ class Line(Element):
         return len(self.sequence)
 
 
-    def __getitem__(self, key: int|str|slice) -> Element | list[Element]:
+    def __getitem__(self, key: int|str|slice|tuple) -> Element | list[Element]:
         """
         Get (first level) element by key
 
         Parameters
         ----------
-        key: int|str|slice
-            element index|name|slice
+        key: int|str|slice|tuple
+            element index|name|slice|tuple
 
         Returns
         -------
@@ -1287,16 +1287,21 @@ class Line(Element):
                     return element
         if isinstance(key, slice):
             return [self[index] for index in range(*key.indices(len(self)))]
+        if isinstance(key, tuple):
+            result = self
+            for index in key:
+                result = result[index]
+            return result
 
 
-    def __setitem__(self, key: int|str|slice, element: Element) -> None:
+    def __setitem__(self, key: int|str|slice|tuple, element: Element) -> None:
         """
-        Set (first level) element by index|name
+        Set (first level) element by index|name|slice|tuple
 
         Parameters
         ----------
         key: int|str|slice
-            element index|name|slice to replace
+            element index|name|slice|tuple to replace
         element: Element
             element
 
@@ -1313,6 +1318,11 @@ class Line(Element):
         if isinstance(key, slice):
             for index, item in zip(range(*key.indices(len(self.sequence))), element):
                 self.sequence[index] = item
+        if isinstance(key, tuple):
+            current = self
+            for index in key[:-1]:
+                current = current[index]
+            current[key[-1]] = element
 
 
     def __repr__(self) -> str:
