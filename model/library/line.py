@@ -704,8 +704,6 @@ class Line(Element):
         Other zero length elements are not intended to be splitted and are skipped
 
         Elements with nonzero length are splitted by length (and angle if present)
-        For dipoles, this results in additional overhead (edge transformations between parts)
-        Wedge angles are not taken into account
 
         Parameters
         ----------
@@ -729,8 +727,9 @@ class Line(Element):
         clean = clean or []
         paste = paste or []
         for index, element in enumerate(self.sequence):
-            if (element.__class__.__name__ in kinds or element.name in names) and (element.name not in clean):
-                if element.__class__.__name__ == 'BPM':
+            kind = element.__class__.__name__
+            if (kind in kinds or element.name in names) and (element.name not in clean):
+                if kind == 'BPM':
                     head = element.clone()
                     tail = element.clone()
                     tail.direction = {'forward': 'inverse', 'inverse': 'forward'}[tail.direction]
@@ -745,7 +744,15 @@ class Line(Element):
                 element.length = element.length.item()/count
                 if element.flag:
                     element.angle = element.angle.item()/count
-                local = count*[element]
+                local = [element.clone() for _ in range(count)]
+                if kind == 'Dipole':
+                    head, *local, tail = local
+                    tail.e1_on = False
+                    head.e2_on = False
+                    for part in local:
+                        part.e1_on = False
+                        part.e2_on = False
+                    local = [head, *local, tail]
                 if paste:
                     *local, _ = [item for pair in zip(local, count*[*paste]) for item in pair]
                 sequence.extend(local)
