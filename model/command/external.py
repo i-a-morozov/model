@@ -35,7 +35,6 @@ from copy import deepcopy
 
 from math import pi
 
-from model.command.util import Table
 from model.command.util import cast
 from model.command.util import rename
 from model.command.util import insert
@@ -175,7 +174,7 @@ def convert(columns: dict[str, dict[str, str|int|float]],
             name_virtual:Optional[list[str]]=None,
             monitor:str='MONITOR',
             virtual:str='VIRTUAL',
-            rule:Optional[dict[str, str]]=None) -> Table:
+            rule:Optional[dict[str, str]]=None) -> dict[str,dict[str,str|int|float|dict]]:
     """
     Convert (sorted) columns to configuration table
 
@@ -209,7 +208,7 @@ def convert(columns: dict[str, dict[str, str|int|float]],
 
     Returns
     -------
-    Table
+    dict[str,dict[str,str|int|float|dict]]
 
     """
     rule_tfs:dict[str, str] = {
@@ -259,7 +258,7 @@ def convert(columns: dict[str, dict[str, str|int|float]],
     rule:dict[str, str] = {**({'TFS': rule_tfs, 'SDDS': rule_sdds}[kind]), **(rule if rule else {})}
     name_monitor:list[str] = name_monitor if name_monitor else []
     name_virtual:list[str] = name_virtual if name_virtual else []
-    table:Table = deepcopy(columns)
+    table:dict[str,dict[str,str|int|float|dict]] = deepcopy(columns)
     head:str
     tail:str
     head, *_, tail = table.keys()
@@ -268,7 +267,7 @@ def convert(columns: dict[str, dict[str, str|int|float]],
     source:str = {'TFS': 'KEYWORD', 'SDDS': 'ElementType'}[kind]
     kinds:list[str] = kind_monitor + kind_virtual
     names:list[str] = name_monitor + name_virtual
-    table:Table = {location: data for location, data in table.items() if data[source] in kinds or location in names}
+    table:dict[str,dict[str,str|int|float|dict]] = {location: data for location, data in table.items() if data[source] in kinds or location in names}
     for location in table:
         value = table[location][source]
         if value in kind_monitor or location in name_monitor:
@@ -508,16 +507,16 @@ def rift_lattice(lattice:dict[str,dict[str,str|int|float|dict]],
     return result
 
 
-def add_rc(table:Table,
+def add_rc(table:dict[str,dict[str,str|int|float|dict]],
            lattice:dict[str,dict[str,str|int|float|dict]], *,
            monitor:str='MONITOR',
-           virtual:str='VIRTUAL') -> Table:
+           virtual:str='VIRTUAL') -> dict[str,dict[str,str|int|float|dict]]:
     """
     Add RC from lattice to configuration table
 
     Parameters
     ----------
-    table: Table
+    table: dict[str,dict[str,str|int|float|dict]]
         configuration table
     lattice: dict[str,dict[str,str|int|float|dict]]
         lattice data
@@ -527,10 +526,10 @@ def add_rc(table:Table,
 
     Returns
     -------
-    Table
+    dict[str,dict[str,str|int|float|dict]]
 
     """
-    table:Table = deepcopy(table)
+    table:dict[str,dict[str,str|int|float|dict]] = deepcopy(table)
     location:str
     data:dict[str,str|int|float|dict]
     for location, data in lattice.items():

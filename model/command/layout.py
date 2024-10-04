@@ -4,6 +4,21 @@ Layout
 
 Graphical representation of planar accelerator lattice
 
+Parameters and functions
+
+config               : graphics settings for elements
+__init__             : constructor
+orbit                : generate planar reference orbit
+transform            : geometical transformation
+make_faces           : generate block face
+make_straight_block  : generate straight block
+make_curved_block    : generate curved block
+mesh                 : generate mesh indices
+profile_1d           : generate data for 1D profile plot
+profile_2d           : generate data for 2D profile plot
+profile_3d           : generate data for 3D profile plot
+slicing_table        : generate slicing table
+
 """
 from __future__ import annotations
 

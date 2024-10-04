@@ -4,6 +4,21 @@ Wrapper
 
 Generate element/line wrappers
 
+Parameters and functions
+
+wrapper              : generate wrapper function for an element/line
+group                : generate group wrapper (one or more elements/lines)
+forward              : forward normalizaton
+inverse              : inverse normalizaton
+normalize            : generate normalizaton wrapper
+Wrapper              : class to wrap function into torcm module
+_update              : recursively update the value of the parameter (leaf key) in the nested dictionary
+_select              : select a sub-dictionary from a nested dictionary given a path of keys
+_construct           : construct a transformation from one element to another
+_forward             : scale a tensor from [lb, ub] to [0, 1]
+_inverse             : scale a tensor from [0, 1] to [lb, ub]
+
+
 """
 from typing import Optional
 from typing import Callable

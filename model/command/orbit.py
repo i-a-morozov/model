@@ -4,6 +4,11 @@ Orbit
 
 Functionality related to (parametric) closed orbit and fixed points computation
 
+Parameters and functions
+
+orbit                : estimate (dynamical) fixed point
+parametric_orbit     : compute parametric closed point (or fixed point)
+
 """
 from typing import Optional
 from typing import Callable

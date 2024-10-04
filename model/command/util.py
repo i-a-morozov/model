@@ -35,7 +35,6 @@ from typing import Callable
 from pathlib import Path
 from copy import deepcopy
 
-type Table = dict[str,dict[str,str|int|float|dict]]
 
 def _yaml_float(dumper, value):
     formatted = "{:.16E}".format(value)
@@ -93,7 +92,7 @@ def cast(value:str) -> str|int|float:
             return value
 
 
-def load(path:Path) -> Table:
+def load(path:Path) -> dict[str,dict[str,str|int|float|dict]]:
     """
     Load configuration table
 
@@ -104,7 +103,7 @@ def load(path:Path) -> Table:
 
     Returns
     -------
-    Table
+    dict[str,dict[str,str|int|float|dict]]
 
     """
     with path.open() as stream:
@@ -112,14 +111,14 @@ def load(path:Path) -> Table:
     return table
 
 
-def save(table:Table,
+def save(table:dict[str,dict[str,str|int|float|dict]],
          path:Path) -> None:
     """
     Save configuration table
 
     Parameters
     ----------
-    table: Table
+    table: dict[str,dict[str,str|int|float|dict]]
         table to save
     path: Path
         output file path
@@ -133,15 +132,15 @@ def save(table:Table,
         yaml.dump(table, stream, Dumper=_yaml_dumper, default_flow_style=False, sort_keys=False)
 
 
-def rename(table:Table,
+def rename(table:dict[str,dict[str,str|int|float|dict]],
            rule:dict[str,str], *,
-           drop:bool=True) -> Table:
+           drop:bool=True) -> dict[str,dict[str,str|int|float|dict]]:
     """
     Rename keys
 
     Parameters
     ----------
-    table: Table
+    table: dict[str,dict[str,str|int|float|dict]]
         input table
     rule: dict[str, str]
         keys replacement rule
@@ -150,16 +149,16 @@ def rename(table:Table,
 
     Returns
     -------
-    Table
+    dict[str,dict[str,str|int|float|dict]]
 
     """
-    result:Table = {}
+    result:dict[str,dict[str,str|int|float|dict]] = {}
     for location, data in table.items():
         result[location] = {rule.get(key, key): value for key, value in  data.items() if (not drop) or (key in rule)}
     return result
 
 
-def select(table:Table,
+def select(table:dict[str,dict[str,str|int|float|dict]],
            key:str, *,
            keep:bool=False) -> dict[str,str|int|float|dict]:
     """
@@ -167,7 +166,7 @@ def select(table:Table,
 
     Parameters
     ----------
-    table: Table
+    table: dict[str,dict[str,str|int|float|dict]]
         input table
     key: str
         selected key
@@ -179,7 +178,7 @@ def select(table:Table,
     dict[str,str|int|float|dict]
 
     """
-    table:Table = rename(table, {key: key}, drop=True)
+    table:dict[str,dict[str,str|int|float|dict]] = rename(table, {key: key}, drop=True)
     if keep:
         return table
     locations:list[str] = list(table.keys())
@@ -187,17 +186,17 @@ def select(table:Table,
     return {location: value for location, (value, *_) in zip(locations, values)}
 
 
-def insert(table:Table,
+def insert(table:dict[str,dict[str,str|int|float|dict]],
            key:str,
            locations:dict[str,str|int|float|dict], *,
            replace:bool=True,
-           apply:Optional[Callable]=None) -> Table:
+           apply:Optional[Callable]=None) -> dict[str,dict[str,str|int|float|dict]]:
     """
     Insert key
 
     Parameters
     ----------
-    table: Table
+    table: dict[str,dict[str,str|int|float|dict]]
         input configuration table
     key: str
         key name
@@ -210,12 +209,12 @@ def insert(table:Table,
 
     Returns
     -------
-    Table
+    dict[str,dict[str,str|int|float|dict]]
 
     """
     if not apply:
         apply:Callable = list
-    table: Table = deepcopy(table)
+    table: dict[str,dict[str,str|int|float|dict]] = deepcopy(table)
     for location, value in locations.items():
         if replace:
             table[location][key] = value
@@ -224,15 +223,15 @@ def insert(table:Table,
     return table
 
 
-def remove(table:Table,
+def remove(table:dict[str,dict[str,str|int|float|dict]],
            key:str, *,
-           locations:Optional[list[str]]=None) -> Table:
+           locations:Optional[list[str]]=None) -> dict[str,dict[str,str|int|float|dict]]:
     """
     Remove key
 
     Parameters
     ----------
-    table: Table
+    table: dict[str,dict[str,str|int|float|dict]]
         input configuration table
     key: str
         key name
@@ -241,27 +240,27 @@ def remove(table:Table,
 
     Returns
     -------
-    Table
+    dict[str,dict[str,str|int|float|dict]]
 
     """
-    table: Table = deepcopy(table)
+    table: dict[str,dict[str,str|int|float|dict]] = deepcopy(table)
     for location in (locations if locations else table):
         table[location].pop(key)
     return table
 
 
-def mingle(probe:Table,
-           other:Table,
+def mingle(probe:dict[str,dict[str,str|int|float|dict]],
+           other:dict[str,dict[str,str|int|float|dict]],
            replace:bool=True,
-           apply:Optional[Callable]=None) -> Table:
+           apply:Optional[Callable]=None) -> dict[str,dict[str,str|int|float|dict]]:
     """
     Mingle two configuration tables
 
     Parameters
     ----------
-    probe: Table
+    probe: dict[str,dict[str,str|int|float|dict]]
         probe table (shared keys values appear first)
-    other: Table
+    other: dict[str,dict[str,str|int|float|dict]]
         other table
     replace: bool, default=True
         flag to replace existing values
@@ -270,12 +269,12 @@ def mingle(probe:Table,
 
     Returns
     -------
-    Table
+    dict[str,dict[str,str|int|float|dict]]
 
     """
     if not apply:
         apply:Callable = list
-    probe: Table = deepcopy(probe)
+    probe: dict[str,dict[str,str|int|float|dict]] = deepcopy(probe)
     for location, data in other.items():
         for key, value in data.items():
             probe = insert(probe, key, {location: value}, replace=replace, apply=apply)

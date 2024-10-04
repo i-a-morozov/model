@@ -5,6 +5,17 @@ Build
 Build MADX or ELEGANT lattice
 Save and load YAML lattice
 
+Parameters and functions
+
+_translation_madx    : MADX translation rules
+_translation_lte     : ELEGANT translation rules
+save_line            : save line to YAML
+load_line            : load line from YAML
+_traverse            : recursive line construction (mutates input table)
+build                : build MADX or ELEGANT lattice
+_build_seq           : build MADX lattice
+_build_lte           : build ELEGANT lattice
+
 """
 from typing import Literal
 
@@ -90,6 +101,21 @@ def load_line(path:Path) -> Line:
 
 
 def _traverse(table:dict) -> Line:
+    """
+    Recursive line construction (mutates input table)
+
+    Note, unmatched kind is casted to drift
+
+    Parameters
+    ----------
+    table: dict
+        table
+
+    Returns
+    -------
+    Line
+
+    """
     table.get('kind')
     match table.get('kind'):
         case 'Line':
@@ -130,7 +156,7 @@ def _traverse(table:dict) -> Line:
             table.pop('kind')
             return Marker(**table)
         case _:
-            return Drift(name=table['name'], length=table['length'])            
+            return Drift(name=table['name'], length=table['length'])
 
 
 def build(target:str,
@@ -311,5 +337,3 @@ def _build_lte(target:str,
                 name=target,
                 length=data.get(select['length'], 0.0)
             )
-
-
