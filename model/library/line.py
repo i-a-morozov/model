@@ -34,8 +34,8 @@ itemize     : get list of all elements with matching kind
 describe    : (property) return number of elements (with unique names) for each kind
 split       : split elements
 clean       : clean first level sequence
-merge       : merge elements
 mangle      : mangle elements
+merge       : merge drift elements
 splice      : splice line
 dp          : (property) get/set momentum deviation
 exact       : (property) get/set exact flag
@@ -791,44 +791,6 @@ class Line(Element):
         self.sequence = sequence
 
 
-    def merge(self, *,
-              name:str='DR',
-              size:int=3) -> None:
-        """
-        Merge and rename drifts
-
-        Parameters
-        ----------
-        name: str, default='DR'
-            root name
-        size: int, default=3
-            number of zeros to prepend
-
-        Returns
-        -------
-        float
-
-        """
-        sequence:list[Element] = []
-        count:int = 0
-        local:list[Element] = []
-        for index, element in enumerate(self.sequence):
-            if element.__class__.__name__ == 'Drift':
-                if not local:
-                    count += 1
-                    current = element.clone()
-                    current.name = f'{name}{count:0{size}}'
-                    local = [current]
-                    continue
-                current, *_ = local
-                current.length = (current.length + element.length).item()
-                local = [current]
-                continue
-            sequence.extend([*local, element])
-            local = []
-        self.sequence = sequence
-
-
     def mangle(self,
                kind:str, *,
                names:Optional[list[str]]=None,
@@ -857,10 +819,47 @@ class Line(Element):
         for element in self.sequence:
             current = element.clone()
             if element.name not in names and element.__class__.__name__ == kind and total[element.name] != 1:
-                current.name = f'{element.name}_{table[element.name]:0{size}}'
+                current.name = f'{element.name}{table[element.name]:0{size}}'
                 table[element.name] += 1
             sequence.append(current)
         self.sequence = sequence
+
+
+    def merge(self, *,
+              name:str='DR',
+              size:int=3) -> None:
+        """
+        Merge and rename drifts
+
+        Parameters
+        ----------
+        name: str, default='DR'
+            root name
+        size: int, default=3
+            number of zeros to prepend
+
+        Returns
+        -------
+        float
+
+        """
+        sequence:list[Element] = []
+        length:float = 0.0
+        for index, element in enumerate(self.sequence):
+            if element.__class__.__name__ == 'Drift':
+                current = element.clone()
+                length += current.length.item()
+                current.name = name
+                current.length = length
+                continue
+            if length:
+                sequence.append(current)
+            sequence.append(element)
+            length = 0.0
+        if length:
+            sequence.append(current)
+        self.sequence = sequence
+        self.mangle('Drift', size=size)
 
 
     def splice(self) -> None:
