@@ -173,6 +173,8 @@
 <span class="sd">remove      : remove first occurrance of element with given name</span>
 <span class="sd">replace     : replace first occurrance of element with given name</span>
 <span class="sd">names       : (property) get list of first level element names</span>
+<span class="sd">layout      : generate data for layout plotting</span>
+<span class="sd">locations   : first level element/line entrance frame locations</span>
 <span class="sd">position    : get element position in sequence</span>
 <span class="sd">positions   : get all element position in sequence</span>
 <span class="sd">start       : (property) set/get the first element</span>
@@ -186,6 +188,7 @@
 <span class="sd">mangle      : mangle elements</span>
 <span class="sd">merge       : merge drift elements</span>
 <span class="sd">splice      : splice line</span>
+<span class="sd">group       : replace sequence part (first level) from probe to other with a line</span>
 <span class="sd">dp          : (property) get/set momentum deviation</span>
 <span class="sd">exact       : (property) get/set exact flag</span>
 <span class="sd">length      : (property) get line length</span>
@@ -201,7 +204,7 @@
 <span class="sd">__setitem__ : set (first level) element by key</span>
 <span class="sd">__delitem__ : del (first level) element by key</span>
 <span class="sd">__repr__    : print line</span>
-<span class="sd">layout      : generate data for layout plotting</span>
+
 
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
@@ -731,6 +734,52 @@
         <span class="k">return</span> <span class="p">[</span><span class="n">element</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">sequence</span><span class="p">]</span>
 
 
+<div class="viewcode-block" id="Line.layout">
+<a class="viewcode-back" href="../../../modules/library/line.html#model.library.line.Line.layout">[docs]</a>
+    <span class="k">def</span> <span class="nf">layout</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span><span class="nb">str</span><span class="p">,</span><span class="n">Tensor</span><span class="p">,</span><span class="n">Tensor</span><span class="p">]]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Generate data for layout plotting</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        None</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        list[tuple[str,str,Tensor,Tensor]]</span>
+<span class="sd">            (name,type,length,angle)</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">default</span><span class="p">:</span><span class="n">Tensor</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dtype</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">device</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">[</span>
+            <span class="p">(</span>
+                <span class="n">element</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+                <span class="n">element</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span>
+                <span class="nb">getattr</span><span class="p">(</span><span class="n">element</span><span class="p">,</span> <span class="s1">&#39;length&#39;</span><span class="p">,</span> <span class="n">default</span><span class="p">),</span>
+                <span class="nb">getattr</span><span class="p">(</span><span class="n">element</span><span class="p">,</span> <span class="s1">&#39;angle&#39;</span><span class="p">,</span> <span class="n">default</span><span class="p">)</span>
+            <span class="p">)</span> <span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">scan</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">)</span>
+        <span class="p">]</span></div>
+
+
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">locations</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tensor</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        First level element/line entrance frame locations</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        None</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        Tensor</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">lengths</span> <span class="o">=</span> <span class="p">[</span><span class="n">element</span><span class="o">.</span><span class="n">length</span> <span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">sequence</span><span class="p">]</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">cumsum</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="n">lengths</span><span class="p">),</span> <span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">length</span><span class="p">)</span><span class="o">.</span><span class="n">roll</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">abs</span><span class="p">()</span>
+
+
 <div class="viewcode-block" id="Line.position">
 <a class="viewcode-back" href="../../../modules/library/line.html#model.library.line.Line.position">[docs]</a>
     <span class="k">def</span> <span class="nf">position</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
@@ -1114,6 +1163,57 @@
                 <span class="n">line</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">sequence</span> <span class="o">=</span> <span class="n">sequence</span></div>
 
+
+
+<div class="viewcode-block" id="Line.group">
+<a class="viewcode-back" href="../../../modules/library/line.html#model.library.line.Line.group">[docs]</a>
+    <span class="k">def</span> <span class="nf">group</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+              <span class="n">name</span><span class="p">:</span><span class="nb">str</span><span class="p">,</span>
+              <span class="n">probe</span><span class="p">:</span><span class="nb">str</span><span class="o">|</span><span class="nb">int</span><span class="p">,</span>
+              <span class="n">other</span><span class="p">:</span><span class="nb">str</span><span class="o">|</span><span class="nb">int</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span>
+              <span class="n">include</span><span class="p">:</span><span class="nb">bool</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Replace sequence part (first level) from probe to other with a line</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        name: str</span>
+<span class="sd">            line name</span>
+<span class="sd">        probe: str|int</span>
+<span class="sd">            probe name</span>
+<span class="sd">        other: str|int</span>
+<span class="sd">            other name</span>
+<span class="sd">        include: bool, default=True</span>
+<span class="sd">            flag to include last element</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        None</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">probe</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="n">probe</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">position</span><span class="p">(</span><span class="n">probe</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="n">other</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">position</span><span class="p">(</span><span class="n">other</span><span class="p">)</span>
+        <span class="n">count</span><span class="p">:</span><span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">sequence</span><span class="p">:</span><span class="nb">list</span><span class="p">[</span><span class="n">Element</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">sequence</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">count</span> <span class="o">&lt;</span> <span class="n">probe</span> <span class="ow">or</span> <span class="n">count</span> <span class="o">&gt;=</span> <span class="n">other</span> <span class="o">+</span> <span class="n">include</span><span class="p">:</span>
+                <span class="n">sequence</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">element</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">probe</span> <span class="o">==</span> <span class="n">count</span><span class="p">:</span>
+                <span class="n">line</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span>
+                                      <span class="n">sequence</span><span class="o">=</span><span class="p">[],</span>
+                                      <span class="n">dp</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dp</span><span class="o">.</span><span class="n">item</span><span class="p">(),</span>
+                                      <span class="n">exact</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">exact</span><span class="p">,</span>
+                                      <span class="n">output</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">output</span><span class="p">,</span>
+                                      <span class="n">matrix</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">matrix</span><span class="p">)</span>
+                <span class="n">sequence</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+                <span class="n">local</span> <span class="o">=</span> <span class="p">[</span><span class="n">element</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">local</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">element</span><span class="p">)</span>
+            <span class="n">count</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="n">line</span><span class="o">.</span><span class="n">sequence</span> <span class="o">=</span> <span class="n">local</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sequence</span> <span class="o">=</span> <span class="n">sequence</span></div>
 
 
 
@@ -1595,35 +1695,7 @@
 
 
     <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-        <span class="k">return</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="nb">str</span><span class="p">(</span><span class="n">element</span><span class="p">)</span> <span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">sequence</span><span class="p">])</span>
-
-
-<div class="viewcode-block" id="Line.layout">
-<a class="viewcode-back" href="../../../modules/library/line.html#model.library.line.Line.layout">[docs]</a>
-    <span class="k">def</span> <span class="nf">layout</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span><span class="nb">str</span><span class="p">,</span><span class="n">Tensor</span><span class="p">,</span><span class="n">Tensor</span><span class="p">]]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Generate data for layout plotting</span>
-
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">        None</span>
-
-<span class="sd">        Returns</span>
-<span class="sd">        -------</span>
-<span class="sd">        list[tuple[str,str,Tensor,Tensor]]</span>
-<span class="sd">            (name,type,length,angle)</span>
-
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">default</span><span class="p">:</span><span class="n">Tensor</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dtype</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">device</span><span class="p">)</span>
-        <span class="k">return</span> <span class="p">[</span>
-            <span class="p">(</span>
-                <span class="n">element</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
-                <span class="n">element</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span>
-                <span class="nb">getattr</span><span class="p">(</span><span class="n">element</span><span class="p">,</span> <span class="s1">&#39;length&#39;</span><span class="p">,</span> <span class="n">default</span><span class="p">),</span>
-                <span class="nb">getattr</span><span class="p">(</span><span class="n">element</span><span class="p">,</span> <span class="s1">&#39;angle&#39;</span><span class="p">,</span> <span class="n">default</span><span class="p">)</span>
-            <span class="p">)</span> <span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">scan</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">)</span>
-        <span class="p">]</span></div>
-</div>
+        <span class="k">return</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="nb">str</span><span class="p">(</span><span class="n">element</span><span class="p">)</span> <span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">sequence</span><span class="p">])</span></div>
 
 
 

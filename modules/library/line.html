@@ -102,11 +102,13 @@
 <li class="toctree-l2"><a class="reference internal" href="#model.library.line.Line.flag"><code class="docutils literal notranslate"><span class="pre">Line.flag</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#model.library.line.Line.flatten"><code class="docutils literal notranslate"><span class="pre">Line.flatten()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#model.library.line.Line.get"><code class="docutils literal notranslate"><span class="pre">Line.get()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#model.library.line.Line.group"><code class="docutils literal notranslate"><span class="pre">Line.group()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#model.library.line.Line.insert"><code class="docutils literal notranslate"><span class="pre">Line.insert()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#model.library.line.Line.inverse"><code class="docutils literal notranslate"><span class="pre">Line.inverse()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#model.library.line.Line.itemize"><code class="docutils literal notranslate"><span class="pre">Line.itemize()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#model.library.line.Line.layout"><code class="docutils literal notranslate"><span class="pre">Line.layout()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#model.library.line.Line.length"><code class="docutils literal notranslate"><span class="pre">Line.length</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#model.library.line.Line.locations"><code class="docutils literal notranslate"><span class="pre">Line.locations</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#model.library.line.Line.make_matrix"><code class="docutils literal notranslate"><span class="pre">Line.make_matrix()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#model.library.line.Line.make_step"><code class="docutils literal notranslate"><span class="pre">Line.make_step()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#model.library.line.Line.mangle"><code class="docutils literal notranslate"><span class="pre">Line.mangle()</span></code></a></li>
@@ -214,6 +216,8 @@ insert      : insert element
 remove      : remove first occurrance of element with given name
 replace     : replace first occurrance of element with given name
 names       : (property) get list of first level element names
+layout      : generate data for layout plotting
+locations   : first level element/line entrance frame locations
 position    : get element position in sequence
 positions   : get all element position in sequence
 start       : (property) set/get the first element
@@ -227,6 +231,7 @@ clean       : clean first level sequence
 mangle      : mangle elements
 merge       : merge drift elements
 splice      : splice line
+group       : replace sequence part (first level) from probe to other with a line
 dp          : (property) get/set momentum deviation
 exact       : (property) get/set exact flag
 length      : (property) get line length
@@ -241,8 +246,7 @@ __len__     : get number of elements (first level)
 __getitem__ : get (first level) element by key
 __setitem__ : set (first level) element by key
 __delitem__ : del (first level) element by key
-__repr__    : print line
-layout      : generate data for layout plotting</p>
+__repr__    : print line</p>
 </section>
 <dl class="py class">
 <dt class="sig sig-object py" id="model.library.line.Line">
@@ -428,6 +432,25 @@ length, kinds, names to include, names to exclude</p>
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="model.library.line.Line.group">
+<span class="sig-name descname"><span class="pre">group</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">probe</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">other</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">int</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">include</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../../_modules/model/library/line.html#Line.group"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#model.library.line.Line.group" title="Link to this definition"></a></dt>
+<dd><p>Replace sequence part (first level) from probe to other with a line</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<em>str</em>) – line name</p></li>
+<li><p><strong>probe</strong> (<em>str</em><em>|</em><em>int</em>) – probe name</p></li>
+<li><p><strong>other</strong> (<em>str</em><em>|</em><em>int</em>) – other name</p></li>
+<li><p><strong>include</strong> (<em>bool</em><em>, </em><em>default=True</em>) – flag to include last element</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="model.library.line.Line.insert">
 <span class="sig-name descname"><span class="pre">insert</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">element</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="element.html#model.library.element.Element" title="model.library.element.Element"><span class="pre">Element</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../../_modules/model/library/line.html#Line.insert"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#model.library.line.Line.insert" title="Link to this definition"></a></dt>
 <dd><p>Insert element after the element with given name</p>
@@ -493,6 +516,20 @@ length, kinds, names to include, names to exclude</p>
 <dt class="sig sig-object py" id="model.library.line.Line.length">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">length</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">torch.Tensor</span></em><a class="headerlink" href="#model.library.line.Line.length" title="Link to this definition"></a></dt>
 <dd><p>Get sequence length</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>None</strong></p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>Tensor</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="model.library.line.Line.locations">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">locations</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">torch.Tensor</span></em><a class="headerlink" href="#model.library.line.Line.locations" title="Link to this definition"></a></dt>
+<dd><p>First level element/line entrance frame locations</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>None</strong></p>
