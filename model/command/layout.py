@@ -53,6 +53,7 @@ class Layout:
         'Dipole'    : {'color': 'blue' , 'width': 0.50, 'height': 0.50, 'opacity': 0.20},
         'Corrector' : {'color': 'blue' , 'width': 0.75, 'height': 0.75, 'opacity': 0.20},
         'Gradient'  : {'color': 'red'  , 'width': 0.75, 'height': 0.75, 'opacity': 0.20},
+        'Kick'      : {'color': 'red'  , 'width': 0.75, 'height': 0.75, 'opacity': 0.20},
         'Linear'    : {'color': 'gray' , 'width': 0.25, 'height': 0.25, 'opacity': 0.20},
         'BPM'       : {'color': 'gray' , 'width': 1.00, 'height': 1.00, 'opacity': 0.10},
         'Marker'    : {'color': 'gray' , 'width': 1.00, 'height': 1.00, 'opacity': 0.10}

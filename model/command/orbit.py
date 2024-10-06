@@ -91,6 +91,7 @@ def parametric_orbit(line:Line,
                      start:Optional[int|str]=None,
                      alignment:bool=False,
                      advance:bool=False,
+                     full:bool=True,
                      power:int=1,
                      solve:Optional[Callable]=None,
                      jacobian:Optional[Callable]=None) -> tuple[Table|list[Table], list[tuple[None, list[str], str]], list[int]]:
@@ -114,6 +115,8 @@ def parametric_orbit(line:Line,
         flag to include the alignment parameters in the default deviation table
     advance: bool, default=False
         flag to advance the parametric orbit over elements or lines
+    full: bool, default=False
+        flag to perform full propagation
     power: int, positive, default=1
         function power / fixed point order
     solve: Optional[Callable]
@@ -149,10 +152,11 @@ def parametric_orbit(line:Line,
     if not advance:
         return orbit, table, orders
 
-    orbits = []
+    orbits = [orbit]
     runner = identity((0, *orders), point, parametric=orbit)
 
-    for element in line:
+    *most, last = line.sequence
+    for element in most + full*[last]:
         mapping, *_ = group(line, element.name, element.name, *groups, alignment=alignment, root=True)
         runner = propagate((len(point), *map(len, parameters)), (0, *orders), runner, parameters, mapping, jacobian=jacobian)
         orbits.append(runner)
