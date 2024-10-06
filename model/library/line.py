@@ -24,6 +24,8 @@ insert      : insert element
 remove      : remove first occurrance of element with given name
 replace     : replace first occurrance of element with given name
 names       : (property) get list of first level element names
+layout      : generate data for layout plotting
+locations   : first level element/line entrance frame locations
 position    : get element position in sequence
 positions   : get all element position in sequence
 start       : (property) set/get the first element
@@ -37,6 +39,7 @@ clean       : clean first level sequence
 mangle      : mangle elements
 merge       : merge drift elements
 splice      : splice line
+group       : replace sequence part (first level) from probe to other with a line
 dp          : (property) get/set momentum deviation
 exact       : (property) get/set exact flag
 length      : (property) get line length
@@ -52,7 +55,7 @@ __getitem__ : get (first level) element by key
 __setitem__ : set (first level) element by key
 __delitem__ : del (first level) element by key
 __repr__    : print line
-layout      : generate data for layout plotting
+
 
 """
 from __future__ import annotations
@@ -535,6 +538,49 @@ class Line(Element):
         return [element.name for element in self.sequence]
 
 
+    def layout(self) -> list[tuple[str,str,Tensor,Tensor]]:
+        """
+        Generate data for layout plotting
+
+        Parameters
+        ----------
+        None
+
+        Returns
+        -------
+        list[tuple[str,str,Tensor,Tensor]]
+            (name,type,length,angle)
+
+        """
+        default:Tensor = torch.tensor(0.0, dtype=self.dtype, device=self.device)
+        return [
+            (
+                element.name,
+                element.__class__.__name__,
+                getattr(element, 'length', default),
+                getattr(element, 'angle', default)
+            ) for element in self.scan('name')
+        ]
+
+
+    @property
+    def locations(self) -> Tensor:
+        """
+        First level element/line entrance frame locations
+
+        Parameters
+        ----------
+        None
+
+        Returns
+        -------
+        Tensor
+
+        """
+        lengths = [element.length for element in self.sequence]
+        return (torch.cumsum(torch.stack(lengths), dim=-1) % self.length).roll(1).abs()
+
+
     def position(self,
                  name:str) -> int:
         """
@@ -892,6 +938,54 @@ class Line(Element):
                 line = []
         self.sequence = sequence
 
+
+    def group(self,
+              name:str,
+              probe:str|int,
+              other:str|int, *,
+              include:bool=True) -> None:
+        """
+        Replace sequence part (first level) from probe to other with a line
+
+        Parameters
+        ----------
+        name: str
+            line name
+        probe: str|int
+            probe name
+        other: str|int
+            other name
+        include: bool, default=True
+            flag to include last element
+
+        Returns
+        -------
+        None
+
+        """
+        if isinstance(probe, str):
+            probe = self.position(probe)
+        if isinstance(other, str):
+            other = self.position(other)
+        count:int = 0
+        sequence:list[Element] = []
+        for element in self.sequence:
+            if count < probe or count >= other + include:
+                sequence.append(element)
+            elif probe == count:
+                line = self.__class__(name=name,
+                                      sequence=[],
+                                      dp=self.dp.item(),
+                                      exact=self.exact,
+                                      output=self.output,
+                                      matrix=self.matrix)
+                sequence.append(line)
+                local = [element]
+            else:
+                local.append(element)
+            count += 1
+        line.sequence = local
+        self.sequence = sequence
 
 
     @property
@@ -1373,31 +1467,6 @@ class Line(Element):
 
     def __repr__(self) -> str:
         return '\n'.join([str(element) for element in self.sequence])
-
-
-    def layout(self) -> list[tuple[str,str,Tensor,Tensor]]:
-        """
-        Generate data for layout plotting
-
-        Parameters
-        ----------
-        None
-
-        Returns
-        -------
-        list[tuple[str,str,Tensor,Tensor]]
-            (name,type,length,angle)
-
-        """
-        default:Tensor = torch.tensor(0.0, dtype=self.dtype, device=self.device)
-        return [
-            (
-                element.name,
-                element.__class__.__name__,
-                getattr(element, 'length', default),
-                getattr(element, 'angle', default)
-            ) for element in self.scan('name')
-        ]
 
 
 def accumulate(data:dict[str, Tensor|dict[str, Tensor]],
