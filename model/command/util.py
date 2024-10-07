@@ -23,6 +23,12 @@ insert : Insert key
 remove : Remove key
 mingle : Mingle two configuration tables
 
+Aliases
+
+chop     : ndmap.signature.chop
+evaluate : ndmap.evaluate.evaluate
+series   : ndmap.series.series
+
 """
 from __future__ import annotations
 
@@ -35,6 +41,13 @@ from typing import Callable
 from pathlib import Path
 from copy import deepcopy
 
+from torch import Tensor
+from ndmap.series import Table
+from ndmap.series import Series
+
+import ndmap.signature
+import ndmap.evaluate
+import ndmap.series
 
 def _yaml_float(dumper, value):
     formatted = "{:.16E}".format(value)
@@ -279,3 +292,75 @@ def mingle(probe:dict[str,dict[str,str|int|float|dict]],
         for key, value in data.items():
             probe = insert(probe, key, {location: value}, replace=replace, apply=apply)
     return probe
+
+
+def chop(table:Table, *,
+         threshold:float=1.0E-09,
+         value:float=0.0,
+         replace:bool=False) -> None:
+    """
+    Chop tensor elements in a table below a given threshold
+
+    Parameters
+    ----------
+    table: Table
+        input derivative table representation
+    threshold: float, default=1.0E-9
+        threshold value
+    value: float, default=0.0
+        set value
+    replace: bool, default=False
+        flag to replace zero tensors
+
+    Returns
+    -------
+    None
+
+    """
+    return ndmap.signature.chop(table,
+                                threshold=threshold,
+                                value=value,
+                                replace=replace)
+
+
+def evaluate(table:Table|Series,
+             delta:list[Tensor]) -> Tensor:
+    """
+    Evaluate input derivative table representation at a given delta deviation
+
+    Note, input table (or series) is expected to represent a vector or scalar valued function
+
+    Parameters
+    ----------
+    table: Table | Series
+        input derivative table or seriest representation
+    delta: list[Tensor]
+        delta deviation
+
+    Returns
+    -------
+    Tensor
+
+    """
+    return ndmap.evaluate.evaluate(table, delta)
+
+
+def series(dimension: tuple[int, ...], order: tuple[int, ...], table: Table) -> Series:
+    """
+    Generate series representation from a given derivative table representation
+
+    Parameters
+    ----------
+    dimension: tuple[int, ...], positive
+        dimensions
+    order: tuple[int, ...], non-negative
+        derivative orders
+    table: Table
+        derivative table representation
+
+    Returns
+    -------
+    Series
+
+    """
+    return ndmap.series.series(dimension, order, table)
