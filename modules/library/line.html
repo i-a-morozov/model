@@ -78,6 +78,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../examples/model.html#Example-28:-Transformation">Example-28: Transformation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../examples/model.html#Example-29:-Orbit-(fixed-point-computation)">Example-29: Orbit (fixed point computation)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../examples/model.html#Example-30:-Orbit-(effect-of-transverse-shift)">Example-30: Orbit (effect of transverse shift)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../examples/model.html#Example-31:-Orbit-(dispersion)">Example-31: Orbit (dispersion)</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API:</span></p>
 <ul class="current">
@@ -109,7 +110,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#model.library.line.Line.itemize"><code class="docutils literal notranslate"><span class="pre">Line.itemize()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#model.library.line.Line.layout"><code class="docutils literal notranslate"><span class="pre">Line.layout()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#model.library.line.Line.length"><code class="docutils literal notranslate"><span class="pre">Line.length</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="#model.library.line.Line.locations"><code class="docutils literal notranslate"><span class="pre">Line.locations</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#model.library.line.Line.locations"><code class="docutils literal notranslate"><span class="pre">Line.locations()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#model.library.line.Line.make_matrix"><code class="docutils literal notranslate"><span class="pre">Line.make_matrix()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#model.library.line.Line.make_step"><code class="docutils literal notranslate"><span class="pre">Line.make_step()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#model.library.line.Line.mangle"><code class="docutils literal notranslate"><span class="pre">Line.mangle()</span></code></a></li>
@@ -527,13 +528,13 @@ length, kinds, names to include, names to exclude</p>
 </dl>
 </dd></dl>
 
-<dl class="py property">
+<dl class="py method">
 <dt class="sig sig-object py" id="model.library.line.Line.locations">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">locations</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">torch.Tensor</span></em><a class="headerlink" href="#model.library.line.Line.locations" title="Link to this definition"></a></dt>
-<dd><p>First level element/line entrance frame locations</p>
+<span class="sig-name descname"><span class="pre">locations</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">select</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'entrance'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'exit'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'all'</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'entrance'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">torch.Tensor</span></span></span><a class="reference internal" href="../../_modules/model/library/line.html#Line.locations"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#model.library.line.Line.locations" title="Link to this definition"></a></dt>
+<dd><p>First level element/line frame locations</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>None</strong></p>
+<dd class="field-odd"><p><strong>select</strong> (<em>Literal</em><em>[</em><em>'entrance'</em><em>, </em><em>'exit'</em><em>, </em><em>'all'</em><em>]</em><em>, </em><em>default='entrance'</em>) – selected locations</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p>Tensor</p>
