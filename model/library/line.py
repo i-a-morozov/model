@@ -66,6 +66,7 @@ from collections import Counter
 from typing import Callable
 from typing import Optional
 from typing import Any
+from typing import Literal
 
 import torch
 from torch import Tensor
@@ -563,22 +564,30 @@ class Line(Element):
         ]
 
 
-    @property
-    def locations(self) -> Tensor:
+    def locations(self,
+                  select:Literal['entrance', 'exit', 'all']='entrance') -> Tensor:
         """
-        First level element/line entrance frame locations
+        First level element/line frame locations
 
         Parameters
         ----------
-        None
+        select: Literal['entrance', 'exit', 'all'], default='entrance'
+            selected locations
 
         Returns
         -------
         Tensor
 
         """
-        lengths = [element.length for element in self.sequence]
-        return (torch.cumsum(torch.stack(lengths), dim=-1) % self.length).roll(1).abs()
+        endpoints:Tensor = torch.stack([element.length for element in self.sequence]).cumsum(-1)
+        if select == 'exit':
+            return endpoints
+        if select == 'entrance':
+            *most, last = endpoints
+            return torch.stack([torch.zeros_like(last), *most])
+        if select == 'all':
+            *most, last = endpoints
+            return torch.stack([torch.zeros_like(last), *most, last])
 
 
     def position(self,
