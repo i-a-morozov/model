@@ -373,7 +373,7 @@ def _construct(probe:int,
     if probe > other:
         return list(reversed(_construct(other, probe, sequence, inverse=True)))
     n = len(sequence)
-    return [sequence[i % n].inverse() if inverse else sequence[i % n].clone() for i in range(probe, other + 1)]
+    return [sequence[i % n].inverse() if inverse else sequence[i % n] for i in range(probe, other + 1)]
 
 
 def _forward(x:Tensor,
