@@ -31,6 +31,7 @@ positions   : get all element position in sequence
 start       : (property) set/get the first element
 roll        : roll first level sequence
 unique      : (property) get unique elements
+index       : return list of unique element names and their indices from first level sequence
 duplicate   : (property) get duplicate elements
 itemize     : get list of all elements with matching kind
 describe    : (property) return number of elements (with unique names) for each kind
@@ -694,6 +695,35 @@ class Line(Element):
                 getattr(element, 'angle', default)
             ) for element in self.scan('name')
         }
+
+
+    def index(self,
+              kind:str, *,
+              test:Optional[Callable[[Line], bool]]=None) -> tuple[list[str], Tensor]:
+        """
+        Return list of unique element names and their indices from first level sequence
+
+        Parameters
+        ----------
+        kind: str
+            element kind
+        test: Optional[Callable[[Line], bool]]
+            test function
+
+        Returns
+        -------
+        tuple[list[str], Tensor]
+        """
+        if not test:
+            def test(self):
+                return True
+        names:list[str] = []
+        table:list[int] = []
+        for i, element in enumerate(self):
+            if element.__class__.__name__ == kind and element.name not in names:
+                names.append(element.name)
+                table.append(i)
+        return names, torch.tensor(table, dtype=torch.int64, device=self.device)
 
 
     @property

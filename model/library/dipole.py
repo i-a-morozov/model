@@ -77,6 +77,7 @@ class Dipole(Element):
                  wz:float=0.0,
                  e1_on:bool=True,
                  e2_on:bool=True,
+                 linear:bool=False,
                  ns:int=1,
                  ds:Optional[float]=None,
                  order:int=0,
@@ -125,6 +126,8 @@ class Dipole(Element):
             flag to include entrance wedge
         e2_on: bool, default=True
             flag to include exit wedge
+        linear: bool, default=False
+            flat to use linear approximation
         ns: int, positive, default=1
             number of integrtion steps
         ds: Optional[float], positive
@@ -174,6 +177,8 @@ class Dipole(Element):
 
         self._e1_on : bool = e1_on
         self._e2_on : bool = e2_on
+
+        self._linear: bool = linear
 
         self._lmatrix: Tensor
         self._rmatrix: Tensor
@@ -279,8 +284,12 @@ class Dipole(Element):
         def bend_wrapper(state:Tensor, ds:Tensor, r:Tensor, kn:Tensor, ks:Tensor, ms:Tensor, mo:Tensor, dp:Tensor) -> State:
             return bend(state, r, kn, ks, dp, ds)
 
-        def mult_wrapper(state:Tensor, ds:Tensor, r:Tensor, kn:Tensor, ks:Tensor, ms:Tensor, mo:Tensor, dp:Tensor) -> State:
-            return cylindrical_error(state, r, kn, ks, ms, mo, ds)
+        if self.linear:
+            def mult_wrapper(state:Tensor, ds:Tensor, r:Tensor, kn:Tensor, ks:Tensor, ms:Tensor, mo:Tensor, dp:Tensor) -> State:
+                return state
+        else:
+            def mult_wrapper(state:Tensor, ds:Tensor, r:Tensor, kn:Tensor, ks:Tensor, ms:Tensor, mo:Tensor, dp:Tensor) -> State:
+                return cylindrical_error(state, r, kn, ks, ms, mo, ds)
 
         if exact:
             if self.is_inversed:
@@ -683,7 +692,7 @@ class Dipole(Element):
 
     @e1_on.setter
     def e1_on(self,
-           flag:bool) -> None:
+              flag:bool) -> None:
         """
         Set e1 flag
 
@@ -720,7 +729,7 @@ class Dipole(Element):
 
     @e2_on.setter
     def e2_on(self,
-           flag:bool) -> None:
+              flag:bool) -> None:
         """
         Set e1 flag
 
@@ -735,6 +744,43 @@ class Dipole(Element):
 
         """
         self._e2_on = flag
+        self._step = self.make_step()
+
+
+    @property
+    def linear(self) -> bool:
+        """
+        Get linear flag
+
+        Parameters
+        ----------
+        None
+
+        Returns
+        -------
+        bool
+
+        """
+        return self._linear
+
+
+    @linear.setter
+    def linear(self,
+               flag:bool) -> None:
+        """
+        Set linear flag
+
+        Parameters
+        ----------
+        flag: bool
+            flag
+
+        Returns
+        -------
+        None
+
+        """
+        self._linear = flag
         self._step = self.make_step()
 
 
