@@ -106,6 +106,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#model.library.line.Line.flatten"><code class="docutils literal notranslate"><span class="pre">Line.flatten()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#model.library.line.Line.get"><code class="docutils literal notranslate"><span class="pre">Line.get()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#model.library.line.Line.group"><code class="docutils literal notranslate"><span class="pre">Line.group()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#model.library.line.Line.index"><code class="docutils literal notranslate"><span class="pre">Line.index()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#model.library.line.Line.insert"><code class="docutils literal notranslate"><span class="pre">Line.insert()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#model.library.line.Line.inverse"><code class="docutils literal notranslate"><span class="pre">Line.inverse()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#model.library.line.Line.itemize"><code class="docutils literal notranslate"><span class="pre">Line.itemize()</span></code></a></li>
@@ -226,6 +227,7 @@ positions   : get all element position in sequence
 start       : (property) set/get the first element
 roll        : roll first level sequence
 unique      : (property) get unique elements
+index       : return list of unique element names and their indices from first level sequence
 duplicate   : (property) get duplicate elements
 itemize     : get list of all elements with matching kind
 describe    : (property) return number of elements (with unique names) for each kind
@@ -449,6 +451,23 @@ length, kinds, names to include, names to exclude</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="model.library.line.Line.index">
+<span class="sig-name descname"><span class="pre">index</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">kind</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#model.library.line.Line" title="model.library.line.Line"><span class="pre">Line</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">bool</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">torch.Tensor</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../_modules/model/library/line.html#Line.index"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#model.library.line.Line.index" title="Link to this definition"></a></dt>
+<dd><p>Return list of unique element names and their indices from first level sequence</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>kind</strong> (<em>str</em>) – element kind</p></li>
+<li><p><strong>test</strong> (<em>Optional</em><em>[</em><em>Callable</em><em>[</em><em>[</em><a class="reference internal" href="#model.library.line.Line" title="model.library.line.Line"><em>Line</em></a><em>]</em><em>, </em><em>bool</em><em>]</em><em>]</em>) – test function</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>tuple[list[str], Tensor]</p>
 </dd>
 </dl>
 </dd></dl>
