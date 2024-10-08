@@ -8,6 +8,8 @@ Parameters and functions
 
 orbit                : compute (dynamical) closed orbit
 parametric_orbit     : compute parametric closed orbit (or fixed point)
+ORM                  : compute orbit response matrix
+ORM_IJ               : compute IJ orbit response matrix element
 
 """
 from typing import Optional
@@ -45,10 +47,12 @@ def orbit(line:Line,
     """
     Compute (dynamical) closed orbit
 
+    Note, this function is differentiable with respect to deviation groups
+
     Parameters
     ----------
     line: Line
-        input line (one - turm)
+        input line (one - turn)
     guess: Tensor
         initial guess
     parameters: list[Tensor]
@@ -68,7 +72,7 @@ def orbit(line:Line,
         maximum number of newton iterations
     power: int, positive, default=1
         function power / fixed point order
-    epsilon: Optional[float], default=None
+    epsilon: Optional[float], default=1.0E-12
         tolerance epsilon
     factor: float, default=1.0
         step factor (learning rate)
@@ -87,8 +91,6 @@ def orbit(line:Line,
 
     """
     jacobian:Callable = torch.func.jacrev if jacobian is None else jacobian
-
-    jacobian = torch.func.jacrev if jacobian is None else jacobian
 
     line = line.clone()
     if start:
@@ -135,10 +137,11 @@ def parametric_orbit(line:Line,
                      jacobian:Optional[Callable]=None) -> tuple[Table|list[Table], list[tuple[None, list[str], str]], list[int]]:
     """
     Compute parametric closed orbit (or fixed point)
+    Use this function to construct multivariate Taylor series surrogate model for closed orbit
 
     Parameters
     ----------
-    line: Line|Callable
+    line: Line
         input line (one-turn)
     point: Tensor
         fixed point
@@ -168,7 +171,7 @@ def parametric_orbit(line:Line,
 
 
     """
-    jacobian = torch.func.jacrev if jacobian is None else jacobian
+    jacobian:Callable = torch.func.jacrev if jacobian is None else jacobian
 
     line = line.clone()
     if start:
@@ -200,3 +203,87 @@ def parametric_orbit(line:Line,
         orbits.append(runner)
 
     return orbits, table, orders
+
+
+def ORM(line:Line,
+        point:Tensor, *,
+        exclude:Optional[list[str]]=None,
+        start:Optional[int|str]=None,
+        alignment:bool=False,
+        limit:int=32,
+        epsilon:float=1.0E-12,
+        factor:float=1.0,
+        alpha:float=0.0,
+        solve:Optional[Callable]=None,
+        roots:Optional[Tensor]=None,
+        jacobian:Optional[Callable]=None) -> Tensor:
+    """
+    Compute orbit response matrix
+
+    Parameters
+    ----------
+    line: Line
+        input line (one-turn)
+    point: Tensor
+        fixed point
+    exclude: Optional[list[str]]
+        list of element names to exclude
+    start: Optional[int|str], default=None
+        start element index or name (change start)
+    alignment: bool, default=False
+        flag to include the alignment parameters in the default deviation table
+    limit: int, positive
+        maximum number of newton iterations
+    epsilon: Optional[float], default=1.0E-12
+        tolerance epsilon
+    factor: float, default=1.0
+        step factor (learning rate)
+    alpha: float, positive, default=0.0
+        regularization alpha
+    solve: Optional[Callable]
+        linear solver(matrix, vector)
+    jacobian: Optional[Callable]
+        torch.func.jacfwd or torch.func.jacrev (default)
+
+    Returns
+    -------
+    Tensor
+
+    """
+    jacobian:Callable = torch.func.jacrev if jacobian is None else jacobian
+
+    count:int = line.describe['Corrector']
+    if exclude:
+        count -= len(exclude)
+
+    cx = torch.tensor(count*[0.0], dtype=line.dtype, device=line.device)
+    cy = torch.tensor(count*[0.0], dtype=line.dtype, device=line.device)
+
+    cxy = torch.cat([cx, cy])
+
+    def task(cxy):
+        cx, cy = cxy.reshape(1 + 1, -1)
+        points, _ = orbit(line,
+                          point,
+                          [cx, cy],
+                          ('cx', ['Corrector'], None, exclude),
+                          ('cy', ['Corrector'], None, exclude),
+                          start=start,
+                          advance=True,
+                          full=False,
+                          alignment=alignment,
+                          limit=limit,
+                          epsilon=epsilon,
+                          factor=factor,
+                          alpha=alpha,
+                          solve=solve,
+                          jacobian=jacobian)
+
+        qx, _, qy, _ = points.T
+
+        return torch.stack([qx, qy])
+
+    return torch.func.jacrev(task)(cxy).reshape(-1, *cxy.shape)
+
+
+
