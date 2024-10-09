@@ -52,6 +52,7 @@ class Corrector(Element):
                  wx:float=0.0,
                  wy:float=0.0,
                  wz:float=0.0,
+                 factor:float=1.0,
                  output:bool=False,
                  matrix:bool=False) -> None:
         """
@@ -79,6 +80,9 @@ class Corrector(Element):
             wy alignment error
         wz: float, default=0.0
             wz alignment error
+        factor: int, default=1
+            angle scaling factor
+            cx, cy -> factor*(cx, cy)
         output: bool, default=False
             flag to save output at each step
         matrix: bool, default=False
@@ -102,6 +106,8 @@ class Corrector(Element):
 
         self._cx: float = cx
         self._cy: float = cy
+
+        self._factor: int = factor
 
         self._lmatrix: Tensor
         self._rmatrix: Tensor
@@ -131,7 +137,7 @@ class Corrector(Element):
         table.pop('order', None)
         table.pop('exact', None)
         table.pop('insertion', None)
-        return {**table, 'cx': self.cx.item(), 'cy': self.cy.item()}
+        return {**table, 'cx': self.cx.item(), 'cy': self.cy.item(), 'factor': self.factor}
 
 
     def make_matrix(self) -> tuple[Tensor, Tensor]:
@@ -172,6 +178,7 @@ class Corrector(Element):
         """
         _cx: Tensor = self.cx
         _cy: Tensor = self.cy
+        _factor: float = self.factor
 
         if self.is_inversed:
             _cx = - self.cx
@@ -188,12 +195,12 @@ class Corrector(Element):
                 container_output = []
             if matrix:
                 container_matrix = []
-            state = integrator(state, _cx + cx, _cy + cy)
+            state = integrator(state, _factor*(_cx + cx), _factor*(_cy + cy))
             if output:
                 container_output.append(state)
                 self.container_output = torch.stack(container_output)
             if matrix:
-                container_matrix.append(torch.func.jacrev(integrator)(state, _cx + cx, _cy + cy))
+                container_matrix.append(torch.func.jacrev(integrator)(state, _factor*(_cx + cx), _factor*(_cy + cy)))
                 self.container_matrix = torch.stack(container_matrix)
             return state
 
@@ -274,5 +281,42 @@ class Corrector(Element):
         self._step = self.make_step()
 
 
+    @property
+    def factor(self) -> float:
+        """
+        Get factor
+
+        Parameters
+        ----------
+        None
+
+        Returns
+        -------
+        float
+
+        """
+        return self._factor
+
+
+    @factor.setter
+    def factor(self,
+              factor:float) -> None:
+        """
+        Set factor
+
+        Parameters
+        ----------
+        factor: float
+            factor
+
+        Returns
+        -------
+        None
+
+        """
+        self._factor = factor
+        self._step = self.make_step()
+
+
     def __repr__(self) -> str:
-        return f'{self.__class__.__name__}(name="{self._name}", cx={self._cx}, cy={self._cy}, dp={self._dp})'
+        return f'{self.__class__.__name__}(name="{self._name}", cx={self._cx}, cy={self._cy}, factor={self._factor}, dp={self._dp})'

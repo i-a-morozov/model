@@ -203,7 +203,7 @@ class Dipole(Element):
 
         """
         table:dict[str, str|int|float|bool] = super().serialize
-        return {**table, 'angle': self.angle.item(), 'e1': self.e1.item(), 'e2': self.e2.item(), 'kn': self.kn.item(), 'ks': self.ks.item(), 'ms': self.ms.item(), 'mo': self.mo.item(), 'e1_on': self.e1_on, 'e2_on': self.e2_on}
+        return {**table, 'angle': self.angle.item(), 'e1': self.e1.item(), 'e2': self.e2.item(), 'kn': self.kn.item(), 'ks': self.ks.item(), 'ms': self.ms.item(), 'mo': self.mo.item(), 'e1_on': self.e1_on, 'e2_on': self.e2_on, 'linear': self.linear}
 
 
     def make_matrix(self) -> tuple[Tensor, Tensor]:
