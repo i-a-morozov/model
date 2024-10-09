@@ -206,6 +206,7 @@
                  <span class="n">wx</span><span class="p">:</span><span class="nb">float</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>
                  <span class="n">wy</span><span class="p">:</span><span class="nb">float</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>
                  <span class="n">wz</span><span class="p">:</span><span class="nb">float</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>
+                 <span class="n">factor</span><span class="p">:</span><span class="nb">float</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>
                  <span class="n">output</span><span class="p">:</span><span class="nb">bool</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
                  <span class="n">matrix</span><span class="p">:</span><span class="nb">bool</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
@@ -233,6 +234,9 @@
 <span class="sd">            wy alignment error</span>
 <span class="sd">        wz: float, default=0.0</span>
 <span class="sd">            wz alignment error</span>
+<span class="sd">        factor: int, default=1</span>
+<span class="sd">            angle scaling factor</span>
+<span class="sd">            cx, cy -&gt; factor*(cx, cy)</span>
 <span class="sd">        output: bool, default=False</span>
 <span class="sd">            flag to save output at each step</span>
 <span class="sd">        matrix: bool, default=False</span>
@@ -256,6 +260,8 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_cx</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">cx</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_cy</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">cy</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_factor</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">factor</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_lmatrix</span><span class="p">:</span> <span class="n">Tensor</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_rmatrix</span><span class="p">:</span> <span class="n">Tensor</span>
@@ -285,7 +291,7 @@
         <span class="n">table</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;order&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
         <span class="n">table</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;exact&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
         <span class="n">table</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;insertion&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
-        <span class="k">return</span> <span class="p">{</span><span class="o">**</span><span class="n">table</span><span class="p">,</span> <span class="s1">&#39;cx&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">cx</span><span class="o">.</span><span class="n">item</span><span class="p">(),</span> <span class="s1">&#39;cy&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">cy</span><span class="o">.</span><span class="n">item</span><span class="p">()}</span>
+        <span class="k">return</span> <span class="p">{</span><span class="o">**</span><span class="n">table</span><span class="p">,</span> <span class="s1">&#39;cx&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">cx</span><span class="o">.</span><span class="n">item</span><span class="p">(),</span> <span class="s1">&#39;cy&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">cy</span><span class="o">.</span><span class="n">item</span><span class="p">(),</span> <span class="s1">&#39;factor&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">factor</span><span class="p">}</span>
 
 
 <div class="viewcode-block" id="Corrector.make_matrix">
@@ -331,6 +337,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">_cx</span><span class="p">:</span> <span class="n">Tensor</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cx</span>
         <span class="n">_cy</span><span class="p">:</span> <span class="n">Tensor</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cy</span>
+        <span class="n">_factor</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">factor</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_inversed</span><span class="p">:</span>
             <span class="n">_cx</span> <span class="o">=</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">cx</span>
@@ -347,12 +354,12 @@
                 <span class="n">container_output</span> <span class="o">=</span> <span class="p">[]</span>
             <span class="k">if</span> <span class="n">matrix</span><span class="p">:</span>
                 <span class="n">container_matrix</span> <span class="o">=</span> <span class="p">[]</span>
-            <span class="n">state</span> <span class="o">=</span> <span class="n">integrator</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">_cx</span> <span class="o">+</span> <span class="n">cx</span><span class="p">,</span> <span class="n">_cy</span> <span class="o">+</span> <span class="n">cy</span><span class="p">)</span>
+            <span class="n">state</span> <span class="o">=</span> <span class="n">integrator</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">_factor</span><span class="o">*</span><span class="p">(</span><span class="n">_cx</span> <span class="o">+</span> <span class="n">cx</span><span class="p">),</span> <span class="n">_factor</span><span class="o">*</span><span class="p">(</span><span class="n">_cy</span> <span class="o">+</span> <span class="n">cy</span><span class="p">))</span>
             <span class="k">if</span> <span class="n">output</span><span class="p">:</span>
                 <span class="n">container_output</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">state</span><span class="p">)</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">container_output</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="n">container_output</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">matrix</span><span class="p">:</span>
-                <span class="n">container_matrix</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">func</span><span class="o">.</span><span class="n">jacrev</span><span class="p">(</span><span class="n">integrator</span><span class="p">)(</span><span class="n">state</span><span class="p">,</span> <span class="n">_cx</span> <span class="o">+</span> <span class="n">cx</span><span class="p">,</span> <span class="n">_cy</span> <span class="o">+</span> <span class="n">cy</span><span class="p">))</span>
+                <span class="n">container_matrix</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">func</span><span class="o">.</span><span class="n">jacrev</span><span class="p">(</span><span class="n">integrator</span><span class="p">)(</span><span class="n">state</span><span class="p">,</span> <span class="n">_factor</span><span class="o">*</span><span class="p">(</span><span class="n">_cx</span> <span class="o">+</span> <span class="n">cx</span><span class="p">),</span> <span class="n">_factor</span><span class="o">*</span><span class="p">(</span><span class="n">_cy</span> <span class="o">+</span> <span class="n">cy</span><span class="p">)))</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">container_matrix</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="n">container_matrix</span><span class="p">)</span>
             <span class="k">return</span> <span class="n">state</span>
 
@@ -434,8 +441,45 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_step</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">make_step</span><span class="p">()</span>
 
 
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">factor</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get factor</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        None</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        float</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_factor</span>
+
+
+    <span class="nd">@factor</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">factor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+              <span class="n">factor</span><span class="p">:</span><span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Set factor</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        factor: float</span>
+<span class="sd">            factor</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        None</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_factor</span> <span class="o">=</span> <span class="n">factor</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_step</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">make_step</span><span class="p">()</span>
+
+
     <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-        <span class="k">return</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s1">(name=&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_name</span><span class="si">}</span><span class="s1">&quot;, cx=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_cx</span><span class="si">}</span><span class="s1">, cy=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_cy</span><span class="si">}</span><span class="s1">, dp=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_dp</span><span class="si">}</span><span class="s1">)&#39;</span></div>
+        <span class="k">return</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s1">(name=&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_name</span><span class="si">}</span><span class="s1">&quot;, cx=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_cx</span><span class="si">}</span><span class="s1">, cy=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_cy</span><span class="si">}</span><span class="s1">, factor=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_factor</span><span class="si">}</span><span class="s1">, dp=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_dp</span><span class="si">}</span><span class="s1">)&#39;</span></div>
 
 </pre></div>
 
