@@ -1,2 +1,0 @@
-.. automodule:: model.external
-    :members:
