@@ -1,0 +1,738 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Example-02: Workflow (MADX) &mdash; model  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/nbsphinx-code-cells.css?v=2aa19091" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../_static/doctools.js?v=9a2dae69"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+      <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+      <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Example-03: Workflow (ELEGANT)" href="model-02.html" />
+    <link rel="prev" title="Example-01: Optimizaion (import/export API)" href="model-00.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            model
+              <img src="../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Examples:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="model-00.html">Example-01: Optimizaion (import/export API)</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Example-02: Workflow (MADX)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-02.html">Example-03: Workflow (ELEGANT)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-03.html">Example-04: Transformations benchmark (PTC)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-04.html">Example-05: Drift (element)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-05.html">Example-06: Quadrupole (element)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-06.html">Example-07: Sextupole (element)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-07.html">Example-08: Octupole (element)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-08.html">Example-09: Multipole (element)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-09.html">Example-10: Dipole (element)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-10.html">Example-11: Corrector (element)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-11.html">Example-12: Gradient (element)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-12.html">Example-13: Kick (element)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-13.html">Example-14: Linear (element)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-14.html">Example-15: BPM (element)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-15.html">Example-16: Custom (element)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-16.html">Example-17: Line (element)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-17.html">Example-18: Inverse tracking</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-18.html">Example-19: Layout</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-19.html">Example-20: LOGO</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-20.html">Example-21: Build MADX and ELEGANT style lattice</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-21.html">Example-22: Line serialization and deserialization (YAML)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-22.html">Example-23: Advanced line editing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-23.html">Example-24: Wrapper</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-24.html">Example-25: Group</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-25.html">Example-26: Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-26.html">Example-27: Normalize</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-27.html">Example-28: Transformation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-28.html">Example-29: Orbit (fixed point computation)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-29.html">Example-30: Orbit (effect of transverse shift)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-30.html">Example-31: Orbit (dispersion)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-31.html">Example-32: Orbit (quadruple shift)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-32.html">Example-33: Orbit (sextupole shift)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-33.html">Example-34: Orbit (ORM)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-34.html">Example-35: Orbit (closed orbit correction)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../modules/library/bpm.html">BPM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/library/bpm.html#model.library.bpm.BPM"><code class="docutils literal notranslate"><span class="pre">BPM</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/library/corrector.html">Corrector</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/library/corrector.html#model.library.corrector.Corrector"><code class="docutils literal notranslate"><span class="pre">Corrector</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/library/gradient.html">Gradient</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/library/gradient.html#model.library.gradient.Gradient"><code class="docutils literal notranslate"><span class="pre">Gradient</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/library/linear.html">Linear</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/library/linear.html#model.library.linear.Linear"><code class="docutils literal notranslate"><span class="pre">Linear</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/library/keys.html">Keys</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/library/element.html">Element</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/library/element.html#model.library.element.Element"><code class="docutils literal notranslate"><span class="pre">Element</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/library/element.html#model.library.element.transform"><code class="docutils literal notranslate"><span class="pre">transform()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/library/transformations.html">Transformations module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/library/transformations.html#model.library.transformations.bend"><code class="docutils literal notranslate"><span class="pre">bend()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/library/transformations.html#model.library.transformations.calibration_forward"><code class="docutils literal notranslate"><span class="pre">calibration_forward()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/library/transformations.html#model.library.transformations.calibration_inverse"><code class="docutils literal notranslate"><span class="pre">calibration_inverse()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/library/transformations.html#model.library.transformations.corrector"><code class="docutils literal notranslate"><span class="pre">corrector()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/library/transformations.html#model.library.transformations.cylindrical"><code class="docutils literal notranslate"><span class="pre">cylindrical()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/library/transformations.html#model.library.transformations.cylindrical_error"><code class="docutils literal notranslate"><span class="pre">cylindrical_error()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/library/transformations.html#model.library.transformations.dipole"><code class="docutils literal notranslate"><span class="pre">dipole()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/library/transformations.html#model.library.transformations.dquad"><code class="docutils literal notranslate"><span class="pre">dquad()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/library/transformations.html#model.library.transformations.drift"><code class="docutils literal notranslate"><span class="pre">drift()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/library/transformations.html#model.library.transformations.fquad"><code class="docutils literal notranslate"><span class="pre">fquad()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/library/transformations.html#model.library.transformations.gradient"><code class="docutils literal notranslate"><span class="pre">gradient()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/library/transformations.html#model.library.transformations.kinematic"><code class="docutils literal notranslate"><span class="pre">kinematic()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/library/transformations.html#model.library.transformations.linear"><code class="docutils literal notranslate"><span class="pre">linear()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/library/transformations.html#model.library.transformations.octupole"><code class="docutils literal notranslate"><span class="pre">octupole()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/library/transformations.html#model.library.transformations.polar"><code class="docutils literal notranslate"><span class="pre">polar()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/library/transformations.html#model.library.transformations.quadrupole"><code class="docutils literal notranslate"><span class="pre">quadrupole()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/library/transformations.html#model.library.transformations.rx"><code class="docutils literal notranslate"><span class="pre">rx()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/library/transformations.html#model.library.transformations.ry"><code class="docutils literal notranslate"><span class="pre">ry()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/library/transformations.html#model.library.transformations.rz"><code class="docutils literal notranslate"><span class="pre">rz()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/library/transformations.html#model.library.transformations.sector_bend"><code class="docutils literal notranslate"><span class="pre">sector_bend()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/library/transformations.html#model.library.transformations.sector_bend_fringe"><code class="docutils literal notranslate"><span class="pre">sector_bend_fringe()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/library/transformations.html#model.library.transformations.sector_bend_wedge"><code class="docutils literal notranslate"><span class="pre">sector_bend_wedge()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/library/transformations.html#model.library.transformations.sextupole"><code class="docutils literal notranslate"><span class="pre">sextupole()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/library/transformations.html#model.library.transformations.tx"><code class="docutils literal notranslate"><span class="pre">tx()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/library/transformations.html#model.library.transformations.ty"><code class="docutils literal notranslate"><span class="pre">ty()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/library/transformations.html#model.library.transformations.tz"><code class="docutils literal notranslate"><span class="pre">tz()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/library/transformations.html#model.library.transformations.wedge"><code class="docutils literal notranslate"><span class="pre">wedge()</span></code></a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">model</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Example-02: Workflow (MADX)</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/examples/model-01.ipynb.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="Example-02:-Workflow-(MADX)">
+<h1>Example-02: Workflow (MADX)<a class="headerlink" href="#Example-02:-Workflow-(MADX)" title="Link to this heading"></a></h1>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+
+<span class="kn">from</span> <span class="nn">model.command.external</span> <span class="kn">import</span> <span class="n">load_lattice</span>
+<span class="kn">from</span> <span class="nn">model.command.external</span> <span class="kn">import</span> <span class="n">rift_lattice</span>
+<span class="kn">from</span> <span class="nn">model.command.external</span> <span class="kn">import</span> <span class="n">text_lattice</span>
+<span class="kn">from</span> <span class="nn">model.command.external</span> <span class="kn">import</span> <span class="n">load_tfs</span>
+<span class="kn">from</span> <span class="nn">model.command.external</span> <span class="kn">import</span> <span class="n">convert</span>
+<span class="kn">from</span> <span class="nn">model.command.external</span> <span class="kn">import</span> <span class="n">add_rc</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Given some initial MADX lattice file (FODO)</span>
+
+<span class="n">file</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s1">&#39;initial.madx&#39;</span><span class="p">)</span>
+
+<span class="k">with</span> <span class="n">file</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">stream</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">stream</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
+
+<span class="c1"># Several regular elements are defined</span>
+<span class="c1"># HEAD and TAIL should appear as the first and the last elements</span>
+<span class="c1"># All elements should be defined on a single line with numerical parameters</span>
+<span class="c1"># Lattice should be defined using lines</span>
+<span class="c1"># Comma after element type is mandatory</span>
+<span class="c1"># Comments appearing after definitions should also represent an element definition</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+DR: DRIFT, L=2.0;
+BM: SBEND, L=1.0, ANGLE=0.17453292519943295;
+QF: QUADRUPOLE, L=1.0, K1=+0.2;
+QD: QUADRUPOLE, L=0.5, K1=-0.2;
+
+M: MONITOR,;
+
+HEAD: MARKER,; ! TEST: DRIFT,
+TAIL: MARKER,; ! TEST: DRIFT,
+
+FODO: LINE=(HEAD, M, QD, DR, BM, DR, QF, DR, BM, DR, QD, TAIL) ;
+
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># If element and beamline definitions comply with the above requirements</span>
+<span class="c1"># The lattice file can be loaded as a python dictionary</span>
+
+<span class="n">lattice</span> <span class="o">=</span> <span class="n">load_lattice</span><span class="p">(</span><span class="n">file</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">lattice</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+
+<span class="c1"># For each element and beamline, a key-value pair in created</span>
+<span class="c1"># Value is itself a dictionary containing all information about the original elements</span>
+<span class="c1"># Each element parameter is casted from string to int, float or string</span>
+<span class="c1"># Comment after element definition is saved into RC (it has a special use case, see below)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+DR {&#39;KIND&#39;: &#39;DRIFT&#39;, &#39;RC&#39;: &#39;&#39;, &#39;L&#39;: 2.0}
+BM {&#39;KIND&#39;: &#39;SBEND&#39;, &#39;RC&#39;: &#39;&#39;, &#39;L&#39;: 1.0, &#39;ANGLE&#39;: 0.17453292519943295}
+QF {&#39;KIND&#39;: &#39;QUADRUPOLE&#39;, &#39;RC&#39;: &#39;&#39;, &#39;L&#39;: 1.0, &#39;K1&#39;: 0.2}
+QD {&#39;KIND&#39;: &#39;QUADRUPOLE&#39;, &#39;RC&#39;: &#39;&#39;, &#39;L&#39;: 0.5, &#39;K1&#39;: -0.2}
+M {&#39;KIND&#39;: &#39;MONITOR&#39;, &#39;RC&#39;: &#39;&#39;}
+HEAD {&#39;KIND&#39;: &#39;MARKER&#39;, &#39;RC&#39;: &#39;TEST: DRIFT,&#39;}
+TAIL {&#39;KIND&#39;: &#39;MARKER&#39;, &#39;RC&#39;: &#39;TEST: DRIFT,&#39;}
+FODO {&#39;KIND&#39;: &#39;LINE&#39;, &#39;SEQUENCE&#39;: [&#39;HEAD&#39;, &#39;M&#39;, &#39;QD&#39;, &#39;DR&#39;, &#39;BM&#39;, &#39;DR&#39;, &#39;QF&#39;, &#39;DR&#39;, &#39;BM&#39;, &#39;DR&#39;, &#39;QD&#39;, &#39;TAIL&#39;]}
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Error lattice is defined by a set of linear transformations between selected locations</span>
+<span class="c1"># Each locations can be a MONITOR (beam observation) or a VIRTUAL (error)</span>
+<span class="c1"># Two special locatons (HEAD and TAIL) should present in the lattice</span>
+<span class="c1"># Using the above dictionary representation, new observation locations can be inserted</span>
+<span class="c1"># Locations are inserted at the middle of selected elements (selected by type or name)</span>
+<span class="c1"># Selected elements are splitted in half and renamed, old names are binded to beamlines</span>
+<span class="c1"># Original element definitions are added to created location RC</span>
+<span class="c1"># Typicaly, monitor locations correspond to MONITOR elements, but new monitor elements can be also inserted</span>
+<span class="c1"># Virtual locations can be inserted into quadrupole or other elements to represent errors</span>
+
+<span class="n">lattice</span> <span class="o">=</span> <span class="n">rift_lattice</span><span class="p">(</span><span class="n">lattice</span><span class="p">,</span>
+                       <span class="s1">&#39;MONITOR&#39;</span><span class="p">,</span>
+                       <span class="s1">&#39;MARKER&#39;</span><span class="p">,</span>
+                       <span class="p">[</span><span class="s1">&#39;DRIFT&#39;</span><span class="p">],</span>
+                       <span class="p">[</span><span class="s1">&#39;SBEND&#39;</span><span class="p">,</span> <span class="s1">&#39;QUADRUPOLE&#39;</span><span class="p">],</span>
+                       <span class="n">exclude_virtual</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;QD&#39;</span><span class="p">])</span>
+
+<span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">lattice</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+M_DR {&#39;KIND&#39;: &#39;MONITOR&#39;, &#39;RC&#39;: [&#39;DR&#39;, {&#39;KIND&#39;: &#39;DRIFT&#39;, &#39;L&#39;: 2.0}]}
+H_DR {&#39;KIND&#39;: &#39;DRIFT&#39;, &#39;L&#39;: 1.0}
+DR {&#39;KIND&#39;: &#39;LINE&#39;, &#39;SEQUENCE&#39;: [&#39;H_DR&#39;, &#39;M_DR&#39;, &#39;H_DR&#39;]}
+V_BM {&#39;KIND&#39;: &#39;MARKER&#39;, &#39;RC&#39;: [&#39;BM&#39;, {&#39;KIND&#39;: &#39;SBEND&#39;, &#39;L&#39;: 1.0, &#39;ANGLE&#39;: 0.17453292519943295}]}
+H_BM {&#39;KIND&#39;: &#39;SBEND&#39;, &#39;L&#39;: 0.5, &#39;ANGLE&#39;: 0.08726646259971647}
+BM {&#39;KIND&#39;: &#39;LINE&#39;, &#39;SEQUENCE&#39;: [&#39;H_BM&#39;, &#39;V_BM&#39;, &#39;H_BM&#39;]}
+V_QF {&#39;KIND&#39;: &#39;MARKER&#39;, &#39;RC&#39;: [&#39;QF&#39;, {&#39;KIND&#39;: &#39;QUADRUPOLE&#39;, &#39;L&#39;: 1.0, &#39;K1&#39;: 0.2}]}
+H_QF {&#39;KIND&#39;: &#39;QUADRUPOLE&#39;, &#39;L&#39;: 0.5, &#39;K1&#39;: 0.2}
+QF {&#39;KIND&#39;: &#39;LINE&#39;, &#39;SEQUENCE&#39;: [&#39;H_QF&#39;, &#39;V_QF&#39;, &#39;H_QF&#39;]}
+QD {&#39;KIND&#39;: &#39;QUADRUPOLE&#39;, &#39;RC&#39;: &#39;&#39;, &#39;L&#39;: 0.5, &#39;K1&#39;: -0.2}
+M {&#39;KIND&#39;: &#39;MONITOR&#39;, &#39;RC&#39;: &#39;&#39;}
+HEAD {&#39;KIND&#39;: &#39;MARKER&#39;, &#39;RC&#39;: &#39;TEST: DRIFT,&#39;}
+TAIL {&#39;KIND&#39;: &#39;MARKER&#39;, &#39;RC&#39;: &#39;TEST: DRIFT,&#39;}
+FODO {&#39;KIND&#39;: &#39;LINE&#39;, &#39;SEQUENCE&#39;: [&#39;HEAD&#39;, &#39;M&#39;, &#39;QD&#39;, &#39;DR&#39;, &#39;BM&#39;, &#39;DR&#39;, &#39;QF&#39;, &#39;DR&#39;, &#39;BM&#39;, &#39;DR&#39;, &#39;QD&#39;, &#39;TAIL&#39;]}
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Modified lattice can be converted to text</span>
+<span class="c1"># Comments are added to locations while original comments are preserved</span>
+
+<span class="n">text</span> <span class="o">=</span> <span class="n">text_lattice</span><span class="p">(</span><span class="s1">&#39;MADX&#39;</span><span class="p">,</span> <span class="n">lattice</span><span class="p">,</span> <span class="n">rc</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+M_DR: MONITOR,; ! DR: DRIFT, L=2.0,;
+H_DR: DRIFT, L=1.0,;
+DR: LINE=(H_DR, M_DR, H_DR);
+V_BM: MARKER,; ! BM: SBEND, L=1.0, ANGLE=0.17453292519943295,;
+H_BM: SBEND, L=0.5, ANGLE=0.08726646259971647,;
+BM: LINE=(H_BM, V_BM, H_BM);
+V_QF: MARKER,; ! QF: QUADRUPOLE, L=1.0, K1=0.2,;
+H_QF: QUADRUPOLE, L=0.5, K1=0.2,;
+QF: LINE=(H_QF, V_QF, H_QF);
+QD: QUADRUPOLE, L=0.5, K1=-0.2,;
+M: MONITOR,;
+HEAD: MARKER,; ! TEST: DRIFT,
+TAIL: MARKER,; ! TEST: DRIFT,
+FODO: LINE=(HEAD, M, QD, DR, BM, DR, QF, DR, BM, DR, QD, TAIL);
+
+</pre></div></div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Compute TWISS parameters using MADX</span>
+<span class="c1"># TWISS command is appended to modified lattice</span>
+
+<span class="n">task</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">BEAM;</span>
+<span class="s2">USE, PERIOD=FODO;</span>
+<span class="s2">SET,FORMAT=&quot;20.20f&quot;,&quot;-20s&quot;;</span>
+<span class="s2">TWISS;</span>
+<span class="s2">WRITE,TABLE=TWISS,FILE=&quot;final.tfs&quot;;</span>
+<span class="s2">RETURN;</span>
+<span class="s2">&quot;&quot;&quot;</span> <span class="p">;</span>
+
+<span class="k">with</span> <span class="n">Path</span><span class="p">(</span><span class="s1">&#39;final.madx&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">stream</span><span class="p">:</span>
+    <span class="n">stream</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+    <span class="n">stream</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">task</span><span class="p">)</span>
+
+<span class="o">!</span>madx<span class="w"> </span>final.madx<span class="w"> </span>&gt;<span class="w"> </span>/dev/null
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Load lattice can be also loaded from file</span>
+<span class="c1"># Original comments will be parsed as elements (look at HEAD and TAIL)</span>
+<span class="c1"># Empty RC will be nested in this case</span>
+
+<span class="n">file</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s1">&#39;final.madx&#39;</span><span class="p">)</span>
+
+<span class="k">with</span> <span class="n">file</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">stream</span><span class="p">:</span>
+    <span class="n">stream</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+
+<span class="n">lattice</span> <span class="o">=</span> <span class="n">load_lattice</span><span class="p">(</span><span class="n">file</span><span class="p">,</span> <span class="n">rc</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">lattice</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+M_DR {&#39;KIND&#39;: &#39;MONITOR&#39;, &#39;RC&#39;: [&#39;DR&#39;, {&#39;KIND&#39;: &#39;DRIFT&#39;, &#39;RC&#39;: &#39;&#39;, &#39;L&#39;: 2.0}]}
+H_DR {&#39;KIND&#39;: &#39;DRIFT&#39;, &#39;RC&#39;: [&#39;&#39;, {&#39;KIND&#39;: &#39;&#39;, &#39;RC&#39;: &#39;&#39;}], &#39;L&#39;: 1.0}
+DR {&#39;KIND&#39;: &#39;LINE&#39;, &#39;SEQUENCE&#39;: [&#39;H_DR&#39;, &#39;M_DR&#39;, &#39;H_DR&#39;]}
+V_BM {&#39;KIND&#39;: &#39;MARKER&#39;, &#39;RC&#39;: [&#39;BM&#39;, {&#39;KIND&#39;: &#39;SBEND&#39;, &#39;RC&#39;: &#39;&#39;, &#39;L&#39;: 1.0, &#39;ANGLE&#39;: 0.17453292519943295}]}
+H_BM {&#39;KIND&#39;: &#39;SBEND&#39;, &#39;RC&#39;: [&#39;&#39;, {&#39;KIND&#39;: &#39;&#39;, &#39;RC&#39;: &#39;&#39;}], &#39;L&#39;: 0.5, &#39;ANGLE&#39;: 0.08726646259971647}
+BM {&#39;KIND&#39;: &#39;LINE&#39;, &#39;SEQUENCE&#39;: [&#39;H_BM&#39;, &#39;V_BM&#39;, &#39;H_BM&#39;]}
+V_QF {&#39;KIND&#39;: &#39;MARKER&#39;, &#39;RC&#39;: [&#39;QF&#39;, {&#39;KIND&#39;: &#39;QUADRUPOLE&#39;, &#39;RC&#39;: &#39;&#39;, &#39;L&#39;: 1.0, &#39;K1&#39;: 0.2}]}
+H_QF {&#39;KIND&#39;: &#39;QUADRUPOLE&#39;, &#39;RC&#39;: [&#39;&#39;, {&#39;KIND&#39;: &#39;&#39;, &#39;RC&#39;: &#39;&#39;}], &#39;L&#39;: 0.5, &#39;K1&#39;: 0.2}
+QF {&#39;KIND&#39;: &#39;LINE&#39;, &#39;SEQUENCE&#39;: [&#39;H_QF&#39;, &#39;V_QF&#39;, &#39;H_QF&#39;]}
+QD {&#39;KIND&#39;: &#39;QUADRUPOLE&#39;, &#39;RC&#39;: [&#39;&#39;, {&#39;KIND&#39;: &#39;&#39;, &#39;RC&#39;: &#39;&#39;}], &#39;L&#39;: 0.5, &#39;K1&#39;: -0.2}
+M {&#39;KIND&#39;: &#39;MONITOR&#39;, &#39;RC&#39;: [&#39;&#39;, {&#39;KIND&#39;: &#39;&#39;, &#39;RC&#39;: &#39;&#39;}]}
+HEAD {&#39;KIND&#39;: &#39;MARKER&#39;, &#39;RC&#39;: [&#39;TEST&#39;, {&#39;KIND&#39;: &#39;DRIFT&#39;, &#39;RC&#39;: &#39;&#39;}]}
+TAIL {&#39;KIND&#39;: &#39;MARKER&#39;, &#39;RC&#39;: [&#39;TEST&#39;, {&#39;KIND&#39;: &#39;DRIFT&#39;, &#39;RC&#39;: &#39;&#39;}]}
+FODO {&#39;KIND&#39;: &#39;LINE&#39;, &#39;SEQUENCE&#39;: [&#39;HEAD&#39;, &#39;M&#39;, &#39;QD&#39;, &#39;DR&#39;, &#39;BM&#39;, &#39;DR&#39;, &#39;QF&#39;, &#39;DR&#39;, &#39;BM&#39;, &#39;DR&#39;, &#39;QD&#39;, &#39;TAIL&#39;]}
+</pre></div></div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># TWISS results can be loaded into python dictionaries</span>
+
+<span class="n">data</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s1">&#39;final.tfs&#39;</span><span class="p">)</span>
+<span class="n">parameters</span><span class="p">,</span> <span class="n">columns</span> <span class="o">=</span> <span class="n">load_tfs</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Optics data can be converted into model table</span>
+<span class="c1"># Note, all locations have different name</span>
+<span class="c1"># If an element appear several times in a line, locations are renamed</span>
+
+<span class="n">table</span> <span class="o">=</span> <span class="n">convert</span><span class="p">(</span><span class="n">columns</span><span class="p">,</span> <span class="s1">&#39;TFS&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;MONITOR&#39;</span><span class="p">],</span> <span class="p">[</span><span class="s1">&#39;MARKER&#39;</span><span class="p">],</span> <span class="n">rc</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">table</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+{&#39;HEAD&#39;: {&#39;TYPE&#39;: &#39;VIRTUAL&#39;,
+  &#39;S&#39;: 0.0,
+  &#39;BX&#39;: 4.287017735718936,
+  &#39;AX&#39;: -3.338e-16,
+  &#39;FX&#39;: 0.0,
+  &#39;BY&#39;: 19.818489282044894,
+  &#39;AY&#39;: -2.975e-17,
+  &#39;FY&#39;: 0.0,
+  &#39;DQX&#39;: 1.5490410441348796,
+  &#39;DPX&#39;: 5.551e-17,
+  &#39;DQY&#39;: 0.0,
+  &#39;DPY&#39;: -0.0,
+  &#39;RC&#39;: None},
+ &#39;M&#39;: {&#39;TYPE&#39;: &#39;MONITOR&#39;,
+  &#39;S&#39;: 0.0,
+  &#39;BX&#39;: 4.287017735718936,
+  &#39;AX&#39;: -3.338e-16,
+  &#39;FX&#39;: 0.0,
+  &#39;BY&#39;: 19.818489282044894,
+  &#39;AY&#39;: -2.975e-17,
+  &#39;FY&#39;: 0.0,
+  &#39;DQX&#39;: 1.5490410441348796,
+  &#39;DPX&#39;: 5.551e-17,
+  &#39;DQY&#39;: 0.0,
+  &#39;DPY&#39;: -0.0,
+  &#39;RC&#39;: None},
+ &#39;M_DR&#39;: {&#39;TYPE&#39;: &#39;MONITOR&#39;,
+  &#39;S&#39;: 1.5,
+  &#39;BX&#39;: 5.980356480296974,
+  &#39;AX&#39;: -0.8524040348462865,
+  &#39;FX&#39;: 0.3068185833848285,
+  &#39;BY&#39;: 15.315159900296642,
+  &#39;AY&#39;: 1.6491678474974667,
+  &#39;FY&#39;: 0.08453149247893033,
+  &#39;DQX&#39;: 1.744126900814982,
+  &#39;DPX&#39;: 0.1561982029636459,
+  &#39;DQY&#39;: 0.0,
+  &#39;DPY&#39;: 0.0,
+  &#39;RC&#39;: None},
+ &#39;V_BM&#39;: {&#39;TYPE&#39;: &#39;VIRTUAL&#39;,
+  &#39;S&#39;: 3.0,
+  &#39;BX&#39;: 9.120629409698159,
+  &#39;AX&#39;: -1.1465687400023221,
+  &#39;FX&#39;: 0.5107301354647854,
+  &#39;BY&#39;: 10.914137614299745,
+  &#39;AY&#39;: 1.2848470098337954,
+  &#39;FY&#39;: 0.20081415045191314,
+  &#39;DQX&#39;: 1.992896582518225,
+  &#39;DPX&#39;: 0.21385269164968151,
+  &#39;DQY&#39;: 0.0,
+  &#39;DPY&#39;: 0.0,
+  &#39;RC&#39;: None},
+ &#39;M_DR_1&#39;: {&#39;TYPE&#39;: &#39;MONITOR&#39;,
+  &#39;S&#39;: 4.5,
+  &#39;BX&#39;: 12.70896979457465,
+  &#39;AX&#39;: -1.3363966727488819,
+  &#39;FX&#39;: 0.6500917125372264,
+  &#39;BY&#39;: 7.606077841293864,
+  &#39;AY&#39;: 0.9205261721701236,
+  &#39;FY&#39;: 0.3661997931359615,
+  &#39;DQX&#39;: 2.3837861006470566,
+  &#39;DPX&#39;: 0.26987963222618605,
+  &#39;DQY&#39;: 0.0,
+  &#39;DPY&#39;: 0.0,
+  &#39;RC&#39;: None},
+ &#39;V_QF&#39;: {&#39;TYPE&#39;: &#39;VIRTUAL&#39;,
+  &#39;S&#39;: 6.0,
+  &#39;BX&#39;: 16.392007194825762,
+  &#39;AX&#39;: -8.0415e-16,
+  &#39;FX&#39;: 0.7521811118347426,
+  &#39;BY&#39;: 5.674619594695141,
+  &#39;AY&#39;: -2.5871e-16,
+  &#39;FY&#39;: 0.601131166393595,
+  &#39;DQX&#39;: 2.7214181783177667,
+  &#39;DPX&#39;: 5.551e-17,
+  &#39;DQY&#39;: 0.0,
+  &#39;DPY&#39;: 0.0,
+  &#39;RC&#39;: None},
+ &#39;M_DR_2&#39;: {&#39;TYPE&#39;: &#39;MONITOR&#39;,
+  &#39;S&#39;: 7.5,
+  &#39;BX&#39;: 12.708969794574653,
+  &#39;AX&#39;: 1.336396672748881,
+  &#39;FX&#39;: 0.8542705111322586,
+  &#39;BY&#39;: 7.606077841293868,
+  &#39;AY&#39;: -0.9205261721701244,
+  &#39;FY&#39;: 0.8360625396512283,
+  &#39;DQX&#39;: 2.3837861006470566,
+  &#39;DPX&#39;: -0.26987963222618594,
+  &#39;DQY&#39;: 0.0,
+  &#39;DPY&#39;: 0.0,
+  &#39;RC&#39;: None},
+ &#39;V_BM_1&#39;: {&#39;TYPE&#39;: &#39;VIRTUAL&#39;,
+  &#39;S&#39;: 9.0,
+  &#39;BX&#39;: 9.120629409698164,
+  &#39;AX&#39;: 1.146568740002322,
+  &#39;FX&#39;: 0.9936320882046995,
+  &#39;BY&#39;: 10.914137614299747,
+  &#39;AY&#39;: -1.2848470098337954,
+  &#39;FY&#39;: 1.0014481823352765,
+  &#39;DQX&#39;: 1.9928965825182252,
+  &#39;DPX&#39;: -0.21385269164968146,
+  &#39;DQY&#39;: 0.0,
+  &#39;DPY&#39;: 0.0,
+  &#39;RC&#39;: None},
+ &#39;M_DR_3&#39;: {&#39;TYPE&#39;: &#39;MONITOR&#39;,
+  &#39;S&#39;: 10.5,
+  &#39;BX&#39;: 5.980356480296976,
+  &#39;AX&#39;: 0.8524040348462865,
+  &#39;FX&#39;: 1.1975436402846564,
+  &#39;BY&#39;: 15.315159900296639,
+  &#39;AY&#39;: -1.6491678474974665,
+  &#39;FY&#39;: 1.1177308403082595,
+  &#39;DQX&#39;: 1.7441269008149822,
+  &#39;DPX&#39;: -0.1561982029636459,
+  &#39;DQY&#39;: 0.0,
+  &#39;DPY&#39;: 0.0,
+  &#39;RC&#39;: None},
+ &#39;TAIL&#39;: {&#39;TYPE&#39;: &#39;VIRTUAL&#39;,
+  &#39;S&#39;: 12.0,
+  &#39;BX&#39;: 4.287017735718939,
+  &#39;AX&#39;: 3.6486e-16,
+  &#39;FX&#39;: 1.5043622236694847,
+  &#39;BY&#39;: 19.81848928204488,
+  &#39;AY&#39;: -5.5051e-16,
+  &#39;FY&#39;: 1.2022623327871897,
+  &#39;DQX&#39;: 1.54904104413488,
+  &#39;DPX&#39;: -2.776e-17,
+  &#39;DQY&#39;: 0.0,
+  &#39;DPY&#39;: 0.0,
+  &#39;RC&#39;: None}}
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># RC parameter from lattice data can be added to model table</span>
+<span class="c1"># Configuration table can be saved using util.save</span>
+
+<span class="n">table</span> <span class="o">=</span> <span class="n">add_rc</span><span class="p">(</span><span class="n">table</span><span class="p">,</span> <span class="n">lattice</span><span class="p">)</span>
+<span class="n">table</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+{&#39;HEAD&#39;: {&#39;TYPE&#39;: &#39;VIRTUAL&#39;,
+  &#39;S&#39;: 0.0,
+  &#39;BX&#39;: 4.287017735718936,
+  &#39;AX&#39;: -3.338e-16,
+  &#39;FX&#39;: 0.0,
+  &#39;BY&#39;: 19.818489282044894,
+  &#39;AY&#39;: -2.975e-17,
+  &#39;FY&#39;: 0.0,
+  &#39;DQX&#39;: 1.5490410441348796,
+  &#39;DPX&#39;: 5.551e-17,
+  &#39;DQY&#39;: 0.0,
+  &#39;DPY&#39;: -0.0,
+  &#39;RC&#39;: None},
+ &#39;M&#39;: {&#39;TYPE&#39;: &#39;MONITOR&#39;,
+  &#39;S&#39;: 0.0,
+  &#39;BX&#39;: 4.287017735718936,
+  &#39;AX&#39;: -3.338e-16,
+  &#39;FX&#39;: 0.0,
+  &#39;BY&#39;: 19.818489282044894,
+  &#39;AY&#39;: -2.975e-17,
+  &#39;FY&#39;: 0.0,
+  &#39;DQX&#39;: 1.5490410441348796,
+  &#39;DPX&#39;: 5.551e-17,
+  &#39;DQY&#39;: 0.0,
+  &#39;DPY&#39;: -0.0,
+  &#39;RC&#39;: None},
+ &#39;M_DR&#39;: {&#39;TYPE&#39;: &#39;MONITOR&#39;,
+  &#39;S&#39;: 1.5,
+  &#39;BX&#39;: 5.980356480296974,
+  &#39;AX&#39;: -0.8524040348462865,
+  &#39;FX&#39;: 0.3068185833848285,
+  &#39;BY&#39;: 15.315159900296642,
+  &#39;AY&#39;: 1.6491678474974667,
+  &#39;FY&#39;: 0.08453149247893033,
+  &#39;DQX&#39;: 1.744126900814982,
+  &#39;DPX&#39;: 0.1561982029636459,
+  &#39;DQY&#39;: 0.0,
+  &#39;DPY&#39;: 0.0,
+  &#39;RC&#39;: [&#39;DR&#39;, {&#39;KIND&#39;: &#39;DRIFT&#39;, &#39;L&#39;: 2.0}]},
+ &#39;V_BM&#39;: {&#39;TYPE&#39;: &#39;VIRTUAL&#39;,
+  &#39;S&#39;: 3.0,
+  &#39;BX&#39;: 9.120629409698159,
+  &#39;AX&#39;: -1.1465687400023221,
+  &#39;FX&#39;: 0.5107301354647854,
+  &#39;BY&#39;: 10.914137614299745,
+  &#39;AY&#39;: 1.2848470098337954,
+  &#39;FY&#39;: 0.20081415045191314,
+  &#39;DQX&#39;: 1.992896582518225,
+  &#39;DPX&#39;: 0.21385269164968151,
+  &#39;DQY&#39;: 0.0,
+  &#39;DPY&#39;: 0.0,
+  &#39;RC&#39;: [&#39;BM&#39;, {&#39;KIND&#39;: &#39;SBEND&#39;, &#39;L&#39;: 1.0, &#39;ANGLE&#39;: 0.17453292519943295}]},
+ &#39;M_DR_1&#39;: {&#39;TYPE&#39;: &#39;MONITOR&#39;,
+  &#39;S&#39;: 4.5,
+  &#39;BX&#39;: 12.70896979457465,
+  &#39;AX&#39;: -1.3363966727488819,
+  &#39;FX&#39;: 0.6500917125372264,
+  &#39;BY&#39;: 7.606077841293864,
+  &#39;AY&#39;: 0.9205261721701236,
+  &#39;FY&#39;: 0.3661997931359615,
+  &#39;DQX&#39;: 2.3837861006470566,
+  &#39;DPX&#39;: 0.26987963222618605,
+  &#39;DQY&#39;: 0.0,
+  &#39;DPY&#39;: 0.0,
+  &#39;RC&#39;: [&#39;DR&#39;, {&#39;KIND&#39;: &#39;DRIFT&#39;, &#39;L&#39;: 2.0}]},
+ &#39;V_QF&#39;: {&#39;TYPE&#39;: &#39;VIRTUAL&#39;,
+  &#39;S&#39;: 6.0,
+  &#39;BX&#39;: 16.392007194825762,
+  &#39;AX&#39;: -8.0415e-16,
+  &#39;FX&#39;: 0.7521811118347426,
+  &#39;BY&#39;: 5.674619594695141,
+  &#39;AY&#39;: -2.5871e-16,
+  &#39;FY&#39;: 0.601131166393595,
+  &#39;DQX&#39;: 2.7214181783177667,
+  &#39;DPX&#39;: 5.551e-17,
+  &#39;DQY&#39;: 0.0,
+  &#39;DPY&#39;: 0.0,
+  &#39;RC&#39;: [&#39;QF&#39;, {&#39;KIND&#39;: &#39;QUADRUPOLE&#39;, &#39;L&#39;: 1.0, &#39;K1&#39;: 0.2}]},
+ &#39;M_DR_2&#39;: {&#39;TYPE&#39;: &#39;MONITOR&#39;,
+  &#39;S&#39;: 7.5,
+  &#39;BX&#39;: 12.708969794574653,
+  &#39;AX&#39;: 1.336396672748881,
+  &#39;FX&#39;: 0.8542705111322586,
+  &#39;BY&#39;: 7.606077841293868,
+  &#39;AY&#39;: -0.9205261721701244,
+  &#39;FY&#39;: 0.8360625396512283,
+  &#39;DQX&#39;: 2.3837861006470566,
+  &#39;DPX&#39;: -0.26987963222618594,
+  &#39;DQY&#39;: 0.0,
+  &#39;DPY&#39;: 0.0,
+  &#39;RC&#39;: [&#39;DR&#39;, {&#39;KIND&#39;: &#39;DRIFT&#39;, &#39;L&#39;: 2.0}]},
+ &#39;V_BM_1&#39;: {&#39;TYPE&#39;: &#39;VIRTUAL&#39;,
+  &#39;S&#39;: 9.0,
+  &#39;BX&#39;: 9.120629409698164,
+  &#39;AX&#39;: 1.146568740002322,
+  &#39;FX&#39;: 0.9936320882046995,
+  &#39;BY&#39;: 10.914137614299747,
+  &#39;AY&#39;: -1.2848470098337954,
+  &#39;FY&#39;: 1.0014481823352765,
+  &#39;DQX&#39;: 1.9928965825182252,
+  &#39;DPX&#39;: -0.21385269164968146,
+  &#39;DQY&#39;: 0.0,
+  &#39;DPY&#39;: 0.0,
+  &#39;RC&#39;: [&#39;BM&#39;, {&#39;KIND&#39;: &#39;SBEND&#39;, &#39;L&#39;: 1.0, &#39;ANGLE&#39;: 0.17453292519943295}]},
+ &#39;M_DR_3&#39;: {&#39;TYPE&#39;: &#39;MONITOR&#39;,
+  &#39;S&#39;: 10.5,
+  &#39;BX&#39;: 5.980356480296976,
+  &#39;AX&#39;: 0.8524040348462865,
+  &#39;FX&#39;: 1.1975436402846564,
+  &#39;BY&#39;: 15.315159900296639,
+  &#39;AY&#39;: -1.6491678474974665,
+  &#39;FY&#39;: 1.1177308403082595,
+  &#39;DQX&#39;: 1.7441269008149822,
+  &#39;DPX&#39;: -0.1561982029636459,
+  &#39;DQY&#39;: 0.0,
+  &#39;DPY&#39;: 0.0,
+  &#39;RC&#39;: [&#39;DR&#39;, {&#39;KIND&#39;: &#39;DRIFT&#39;, &#39;L&#39;: 2.0}]},
+ &#39;TAIL&#39;: {&#39;TYPE&#39;: &#39;VIRTUAL&#39;,
+  &#39;S&#39;: 12.0,
+  &#39;BX&#39;: 4.287017735718939,
+  &#39;AX&#39;: 3.6486e-16,
+  &#39;FX&#39;: 1.5043622236694847,
+  &#39;BY&#39;: 19.81848928204488,
+  &#39;AY&#39;: -5.5051e-16,
+  &#39;FY&#39;: 1.2022623327871897,
+  &#39;DQX&#39;: 1.54904104413488,
+  &#39;DPX&#39;: -2.776e-17,
+  &#39;DQY&#39;: 0.0,
+  &#39;DPY&#39;: 0.0,
+  &#39;RC&#39;: None}}
+</pre></div></div>
+</div>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="model-00.html" class="btn btn-neutral float-left" title="Example-01: Optimizaion (import/export API)" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="model-02.html" class="btn btn-neutral float-right" title="Example-03: Workflow (ELEGANT)" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Ivan Morozov.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,752 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Example-31: Orbit (dispersion) &mdash; model  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/nbsphinx-code-cells.css?v=2aa19091" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../_static/doctools.js?v=9a2dae69"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+      <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+      <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Example-32: Orbit (quadruple shift)" href="model-31.html" />
+    <link rel="prev" title="Example-30: Orbit (effect of transverse shift)" href="model-29.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            model
+              <img src="../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Examples:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="model-00.html">Example-01: Optimizaion (import/export API)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-01.html">Example-02: Workflow (MADX)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-02.html">Example-03: Workflow (ELEGANT)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-03.html">Example-04: Transformations benchmark (PTC)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-04.html">Example-05: Drift (element)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-05.html">Example-06: Quadrupole (element)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-06.html">Example-07: Sextupole (element)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-07.html">Example-08: Octupole (element)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-08.html">Example-09: Multipole (element)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-09.html">Example-10: Dipole (element)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-10.html">Example-11: Corrector (element)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-11.html">Example-12: Gradient (element)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-12.html">Example-13: Kick (element)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-13.html">Example-14: Linear (element)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-14.html">Example-15: BPM (element)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-15.html">Example-16: Custom (element)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-16.html">Example-17: Line (element)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-17.html">Example-18: Inverse tracking</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-18.html">Example-19: Layout</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-19.html">Example-20: LOGO</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-20.html">Example-21: Build MADX and ELEGANT style lattice</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-21.html">Example-22: Line serialization and deserialization (YAML)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-22.html">Example-23: Advanced line editing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-23.html">Example-24: Wrapper</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-24.html">Example-25: Group</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-25.html">Example-26: Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-26.html">Example-27: Normalize</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-27.html">Example-28: Transformation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-28.html">Example-29: Orbit (fixed point computation)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-29.html">Example-30: Orbit (effect of transverse shift)</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Example-31: Orbit (dispersion)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-31.html">Example-32: Orbit (quadruple shift)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-32.html">Example-33: Orbit (sextupole shift)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-33.html">Example-34: Orbit (ORM)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-34.html">Example-35: Orbit (closed orbit correction)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../modules/library/bpm.html">BPM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/library/bpm.html#model.library.bpm.BPM"><code class="docutils literal notranslate"><span class="pre">BPM</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/library/corrector.html">Corrector</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/library/corrector.html#model.library.corrector.Corrector"><code class="docutils literal notranslate"><span class="pre">Corrector</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/library/gradient.html">Gradient</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/library/gradient.html#model.library.gradient.Gradient"><code class="docutils literal notranslate"><span class="pre">Gradient</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/library/linear.html">Linear</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/library/linear.html#model.library.linear.Linear"><code class="docutils literal notranslate"><span class="pre">Linear</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/library/keys.html">Keys</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/library/element.html">Element</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/library/element.html#model.library.element.Element"><code class="docutils literal notranslate"><span class="pre">Element</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/library/element.html#model.library.element.transform"><code class="docutils literal notranslate"><span class="pre">transform()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/library/transformations.html">Transformations module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/library/transformations.html#model.library.transformations.bend"><code class="docutils literal notranslate"><span class="pre">bend()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/library/transformations.html#model.library.transformations.calibration_forward"><code class="docutils literal notranslate"><span class="pre">calibration_forward()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/library/transformations.html#model.library.transformations.calibration_inverse"><code class="docutils literal notranslate"><span class="pre">calibration_inverse()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/library/transformations.html#model.library.transformations.corrector"><code class="docutils literal notranslate"><span class="pre">corrector()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/library/transformations.html#model.library.transformations.cylindrical"><code class="docutils literal notranslate"><span class="pre">cylindrical()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/library/transformations.html#model.library.transformations.cylindrical_error"><code class="docutils literal notranslate"><span class="pre">cylindrical_error()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/library/transformations.html#model.library.transformations.dipole"><code class="docutils literal notranslate"><span class="pre">dipole()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/library/transformations.html#model.library.transformations.dquad"><code class="docutils literal notranslate"><span class="pre">dquad()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/library/transformations.html#model.library.transformations.drift"><code class="docutils literal notranslate"><span class="pre">drift()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/library/transformations.html#model.library.transformations.fquad"><code class="docutils literal notranslate"><span class="pre">fquad()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/library/transformations.html#model.library.transformations.gradient"><code class="docutils literal notranslate"><span class="pre">gradient()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/library/transformations.html#model.library.transformations.kinematic"><code class="docutils literal notranslate"><span class="pre">kinematic()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/library/transformations.html#model.library.transformations.linear"><code class="docutils literal notranslate"><span class="pre">linear()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/library/transformations.html#model.library.transformations.octupole"><code class="docutils literal notranslate"><span class="pre">octupole()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/library/transformations.html#model.library.transformations.polar"><code class="docutils literal notranslate"><span class="pre">polar()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/library/transformations.html#model.library.transformations.quadrupole"><code class="docutils literal notranslate"><span class="pre">quadrupole()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/library/transformations.html#model.library.transformations.rx"><code class="docutils literal notranslate"><span class="pre">rx()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/library/transformations.html#model.library.transformations.ry"><code class="docutils literal notranslate"><span class="pre">ry()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/library/transformations.html#model.library.transformations.rz"><code class="docutils literal notranslate"><span class="pre">rz()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/library/transformations.html#model.library.transformations.sector_bend"><code class="docutils literal notranslate"><span class="pre">sector_bend()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/library/transformations.html#model.library.transformations.sector_bend_fringe"><code class="docutils literal notranslate"><span class="pre">sector_bend_fringe()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/library/transformations.html#model.library.transformations.sector_bend_wedge"><code class="docutils literal notranslate"><span class="pre">sector_bend_wedge()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/library/transformations.html#model.library.transformations.sextupole"><code class="docutils literal notranslate"><span class="pre">sextupole()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/library/transformations.html#model.library.transformations.tx"><code class="docutils literal notranslate"><span class="pre">tx()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/library/transformations.html#model.library.transformations.ty"><code class="docutils literal notranslate"><span class="pre">ty()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/library/transformations.html#model.library.transformations.tz"><code class="docutils literal notranslate"><span class="pre">tz()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/library/transformations.html#model.library.transformations.wedge"><code class="docutils literal notranslate"><span class="pre">wedge()</span></code></a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">model</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Example-31: Orbit (dispersion)</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/examples/model-30.ipynb.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="Example-31:-Orbit-(dispersion)">
+<h1>Example-31: Orbit (dispersion)<a class="headerlink" href="#Example-31:-Orbit-(dispersion)" title="Link to this heading"></a></h1>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># In this example 1st and 2nd order derivatives of closed orbit with respect to momentum deviation are computed</span>
+<span class="c1"># First, dispersion at BPMs is computed from linear fit and compared with ELEGANT</span>
+<span class="c1"># Next, 1st and 2ns derivatives of closed orbit are computed</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Import</span>
+
+<span class="kn">from</span> <span class="nn">pprint</span> <span class="kn">import</span> <span class="n">pprint</span>
+
+<span class="kn">import</span> <span class="nn">torch</span>
+
+<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+
+<span class="kn">import</span> <span class="nn">matplotlib</span>
+<span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+<span class="kn">from</span> <span class="nn">matplotlib.patches</span> <span class="kn">import</span> <span class="n">Rectangle</span>
+<span class="n">matplotlib</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s1">&#39;text.usetex&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+
+<span class="kn">from</span> <span class="nn">twiss</span> <span class="kn">import</span> <span class="n">twiss</span>
+
+<span class="kn">from</span> <span class="nn">model.library.line</span> <span class="kn">import</span> <span class="n">Line</span>
+
+<span class="kn">from</span> <span class="nn">model.command.util</span> <span class="kn">import</span> <span class="n">select</span>
+<span class="kn">from</span> <span class="nn">model.command.util</span> <span class="kn">import</span> <span class="n">chop</span>
+<span class="kn">from</span> <span class="nn">model.command.util</span> <span class="kn">import</span> <span class="n">evaluate</span>
+<span class="kn">from</span> <span class="nn">model.command.util</span> <span class="kn">import</span> <span class="n">series</span>
+
+<span class="kn">from</span> <span class="nn">model.command.external</span> <span class="kn">import</span> <span class="n">load_sdds</span>
+<span class="kn">from</span> <span class="nn">model.command.external</span> <span class="kn">import</span> <span class="n">load_lattice</span>
+
+<span class="kn">from</span> <span class="nn">model.command.build</span> <span class="kn">import</span> <span class="n">build</span>
+
+<span class="kn">from</span> <span class="nn">model.command.layout</span> <span class="kn">import</span> <span class="n">Layout</span>
+
+<span class="kn">from</span> <span class="nn">model.command.orbit</span> <span class="kn">import</span> <span class="n">orbit</span>
+<span class="kn">from</span> <span class="nn">model.command.orbit</span> <span class="kn">import</span> <span class="n">parametric_orbit</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Load ELEGANT twiss</span>
+
+<span class="n">path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s1">&#39;ic.twiss&#39;</span><span class="p">)</span>
+<span class="n">parameters</span><span class="p">,</span> <span class="n">columns</span> <span class="o">=</span> <span class="n">load_sdds</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+
+<span class="c1"># Set tunes</span>
+
+<span class="n">nu_qx</span><span class="p">:</span><span class="nb">float</span> <span class="o">=</span> <span class="n">parameters</span><span class="p">[</span><span class="s1">&#39;nux&#39;</span><span class="p">]</span> <span class="o">%</span> <span class="mi">1</span>
+<span class="n">nu_qy</span><span class="p">:</span><span class="nb">float</span> <span class="o">=</span> <span class="n">parameters</span><span class="p">[</span><span class="s1">&#39;nuy&#39;</span><span class="p">]</span> <span class="o">%</span> <span class="mi">1</span>
+
+<span class="c1"># Set dispersion at monitors</span>
+
+<span class="n">kinds</span> <span class="o">=</span> <span class="n">select</span><span class="p">(</span><span class="n">columns</span><span class="p">,</span> <span class="s1">&#39;ElementType&#39;</span><span class="p">,</span> <span class="n">keep</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+<span class="n">eta_qx</span> <span class="o">=</span> <span class="n">select</span><span class="p">(</span><span class="n">columns</span><span class="p">,</span> <span class="s1">&#39;etax&#39;</span> <span class="p">,</span> <span class="n">keep</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">eta_px</span> <span class="o">=</span> <span class="n">select</span><span class="p">(</span><span class="n">columns</span><span class="p">,</span> <span class="s1">&#39;etaxp&#39;</span><span class="p">,</span> <span class="n">keep</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">eta_qy</span> <span class="o">=</span> <span class="n">select</span><span class="p">(</span><span class="n">columns</span><span class="p">,</span> <span class="s1">&#39;etay&#39;</span> <span class="p">,</span> <span class="n">keep</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">eta_py</span> <span class="o">=</span> <span class="n">select</span><span class="p">(</span><span class="n">columns</span><span class="p">,</span> <span class="s1">&#39;etayp&#39;</span><span class="p">,</span> <span class="n">keep</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+<span class="n">eta_qx</span> <span class="o">=</span> <span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="n">value</span> <span class="k">for</span> <span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">),</span> <span class="n">kind</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">eta_qx</span><span class="o">.</span><span class="n">items</span><span class="p">(),</span> <span class="n">kinds</span><span class="o">.</span><span class="n">values</span><span class="p">())</span> <span class="k">if</span> <span class="n">kind</span> <span class="o">==</span> <span class="s1">&#39;MONI&#39;</span><span class="p">}</span>
+<span class="n">eta_px</span> <span class="o">=</span> <span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="n">value</span> <span class="k">for</span> <span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">),</span> <span class="n">kind</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">eta_px</span><span class="o">.</span><span class="n">items</span><span class="p">(),</span> <span class="n">kinds</span><span class="o">.</span><span class="n">values</span><span class="p">())</span> <span class="k">if</span> <span class="n">kind</span> <span class="o">==</span> <span class="s1">&#39;MONI&#39;</span><span class="p">}</span>
+<span class="n">eta_qy</span> <span class="o">=</span> <span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="n">value</span> <span class="k">for</span> <span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">),</span> <span class="n">kind</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">eta_qy</span><span class="o">.</span><span class="n">items</span><span class="p">(),</span> <span class="n">kinds</span><span class="o">.</span><span class="n">values</span><span class="p">())</span> <span class="k">if</span> <span class="n">kind</span> <span class="o">==</span> <span class="s1">&#39;MONI&#39;</span><span class="p">}</span>
+<span class="n">eta_py</span> <span class="o">=</span> <span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="n">value</span> <span class="k">for</span> <span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">),</span> <span class="n">kind</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">eta_py</span><span class="o">.</span><span class="n">items</span><span class="p">(),</span> <span class="n">kinds</span><span class="o">.</span><span class="n">values</span><span class="p">())</span> <span class="k">if</span> <span class="n">kind</span> <span class="o">==</span> <span class="s1">&#39;MONI&#39;</span><span class="p">}</span>
+
+<span class="n">positions</span> <span class="o">=</span> <span class="n">select</span><span class="p">(</span><span class="n">columns</span><span class="p">,</span> <span class="s1">&#39;s&#39;</span><span class="p">,</span> <span class="n">keep</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+<span class="n">positions</span> <span class="o">=</span> <span class="p">[</span><span class="n">value</span> <span class="k">for</span> <span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">),</span> <span class="n">kind</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">positions</span><span class="p">,</span> <span class="n">kinds</span><span class="o">.</span><span class="n">values</span><span class="p">())</span> <span class="k">if</span> <span class="n">kind</span> <span class="o">==</span> <span class="s1">&#39;MONI&#39;</span><span class="p">]</span>
+
+<span class="c1"># Plot dispersion at monitors</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">positions</span><span class="p">,</span> <span class="n">eta_qx</span><span class="o">.</span><span class="n">values</span><span class="p">(),</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.75</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;o&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">r</span><span class="s1">&#39;$\eta_</span><span class="si">{qx}</span><span class="s1">$&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">positions</span><span class="p">,</span> <span class="n">eta_px</span><span class="o">.</span><span class="n">values</span><span class="p">(),</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;blue&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.75</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;o&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">r</span><span class="s1">&#39;$\eta_</span><span class="si">{px}</span><span class="s1">$&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xticks</span><span class="p">(</span><span class="n">ticks</span><span class="o">=</span><span class="n">positions</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="n">eta_qx</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="o">-</span><span class="mf">1.50</span><span class="p">,</span> <span class="mf">1.50</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/examples_model-30_3_0.png" src="../_images/examples_model-30_3_0.png" />
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Build and setup lattice</span>
+
+<span class="n">path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s1">&#39;ic.lte&#39;</span><span class="p">)</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">load_lattice</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+
+<span class="n">ring</span><span class="p">:</span><span class="n">Line</span> <span class="o">=</span> <span class="n">build</span><span class="p">(</span><span class="s1">&#39;RING&#39;</span><span class="p">,</span> <span class="s1">&#39;ELEGANT&#39;</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+<span class="n">ring</span><span class="o">.</span><span class="n">propagate</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="n">ring</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+<span class="n">ring</span><span class="o">.</span><span class="n">merge</span><span class="p">()</span>
+<span class="n">ring</span><span class="o">.</span><span class="n">split</span><span class="p">((</span><span class="kc">None</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;BPM&#39;</span><span class="p">],</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">))</span>
+<span class="n">ring</span><span class="o">.</span><span class="n">roll</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">ring</span><span class="o">.</span><span class="n">splice</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Generate data for layout plot</span>
+
+<span class="n">layout</span> <span class="o">=</span> <span class="n">Layout</span><span class="p">(</span><span class="n">ring</span><span class="p">)</span>
+<span class="n">rectangles</span> <span class="o">=</span> <span class="n">layout</span><span class="o">.</span><span class="n">profile_1d</span><span class="p">(</span><span class="n">scale</span><span class="o">=</span><span class="mf">0.75</span><span class="p">,</span> <span class="n">shift</span><span class="o">=-</span><span class="mf">1.25</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>  <span class="n">exclude</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;BPM&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Compare linear tunes</span>
+
+<span class="n">state</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="mi">4</span><span class="o">*</span><span class="p">[</span><span class="mf">0.0</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+
+<span class="n">matrix</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">func</span><span class="o">.</span><span class="n">jacrev</span><span class="p">(</span><span class="n">ring</span><span class="p">)(</span><span class="n">state</span><span class="p">)</span>
+
+<span class="p">(</span><span class="n">nuqx</span><span class="p">,</span> <span class="n">nuqy</span><span class="p">),</span> <span class="o">*</span><span class="n">_</span> <span class="o">=</span> <span class="n">twiss</span><span class="p">(</span><span class="n">matrix</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">nu_qx</span> <span class="o">-</span> <span class="n">nuqx</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">nu_qy</span> <span class="o">-</span> <span class="n">nuqy</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+tensor(3.1086e-15, dtype=torch.float64)
+tensor(5.5511e-16, dtype=torch.float64)
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># First, we use orbit funtion to compute dispersion from linear fit</span>
+<span class="c1"># Note, orbit function is not differentiable</span>
+
+<span class="n">dps</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mf">1.0E-6</span><span class="p">,</span> <span class="mf">1.0E-6</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">fn</span><span class="p">(</span><span class="n">dp</span><span class="p">):</span>
+    <span class="n">guess</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="mi">4</span><span class="o">*</span><span class="p">[</span><span class="mf">0.0</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+    <span class="n">table</span><span class="p">,</span> <span class="o">*</span><span class="n">_</span> <span class="o">=</span> <span class="n">orbit</span><span class="p">(</span><span class="n">ring</span><span class="p">,</span>
+                      <span class="n">guess</span><span class="p">,</span>
+                      <span class="p">[</span><span class="n">dp</span><span class="p">],</span>
+                      <span class="p">(</span><span class="s1">&#39;dp&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
+                      <span class="n">alignment</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                      <span class="n">advance</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                      <span class="n">full</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                      <span class="n">limit</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span>
+                      <span class="n">epsilon</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">table</span>
+
+<span class="n">data</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">func</span><span class="o">.</span><span class="n">vmap</span><span class="p">(</span><span class="n">fn</span><span class="p">)(</span><span class="n">dps</span><span class="p">)</span><span class="o">.</span><span class="n">swapaxes</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">()</span>
+
+<span class="n">solution</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">lstsq</span><span class="p">(</span><span class="n">dps</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">expand</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">),</span> <span class="n">data</span><span class="p">)</span><span class="o">.</span><span class="n">solution</span><span class="o">.</span><span class="n">squeeze</span><span class="p">()</span>
+<span class="n">etaqx</span><span class="p">,</span> <span class="n">etapx</span><span class="p">,</span> <span class="n">etaqy</span><span class="p">,</span> <span class="n">etapy</span> <span class="o">=</span> <span class="n">solution</span><span class="o">.</span><span class="n">T</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">solution</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+torch.Size([16, 5, 4])
+
+tensor([[-8.0639e-03,  1.5204e-02, -1.6705e-47, -1.0023e-46],
+        [ 5.4760e-03, -6.2632e-03, -1.1567e-46, -2.1361e-46],
+        [ 6.0119e-01,  9.4899e-01, -1.2796e-46,  1.6479e-46],
+        [ 2.1306e-04,  3.5665e-04, -1.7803e-48,  1.0495e-46],
+        [ 1.9312e-04, -3.4532e-04,  1.3538e-46,  2.0140e-46],
+        [ 6.0213e-01, -9.4895e-01,  2.2986e-47, -7.7907e-47],
+        [ 5.5166e-03,  6.3179e-03, -5.1114e-47, -2.4426e-47],
+        [-8.2339e-03, -1.5569e-02, -1.8418e-46,  2.8539e-46],
+        [-8.0136e-03,  1.5570e-02, -6.4499e-47, -3.5286e-47],
+        [ 5.4415e-03, -6.2309e-03,  7.7971e-47,  1.9323e-46],
+        [ 6.3304e-01,  9.4904e-01,  1.1570e-46, -1.0752e-46],
+        [ 1.4893e-04,  2.5326e-04,  5.7455e-47, -1.7626e-46],
+        [ 1.4627e-04, -2.5477e-04, -1.1789e-46, -2.1735e-46],
+        [ 6.1073e-01, -9.4905e-01, -7.4501e-47, -4.1134e-48],
+        [ 5.4673e-03,  6.2236e-03, -5.9414e-48,  1.1262e-46],
+        [-8.1900e-03, -1.5703e-02,  1.4993e-46, -1.9653e-46]],
+       dtype=torch.float64)
+
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Compare fitted values with ELEGANT</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">etaqx</span> <span class="o">-</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="o">*</span><span class="n">eta_qx</span><span class="o">.</span><span class="n">values</span><span class="p">()],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float64</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">()</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">etapx</span> <span class="o">-</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="o">*</span><span class="n">eta_px</span><span class="o">.</span><span class="n">values</span><span class="p">()],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float64</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+tensor([ 2.2442e-10, -2.2744e-10,  6.9459e-11,  7.6277e-11, -1.3798e-10,
+        -5.3663e-11,  1.4376e-10, -1.7885e-10, -1.6939e-10,  1.5748e-10,
+        -6.4322e-11,  5.5576e-13,  1.0362e-10, -3.3488e-11, -1.3350e-10,
+         2.5610e-10], dtype=torch.float64)
+
+tensor([-4.5285e-10,  3.1612e-10,  2.4220e-10,  1.5288e-11,  1.1806e-10,
+         1.3037e-10,  1.9701e-10, -3.3796e-10,  3.3938e-10, -2.2205e-10,
+        -1.9500e-10,  5.4374e-11, -1.2243e-10, -8.7487e-12, -1.3556e-10,
+         4.6687e-10], dtype=torch.float64)
+
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plot dispersion</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">positions</span><span class="p">,</span> <span class="n">eta_qx</span><span class="o">.</span><span class="n">values</span><span class="p">(),</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.75</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;o&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">r</span><span class="s1">&#39;$\eta_</span><span class="si">{q_x}</span><span class="s1">$&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">positions</span><span class="p">,</span> <span class="n">eta_px</span><span class="o">.</span><span class="n">values</span><span class="p">(),</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;blue&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.75</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;o&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">r</span><span class="s1">&#39;$\eta_</span><span class="si">{p_x}</span><span class="s1">$&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">errorbar</span><span class="p">(</span><span class="n">ring</span><span class="o">.</span><span class="n">locations</span><span class="p">()</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> <span class="n">etaqx</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> <span class="n">fmt</span><span class="o">=</span><span class="s1">&#39; &#39;</span><span class="p">,</span> <span class="n">ms</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.75</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;x&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">errorbar</span><span class="p">(</span><span class="n">ring</span><span class="o">.</span><span class="n">locations</span><span class="p">()</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> <span class="n">etapx</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> <span class="n">fmt</span><span class="o">=</span><span class="s1">&#39; &#39;</span><span class="p">,</span> <span class="n">ms</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.75</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;x&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xticks</span><span class="p">(</span><span class="n">ticks</span><span class="o">=</span><span class="n">positions</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="n">eta_qx</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="k">for</span> <span class="n">rectangle</span> <span class="ow">in</span> <span class="n">rectangles</span><span class="p">:</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span><span class="o">.</span><span class="n">add_patch</span><span class="p">(</span><span class="n">Rectangle</span><span class="p">(</span><span class="o">**</span><span class="n">rectangle</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="o">-</span><span class="mf">1.50</span><span class="p">,</span> <span class="mf">1.50</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/examples_model-30_9_0.png" src="../_images/examples_model-30_9_0.png" />
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Compute parametric closed orbit (1st and 2nd derivatives of closed orbit with respect to momentum deviation)</span>
+<span class="c1"># Note, all parameters after groups are shown with default values</span>
+
+<span class="n">fp</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="mi">4</span><span class="o">*</span><span class="p">[</span><span class="mf">0.0</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+<span class="n">dp</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="mi">1</span><span class="o">*</span><span class="p">[</span><span class="mf">0.0</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">solve</span><span class="p">(</span><span class="n">matrix</span><span class="p">,</span> <span class="n">vector</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">lstsq</span><span class="p">(</span><span class="n">matrix</span><span class="p">,</span> <span class="n">vector</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span><span class="o">.</span><span class="n">solution</span><span class="o">.</span><span class="n">squeeze</span><span class="p">()</span>
+
+<span class="n">orbits</span><span class="p">,</span> <span class="n">table</span><span class="p">,</span> <span class="n">orders</span> <span class="o">=</span> <span class="n">parametric_orbit</span><span class="p">(</span><span class="n">ring</span><span class="p">,</span>                              <span class="c1"># -- input line</span>
+                                         <span class="n">fp</span><span class="p">,</span>                                <span class="c1"># -- dynamical closed orbit (at given starting location)</span>
+                                         <span class="p">[</span><span class="n">dp</span><span class="p">],</span>                              <span class="c1"># -- list of deviation variables</span>
+                                         <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;dp&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>   <span class="c1"># -- deviation variables group(s), (order, key, kinds, names and names to exclude)</span>
+                                         <span class="n">start</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>                        <span class="c1"># -- new lattice start</span>
+                                         <span class="n">alignment</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>                   <span class="c1"># -- flag to use alignment</span>
+                                         <span class="n">advance</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>                      <span class="c1"># -- flag to propagate orbit (orbits for at the end of all first level elements/lines are returned)</span>
+                                         <span class="n">full</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>                        <span class="c1"># -- full propagation flag (compute and return orbit at the last element/line, should match the first element of the output)</span>
+                                         <span class="n">power</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>                           <span class="c1"># -- fixed point power/order</span>
+                                         <span class="n">solve</span><span class="o">=</span><span class="n">solve</span><span class="p">,</span>                       <span class="c1"># -- linear system solver (A x = b)</span>
+                                         <span class="n">jacobian</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">func</span><span class="o">.</span><span class="n">jacrev</span><span class="p">)</span>        <span class="c1"># -- jacobian</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Deviation groups specification is similar to command.wrapper.group or command.orbit.orbit, with first element being the derivative order</span>
+
+<span class="c1"># Here, only one group (1 + 1, &#39;dp&#39;, None, None, None) is used</span>
+<span class="c1"># 1 + 1 -- derivative order with respect to dp</span>
+<span class="c1"># &#39;dp&#39;  -- deviation paramter to bind in matched elements (see element.data())</span>
+<span class="c1"># None  -- list of element kinds to match (use None to match all or a list of kinds)</span>
+<span class="c1"># None  -- list of element names to match (use None to match all or a list of names)</span>
+<span class="c1"># None  -- list of element names to exclude (use None to exclude none or a list of names)</span>
+
+<span class="c1"># Several groups can be passed</span>
+<span class="c1"># In this case list of deviation variables is expected to match</span>
+<span class="c1"># Table returns group info in command.wrapper.wrapper format</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">table</span><span class="p">)</span>
+
+<span class="c1"># Tuple of derivative orders is also returned</span>
+<span class="c1"># The computed derivative is partial with respect to deviation groups</span>
+<span class="c1"># See Example-01 and Example-02 in https://i-a-morozov.github.io/ndmap/examples/ndmap.html for details</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">orders</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+[(None, None, &#39;dp&#39;)]
+(2,)
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Each orbit in orbits is represented as a special Table</span>
+
+<span class="c1"># This is a redundent multivariate series representation</span>
+<span class="c1"># It can be evaluated using model.command.util.evaluate function (alias of ndmap.evaluate.evaluate)</span>
+<span class="c1"># model.command.util.chop can be used to clean small values (alias of ndmap.signature.chop)</span>
+
+<span class="n">local</span><span class="p">,</span> <span class="o">*</span><span class="n">_</span> <span class="o">=</span> <span class="n">orbits</span>
+<span class="n">chop</span><span class="p">(</span><span class="n">local</span><span class="p">)</span>
+
+<span class="n">pprint</span><span class="p">(</span><span class="n">local</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">()</span>
+
+<span class="c1"># Evaluate table at non-zero deviation</span>
+<span class="c1"># Note, here dynamical fixed point is required but has no effect</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">evaluate</span><span class="p">(</span><span class="n">local</span><span class="p">,</span> <span class="p">[</span><span class="n">fp</span><span class="p">,</span> <span class="n">dp</span> <span class="o">+</span> <span class="mf">1.0E-3</span><span class="p">]))</span>
+<span class="nb">print</span><span class="p">()</span>
+
+<span class="c1"># With only one deviation group the above is equivalent to</span>
+
+<span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">dxdp</span><span class="p">,</span> <span class="n">dxdpdp</span><span class="p">),</span> <span class="o">*</span><span class="n">_</span> <span class="o">=</span> <span class="n">local</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">x</span> <span class="o">+</span> <span class="n">dxdp</span> <span class="o">@</span> <span class="p">(</span><span class="n">dp</span> <span class="o">+</span> <span class="mf">1.0E-3</span><span class="p">)</span> <span class="o">+</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">dxdpdp</span> <span class="o">@</span> <span class="p">(</span><span class="n">dp</span> <span class="o">+</span> <span class="mf">1.0E-3</span><span class="p">)</span> <span class="o">@</span> <span class="p">(</span><span class="n">dp</span> <span class="o">+</span> <span class="mf">1.0E-3</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+[[tensor([0., 0., 0., 0.], dtype=torch.float64),
+  tensor([[-0.0081],
+        [ 0.0152],
+        [ 0.0000],
+        [ 0.0000]], dtype=torch.float64),
+  tensor([[[-14.6125]],
+
+        [[ 24.3816]],
+
+        [[  0.0000]],
+
+        [[  0.0000]]], dtype=torch.float64)]]
+
+tensor([-1.5370e-05,  2.7395e-05,  0.0000e+00,  0.0000e+00],
+       dtype=torch.float64)
+
+tensor([-1.5370e-05,  2.7395e-05,  0.0000e+00,  0.0000e+00],
+       dtype=torch.float64)
+
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Derivative table representation can be also converted to series using model.command.util.series function (alias of ndmap.series.series)</span>
+
+<span class="n">local</span><span class="p">,</span> <span class="o">*</span><span class="n">_</span> <span class="o">=</span> <span class="n">orbits</span>
+<span class="n">pprint</span><span class="p">(</span><span class="n">series</span><span class="p">((</span><span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span> <span class="n">local</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">()</span>
+
+<span class="c1"># model.command.util.evaluate can also be used with series</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">evaluate</span><span class="p">(</span><span class="n">local</span><span class="p">,</span> <span class="p">[</span><span class="n">fp</span><span class="p">,</span> <span class="n">dp</span> <span class="o">+</span> <span class="mf">1.0E-3</span><span class="p">]))</span>
+<span class="nb">print</span><span class="p">()</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">evaluate</span><span class="p">(</span><span class="n">series</span><span class="p">((</span><span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span> <span class="n">local</span><span class="p">),</span> <span class="p">[</span><span class="n">fp</span><span class="p">,</span> <span class="n">dp</span> <span class="o">+</span> <span class="mf">1.0E-3</span><span class="p">]))</span>
+<span class="nb">print</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+{(0, 0, 0, 0, 0): tensor([0., 0., 0., 0.], dtype=torch.float64),
+ (0, 0, 0, 0, 1): tensor([-0.0081,  0.0152,  0.0000,  0.0000], dtype=torch.float64),
+ (0, 0, 0, 0, 2): tensor([-7.3062, 12.1908,  0.0000,  0.0000], dtype=torch.float64)}
+
+tensor([-1.5370e-05,  2.7395e-05,  0.0000e+00,  0.0000e+00],
+       dtype=torch.float64)
+
+tensor([-1.5370e-05,  2.7395e-05,  0.0000e+00,  0.0000e+00],
+       dtype=torch.float64)
+
+</pre></div></div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Extract 1st and 2nd order dispersion values from series representation</span>
+
+<span class="n">eta1_qx</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span><span class="n">series</span><span class="p">((</span><span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="n">local</span><span class="p">)[(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)][</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">local</span> <span class="ow">in</span> <span class="n">orbits</span><span class="p">])</span>
+<span class="n">eta1_px</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span><span class="n">series</span><span class="p">((</span><span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="n">local</span><span class="p">)[(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)][</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">local</span> <span class="ow">in</span> <span class="n">orbits</span><span class="p">])</span>
+
+<span class="n">eta2_qx</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span><span class="n">series</span><span class="p">((</span><span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="n">local</span><span class="p">)[(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">)][</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">local</span> <span class="ow">in</span> <span class="n">orbits</span><span class="p">])</span>
+<span class="n">eta2_px</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span><span class="n">series</span><span class="p">((</span><span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="n">local</span><span class="p">)[(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">)][</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">local</span> <span class="ow">in</span> <span class="n">orbits</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Compare with ELEGANT</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">eta1_qx</span> <span class="o">-</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="o">*</span><span class="n">eta_qx</span><span class="o">.</span><span class="n">values</span><span class="p">()],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float64</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">()</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">eta1_px</span> <span class="o">-</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="o">*</span><span class="n">eta_px</span><span class="o">.</span><span class="n">values</span><span class="p">()],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float64</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+tensor([ 1.0004e-14, -1.3037e-14,  5.9952e-15,  1.2807e-15, -9.5464e-15,
+         1.3323e-15,  9.5436e-15, -1.4350e-14, -1.3914e-14,  9.5748e-15,
+         8.8818e-16, -8.9525e-15,  5.2589e-16,  6.7724e-15, -1.3343e-14,
+         9.5809e-15], dtype=torch.float64)
+
+tensor([-2.1778e-14,  1.9190e-14,  1.4433e-14, -3.7748e-15,  1.0540e-14,
+         3.9968e-15,  1.0880e-14, -2.7096e-14,  2.7100e-14, -1.1074e-14,
+        -4.1078e-15, -1.0103e-14,  4.2984e-15, -1.5210e-14, -2.0095e-14,
+         2.1663e-14], dtype=torch.float64)
+
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plot dispersion</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">positions</span><span class="p">,</span> <span class="n">eta_qx</span><span class="o">.</span><span class="n">values</span><span class="p">(),</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.75</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;o&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">r</span><span class="s1">&#39;$\eta_</span><span class="si">{q_x}</span><span class="s1">$&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">positions</span><span class="p">,</span> <span class="n">eta_px</span><span class="o">.</span><span class="n">values</span><span class="p">(),</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;blue&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.75</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;o&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">r</span><span class="s1">&#39;$\eta_</span><span class="si">{p_x}</span><span class="s1">$&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">errorbar</span><span class="p">(</span><span class="n">ring</span><span class="o">.</span><span class="n">locations</span><span class="p">()</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> <span class="n">eta1_qx</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> <span class="n">fmt</span><span class="o">=</span><span class="s1">&#39; &#39;</span><span class="p">,</span> <span class="n">ms</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.75</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;x&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">errorbar</span><span class="p">(</span><span class="n">ring</span><span class="o">.</span><span class="n">locations</span><span class="p">()</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> <span class="n">eta1_px</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> <span class="n">fmt</span><span class="o">=</span><span class="s1">&#39; &#39;</span><span class="p">,</span> <span class="n">ms</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.75</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;x&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xticks</span><span class="p">(</span><span class="n">ticks</span><span class="o">=</span><span class="n">positions</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="n">eta_qx</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="k">for</span> <span class="n">rectangle</span> <span class="ow">in</span> <span class="n">rectangles</span><span class="p">:</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span><span class="o">.</span><span class="n">add_patch</span><span class="p">(</span><span class="n">Rectangle</span><span class="p">(</span><span class="o">**</span><span class="n">rectangle</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="o">-</span><span class="mf">1.50</span><span class="p">,</span> <span class="mf">1.50</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/examples_model-30_16_0.png" src="../_images/examples_model-30_16_0.png" />
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plot second order dispersion</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">errorbar</span><span class="p">(</span><span class="n">ring</span><span class="o">.</span><span class="n">locations</span><span class="p">()</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> <span class="n">eta2_qx</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> <span class="n">fmt</span><span class="o">=</span><span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="n">ms</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.75</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;x&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">errorbar</span><span class="p">(</span><span class="n">ring</span><span class="o">.</span><span class="n">locations</span><span class="p">()</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> <span class="n">eta2_px</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> <span class="n">fmt</span><span class="o">=</span><span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="n">ms</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;blue&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.75</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;x&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xticks</span><span class="p">(</span><span class="n">ticks</span><span class="o">=</span><span class="n">positions</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="n">eta_qx</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/examples_model-30_17_0.png" src="../_images/examples_model-30_17_0.png" />
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Compute dispersion at the exit of each element</span>
+
+<span class="n">ring</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+
+<span class="n">fp</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="mi">4</span><span class="o">*</span><span class="p">[</span><span class="mf">0.0</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+<span class="n">dp</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="mi">1</span><span class="o">*</span><span class="p">[</span><span class="mf">0.0</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+
+<span class="n">orbits</span><span class="p">,</span> <span class="o">*</span><span class="n">_</span> <span class="o">=</span> <span class="n">parametric_orbit</span><span class="p">(</span><span class="n">ring</span><span class="p">,</span> <span class="n">fp</span><span class="p">,</span> <span class="p">[</span><span class="n">dp</span><span class="p">],</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;dp&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span> <span class="n">advance</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">full</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="n">dispersion</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span><span class="n">series</span><span class="p">((</span><span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="n">local</span><span class="p">)[(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)][</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">local</span> <span class="ow">in</span> <span class="n">orbits</span><span class="p">])</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">errorbar</span><span class="p">(</span><span class="n">ring</span><span class="o">.</span><span class="n">locations</span><span class="p">(</span><span class="s1">&#39;all&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> <span class="n">dispersion</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> <span class="n">fmt</span><span class="o">=</span><span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.75</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">r</span><span class="s1">&#39;$\eta$&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">errorbar</span><span class="p">(</span><span class="n">positions</span><span class="p">,</span> <span class="n">eta_qx</span><span class="o">.</span><span class="n">values</span><span class="p">(),</span> <span class="n">fmt</span><span class="o">=</span><span class="s1">&#39; &#39;</span><span class="p">,</span> <span class="n">ms</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.75</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;x&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xticks</span><span class="p">(</span><span class="n">ticks</span><span class="o">=</span><span class="n">positions</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="n">eta_qx</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="k">for</span> <span class="n">rectangle</span> <span class="ow">in</span> <span class="n">rectangles</span><span class="p">:</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span><span class="o">.</span><span class="n">add_patch</span><span class="p">(</span><span class="n">Rectangle</span><span class="p">(</span><span class="o">**</span><span class="n">rectangle</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="o">-</span><span class="mf">1.50</span><span class="p">,</span> <span class="mf">1.50</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/examples_model-30_18_0.png" src="../_images/examples_model-30_18_0.png" />
+</div>
+</div>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="model-29.html" class="btn btn-neutral float-left" title="Example-30: Orbit (effect of transverse shift)" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="model-31.html" class="btn btn-neutral float-right" title="Example-32: Orbit (quadruple shift)" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Ivan Morozov.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
