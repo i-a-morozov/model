@@ -32,7 +32,8 @@ def orbit(line:Line,
           guess:Tensor,
           parameters:list[Tensor],
           *groups:tuple[str, list[str]|None, list[str]|None, list[str|None]],
-          start:Optional[int|str]=None,
+          start:int=0,
+          respect:bool=True,
           alignment:bool=False,
           advance:bool=False,
           full:bool=True,
@@ -60,8 +61,10 @@ def orbit(line:Line,
     *groups: tuple[str,list[str]|None,list[str]|None,list[str|None]]
         groups specification
         kinds, names, clean (list of element names)
-    start: Optional[int|str], default=None
+    start: int, default=0
         start element index or name (change start)
+    respect: bool, default=True
+        flag to respect original element orderding (if start is changed)
     alignment: bool, default=False
         flag to include the alignment parameters in the default deviation table
     advance: bool, default=False
@@ -93,8 +96,15 @@ def orbit(line:Line,
     jacobian:Callable = torch.func.jacrev if jacobian is None else jacobian
 
     line = line.clone()
-    if start:
-        line.start = start
+
+    if start and respect:
+        with torch.no_grad():
+            _, table, _ = group(line, 0, len(line) - 1, *groups, alignment=alignment, root=True)
+            groups = []
+            for (_, names, key) in table:
+                groups.append((key, None, names, None))
+
+    line.start = start
 
     mapping, table, _ = group(line, 0, len(line) - 1, *groups, alignment=alignment, root=True)
 
@@ -128,7 +138,7 @@ def parametric_orbit(line:Line,
                      point:Tensor,
                      parameters:list[Tensor],
                      *groups:tuple[int, str, list[str]|None, list[str]|None, list[str|None]],
-                     start:Optional[int|str]=None,
+                     start:int=0,
                      alignment:bool=False,
                      advance:bool=False,
                      full:bool=True,
@@ -150,7 +160,7 @@ def parametric_orbit(line:Line,
     *groups: tuple[int,str,list[str]|None,list[str]|None,list[str|None]]
         groups specification
         orders, kinds, names, clean (list of element names)
-    start: Optional[int|str], default=None
+    start: int, default=0
         start element index or name (change start)
     alignment: bool, default=False
         flag to include the alignment parameters in the default deviation table
@@ -174,8 +184,7 @@ def parametric_orbit(line:Line,
     jacobian:Callable = torch.func.jacrev if jacobian is None else jacobian
 
     line = line.clone()
-    if start:
-        line.start = start
+    line.start = start
 
     orders, *groups = zip(*groups)
     groups = tuple(zip(*groups))
@@ -204,13 +213,14 @@ def parametric_orbit(line:Line,
 
     return orbits, table, orders
 
-
 def ORM(line:Line,
-        point:Tensor, *,
+        guess:Tensor,
+        parameters:list[Tensor],
+        *groups:tuple[str, list[str]|None, list[str]|None, list[str|None]],
         exclude:Optional[list[str]]=None,
-        start:Optional[int|str]=None,
+        start:int=0,
         alignment:bool=False,
-        limit:int=32,
+        limit:int=8,
         epsilon:float=1.0E-12,
         factor:float=1.0,
         alpha:float=0.0,
@@ -220,15 +230,23 @@ def ORM(line:Line,
     """
     Compute orbit response matrix
 
+    Note, it the initial guess is correct dynamical closed orbit
+    Only one iteration is sufficient (set limit=1)
+
     Parameters
     ----------
     line: Line
         input line (one-turn)
-    point: Tensor
-        fixed point
+    guess: Tensor
+        initial guess
+    parameters: list[Tensor]
+        list of deviation parameters
+    *groups: tuple[str,list[str]|None,list[str]|None,list[str|None]]
+        groups specification
+        kinds, names, clean (list of element names)
     exclude: Optional[list[str]]
         list of element names to exclude
-    start: Optional[int|str], default=None
+    start:int, default=0
         start element index or name (change start)
     alignment: bool, default=False
         flag to include the alignment parameters in the default deviation table
@@ -264,10 +282,11 @@ def ORM(line:Line,
     def task(cxy):
         cx, cy = cxy.reshape(1 + 1, -1)
         points, _ = orbit(line,
-                          point,
-                          [cx, cy],
+                          guess,
+                          [cx, cy, *parameters],
                           ('cx', ['Corrector'], None, exclude),
                           ('cy', ['Corrector'], None, exclude),
+                          *groups,
                           start=start,
                           advance=True,
                           full=False,
@@ -278,12 +297,95 @@ def ORM(line:Line,
                           alpha=alpha,
                           solve=solve,
                           jacobian=jacobian)
-
         qx, _, qy, _ = points.T
 
         return torch.stack([qx, qy])
 
     return torch.func.jacrev(task)(cxy).reshape(-1, *cxy.shape)
+
+
+def ORM_IJ(line:Line,
+           guess:Tensor,
+           probe:int,
+           other:int,
+           parameters:list[Tensor],
+           *groups:tuple[str, list[str]|None, list[str]|None, list[str|None]],
+           alignment:bool=False,
+           limit:int=8,
+           epsilon:float=1.0E-12,
+           factor:float=1.0,
+           alpha:float=0.0,
+           solve:Optional[Callable]=None,
+           roots:Optional[Tensor]=None,
+           jacobian:Optional[Callable]=None) -> Tensor:
+    """
+    Compute ij orbit response matrix element
+
+    Note, it the initial guess is correct dynamical closed orbit
+    Only one iteration is sufficient (set limit=1)
+
+    Parameters
+    ----------
+    line: Line
+        input line (one-turn, flat)
+    guess: Tensor
+        initial guess
+    probe: int
+        observation location index
+    other: int
+        corrector location index
+    parameters: list[Tensor]
+        list of deviation parameters
+    *groups: tuple[str,list[str]|None,list[str]|None,list[str|None]]
+        groups specification
+        kinds, names, clean (list of element names)
+    limit: int, positive
+        maximum number of newton iterations
+    epsilon: Optional[float], default=1.0E-12
+        tolerance epsilon
+    factor: float, default=1.0
+        step factor (learning rate)
+    alpha: float, positive, default=0.0
+        regularization alpha
+    solve: Optional[Callable]
+        linear solver(matrix, vector)
+    jacobian: Optional[Callable]
+        torch.func.jacfwd or torch.func.jacrev (default)
+
+    Returns
+    -------
+    Tensor
+
+    """
+    jacobian:Callable = torch.func.jacrev if jacobian is None else jacobian
+
+    cx = torch.tensor([0.0], dtype=line.dtype, device=line.device)
+    cy = torch.tensor([0.0], dtype=line.dtype, device=line.device)
+
+    cxy = torch.cat([cx, cy])
+
+    def task(cxy):
+        cx, cy = cxy.reshape(1 + 1, -1)
+        point, _ = orbit(line,
+                        guess,
+                        [cx, cy, *parameters],
+                        ('cx', None, [line.names[other]], None),
+                        ('cy', None, [line.names[other]], None),
+                        *groups,
+                        start=probe,
+                        advance=False,
+                        full=False,
+                        alignment=alignment,
+                        limit=limit,
+                        epsilon=epsilon,
+                        factor=factor,
+                        alpha=alpha,
+                        solve=solve,
+                        jacobian=jacobian)
+        qx, _, qy, _ = point
+        return torch.stack([qx, qy])
+
+    return torch.func.jacrev(task)(cxy)
 
 
 

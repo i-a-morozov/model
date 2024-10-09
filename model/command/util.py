@@ -37,6 +37,7 @@ from yaml import SafeDumper
 
 from typing import Optional
 from typing import Callable
+from typing import Iterable
 
 from pathlib import Path
 from copy import deepcopy
@@ -80,6 +81,31 @@ def mod(x:float,
 
     """
     return x - ((x - z) - (x - z) % y)
+
+
+def rotate(x:Iterable, n:int) -> Iterable:
+    """
+    Rotate iterable
+
+    Parameters
+    ----------
+    x: Iterable
+        input iterable
+    n: int
+        roll shift
+
+    Returns
+    -------
+    Iterable
+
+    """
+    if isinstance(n, Tensor):
+        result = []
+        length = len(x)
+        for i in range(length):
+            result.append(x[(n.unsqueeze(-1) + i) % length].squeeze())
+        return result
+    return x[n:] + x[:n]
 
 
 def cast(value:str) -> str|int|float:

@@ -74,6 +74,8 @@ from torch import Tensor
 
 from model.library.element import Element
 
+from model.command.util import rotate
+
 type State = Tensor
 type Mapping = Callable[[State, Tensor, ...], State]
 
@@ -664,7 +666,7 @@ class Line(Element):
 
         """
         index = self.position(start) if isinstance(start, str) else start
-        self.sequence = self.sequence[index:] + self.sequence[:index]
+        self.sequence = rotate(self.sequence, index)
 
 
     def roll(self,
@@ -682,7 +684,7 @@ class Line(Element):
         None
 
         """
-        self.sequence = self.sequence[shift:] + self.sequence[:shift]
+        self.sequence = rotate(self.sequence, shift)
 
 
     @property
