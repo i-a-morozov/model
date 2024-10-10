@@ -1450,9 +1450,9 @@ class Line(Element):
                     container_matrix.append(matrix)
 
         if self.output:
-            self.container_output = torch.vstack(container_output)
+            self.container_output = torch.vstack(container_output) if self._propagate else torch.stack(container_output)
         if self.matrix:
-            self.container_matrix = torch.vstack(container_matrix)
+            self.container_matrix = torch.vstack(container_matrix) if self._propagate else torch.stack(container_matrix)
 
         return state
 
