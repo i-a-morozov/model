@@ -138,8 +138,8 @@ class Line(Element):
         self._output: bool = output
         self._matrix: bool = matrix
 
-        self.propagate: bool = propagate
-        if self.propagate:
+        self._propagate: bool = propagate
+        if self._propagate:
             self.set('dp', dp)
             self.set('exact', exact)
             self.set('output', output)
@@ -320,7 +320,7 @@ class Line(Element):
         """
         elements:list[Element] = [*self.scan(attribute)]
         elements = self.select(elements, kinds=kinds, names=names)
-        for element in {element.name: element for element in elements}.values():
+        for element in elements:
             setattr(element, attribute, value)
 
 
@@ -975,7 +975,17 @@ class Line(Element):
             line.append(element)
             if flag:
                 head, *_, tail = line
-                sequence.append(Line(name=f'{head.name}_{tail.name}', sequence=line))
+                sequence.append(
+                    Line(
+                        name=f'{head.name}_{tail.name}',
+                        sequence=line,
+                        propagate=self.propagate,
+                        dp=self.dp.item(),
+                        exact=self.exact,
+                        output=self.output,
+                        matrix=self.matrix
+                    )
+                )
                 line = []
         self.sequence = sequence
 
@@ -1063,7 +1073,11 @@ class Line(Element):
 
         """
         self._dp = dp
-        self.set('dp', dp)
+        if self.propagate:
+            self.set('dp', dp)
+            for element in self.sequence:
+                if isinstance(element, Line):
+                    element.dp = dp
 
 
     @property
@@ -1100,7 +1114,11 @@ class Line(Element):
 
         """
         self._exact = exact
-        self.set('exact', exact)
+        if self.propagate:
+            self.set('exact', exact)
+            for element in self.sequence:
+                if isinstance(element, Line):
+                    element.exact = exact
 
 
     @property
@@ -1260,6 +1278,50 @@ class Line(Element):
                 continue
             for element in self.select(elements.values(), kinds=[key]):
                 setattr(element, 'order', parameter)
+
+
+    @property
+    def propagate(self) -> bool:
+        """
+        Get propagate flag
+
+        Parameters
+        ----------
+        None
+
+        Returns
+        -------
+        bool
+
+        """
+        return self._propagate
+
+    @propagate.setter
+    def propagate(self,
+                  propagate:bool) -> None:
+        """
+        Set propagate flag
+
+        Parameters
+        ----------
+        propagate: bool
+            propagate
+
+        Returns
+        -------
+        None
+
+        """
+        self._propagate = propagate
+        if self.propagate:
+            self.set('dp', self.dp.item())
+            self.set('exact', self.exact)
+            self.set('output', self.output)
+            self.set('matrix', self.matrix)
+            for element in self.sequence:
+                if isinstance(element, Line):
+                    element.output = self.output
+                    element.matrix = self.matrix
 
 
     @property
