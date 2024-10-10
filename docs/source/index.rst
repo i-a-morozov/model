@@ -48,10 +48,6 @@ Simple accelerator lattice model: linear optics errors, closed orbit and Twiss p
    :caption: API:
    :maxdepth: 1
 
-   modules/util.rst
-   modules/external.rst
-   modules/build.rst
-
    modules/library/bpm.rst
    modules/library/corrector.rst
    modules/library/custom.rst
