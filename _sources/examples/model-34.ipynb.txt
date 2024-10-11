@@ -1148,7 +1148,7 @@
     }
    ],
    "source": [
-    "# ML style correction (batched orbit and regularization)\n",
+    "# ML style correction (batched orbit)\n",
     "# Find corrector setting to reproduce observed orbit, apply with negative sign (and some weight) and repeat for new observation\n",
     "\n",
     "# Setup function to compute orbit at selected BPMs for given corrector settings\n",
