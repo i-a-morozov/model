@@ -10,6 +10,7 @@ orbit                : compute (dynamical) closed orbit
 parametric_orbit     : compute parametric closed orbit (or fixed point)
 ORM                  : compute orbit response matrix
 ORM_IJ               : compute IJ orbit response matrix element
+dispersion           : compute dispersion
 
 """
 from typing import Optional
@@ -220,8 +221,8 @@ def ORM(line:Line,
         exclude:Optional[list[str]]=None,
         start:int=0,
         alignment:bool=False,
-        limit:int=8,
-        epsilon:float=1.0E-12,
+        limit:int=1,
+        epsilon:float=None,
         factor:float=1.0,
         alpha:float=0.0,
         solve:Optional[Callable]=None,
@@ -311,8 +312,8 @@ def ORM_IJ(line:Line,
            parameters:list[Tensor],
            *groups:tuple[str, list[str]|None, list[str]|None, list[str|None]],
            alignment:bool=False,
-           limit:int=8,
-           epsilon:float=1.0E-12,
+           limit:int=1,
+           epsilon:float=None,
            factor:float=1.0,
            alpha:float=0.0,
            solve:Optional[Callable]=None,
@@ -388,4 +389,80 @@ def ORM_IJ(line:Line,
     return torch.func.jacrev(task)(cxy)
 
 
+def dispersion(line:Line,
+               guess:Tensor,
+               parameters:list[Tensor],
+               *groups:tuple[str, list[str]|None, list[str]|None, list[str|None]],
+               start:int=0,
+               alignment:bool=False,
+               limit:int=1,
+               epsilon:float=None,
+               factor:float=1.0,
+               alpha:float=0.0,
+               solve:Optional[Callable]=None,
+               roots:Optional[Tensor]=None,
+               jacobian:Optional[Callable]=None) -> Tensor:
+    """
+    Compute dispersion (eta_x and eta_y)
 
+    Note, it the initial guess is correct dynamical closed orbit
+    Only one iteration is sufficient (set limit=1)
+
+    Parameters
+    ----------
+    line: Line
+        input line (one-turn)
+    guess: Tensor
+        initial guess
+    parameters: list[Tensor]
+        list of deviation parameters
+    *groups: tuple[str,list[str]|None,list[str]|None,list[str|None]]
+        groups specification
+        kinds, names, clean (list of element names)
+    start:int, default=0
+        start element index or name (change start)
+    alignment: bool, default=False
+        flag to include the alignment parameters in the default deviation table
+    limit: int, positive
+        maximum number of newton iterations
+    epsilon: Optional[float], default=1.0E-12
+        tolerance epsilon
+    factor: float, default=1.0
+        step factor (learning rate)
+    alpha: float, positive, default=0.0
+        regularization alpha
+    solve: Optional[Callable]
+        linear solver(matrix, vector)
+    jacobian: Optional[Callable]
+        torch.func.jacfwd or torch.func.jacrev (default)
+
+    Returns
+    -------
+    Tensor
+
+    """
+    jacobian:Callable = torch.func.jacrev if jacobian is None else jacobian
+
+    dp = torch.tensor([0.0], dtype=line.dtype, device=line.device)
+
+    def task(dp):
+        points, _ = orbit(line,
+                          guess,
+                          [dp, *parameters],
+                          ('dp', None, None, None),
+                          *groups,
+                          start=start,
+                          advance=True,
+                          full=False,
+                          alignment=alignment,
+                          limit=limit,
+                          epsilon=epsilon,
+                          factor=factor,
+                          alpha=alpha,
+                          solve=solve,
+                          jacobian=jacobian)
+        qx, _, qy, _ = points.T
+
+        return torch.stack([qx, qy])
+
+    return torch.func.jacrev(task)(dp).squeeze()
