@@ -53,7 +53,7 @@ class Element(ABC):
 
     """
     _tolerance: float = 1.0E-15
-    _alignment: list[str] = [KEY_DX, KEY_DY, KEY_DZ, KEY_WX, KEY_WY, KEY_WZ]
+    _alignment_keys: list[str] = [KEY_DX, KEY_DY, KEY_DZ, KEY_WX, KEY_WY, KEY_WZ]
 
     dtype:DataType = Float64
     device:DataDevice = DataDevice('cpu')
@@ -74,6 +74,7 @@ class Element(ABC):
                  name:str,
                  length:float=0.0,
                  dp:float=0.0, *,
+                 alignment:bool=True,
                  dx:float=0.0,
                  dy:float=0.0,
                  dz:float=0.0,
@@ -98,6 +99,8 @@ class Element(ABC):
             length
         dp: float, default=0.0
             momentum deviation
+        alignment: bool, default=True
+            flag to use alignment errors
         dx: float, default=0.0
             dx alignment error
         dy: float, default=0.0
@@ -143,6 +146,7 @@ class Element(ABC):
         self._wy: float = wy
         self._wz: float = wz
         self._ns: int = (ceil(self._length/ds) or 1) if ds else ns
+        self._alignment: bool = alignment
         self._order: int = order
         self._exact: bool = exact
         self._insertion: bool = insertion
@@ -245,7 +249,7 @@ class Element(ABC):
         zeros: Tensor = torch.zeros(len(self.keys), dtype=self.dtype, device=self.device)
         data: dict[str, Tensor] = {key: value for key, value in zip(self.keys, zeros)}
         if alignment:
-            keys:list[str] = self._alignment
+            keys:list[str] = self._alignment_keys
             zeros: Tensor = torch.zeros(len(keys), dtype=self.dtype, device=self.device)
             data = {**data, **{key: value for key, value in zip(keys, zeros)}}
         return data if not name else {self.name: data}
@@ -397,7 +401,7 @@ class Element(ABC):
     @property
     def dx(self) -> Tensor:
         """
-        Get dx aligment error
+        Get dx alignment error
 
         Parameters
         ----------
@@ -414,12 +418,12 @@ class Element(ABC):
     @dx.setter
     def dx(self, dx:float) -> None:
         """
-        Set dx aligment error
+        Set dx alignment error
 
         Parameters
         ----------
         dx: float
-            dx aligment error
+            dx alignment error
 
         Returns
         -------
@@ -432,7 +436,7 @@ class Element(ABC):
     @property
     def dy(self) -> Tensor:
         """
-        Get dy aligment error
+        Get dy alignment error
 
         Parameters
         ----------
@@ -449,12 +453,12 @@ class Element(ABC):
     @dy.setter
     def dy(self, dy:float) -> None:
         """
-        Set dy aligment error
+        Set dy alignment error
 
         Parameters
         ----------
         dy: float
-            dy aligment error
+            dy alignment error
 
         Returns
         -------
@@ -467,7 +471,7 @@ class Element(ABC):
     @property
     def dz(self) -> Tensor:
         """
-        Get dz aligment error
+        Get dz alignment error
 
         Parameters
         ----------
@@ -484,12 +488,12 @@ class Element(ABC):
     @dz.setter
     def dz(self, dz:float) -> None:
         """
-        Set dz aligment error
+        Set dz alignment error
 
         Parameters
         ----------
         dz: float
-            dz aligment error
+            dz alignment error
 
         Returns
         -------
@@ -502,7 +506,7 @@ class Element(ABC):
     @property
     def wx(self) -> Tensor:
         """
-        Get wx aligment error
+        Get wx alignment error
 
         Parameters
         ----------
@@ -519,12 +523,12 @@ class Element(ABC):
     @wx.setter
     def wx(self, wx:float) -> None:
         """
-        Set wx aligment error
+        Set wx alignment error
 
         Parameters
         ----------
         wx: float
-            wx aligment error
+            wx alignment error
 
         Returns
         -------
@@ -537,7 +541,7 @@ class Element(ABC):
     @property
     def wy(self) -> Tensor:
         """
-        Get wy aligment error
+        Get wy alignment error
 
         Parameters
         ----------
@@ -554,12 +558,12 @@ class Element(ABC):
     @wy.setter
     def wy(self, wy:float) -> None:
         """
-        Set wy aligment error
+        Set wy alignment error
 
         Parameters
         ----------
         wy: float
-            wy aligment error
+            wy alignment error
 
         Returns
         -------
@@ -572,7 +576,7 @@ class Element(ABC):
     @property
     def wz(self) -> Tensor:
         """
-        Get wz aligment error
+        Get wz alignment error
 
         Parameters
         ----------
@@ -589,12 +593,12 @@ class Element(ABC):
     @wz.setter
     def wz(self, wz:float) -> None:
         """
-        Set wz aligment error
+        Set wz alignment error
 
         Parameters
         ----------
         wz: float
-            wz aligment error
+            wz alignment error
 
         Returns
         -------
@@ -638,6 +642,42 @@ class Element(ABC):
         """
         self._ns = ns
         self._step = self.make_step()
+
+
+    @property
+    def alignment(self) -> bool:
+        """
+        Get alignment flag
+
+        Parameters
+        ----------
+        None
+
+        Returns
+        -------
+        int
+
+        """
+        return self._alignment
+
+
+    @alignment.setter
+    def alignment(self,
+                 alignment:bool) -> None:
+        """
+        Set alignment flag
+
+        Parameters
+        ----------
+        alignment: bool
+            alignment flag
+
+        Returns
+        -------
+        None
+
+        """
+        self._alignment = alignment
 
 
     @property
@@ -846,10 +886,10 @@ class Element(ABC):
         data: dict[str, Tensor] = data if data else self.data()
         knob: dict[str, Tensor] = {key: data[key] for key in self.keys if key in data}
         step: Mapping = self._step
-        if not alignment:
-            state = step(state, **knob)
+        if alignment and self.alignment:
+            state = transform(self, state, data)
             return state
-        state = transform(self, state, data)
+        state = step(state, **knob)
         return state
 
 

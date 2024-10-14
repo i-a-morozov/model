@@ -39,6 +39,7 @@ class Marker(Element):
     def __init__(self,
                  name:str,
                  dp:float=0.0, *,
+                 alignment:bool=True,
                  dx:float=0.0,
                  dy:float=0.0,
                  dz:float=0.0,
@@ -56,6 +57,8 @@ class Marker(Element):
             name
         dp: float, default=0.0
             momentum deviation
+        alignment: bool, default=True
+            flag to use alignment errors
         dx: float, default=0.0
             dx alignment error
         dy: float, default=0.0
@@ -80,6 +83,8 @@ class Marker(Element):
         """
         super().__init__(name=name,
                          dp=dp,
+                         alignment=alignment,
+                         dx=dx,
                          dy=dy,
                          dz=dz,
                          wx=wx,

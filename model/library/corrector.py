@@ -46,6 +46,7 @@ class Corrector(Element):
                  cx:float=0.0,
                  cy:float=0.0,
                  dp:float=0.0, *,
+                 alignment:bool=True,
                  dx:float=0.0,
                  dy:float=0.0,
                  dz:float=0.0,
@@ -68,6 +69,8 @@ class Corrector(Element):
             py -> py + cy
         dp: float, default=0.0
             momentum deviation
+        alignment: bool, default=True
+            flag to use alignment errors
         dx: float, default=0.0
             dx alignment error
         dy: float, default=0.0
@@ -95,6 +98,7 @@ class Corrector(Element):
         """
         super().__init__(name=name,
                          dp=dp,
+                         alignment=alignment,
                          dx=dx,
                          dy=dy,
                          dz=dz,

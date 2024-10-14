@@ -43,6 +43,7 @@ class Drift(Element):
                  name:str,
                  length:float=0.0,
                  dp:float=0.0, *,
+                 alignment:bool=True,
                  dx:float=0.0,
                  dy:float=0.0,
                  dz:float=0.0,
@@ -67,6 +68,8 @@ class Drift(Element):
             length
         dp: float, default=0.0
             momentum deviation
+        alignment: bool, default=True
+            flag to use alignment errors
         dx: float, default=0.0
             dx alignment error
         dy: float, default=0.0
@@ -104,6 +107,7 @@ class Drift(Element):
         super().__init__(name=name,
                          length=length,
                          dp=dp,
+                         alignment=alignment,
                          dx=dx,
                          dy=dy,
                          dz=dz,

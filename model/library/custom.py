@@ -43,6 +43,7 @@ class Custom(Element):
                  length:float=0.0,
                  angle:float=0.0,
                  dp:float=0.0, *,
+                 alignment:bool=True,
                  dx:float=0.0,
                  dy:float=0.0,
                  dz:float=0.0,
@@ -66,6 +67,8 @@ class Custom(Element):
             angle
         dp: float, default=0.0
             momentum deviation
+        alignment: bool, default=True
+            flag to use alignment errors
         dx: float, default=0.0
             dx alignment error
         dy: float, default=0.0
@@ -87,6 +90,7 @@ class Custom(Element):
         super().__init__(name=name,
                          length=length,
                          dp=dp,
+                         alignment=alignment,
                          dx=dx,
                          dy=dy,
                          dz=dz,
@@ -118,7 +122,7 @@ class Custom(Element):
         zeros: Tensor = torch.zeros(len(keys), dtype=self.dtype, device=self.device)
         data: dict[str, Tensor] = {key: value for key, value in zip(keys, zeros)}
         if alignment:
-            keys:list[str] = self._alignment
+            keys:list[str] = self._alignment_keys
             zeros: Tensor = torch.zeros(len(keys), dtype=self.dtype, device=self.device)
             data = {**data, **{key: value for key, value in zip(keys, zeros)}}
         return data if not name else {self.name: data}
