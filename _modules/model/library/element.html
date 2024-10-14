@@ -78,6 +78,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../examples/model-32.html">Example-33: Orbit (sextupole shift)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../examples/model-33.html">Example-34: Orbit (ORM)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../examples/model-34.html">Example-35: Orbit (closed orbit correction)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../examples/model-35.html">Example-36: Orbit (ORM optics correction)</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API:</span></p>
 <ul>
@@ -209,7 +210,7 @@
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">_tolerance</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.0E-15</span>
-    <span class="n">_alignment</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">KEY_DX</span><span class="p">,</span> <span class="n">KEY_DY</span><span class="p">,</span> <span class="n">KEY_DZ</span><span class="p">,</span> <span class="n">KEY_WX</span><span class="p">,</span> <span class="n">KEY_WY</span><span class="p">,</span> <span class="n">KEY_WZ</span><span class="p">]</span>
+    <span class="n">_alignment_keys</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">KEY_DX</span><span class="p">,</span> <span class="n">KEY_DY</span><span class="p">,</span> <span class="n">KEY_DZ</span><span class="p">,</span> <span class="n">KEY_WX</span><span class="p">,</span> <span class="n">KEY_WY</span><span class="p">,</span> <span class="n">KEY_WZ</span><span class="p">]</span>
 
     <span class="n">dtype</span><span class="p">:</span><span class="n">DataType</span> <span class="o">=</span> <span class="n">Float64</span>
     <span class="n">device</span><span class="p">:</span><span class="n">DataDevice</span> <span class="o">=</span> <span class="n">DataDevice</span><span class="p">(</span><span class="s1">&#39;cpu&#39;</span><span class="p">)</span>
@@ -230,6 +231,7 @@
                  <span class="n">name</span><span class="p">:</span><span class="nb">str</span><span class="p">,</span>
                  <span class="n">length</span><span class="p">:</span><span class="nb">float</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>
                  <span class="n">dp</span><span class="p">:</span><span class="nb">float</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span>
+                 <span class="n">alignment</span><span class="p">:</span><span class="nb">bool</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
                  <span class="n">dx</span><span class="p">:</span><span class="nb">float</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>
                  <span class="n">dy</span><span class="p">:</span><span class="nb">float</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>
                  <span class="n">dz</span><span class="p">:</span><span class="nb">float</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>
@@ -254,6 +256,8 @@
 <span class="sd">            length</span>
 <span class="sd">        dp: float, default=0.0</span>
 <span class="sd">            momentum deviation</span>
+<span class="sd">        alignment: bool, default=True</span>
+<span class="sd">            flag to use alignment errors</span>
 <span class="sd">        dx: float, default=0.0</span>
 <span class="sd">            dx alignment error</span>
 <span class="sd">        dy: float, default=0.0</span>
@@ -299,6 +303,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_wy</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">wy</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_wz</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">wz</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_ns</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="p">(</span><span class="n">ceil</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_length</span><span class="o">/</span><span class="n">ds</span><span class="p">)</span> <span class="ow">or</span> <span class="mi">1</span><span class="p">)</span> <span class="k">if</span> <span class="n">ds</span> <span class="k">else</span> <span class="n">ns</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_alignment</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="n">alignment</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_order</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">order</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_exact</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="n">exact</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_insertion</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="n">insertion</span>
@@ -409,7 +414,7 @@
         <span class="n">zeros</span><span class="p">:</span> <span class="n">Tensor</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">keys</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dtype</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">device</span><span class="p">)</span>
         <span class="n">data</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Tensor</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="n">value</span> <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">keys</span><span class="p">,</span> <span class="n">zeros</span><span class="p">)}</span>
         <span class="k">if</span> <span class="n">alignment</span><span class="p">:</span>
-            <span class="n">keys</span><span class="p">:</span><span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_alignment</span>
+            <span class="n">keys</span><span class="p">:</span><span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_alignment_keys</span>
             <span class="n">zeros</span><span class="p">:</span> <span class="n">Tensor</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">keys</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dtype</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">device</span><span class="p">)</span>
             <span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="o">**</span><span class="n">data</span><span class="p">,</span> <span class="o">**</span><span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="n">value</span> <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">keys</span><span class="p">,</span> <span class="n">zeros</span><span class="p">)}}</span>
         <span class="k">return</span> <span class="n">data</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">name</span> <span class="k">else</span> <span class="p">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">:</span> <span class="n">data</span><span class="p">}</span></div>
@@ -568,7 +573,7 @@
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">dx</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tensor</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Get dx aligment error</span>
+<span class="sd">        Get dx alignment error</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -585,12 +590,12 @@
     <span class="nd">@dx</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">dx</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dx</span><span class="p">:</span><span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Set dx aligment error</span>
+<span class="sd">        Set dx alignment error</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        dx: float</span>
-<span class="sd">            dx aligment error</span>
+<span class="sd">            dx alignment error</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -603,7 +608,7 @@
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">dy</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tensor</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Get dy aligment error</span>
+<span class="sd">        Get dy alignment error</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -620,12 +625,12 @@
     <span class="nd">@dy</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">dy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dy</span><span class="p">:</span><span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Set dy aligment error</span>
+<span class="sd">        Set dy alignment error</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        dy: float</span>
-<span class="sd">            dy aligment error</span>
+<span class="sd">            dy alignment error</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -638,7 +643,7 @@
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">dz</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tensor</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Get dz aligment error</span>
+<span class="sd">        Get dz alignment error</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -655,12 +660,12 @@
     <span class="nd">@dz</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">dz</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dz</span><span class="p">:</span><span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Set dz aligment error</span>
+<span class="sd">        Set dz alignment error</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        dz: float</span>
-<span class="sd">            dz aligment error</span>
+<span class="sd">            dz alignment error</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -673,7 +678,7 @@
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">wx</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tensor</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Get wx aligment error</span>
+<span class="sd">        Get wx alignment error</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -690,12 +695,12 @@
     <span class="nd">@wx</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">wx</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">wx</span><span class="p">:</span><span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Set wx aligment error</span>
+<span class="sd">        Set wx alignment error</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        wx: float</span>
-<span class="sd">            wx aligment error</span>
+<span class="sd">            wx alignment error</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -708,7 +713,7 @@
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">wy</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tensor</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Get wy aligment error</span>
+<span class="sd">        Get wy alignment error</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -725,12 +730,12 @@
     <span class="nd">@wy</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">wy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">wy</span><span class="p">:</span><span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Set wy aligment error</span>
+<span class="sd">        Set wy alignment error</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        wy: float</span>
-<span class="sd">            wy aligment error</span>
+<span class="sd">            wy alignment error</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -743,7 +748,7 @@
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">wz</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tensor</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Get wz aligment error</span>
+<span class="sd">        Get wz alignment error</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -760,12 +765,12 @@
     <span class="nd">@wz</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">wz</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">wz</span><span class="p">:</span><span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Set wz aligment error</span>
+<span class="sd">        Set wz alignment error</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        wz: float</span>
-<span class="sd">            wz aligment error</span>
+<span class="sd">            wz alignment error</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -809,6 +814,42 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_ns</span> <span class="o">=</span> <span class="n">ns</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_step</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">make_step</span><span class="p">()</span>
+
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">alignment</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get alignment flag</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        None</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        int</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_alignment</span>
+
+
+    <span class="nd">@alignment</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">alignment</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                 <span class="n">alignment</span><span class="p">:</span><span class="nb">bool</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Set alignment flag</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        alignment: bool</span>
+<span class="sd">            alignment flag</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        None</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_alignment</span> <span class="o">=</span> <span class="n">alignment</span>
 
 
     <span class="nd">@property</span>
@@ -1017,10 +1058,10 @@
         <span class="n">data</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Tensor</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span> <span class="k">if</span> <span class="n">data</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">()</span>
         <span class="n">knob</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Tensor</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="n">data</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">keys</span> <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">data</span><span class="p">}</span>
         <span class="n">step</span><span class="p">:</span> <span class="n">Mapping</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_step</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">alignment</span><span class="p">:</span>
-            <span class="n">state</span> <span class="o">=</span> <span class="n">step</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="o">**</span><span class="n">knob</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">alignment</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">alignment</span><span class="p">:</span>
+            <span class="n">state</span> <span class="o">=</span> <span class="n">transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
             <span class="k">return</span> <span class="n">state</span>
-        <span class="n">state</span> <span class="o">=</span> <span class="n">transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+        <span class="n">state</span> <span class="o">=</span> <span class="n">step</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="o">**</span><span class="n">knob</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">state</span>
 
 
