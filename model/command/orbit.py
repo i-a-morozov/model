@@ -403,7 +403,7 @@ def dispersion(line:Line,
                roots:Optional[Tensor]=None,
                jacobian:Optional[Callable]=None) -> Tensor:
     """
-    Compute dispersion (eta_x and eta_y)
+    Compute dispersion
 
     Note, it the initial guess is correct dynamical closed orbit
     Only one iteration is sufficient (set limit=1)
@@ -461,8 +461,8 @@ def dispersion(line:Line,
                           alpha=alpha,
                           solve=solve,
                           jacobian=jacobian)
-        qx, _, qy, _ = points.T
+        qx, px, qy, py = points.T
 
-        return torch.stack([qx, qy])
+        return torch.stack([qx, px, py, qy])
 
     return torch.func.jacrev(task)(dp).squeeze()
