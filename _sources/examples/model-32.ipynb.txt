@@ -298,7 +298,7 @@
     }
    ],
    "source": [
-    "# Compare orbit responce for a single random realization\n",
+    "# Compare orbit response for a single random realization\n",
     "\n",
     "# Set errors\n",
     "\n",

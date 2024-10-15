@@ -24,7 +24,7 @@
     "# Once, parameters are fitted, they can be applied (possible with some weight) and ORM can be measured again\n",
     "\n",
     "# In this example the derivative of ORM is computed with respect to quadrupole strength deviations\n",
-    "# Given a model responce, procedure similar to the closed orbit correction can be performed\n",
+    "# Given a model response, procedure similar to the closed orbit correction can be performed\n",
     "# Specific ORM blocks can be targeted in correction, e.g. coupling correction\n",
     "# ML correction loop are also demonstraited including mini-batch version\n",
     "# Response matrix can be also used with sparse solvers"
@@ -544,10 +544,10 @@
     "\n",
     "# Compute derivative of model ORM with respect to kn and ks deviations\n",
     "\n",
-    "responce = torch.func.jacrev(ORM_knks)(knks)\n",
+    "response = torch.func.jacrev(ORM_knks)(knks)\n",
     "\n",
     "print(orm.shape)\n",
-    "print(responce.shape)"
+    "print(response.shape)"
    ]
   },
   {
@@ -566,11 +566,11 @@
     }
    ],
    "source": [
-    "# Test ORM responce\n",
+    "# Test ORM response\n",
     "\n",
     "error_knks = torch.cat([error_kn, error_ks])\n",
     "\n",
-    "matrix = responce.reshape(-1, *knks.shape)\n",
+    "matrix = response.reshape(-1, *knks.shape)\n",
     "\n",
     "print((orm_error - (orm + (matrix @ (0*error_knks)).reshape_as(orm))).norm())\n",
     "print((orm_error - (orm + (matrix @ (1*error_knks)).reshape_as(orm))).norm())"
@@ -788,7 +788,7 @@
    "metadata": {},
    "outputs": [],
    "source": [
-    "# ORM function computes all blocks of the orbit responce matrix [[Rxx, Rxy], [Ryx, Ryy]]\n",
+    "# ORM function computes all blocks of the orbit response matrix [[Rxx, Rxy], [Ryx, Ryy]]\n",
     "# It might be usefull to compute block separately\n",
     "# This can be done directly with orbit function as follows\n",
     "\n",
@@ -1585,7 +1585,7 @@
    "source": [
     "# Convert data to numpy\n",
     "\n",
-    "X = responce.reshape(-1, *knks.shape).cpu().numpy()\n",
+    "X = response.reshape(-1, *knks.shape).cpu().numpy()\n",
     "y = (orm_error - orm).flatten().cpu().numpy()"
    ]
   },

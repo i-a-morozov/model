@@ -86,6 +86,7 @@
 <li class="toctree-l1"><a class="reference internal" href="model-34.html">Example-35: Orbit (closed orbit correction)</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Example-36: Orbit (ORM optics correction)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="model-36.html">Example-37: Orbit (dispersion correction)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-37.html">Example-38: Orbit (chromatic ORM)</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API:</span></p>
 <ul>
@@ -173,7 +174,7 @@
 <span class="c1"># Once, parameters are fitted, they can be applied (possible with some weight) and ORM can be measured again</span>
 
 <span class="c1"># In this example the derivative of ORM is computed with respect to quadrupole strength deviations</span>
-<span class="c1"># Given a model responce, procedure similar to the closed orbit correction can be performed</span>
+<span class="c1"># Given a model response, procedure similar to the closed orbit correction can be performed</span>
 <span class="c1"># Specific ORM blocks can be targeted in correction, e.g. coupling correction</span>
 <span class="c1"># ML correction loop are also demonstraited including mini-batch version</span>
 <span class="c1"># Response matrix can be also used with sparse solvers</span>
@@ -644,10 +645,10 @@ True
 
 <span class="c1"># Compute derivative of model ORM with respect to kn and ks deviations</span>
 
-<span class="n">responce</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">func</span><span class="o">.</span><span class="n">jacrev</span><span class="p">(</span><span class="n">ORM_knks</span><span class="p">)(</span><span class="n">knks</span><span class="p">)</span>
+<span class="n">response</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">func</span><span class="o">.</span><span class="n">jacrev</span><span class="p">(</span><span class="n">ORM_knks</span><span class="p">)(</span><span class="n">knks</span><span class="p">)</span>
 
 <span class="nb">print</span><span class="p">(</span><span class="n">orm</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">responce</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -664,11 +665,11 @@ torch.Size([32, 72, 56])
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Test ORM responce</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Test ORM response</span>
 
 <span class="n">error_knks</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">([</span><span class="n">error_kn</span><span class="p">,</span> <span class="n">error_ks</span><span class="p">])</span>
 
-<span class="n">matrix</span> <span class="o">=</span> <span class="n">responce</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">*</span><span class="n">knks</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="n">matrix</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">*</span><span class="n">knks</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
 
 <span class="nb">print</span><span class="p">((</span><span class="n">orm_error</span> <span class="o">-</span> <span class="p">(</span><span class="n">orm</span> <span class="o">+</span> <span class="p">(</span><span class="n">matrix</span> <span class="o">@</span> <span class="p">(</span><span class="mi">0</span><span class="o">*</span><span class="n">error_knks</span><span class="p">))</span><span class="o">.</span><span class="n">reshape_as</span><span class="p">(</span><span class="n">orm</span><span class="p">)))</span><span class="o">.</span><span class="n">norm</span><span class="p">())</span>
 <span class="nb">print</span><span class="p">((</span><span class="n">orm_error</span> <span class="o">-</span> <span class="p">(</span><span class="n">orm</span> <span class="o">+</span> <span class="p">(</span><span class="n">matrix</span> <span class="o">@</span> <span class="p">(</span><span class="mi">1</span><span class="o">*</span><span class="n">error_knks</span><span class="p">))</span><span class="o">.</span><span class="n">reshape_as</span><span class="p">(</span><span class="n">orm</span><span class="p">)))</span><span class="o">.</span><span class="n">norm</span><span class="p">())</span>
@@ -865,7 +866,7 @@ tensor(0.0004, dtype=torch.float64)
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># ORM function computes all blocks of the orbit responce matrix [[Rxx, Rxy], [Ryx, Ryy]]</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># ORM function computes all blocks of the orbit response matrix [[Rxx, Rxy], [Ryx, Ryy]]</span>
 <span class="c1"># It might be usefull to compute block separately</span>
 <span class="c1"># This can be done directly with orbit function as follows</span>
 
@@ -1598,7 +1599,7 @@ tensor(0.3623, dtype=torch.float64)
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Convert data to numpy</span>
 
-<span class="n">X</span> <span class="o">=</span> <span class="n">responce</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">*</span><span class="n">knks</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">*</span><span class="n">knks</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
 <span class="n">y</span> <span class="o">=</span> <span class="p">(</span><span class="n">orm_error</span> <span class="o">-</span> <span class="n">orm</span><span class="p">)</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
 </pre></div>
 </div>

@@ -86,6 +86,7 @@
 <li class="toctree-l1"><a class="reference internal" href="model-34.html">Example-35: Orbit (closed orbit correction)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="model-35.html">Example-36: Orbit (ORM optics correction)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="model-36.html">Example-37: Orbit (dispersion correction)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-37.html">Example-38: Orbit (chromatic ORM)</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API:</span></p>
 <ul>
@@ -165,7 +166,7 @@
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># In this example orbit responce matrix is computed for ideal lattice</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># In this example orbit response matrix is computed for ideal lattice</span>
 <span class="c1"># Next, orbit distortion is introduced (quadrupole and sextupole transverse shifts)</span>
 <span class="c1"># Orbit is corrected using ideal ORM (experiment to design correction)</span>
 <span class="c1"># Next, additional gradient and skew error are introduced in quadrupoles</span>
@@ -348,7 +349,7 @@ tensor([0., 0., 0., 0.], dtype=torch.float64)
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Compute orbit responce matrix</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Compute orbit response matrix</span>
 
 <span class="c1"># [qx_1, qx_2, ..., qx_n, qy_1, qy_2, ..., qy_n] = M @ [cx_1, cx_2, ..., cx_k, cy_1, cy_2, ..., cy_k]</span>
 
