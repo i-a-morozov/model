@@ -4,6 +4,8 @@
   <img width="300" height="190" src="https://github.com/i-a-morozov/model/blob/main/docs/pics/logo.png">
 </p>
 
+[![DOI](https://zenodo.org/badge/847902860.svg)](https://doi.org/10.5281/zenodo.13933324)
+
 Simple accelerator lattice model with composable derivatives in pytorch.
 
 Computation of parametrix closed orbit, Twiss parameters and other observables.
