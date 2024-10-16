@@ -39,6 +39,9 @@ def wrapper(element:Element,
     """
     Generate wrapper function for an element/line
 
+    Note, data dictionary for all deviation variables is created
+    It will be modified by passed parameters
+
     Parameters
     ----------
     element : Element
@@ -82,6 +85,7 @@ def group(line:Line,
     Generate group wrapper (one or more elements/lines)
 
     Note, all elements are cloned, changes do not effect the original lattice
+    All deviation variables should be passed for correct behavior
 
     String values can be passed to probe/other, in this case it is equivalent to group(line, line.position(probe:str), line.position(other:str))
     First occurrance will be matched if line contains several elements with identical names
@@ -112,7 +116,7 @@ def group(line:Line,
     Returns
     -------
     tuple[Callable[[Tensor, ...], Tensor], list[tuple[str|None, list[str], str]], Line]
-    wrapper, tabel, line
+    wrapper, table, line
 
     Details
     -------
@@ -151,7 +155,8 @@ def group(line:Line,
                  sequence=sequence,
                  propagate=line.propagate,
                  dp=line.dp.item(),
-                 exact=line.exact, output=line.output,
+                 exact=line.exact,
+                 output=line.output,
                  matrix=line.matrix)
 
     table:list[tuple[str|None, list[str], str]] = []

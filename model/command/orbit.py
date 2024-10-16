@@ -46,11 +46,12 @@ def orbit(line:Line,
           alpha:float=0.0,
           solve:Optional[Callable]=None,
           roots:Optional[Tensor]=None,
-          jacobian:Optional[Callable]=None) -> Tensor:
+          jacobian:Optional[Callable]=None) -> tuple[Callable[[Tensor, ...], Tensor], list[tuple[None, list[str], str]]]:
     """
     Compute (dynamical) closed orbit
 
     Note, this function is differentiable with respect to deviation groups
+    If orbit distortions comes only from thin correctors, limit=1 gives exact solution
 
     Parameters
     ----------
@@ -92,7 +93,7 @@ def orbit(line:Line,
 
     Returns
     -------
-    Tensor
+    tuple[Callable[[Tensor, ...], Tensor], list[tuple[None, list[str], str]]]
 
     """
     jacobian:Callable = torch.func.jacrev if jacobian is None else jacobian
