@@ -31,7 +31,7 @@ def mapping(line:Line,
             alignment:bool=False,
             last:bool=True,
             matched:bool=False,
-            origin:Optional[Tensor]=None,
+            guess:Optional[Tensor]=None,
             limit:int=1,
             epsilon:float=None,
             solve:Optional[Callable]=None,
@@ -61,8 +61,8 @@ def mapping(line:Line,
         flag to use last occurance position
     matched: bool, default=False
         flag to return mapping around closed orbit
-    origin: Tensor, default=None
-        closed orbit
+    guess: Tensor, default=None
+        closed orbit guess
     limit: int, positive
         maximum number of newton iterations
     epsilon: Optional[float], default=1.0E-12
@@ -84,20 +84,22 @@ def mapping(line:Line,
     if isinstance(other, str):
         *_, other = line.positions(other) if last else [line.position(other)]
 
-    transport, table, _ = group(line, probe, other, *groups, root=root, name=name, alignment=alignment)
-
     if not matched:
+        transport, table, _ = group(line, probe, other, *groups, root=root, name=name, alignment=alignment)
         return transport, table
 
-    origin = origin if isinstance(origin, Tensor) else torch.tensor(4*[0.0], dtype=line.dtype, device=line.device)
+    transport, table,_ = group(line, probe, other, *groups, root=True, name=name, alignment=alignment)
+    groups = []
+    for (_, names, key) in table:
+        groups.append((key, None, names, None))
 
-    _, table, _ = group(line, 0, len(line) - 1)
+    guess = guess if isinstance(guess, Tensor) else torch.tensor(4*[0.0], dtype=line.dtype, device=line.device)
 
     ring = line.clone()
     ring.roll(probe)
 
     def wrapper(state, *args):
-        point, *_ = orbit(ring, origin, [*args], *groups, alignment=alignment, full=False, limit=limit, epsilon=epsilon, solve=solve,jacobian=jacobian)
+        point, *_ = orbit(ring, guess, [*args], *groups, alignment=alignment, full=False, limit=limit, epsilon=epsilon, solve=solve,jacobian=jacobian)
         return transport(state + point, *args) - transport(point, *args)
 
     return wrapper, table
@@ -112,7 +114,7 @@ def matrix(line:Line,
            alignment:bool=False,
            last:bool=True,
            matched:bool=False,
-           origin:Optional[Tensor]=None,
+           guess:Optional[Tensor]=None,
            limit:int=1,
            epsilon:float=None,
            solve:Optional[Callable]=None,
@@ -142,8 +144,8 @@ def matrix(line:Line,
         flag to use last occurance position
     matched: bool, default=False
         flag to return mapping around closed orbit
-    origin: Tensor, default=None
-        closed orbit
+    guess: Tensor, default=None
+        closed orbit guess
     limit: int, positive
         maximum number of newton iterations
     epsilon: Optional[float], default=1.0E-12
@@ -159,5 +161,5 @@ def matrix(line:Line,
 
     """
     jacobian:Callable = torch.func.jacrev if jacobian is None else jacobian
-    transport, table = mapping(line, probe, other, *groups, root=root, name=name, alignment=alignment, last=last, matched=matched, origin=origin, limit=limit, epsilon=epsilon, solve=solve, jacobian=jacobian)
+    transport, table = mapping(line, probe, other, *groups, root=root, name=name, alignment=alignment, last=last, matched=matched, guess=guess, limit=limit, epsilon=epsilon, solve=solve, jacobian=jacobian)
     return jacobian(transport), table
