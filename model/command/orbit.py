@@ -74,11 +74,11 @@ def orbit(line:Line,
         flag to advance the parametric orbit over elements or lines
     full: bool, default=False
         flag to perform full propagation
-    limit: int, positive
+    limit: int, positive, default=32
         maximum number of newton iterations
     power: int, positive, default=1
         function power / fixed point order
-    epsilon: Optional[float], default=1.0E-12
+    epsilon: float, default=1.0E-12
         tolerance epsilon
     factor: float, default=1.0
         step factor (learning rate)
@@ -226,7 +226,7 @@ def ORM(line:Line,
         start:int=0,
         alignment:bool=False,
         limit:int=1,
-        epsilon:float=None,
+        epsilon:Optional[float]=None,
         factor:float=1.0,
         alpha:float=0.0,
         solve:Optional[Callable]=None,
@@ -255,9 +255,9 @@ def ORM(line:Line,
         start element index or name (change start)
     alignment: bool, default=False
         flag to include the alignment parameters in the default deviation table
-    limit: int, positive
+    limit: int, positive, default=1
         maximum number of newton iterations
-    epsilon: Optional[float], default=1.0E-12
+    epsilon: Optional[float]
         tolerance epsilon
     factor: float, default=1.0
         step factor (learning rate)
@@ -317,7 +317,7 @@ def ORM_IJ(line:Line,
            *groups:tuple[str, list[str]|None, list[str]|None, list[str|None]],
            alignment:bool=False,
            limit:int=1,
-           epsilon:float=None,
+           epsilon:Optional[float]=None,
            factor:float=1.0,
            alpha:float=0.0,
            solve:Optional[Callable]=None,
@@ -344,9 +344,9 @@ def ORM_IJ(line:Line,
     *groups: tuple[str,list[str]|None,list[str]|None,list[str|None]]
         groups specification
         kinds, names, clean (list of element names)
-    limit: int, positive
+    limit: int, positive, default=1
         maximum number of newton iterations
-    epsilon: Optional[float], default=1.0E-12
+    epsilon: Optional[float]
         tolerance epsilon
     factor: float, default=1.0
         step factor (learning rate)
@@ -400,7 +400,7 @@ def dispersion(line:Line,
                start:int=0,
                alignment:bool=False,
                limit:int=1,
-               epsilon:float=None,
+               epsilon:Optional[float]=None,
                factor:float=1.0,
                alpha:float=0.0,
                solve:Optional[Callable]=None,
@@ -427,9 +427,9 @@ def dispersion(line:Line,
         start element index or name (change start)
     alignment: bool, default=False
         flag to include the alignment parameters in the default deviation table
-    limit: int, positive
+    limit: int, positive, default=1
         maximum number of newton iterations
-    epsilon: Optional[float], default=1.0E-12
+    epsilon: Optional[float]
         tolerance epsilon
     factor: float, default=1.0
         step factor (learning rate)
@@ -479,7 +479,7 @@ def ORM_DP(line:Line,
            start:int=0,
            alignment:bool=False,
            limit:int=1,
-           epsilon:float=None,
+           epsilon:Optional[float]=None,
            factor:float=1.0,
            alpha:float=0.0,
            solve:Optional[Callable]=None,
@@ -506,9 +506,9 @@ def ORM_DP(line:Line,
         start element index or name (change start)
     alignment: bool, default=False
         flag to include the alignment parameters in the default deviation table
-    limit: int, positive
+    limit: int, positive, default=1
         maximum number of newton iterations
-    epsilon: Optional[float], default=1.0E-12
+    epsilon: Optional[float]
         tolerance epsilon
     factor: float, default=1.0
         step factor (learning rate)

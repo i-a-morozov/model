@@ -33,7 +33,7 @@ def mapping(line:Line,
             matched:bool=False,
             guess:Optional[Tensor]=None,
             limit:int=1,
-            epsilon:float=None,
+            epsilon:Optional[float]=None,
             solve:Optional[Callable]=None,
             jacobian:Optional[Callable]=None) -> tuple[Callable[[Tensor, ...], Tensor], list[tuple[str|None, list[str], str]]]:
 
@@ -63,9 +63,9 @@ def mapping(line:Line,
         flag to return mapping around closed orbit
     guess: Tensor, default=None
         closed orbit guess
-    limit: int, positive
+    limit: int, positive, default=1
         maximum number of newton iterations
-    epsilon: Optional[float], default=1.0E-12
+    epsilon: Optional[float]
         tolerance epsilon
     solve: Optional[Callable]
         linear solver(matrix, vector)
@@ -116,7 +116,7 @@ def matrix(line:Line,
            matched:bool=False,
            guess:Optional[Tensor]=None,
            limit:int=1,
-           epsilon:float=None,
+           epsilon:Optional[float]=None,
            solve:Optional[Callable]=None,
            jacobian:Optional[Callable]=None) -> tuple[Callable[[Tensor, ...], Tensor], list[tuple[str|None, list[str], str]]]:
 
@@ -146,9 +146,9 @@ def matrix(line:Line,
         flag to return mapping around closed orbit
     guess: Tensor, default=None
         closed orbit guess
-    limit: int, positive
+    limit: int, positive, default=1
         maximum number of newton iterations
-    epsilon: Optional[float], default=1.0E-12
+    epsilon: Optional[float]
         tolerance epsilon
     solve: Optional[Callable]
         linear solver(matrix, vector)

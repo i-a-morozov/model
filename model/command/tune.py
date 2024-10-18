@@ -17,6 +17,7 @@ from model.library.line import Line
 
 from model.command.mapping import matrix
 
+
 def tune(line:Line,
          parameters:list[Tensor],
          *groups:tuple[str, list[str]|None, list[str]|None, list[str|None]],
@@ -24,7 +25,7 @@ def tune(line:Line,
          matched:bool=False,
          guess:Optional[Tensor]=None,
          limit:int=1,
-         epsilon:float=None,
+         epsilon:Optional[float]=None,
          solve:Optional[Callable]=None,
          jacobian:Optional[Callable]=None) -> tuple[Tensor, list[tuple[str|None, list[str], str]]]:
     """
@@ -45,9 +46,9 @@ def tune(line:Line,
         flag to return mapping around closed orbit
     guess: Tensor, default=None
         closed orbit guess
-    limit: int, positive
+    limit: int, positive, default=1
         maximum number of newton iterations
-    epsilon: Optional[float], default=1.0E-12
+    epsilon: Optional[float]
         tolerance epsilon
     solve: Optional[Callable]
         linear solver(matrix, vector)
@@ -83,7 +84,7 @@ def chromaticity(line:Line,
                  matched:bool=False,
                  guess:Optional[Tensor]=None,
                  limit:int=1,
-                 epsilon:float=None,
+                 epsilon:Optional[float]=None,
                  solve:Optional[Callable]=None,
                  jacobian:Optional[Callable]=None) -> tuple[Tensor, list[tuple[str|None, list[str], str]]]:
     """
@@ -104,9 +105,9 @@ def chromaticity(line:Line,
         flag to return mapping around closed orbit
     guess: Tensor, default=None
         closed orbit guess
-    limit: int, positive
+    limit: int, positive, default=1
         maximum number of newton iterations
-    epsilon: Optional[float], default=1.0E-12
+    epsilon: Optional[float]
         tolerance epsilon
     solve: Optional[Callable]
         linear solver(matrix, vector)
