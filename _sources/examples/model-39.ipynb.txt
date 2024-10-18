@@ -149,7 +149,7 @@
     "# These chromaticity values depend on the number of intergation steps in sextupoles\n",
     "# Without linear flag, dipoles will also have sextupole like component in the body due to cylindrical potential\n",
     "# With exact flag in dipoles, fringes will also contribute to chromaticities\n",
-    "# These result match (converge to) MADX 5.09.01 TWISS (defaul settings in SBEND) and ELEGNAT SVN revision: 30188M for CSBENDs with FINT=0.0 and EDGE_ORDER=0"
+    "# These result match (converge to) MADX 5.09.01 TWISS (default settings in SBENDs) and ELEGNAT SVN revision: 30188M for CSBENDs with FINT=0.0 and EDGE_ORDER=0"
    ]
   }
  ],
