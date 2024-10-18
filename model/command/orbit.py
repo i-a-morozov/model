@@ -46,7 +46,7 @@ def orbit(line:Line,
           alpha:float=0.0,
           solve:Optional[Callable]=None,
           roots:Optional[Tensor]=None,
-          jacobian:Optional[Callable]=None) -> tuple[Callable[[Tensor, ...], Tensor], list[tuple[None, list[str], str]]]:
+          jacobian:Optional[Callable]=None) -> tuple[Tensor, list[tuple[None, list[str], str]]]:
     """
     Compute (dynamical) closed orbit
 
@@ -93,7 +93,7 @@ def orbit(line:Line,
 
     Returns
     -------
-    tuple[Callable[[Tensor, ...], Tensor], list[tuple[None, list[str], str]]]
+    tuple[Tensor, list[tuple[None, list[str], str]]]
 
     """
     jacobian:Callable = torch.func.jacrev if jacobian is None else jacobian
@@ -101,8 +101,6 @@ def orbit(line:Line,
     if solve is None:
         def solve(matrix, vector):
             return torch.linalg.lstsq(matrix, vector.unsqueeze(1), driver='gels').solution.squeeze()
-
-    line = line.clone()
 
     if start and respect:
         with torch.no_grad():
@@ -308,7 +306,7 @@ def ORM(line:Line,
 
         return torch.stack([qx, qy])
 
-    return torch.func.jacrev(task)(cxy).reshape(-1, *cxy.shape)
+    return jacobian(task)(cxy).reshape(-1, *cxy.shape)
 
 
 def ORM_IJ(line:Line,
@@ -392,7 +390,7 @@ def ORM_IJ(line:Line,
         qx, _, qy, _ = point
         return torch.stack([qx, qy])
 
-    return torch.func.jacrev(task)(cxy)
+    return jacobian(task)(cxy)
 
 
 def dispersion(line:Line,
@@ -471,7 +469,7 @@ def dispersion(line:Line,
 
         return torch.stack([qx, px, py, qy])
 
-    return torch.func.jacrev(task)(dp).squeeze()
+    return jacobian(task)(dp).squeeze()
 
 
 def ORM_DP(line:Line,
@@ -545,4 +543,4 @@ def ORM_DP(line:Line,
                    solve=solve,
                    jacobian=jacobian)
 
-    return torch.func.jacrev(task)(dp).squeeze()
+    return jacobian(task)(dp).squeeze()
