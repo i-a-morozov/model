@@ -118,7 +118,7 @@ def matrix(line:Line,
            limit:int=1,
            epsilon:float=None,
            solve:Optional[Callable]=None,
-           jacobian:Optional[Callable]=None) -> Tensor:
+           jacobian:Optional[Callable]=None) -> tuple[Callable[[Tensor, ...], Tensor], list[tuple[str|None, list[str], str]]]:
 
     """
     Generate transport matrix between elements
