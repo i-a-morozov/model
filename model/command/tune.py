@@ -15,8 +15,8 @@ from twiss import twiss
 
 from model.library.line import Line
 
-from model.command.mapping import matrix
-
+from model.command.wrapper import group
+from model.command.orbit import orbit
 
 def tune(line:Line,
          parameters:list[Tensor],
@@ -60,20 +60,28 @@ def tune(line:Line,
     tuple[Tensor, list[tuple[str|None, list[str], str]]]
 
     """
-    function, *_ = matrix(line,
-                          0,
-                          len(line) - 1,
-                          *groups,
-                          root=True,
-                          alignment=alignment,
-                          matched=matched,
-                          guess=guess,
-                          limit=limit,
-                          epsilon=epsilon,
-                          solve=solve,
-                          jacobian=jacobian)
+    jacobian:Callable = torch.func.jacrev if jacobian is None else jacobian
+    guess = guess if isinstance(guess, Tensor) else torch.tensor(4*[0.0], dtype=line.dtype, device=line.device)
+    point, *_ = orbit(line,
+                      guess,
+                      parameters,
+                      *groups,
+                      alignment=alignment,
+                      advance=False,
+                      limit=limit,
+                      epsilon=epsilon,
+                      solve=solve,
+                      jacobian=jacobian)
+    mapping, *_ = group(line,
+                        0,
+                        len(line) - 1,
+                        *groups,
+                        alignment=alignment,
+                        root=True)
+    def task(state, *parameters):
+        return mapping(state + point, *parameters) - point
     state = torch.tensor(4*[0.0], dtype=line.dtype, device=line.device)
-    tunes, *_ = twiss(function(state, *parameters))
+    tunes, *_ = twiss(jacobian(task)(state, *parameters))
     return tunes
 
 
