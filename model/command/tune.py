@@ -62,16 +62,18 @@ def tune(line:Line,
     """
     jacobian:Callable = torch.func.jacrev if jacobian is None else jacobian
     guess = guess if isinstance(guess, Tensor) else torch.tensor(4*[0.0], dtype=line.dtype, device=line.device)
-    point, *_ = orbit(line,
-                      guess,
-                      parameters,
-                      *groups,
-                      alignment=alignment,
-                      advance=False,
-                      limit=limit,
-                      epsilon=epsilon,
-                      solve=solve,
-                      jacobian=jacobian)
+    point = torch.zeros_like(guess)
+    if matched:
+        point, *_ = orbit(line,
+                        guess,
+                        parameters,
+                        *groups,
+                        alignment=alignment,
+                        advance=False,
+                        limit=limit,
+                        epsilon=epsilon,
+                        solve=solve,
+                        jacobian=jacobian)
     mapping, *_ = group(line,
                         0,
                         len(line) - 1,
@@ -127,11 +129,8 @@ def chromaticity(line:Line,
     tuple[Tensor, list[tuple[str|None, list[str], str]]]
 
     """
-
     jacobian:Callable = torch.func.jacrev if jacobian is None else jacobian
-
     dp = torch.tensor([0.0], dtype=line.dtype, device=line.device)
-
     def task(dp):
         return tune(line,
                     [dp, *parameters],
@@ -144,5 +143,4 @@ def chromaticity(line:Line,
                     epsilon=epsilon,
                     solve=solve,
                     jacobian=jacobian)
-
     return jacobian(task)(dp).squeeze()
