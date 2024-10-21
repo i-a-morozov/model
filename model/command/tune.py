@@ -27,7 +27,7 @@ def tune(line:Line,
          limit:int=1,
          epsilon:Optional[float]=None,
          solve:Optional[Callable]=None,
-         jacobian:Optional[Callable]=None) -> tuple[Tensor, list[tuple[str|None, list[str], str]]]:
+         jacobian:Optional[Callable]=None) -> Tensor:
     """
     Compute parametric tunes
 
@@ -57,33 +57,39 @@ def tune(line:Line,
 
     Returns
     -------
-    tuple[Tensor, list[tuple[str|None, list[str], str]]]
+    Tensor
 
     """
     jacobian:Callable = torch.func.jacrev if jacobian is None else jacobian
+
     guess = guess if isinstance(guess, Tensor) else torch.tensor(4*[0.0], dtype=line.dtype, device=line.device)
     point = torch.zeros_like(guess)
+
     if matched:
         point, *_ = orbit(line,
-                        guess,
-                        parameters,
-                        *groups,
-                        alignment=alignment,
-                        advance=False,
-                        limit=limit,
-                        epsilon=epsilon,
-                        solve=solve,
-                        jacobian=jacobian)
+                          guess,
+                          parameters,
+                          *groups,
+                          alignment=alignment,
+                          advance=False,
+                          limit=limit,
+                          epsilon=epsilon,
+                          solve=solve,
+                          jacobian=jacobian)
+
     mapping, *_ = group(line,
                         0,
                         len(line) - 1,
                         *groups,
                         alignment=alignment,
                         root=True)
-    def task(state, *parameters):
+
+    def wrapper(state, *parameters):
         return mapping(state + point, *parameters) - point
+
     state = torch.tensor(4*[0.0], dtype=line.dtype, device=line.device)
-    tunes, *_ = twiss(jacobian(task)(state, *parameters))
+    tunes, *_ = twiss(jacobian(wrapper)(state, *parameters))
+
     return tunes
 
 
@@ -96,14 +102,14 @@ def chromaticity(line:Line,
                  limit:int=1,
                  epsilon:Optional[float]=None,
                  solve:Optional[Callable]=None,
-                 jacobian:Optional[Callable]=None) -> tuple[Tensor, list[tuple[str|None, list[str], str]]]:
+                 jacobian:Optional[Callable]=None) -> Tensor:
     """
     Compute parametric chromaticities
 
     Parameters
     ----------
     line: Line
-        input line
+        input linetune
     parameters: list[Tensor]
         list of deviation parameters
     *groups: tuple[str, list[str]|None, list[str]|None, list[str|None]]
@@ -126,12 +132,12 @@ def chromaticity(line:Line,
 
     Returns
     -------
-    tuple[Tensor, list[tuple[str|None, list[str], str]]]
+    Tensor
 
     """
     jacobian:Callable = torch.func.jacrev if jacobian is None else jacobian
     dp = torch.tensor([0.0], dtype=line.dtype, device=line.device)
-    def task(dp):
+    def wrapper(dp):
         return tune(line,
                     [dp, *parameters],
                     ('dp', None, None, None),
@@ -143,4 +149,4 @@ def chromaticity(line:Line,
                     epsilon=epsilon,
                     solve=solve,
                     jacobian=jacobian)
-    return jacobian(task)(dp).squeeze()
+    return jacobian(wrapper)(dp).squeeze()
