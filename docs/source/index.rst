@@ -50,6 +50,7 @@ Simple accelerator lattice model: linear optics errors, closed orbit and Twiss p
    examples/model-39.ipynb
    examples/model-40.ipynb
    examples/model-41.ipynb
+   examples/model-42.ipynb
 
 .. toctree::
    :caption: API:
