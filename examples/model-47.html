@@ -23,7 +23,7 @@
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="BPM" href="../modules/library/bpm.html" />
+    <link rel="next" title="Example-49: Advance (Computation of chromatic phase advances)" href="model-48.html" />
     <link rel="prev" title="Example-47: Optimize (Multistart)" href="model-46.html" /> 
 </head>
 
@@ -97,6 +97,7 @@
 <li class="toctree-l1"><a class="reference internal" href="model-45.html">Example-46: Twiss (Optics correction)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="model-46.html">Example-47: Optimize (Multistart)</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Example-48: Advance (Computation of phase advances)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-48.html">Example-49: Advance (Computation of chromatic phase advances)</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API:</span></p>
 <ul>
@@ -320,7 +321,7 @@ True
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Compute phase advances</span>
 
-<span class="n">muqx</span><span class="p">,</span> <span class="n">muqy</span> <span class="o">=</span>  <span class="n">advance</span><span class="p">(</span><span class="n">ring</span><span class="p">,</span> <span class="p">[],</span> <span class="n">alignment</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">matched</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">guess</span><span class="o">=</span><span class="n">guess</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">epsilon</span><span class="o">=</span><span class="mf">1.0E-9</span><span class="p">)</span>
+<span class="n">muqx</span><span class="p">,</span> <span class="n">muqy</span> <span class="o">=</span>  <span class="n">advance</span><span class="p">(</span><span class="n">ring</span><span class="p">,</span> <span class="p">[],</span> <span class="n">alignment</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">matched</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">guess</span><span class="o">=</span><span class="n">guess</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">epsilon</span><span class="o">=</span><span class="mf">1.0E-9</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>
 
 <span class="nb">print</span><span class="p">(</span><span class="n">muqx</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">muqy</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
@@ -412,7 +413,7 @@ True
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="model-46.html" class="btn btn-neutral float-left" title="Example-47: Optimize (Multistart)" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="../modules/library/bpm.html" class="btn btn-neutral float-right" title="BPM" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="model-48.html" class="btn btn-neutral float-right" title="Example-49: Advance (Computation of chromatic phase advances)" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
