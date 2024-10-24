@@ -1,0 +1,1246 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Example-51: Advance (Optics correction) &mdash; model  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/nbsphinx-code-cells.css?v=2aa19091" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+      <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+      <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="BPM" href="../modules/library/bpm.html" />
+    <link rel="prev" title="Example-50: Advance (Phase advance sensitivity)" href="model-49.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            model
+              <img src="../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Examples:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="model-00.html">Example-01: Optimizaion (import/export API)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-01.html">Example-02: Workflow (MADX)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-02.html">Example-03: Workflow (ELEGANT)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-03.html">Example-04: Transformations benchmark (PTC)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-04.html">Example-05: Drift (element)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-05.html">Example-06: Quadrupole (element)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-06.html">Example-07: Sextupole (element)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-07.html">Example-08: Octupole (element)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-08.html">Example-09: Multipole (element)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-09.html">Example-10: Dipole (element)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-10.html">Example-11: Corrector (element)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-11.html">Example-12: Gradient (element)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-12.html">Example-13: Kick (element)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-13.html">Example-14: Linear (element)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-14.html">Example-15: BPM (element)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-15.html">Example-16: Custom (element)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-16.html">Example-17: Line (element)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-17.html">Example-18: Inverse tracking</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-18.html">Example-19: Layout</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-19.html">Example-20: LOGO</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-20.html">Example-21: Build MADX and ELEGANT style lattice</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-21.html">Example-22: Line serialization and deserialization (YAML)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-22.html">Example-23: Advanced line editing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-23.html">Example-24: Wrapper</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-24.html">Example-25: Group</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-25.html">Example-26: Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-26.html">Example-27: Normalize</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-27.html">Example-28: Transformation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-28.html">Example-29: Orbit (fixed point computation)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-29.html">Example-30: Orbit (effect of transverse shift)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-30.html">Example-31: Orbit (dispersion)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-31.html">Example-32: Orbit (quadruple shift)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-32.html">Example-33: Orbit (sextupole shift)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-33.html">Example-34: Orbit (ORM)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-34.html">Example-35: Orbit (closed orbit correction)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-35.html">Example-36: Orbit (ORM optics correction)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-36.html">Example-37: Orbit (dispersion correction)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-37.html">Example-38: Orbit (chromatic ORM)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-38.html">Example-39: Mapping (Transformations around closed orbit)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-39.html">Example-40: Tune (Computation of tunes and chromaticities)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-40.html">Example-41: Tune (Tune and chormaticity correction)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-41.html">Example-42: Tune (Tune spread from quafrupole errors)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-42.html">Example-43: Twiss (Computation of Twiss parameters)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-43.html">Example-44: Twiss (Computation of chromatic Twiss parameters)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-44.html">Example-45: Twiss (Beta functions sensitivity)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-45.html">Example-46: Twiss (Optics correction)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-46.html">Example-47: Optimize (Multistart)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-47.html">Example-48: Advance (Computation of phase advances)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-48.html">Example-49: Advance (Computation of chromatic phase advances)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-49.html">Example-50: Advance (Phase advance sensitivity)</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Example-51: Advance (Optics correction)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../modules/library/bpm.html">BPM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/library/bpm.html#model.library.bpm.BPM"><code class="docutils literal notranslate"><span class="pre">BPM</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/library/corrector.html">Corrector</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/library/corrector.html#model.library.corrector.Corrector"><code class="docutils literal notranslate"><span class="pre">Corrector</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/library/custom.html">Custom</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/library/custom.html#model.library.custom.Custom"><code class="docutils literal notranslate"><span class="pre">Custom</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/library/element.html">Element</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/library/element.html#model.library.element.Element"><code class="docutils literal notranslate"><span class="pre">Element</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/library/element.html#model.library.element.transform"><code class="docutils literal notranslate"><span class="pre">transform()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/library/gradient.html">Gradient</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/library/gradient.html#model.library.gradient.Gradient"><code class="docutils literal notranslate"><span class="pre">Gradient</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/library/keys.html">Keys</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/library/kick.html">Gradient</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/library/kick.html#model.library.kick.Kick"><code class="docutils literal notranslate"><span class="pre">Kick</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/library/linear.html">Linear</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/library/linear.html#model.library.linear.Linear"><code class="docutils literal notranslate"><span class="pre">Linear</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/library/transformations.html">Transformations module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/library/transformations.html#model.library.transformations.bend"><code class="docutils literal notranslate"><span class="pre">bend()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/library/transformations.html#model.library.transformations.calibration_forward"><code class="docutils literal notranslate"><span class="pre">calibration_forward()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/library/transformations.html#model.library.transformations.calibration_inverse"><code class="docutils literal notranslate"><span class="pre">calibration_inverse()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/library/transformations.html#model.library.transformations.corrector"><code class="docutils literal notranslate"><span class="pre">corrector()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/library/transformations.html#model.library.transformations.cylindrical"><code class="docutils literal notranslate"><span class="pre">cylindrical()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/library/transformations.html#model.library.transformations.cylindrical_error"><code class="docutils literal notranslate"><span class="pre">cylindrical_error()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/library/transformations.html#model.library.transformations.dipole"><code class="docutils literal notranslate"><span class="pre">dipole()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/library/transformations.html#model.library.transformations.dquad"><code class="docutils literal notranslate"><span class="pre">dquad()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/library/transformations.html#model.library.transformations.drift"><code class="docutils literal notranslate"><span class="pre">drift()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/library/transformations.html#model.library.transformations.fquad"><code class="docutils literal notranslate"><span class="pre">fquad()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/library/transformations.html#model.library.transformations.gradient"><code class="docutils literal notranslate"><span class="pre">gradient()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/library/transformations.html#model.library.transformations.kinematic"><code class="docutils literal notranslate"><span class="pre">kinematic()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/library/transformations.html#model.library.transformations.linear"><code class="docutils literal notranslate"><span class="pre">linear()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/library/transformations.html#model.library.transformations.octupole"><code class="docutils literal notranslate"><span class="pre">octupole()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/library/transformations.html#model.library.transformations.polar"><code class="docutils literal notranslate"><span class="pre">polar()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/library/transformations.html#model.library.transformations.quadrupole"><code class="docutils literal notranslate"><span class="pre">quadrupole()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/library/transformations.html#model.library.transformations.rx"><code class="docutils literal notranslate"><span class="pre">rx()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/library/transformations.html#model.library.transformations.ry"><code class="docutils literal notranslate"><span class="pre">ry()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/library/transformations.html#model.library.transformations.rz"><code class="docutils literal notranslate"><span class="pre">rz()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/library/transformations.html#model.library.transformations.sector_bend"><code class="docutils literal notranslate"><span class="pre">sector_bend()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/library/transformations.html#model.library.transformations.sector_bend_fringe"><code class="docutils literal notranslate"><span class="pre">sector_bend_fringe()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/library/transformations.html#model.library.transformations.sector_bend_wedge"><code class="docutils literal notranslate"><span class="pre">sector_bend_wedge()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/library/transformations.html#model.library.transformations.sextupole"><code class="docutils literal notranslate"><span class="pre">sextupole()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/library/transformations.html#model.library.transformations.tx"><code class="docutils literal notranslate"><span class="pre">tx()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/library/transformations.html#model.library.transformations.ty"><code class="docutils literal notranslate"><span class="pre">ty()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/library/transformations.html#model.library.transformations.tz"><code class="docutils literal notranslate"><span class="pre">tz()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/library/transformations.html#model.library.transformations.wedge"><code class="docutils literal notranslate"><span class="pre">wedge()</span></code></a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">model</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Example-51: Advance (Optics correction)</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/examples/model-50.ipynb.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="Example-51:-Advance-(Optics-correction)">
+<h1>Example-51: Advance (Optics correction)<a class="headerlink" href="#Example-51:-Advance-(Optics-correction)" title="Link to this heading"></a></h1>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># In this example model response matrices of normal and chromatic phase advances are used for correction</span>
+<span class="c1"># ML style optimization is also performed for optics correction</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Import</span>
+
+<span class="kn">from</span> <span class="nn">pprint</span> <span class="kn">import</span> <span class="n">pprint</span>
+
+<span class="kn">import</span> <span class="nn">torch</span>
+<span class="kn">from</span> <span class="nn">torch</span> <span class="kn">import</span> <span class="n">Tensor</span>
+<span class="kn">from</span> <span class="nn">torch.utils.data</span> <span class="kn">import</span> <span class="n">TensorDataset</span>
+<span class="kn">from</span> <span class="nn">torch.utils.data</span> <span class="kn">import</span> <span class="n">DataLoader</span>
+
+<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+
+<span class="kn">import</span> <span class="nn">matplotlib</span>
+<span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+<span class="n">matplotlib</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s1">&#39;text.usetex&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+
+<span class="kn">from</span> <span class="nn">model.library.line</span> <span class="kn">import</span> <span class="n">Line</span>
+
+<span class="kn">from</span> <span class="nn">model.command.util</span> <span class="kn">import</span> <span class="n">select</span>
+
+<span class="kn">from</span> <span class="nn">model.command.external</span> <span class="kn">import</span> <span class="n">load_sdds</span>
+<span class="kn">from</span> <span class="nn">model.command.external</span> <span class="kn">import</span> <span class="n">load_lattice</span>
+
+<span class="kn">from</span> <span class="nn">model.command.build</span> <span class="kn">import</span> <span class="n">build</span>
+
+<span class="kn">from</span> <span class="nn">model.command.wrapper</span> <span class="kn">import</span> <span class="n">group</span>
+<span class="kn">from</span> <span class="nn">model.command.wrapper</span> <span class="kn">import</span> <span class="n">forward</span>
+<span class="kn">from</span> <span class="nn">model.command.wrapper</span> <span class="kn">import</span> <span class="n">inverse</span>
+<span class="kn">from</span> <span class="nn">model.command.wrapper</span> <span class="kn">import</span> <span class="n">normalize</span>
+<span class="kn">from</span> <span class="nn">model.command.wrapper</span> <span class="kn">import</span> <span class="n">Wrapper</span>
+
+<span class="kn">from</span> <span class="nn">model.command.tune</span> <span class="kn">import</span> <span class="n">tune</span>
+<span class="kn">from</span> <span class="nn">model.command.twiss</span> <span class="kn">import</span> <span class="n">twiss</span>
+<span class="kn">from</span> <span class="nn">model.command.twiss</span> <span class="kn">import</span> <span class="n">chromatic_twiss</span>
+<span class="kn">from</span> <span class="nn">model.command.advance</span> <span class="kn">import</span> <span class="n">advance</span>
+<span class="kn">from</span> <span class="nn">model.command.advance</span> <span class="kn">import</span> <span class="n">chromatic_advance</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Load ELEGANT twiss</span>
+
+<span class="n">path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s1">&#39;ic.twiss&#39;</span><span class="p">)</span>
+<span class="n">parameters</span><span class="p">,</span> <span class="n">columns</span> <span class="o">=</span> <span class="n">load_sdds</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+
+<span class="n">nu_qx</span><span class="p">:</span><span class="n">Tensor</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">parameters</span><span class="p">[</span><span class="s1">&#39;nux&#39;</span><span class="p">]</span> <span class="o">%</span> <span class="mi">1</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+<span class="n">nu_qy</span><span class="p">:</span><span class="n">Tensor</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">parameters</span><span class="p">[</span><span class="s1">&#39;nuy&#39;</span><span class="p">]</span> <span class="o">%</span> <span class="mi">1</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+
+<span class="c1"># Set twiss parameters at BPMs</span>
+
+<span class="n">kinds</span> <span class="o">=</span> <span class="n">select</span><span class="p">(</span><span class="n">columns</span><span class="p">,</span> <span class="s1">&#39;ElementType&#39;</span><span class="p">,</span> <span class="n">keep</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+<span class="n">a_qx</span> <span class="o">=</span> <span class="n">select</span><span class="p">(</span><span class="n">columns</span><span class="p">,</span> <span class="s1">&#39;alphax&#39;</span><span class="p">,</span> <span class="n">keep</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">b_qx</span> <span class="o">=</span> <span class="n">select</span><span class="p">(</span><span class="n">columns</span><span class="p">,</span> <span class="s1">&#39;betax&#39;</span> <span class="p">,</span> <span class="n">keep</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">a_qy</span> <span class="o">=</span> <span class="n">select</span><span class="p">(</span><span class="n">columns</span><span class="p">,</span> <span class="s1">&#39;alphay&#39;</span><span class="p">,</span> <span class="n">keep</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">b_qy</span> <span class="o">=</span> <span class="n">select</span><span class="p">(</span><span class="n">columns</span><span class="p">,</span> <span class="s1">&#39;betay&#39;</span> <span class="p">,</span> <span class="n">keep</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+<span class="n">a_qx</span><span class="p">:</span><span class="n">Tensor</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="n">value</span> <span class="k">for</span> <span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">),</span> <span class="n">kind</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">a_qx</span><span class="o">.</span><span class="n">items</span><span class="p">(),</span> <span class="n">kinds</span><span class="o">.</span><span class="n">values</span><span class="p">())</span> <span class="k">if</span> <span class="n">kind</span> <span class="o">==</span> <span class="s1">&#39;MONI&#39;</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+<span class="n">b_qx</span><span class="p">:</span><span class="n">Tensor</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="n">value</span> <span class="k">for</span> <span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">),</span> <span class="n">kind</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">b_qx</span><span class="o">.</span><span class="n">items</span><span class="p">(),</span> <span class="n">kinds</span><span class="o">.</span><span class="n">values</span><span class="p">())</span> <span class="k">if</span> <span class="n">kind</span> <span class="o">==</span> <span class="s1">&#39;MONI&#39;</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+<span class="n">a_qy</span><span class="p">:</span><span class="n">Tensor</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="n">value</span> <span class="k">for</span> <span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">),</span> <span class="n">kind</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">a_qy</span><span class="o">.</span><span class="n">items</span><span class="p">(),</span> <span class="n">kinds</span><span class="o">.</span><span class="n">values</span><span class="p">())</span> <span class="k">if</span> <span class="n">kind</span> <span class="o">==</span> <span class="s1">&#39;MONI&#39;</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+<span class="n">b_qy</span><span class="p">:</span><span class="n">Tensor</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="n">value</span> <span class="k">for</span> <span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">),</span> <span class="n">kind</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">b_qy</span><span class="o">.</span><span class="n">items</span><span class="p">(),</span> <span class="n">kinds</span><span class="o">.</span><span class="n">values</span><span class="p">())</span> <span class="k">if</span> <span class="n">kind</span> <span class="o">==</span> <span class="s1">&#39;MONI&#39;</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+
+<span class="n">positions</span> <span class="o">=</span> <span class="n">select</span><span class="p">(</span><span class="n">columns</span><span class="p">,</span> <span class="s1">&#39;s&#39;</span><span class="p">,</span> <span class="n">keep</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+<span class="n">positions</span> <span class="o">=</span> <span class="p">[</span><span class="n">value</span> <span class="k">for</span> <span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">),</span> <span class="n">kind</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">positions</span><span class="p">,</span> <span class="n">kinds</span><span class="o">.</span><span class="n">values</span><span class="p">())</span> <span class="k">if</span> <span class="n">kind</span> <span class="o">==</span> <span class="s1">&#39;MONI&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Build and setup lattice</span>
+
+<span class="c1"># Load ELEGANT table</span>
+
+<span class="n">path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s1">&#39;ic.lte&#39;</span><span class="p">)</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">load_lattice</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+
+<span class="c1"># Build ELEGANT table</span>
+
+<span class="n">ring</span><span class="p">:</span><span class="n">Line</span> <span class="o">=</span> <span class="n">build</span><span class="p">(</span><span class="s1">&#39;RING&#39;</span><span class="p">,</span> <span class="s1">&#39;ELEGANT&#39;</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+<span class="n">ring</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+
+<span class="c1"># Merge drifts</span>
+
+<span class="n">ring</span><span class="o">.</span><span class="n">merge</span><span class="p">()</span>
+
+<span class="c1"># Split BPMs</span>
+
+<span class="n">ring</span><span class="o">.</span><span class="n">split</span><span class="p">((</span><span class="kc">None</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;BPM&#39;</span><span class="p">],</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">))</span>
+
+<span class="c1"># Roll lattice start</span>
+
+<span class="n">ring</span><span class="o">.</span><span class="n">roll</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="c1"># Set linear dipoles</span>
+
+<span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">ring</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">element</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;Dipole&#39;</span><span class="p">:</span>
+        <span class="n">element</span><span class="o">.</span><span class="n">linear</span> <span class="o">=</span> <span class="kc">True</span>
+
+<span class="c1"># Split lattice into lines by BPMs</span>
+
+<span class="n">ring</span><span class="o">.</span><span class="n">splice</span><span class="p">()</span>
+
+<span class="c1"># Set number of elements of different kinds</span>
+
+<span class="n">nb</span> <span class="o">=</span> <span class="n">ring</span><span class="o">.</span><span class="n">describe</span><span class="p">[</span><span class="s1">&#39;BPM&#39;</span><span class="p">]</span>
+<span class="n">nq</span> <span class="o">=</span> <span class="n">ring</span><span class="o">.</span><span class="n">describe</span><span class="p">[</span><span class="s1">&#39;Quadrupole&#39;</span><span class="p">]</span>
+<span class="n">ns</span> <span class="o">=</span> <span class="n">ring</span><span class="o">.</span><span class="n">describe</span><span class="p">[</span><span class="s1">&#39;Sextupole&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Compare tunes</span>
+
+<span class="n">nuqx</span><span class="p">,</span> <span class="n">nuqy</span> <span class="o">=</span> <span class="n">tune</span><span class="p">(</span><span class="n">ring</span><span class="p">,</span> <span class="p">[],</span> <span class="n">alignment</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">matched</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">nu_qx</span><span class="p">,</span> <span class="n">nuqx</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">nu_qy</span><span class="p">,</span> <span class="n">nuqy</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+True
+True
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Compare twiss</span>
+
+<span class="n">aqx</span><span class="p">,</span> <span class="n">bqx</span><span class="p">,</span> <span class="n">aqy</span><span class="p">,</span> <span class="n">bqy</span> <span class="o">=</span> <span class="n">twiss</span><span class="p">(</span><span class="n">ring</span><span class="p">,</span> <span class="p">[],</span> <span class="n">alignment</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">matched</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">advance</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">full</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">convert</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">a_qx</span><span class="p">,</span> <span class="n">aqx</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">b_qx</span><span class="p">,</span> <span class="n">bqx</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">a_qy</span><span class="p">,</span> <span class="n">aqy</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">b_qy</span><span class="p">,</span> <span class="n">bqy</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+True
+True
+True
+True
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Test derivatives with respect kn and ks at the lattice start</span>
+
+<span class="n">kn</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">nq</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+<span class="n">ks</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">nq</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+
+<span class="n">result</span><span class="p">,</span> <span class="o">*</span><span class="n">_</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">func</span><span class="o">.</span><span class="n">jacrev</span><span class="p">(</span><span class="k">lambda</span> <span class="n">kn</span><span class="p">:</span> <span class="n">advance</span><span class="p">(</span><span class="n">ring</span><span class="p">,</span> <span class="p">[</span><span class="n">kn</span><span class="p">],</span> <span class="p">(</span><span class="s1">&#39;kn&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;Quadrupole&#39;</span><span class="p">],</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span> <span class="n">matched</span><span class="o">=</span><span class="kc">True</span><span class="p">))(</span><span class="n">kn</span><span class="p">)</span>
+<span class="n">pprint</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">()</span>
+
+<span class="n">result</span><span class="p">,</span> <span class="o">*</span><span class="n">_</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">func</span><span class="o">.</span><span class="n">jacrev</span><span class="p">(</span><span class="k">lambda</span> <span class="n">ks</span><span class="p">:</span> <span class="n">advance</span><span class="p">(</span><span class="n">ring</span><span class="p">,</span> <span class="p">[</span><span class="n">ks</span><span class="p">],</span> <span class="p">(</span><span class="s1">&#39;ks&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;Quadrupole&#39;</span><span class="p">],</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span> <span class="n">matched</span><span class="o">=</span><span class="kc">True</span><span class="p">))(</span><span class="n">ks</span><span class="p">)</span>
+<span class="n">pprint</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">()</span>
+
+<span class="c1"># Note, first order derivatives with respect to ks are identicaly equal to zero as expected</span>
+<span class="c1"># Second order derivative is not identicaly equal to zero in general</span>
+<span class="c1"># In the following, only first order derivatives are used for optics correctios (lattice without coupling)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+tensor([[ 0.1062,  0.1321,  0.2508,  0.1047, -0.2323, -0.1218,  0.0207,  0.0901,
+         -0.2828, -0.1534, -0.1003,  0.1049,  0.3543,  0.2371,  0.0391,  0.0137,
+          0.1178, -0.2663, -0.1903, -0.1382, -0.1483, -0.2131, -0.2389,  0.1460,
+          0.0278,  0.0292,  0.2080,  0.3302],
+        [-0.0703,  0.0397, -0.0028, -0.0334,  0.0909,  0.1122, -0.0339, -0.0639,
+          0.0021,  0.0591,  0.0098, -0.2945, -0.1397,  0.0792,  0.3057,  0.1834,
+          0.0682, -0.0502,  0.0598,  0.1259,  0.0753,  0.0062, -0.0379,  0.0883,
+          0.1483,  0.0521, -0.0259, -0.0698]], dtype=torch.float64)
+
+tensor([[0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.,
+         0., 0., 0., 0.],
+        [0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.,
+         0., 0., 0., 0.]], dtype=torch.float64)
+
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Compute advance derivatives with respect to quadrupole settings (normal and chromatic)</span>
+
+<span class="k">def</span> <span class="nf">fn_dtwiss_dkn</span><span class="p">(</span><span class="n">kn</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">advance</span><span class="p">(</span><span class="n">ring</span><span class="p">,</span> <span class="p">[</span><span class="n">kn</span><span class="p">],</span> <span class="p">(</span><span class="s1">&#39;kn&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;Quadrupole&#39;</span><span class="p">],</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span> <span class="n">alignment</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">matched</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">fn_dtwiss_dp_dkn</span><span class="p">(</span><span class="n">kn</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">chromatic_advance</span><span class="p">(</span><span class="n">ring</span><span class="p">,</span> <span class="p">[</span><span class="n">kn</span><span class="p">],</span> <span class="p">(</span><span class="s1">&#39;kn&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;Quadrupole&#39;</span><span class="p">],</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span> <span class="n">alignment</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">matched</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="n">kn</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">nq</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+
+<span class="n">dtwiss_dkn</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">func</span><span class="o">.</span><span class="n">jacrev</span><span class="p">(</span><span class="n">fn_dtwiss_dkn</span><span class="p">)(</span><span class="n">kn</span><span class="p">)</span>
+<span class="n">dtwiss_dp_dkn</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">func</span><span class="o">.</span><span class="n">jacrev</span><span class="p">(</span><span class="n">fn_dtwiss_dp_dkn</span><span class="p">)(</span><span class="n">kn</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">dtwiss_dkn</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">dtwiss_dp_dkn</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+torch.Size([16, 2, 28])
+torch.Size([16, 2, 28])
+</pre></div></div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Set lattice with focusing errors (no coupling)</span>
+
+<span class="n">error</span><span class="p">:</span><span class="n">Line</span> <span class="o">=</span> <span class="n">ring</span><span class="o">.</span><span class="n">clone</span><span class="p">()</span>
+
+<span class="n">nq</span> <span class="o">=</span> <span class="n">error</span><span class="o">.</span><span class="n">describe</span><span class="p">[</span><span class="s1">&#39;Quadrupole&#39;</span><span class="p">]</span>
+
+<span class="n">error_kn</span> <span class="o">=</span> <span class="mf">0.1</span><span class="o">*</span><span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">nq</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+
+<span class="n">index</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">label</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+
+<span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">error</span><span class="o">.</span><span class="n">sequence</span><span class="p">:</span>
+    <span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">line</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">element</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;Quadrupole&#39;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">label</span> <span class="o">!=</span> <span class="n">element</span><span class="o">.</span><span class="n">name</span><span class="p">:</span>
+                <span class="n">index</span> <span class="o">+=</span><span class="mi">1</span>
+            <span class="n">label</span> <span class="o">=</span> <span class="n">element</span><span class="o">.</span><span class="n">name</span>
+            <span class="n">element</span><span class="o">.</span><span class="n">kn</span> <span class="o">=</span> <span class="p">(</span><span class="n">element</span><span class="o">.</span><span class="n">kn</span> <span class="o">+</span> <span class="n">error_kn</span><span class="p">[</span><span class="n">index</span> <span class="o">-</span> <span class="mi">1</span><span class="p">])</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Compute twiss and plot beta beating</span>
+
+<span class="n">ax_model</span><span class="p">,</span> <span class="n">bx_model</span><span class="p">,</span> <span class="n">ay_model</span><span class="p">,</span> <span class="n">by_model</span> <span class="o">=</span> <span class="n">twiss</span><span class="p">(</span><span class="n">ring</span><span class="p">,</span> <span class="p">[],</span> <span class="n">alignment</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">matched</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">advance</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">full</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">convert</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>
+<span class="n">ax_error</span><span class="p">,</span> <span class="n">bx_error</span><span class="p">,</span> <span class="n">ay_error</span><span class="p">,</span> <span class="n">by_error</span> <span class="o">=</span> <span class="n">twiss</span><span class="p">(</span><span class="n">error</span><span class="p">,</span> <span class="p">[],</span> <span class="n">alignment</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">matched</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">advance</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">full</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">convert</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>
+
+<span class="c1"># Compare twiss</span>
+
+<span class="nb">print</span><span class="p">((</span><span class="n">ax_model</span> <span class="o">-</span> <span class="n">ax_error</span><span class="p">)</span><span class="o">.</span><span class="n">norm</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">((</span><span class="n">bx_model</span> <span class="o">-</span> <span class="n">bx_error</span><span class="p">)</span><span class="o">.</span><span class="n">norm</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">((</span><span class="n">ay_model</span> <span class="o">-</span> <span class="n">ay_error</span><span class="p">)</span><span class="o">.</span><span class="n">norm</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">((</span><span class="n">by_model</span> <span class="o">-</span> <span class="n">by_error</span><span class="p">)</span><span class="o">.</span><span class="n">norm</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">()</span>
+
+<span class="c1"># Plot beta beating</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ring</span><span class="o">.</span><span class="n">locations</span><span class="p">()</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> <span class="mi">100</span><span class="o">*</span><span class="p">((</span><span class="n">bx_model</span> <span class="o">-</span> <span class="n">bx_error</span><span class="p">)</span><span class="o">/</span><span class="n">bx_model</span><span class="p">)</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.75</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;o&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ring</span><span class="o">.</span><span class="n">locations</span><span class="p">()</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> <span class="mi">100</span><span class="o">*</span><span class="p">((</span><span class="n">by_model</span> <span class="o">-</span> <span class="n">by_error</span><span class="p">)</span><span class="o">/</span><span class="n">by_model</span><span class="p">)</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;blue&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.75</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;o&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xticks</span><span class="p">(</span><span class="n">ticks</span><span class="o">=</span><span class="n">positions</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;BPM05&#39;</span><span class="p">,</span> <span class="s1">&#39;BPM07&#39;</span><span class="p">,</span> <span class="s1">&#39;BPM08&#39;</span><span class="p">,</span> <span class="s1">&#39;BPM09&#39;</span><span class="p">,</span> <span class="s1">&#39;BPM10&#39;</span><span class="p">,</span> <span class="s1">&#39;BPM11&#39;</span><span class="p">,</span> <span class="s1">&#39;BPM12&#39;</span><span class="p">,</span> <span class="s1">&#39;BPM13&#39;</span><span class="p">,</span> <span class="s1">&#39;BPM14&#39;</span><span class="p">,</span> <span class="s1">&#39;BPM15&#39;</span><span class="p">,</span> <span class="s1">&#39;BPM16&#39;</span><span class="p">,</span> <span class="s1">&#39;BPM17&#39;</span><span class="p">,</span> <span class="s1">&#39;BPM01&#39;</span><span class="p">,</span> <span class="s1">&#39;BPM02&#39;</span><span class="p">,</span> <span class="s1">&#39;BPM03&#39;</span><span class="p">,</span> <span class="s1">&#39;BPM04&#39;</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+tensor(1.6391, dtype=torch.float64)
+tensor(0.9940, dtype=torch.float64)
+tensor(0.4831, dtype=torch.float64)
+tensor(0.2865, dtype=torch.float64)
+
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/examples_model-50_10_1.png" src="../_images/examples_model-50_10_1.png" />
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Test Twiss response</span>
+
+<span class="n">twiss_error</span> <span class="o">=</span> <span class="n">advance</span><span class="p">(</span><span class="n">error</span><span class="p">,</span> <span class="p">[],</span> <span class="n">alignment</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">matched</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">twiss_model</span> <span class="o">=</span> <span class="n">advance</span><span class="p">(</span><span class="n">ring</span><span class="p">,</span> <span class="p">[],</span> <span class="n">alignment</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">matched</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">((</span><span class="n">twiss_error</span> <span class="o">-</span> <span class="p">(</span><span class="n">twiss_model</span> <span class="o">+</span> <span class="mf">0.0</span><span class="o">*</span><span class="p">(</span><span class="n">dtwiss_dkn</span> <span class="o">@</span> <span class="n">error_kn</span><span class="p">)))</span><span class="o">.</span><span class="n">norm</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">((</span><span class="n">twiss_error</span> <span class="o">-</span> <span class="p">(</span><span class="n">twiss_model</span> <span class="o">+</span> <span class="mf">1.0</span><span class="o">*</span><span class="p">(</span><span class="n">dtwiss_dkn</span> <span class="o">@</span> <span class="n">error_kn</span><span class="p">)))</span><span class="o">.</span><span class="n">norm</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+tensor(0.3569, dtype=torch.float64)
+tensor(0.0325, dtype=torch.float64)
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Perform correction (model to experiment)</span>
+
+<span class="c1"># Set response matrix</span>
+
+<span class="n">matrix</span> <span class="o">=</span> <span class="n">dtwiss_dkn</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">nq</span><span class="p">)</span>
+
+<span class="c1"># Set target twiss parameters</span>
+
+<span class="n">twiss_error</span> <span class="o">=</span> <span class="n">advance</span><span class="p">(</span><span class="n">error</span><span class="p">,</span> <span class="p">[],</span> <span class="n">alignment</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">matched</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># Set learning rate</span>
+
+<span class="n">lr</span> <span class="o">=</span> <span class="mf">0.01</span>
+
+<span class="c1"># Set initial values</span>
+
+<span class="n">kn</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">error_kn</span><span class="p">)</span>
+
+<span class="c1"># Fit</span>
+
+<span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">32</span><span class="p">):</span>
+    <span class="n">twiss_model</span> <span class="o">=</span> <span class="n">advance</span><span class="p">(</span><span class="n">ring</span><span class="p">,</span> <span class="p">[</span><span class="n">kn</span><span class="p">],</span> <span class="p">(</span><span class="s1">&#39;kn&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;Quadrupole&#39;</span><span class="p">],</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span> <span class="n">alignment</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">matched</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">dkn</span> <span class="o">=</span> <span class="o">-</span> <span class="n">lr</span><span class="o">*</span><span class="n">torch</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">lstsq</span><span class="p">(</span><span class="n">matrix</span><span class="p">,</span> <span class="p">(</span><span class="n">twiss_model</span> <span class="o">-</span> <span class="n">twiss_error</span><span class="p">)</span><span class="o">.</span><span class="n">flatten</span><span class="p">(),</span> <span class="n">driver</span><span class="o">=</span><span class="s1">&#39;gelsd&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">solution</span>
+    <span class="n">kn</span> <span class="o">+=</span> <span class="n">dkn</span>
+    <span class="nb">print</span><span class="p">((</span><span class="n">twiss_model</span> <span class="o">-</span> <span class="n">twiss_error</span><span class="p">)</span><span class="o">.</span><span class="n">norm</span><span class="p">())</span>
+
+<span class="c1"># Plot final quadrupole settings</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">error_kn</span><span class="p">)),</span> <span class="n">error_kn</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.75</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">kn</span><span class="p">)),</span> <span class="o">+</span><span class="n">kn</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;blue&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.75</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mf">0.75</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+tensor(0.3569, dtype=torch.float64)
+tensor(0.3533, dtype=torch.float64)
+tensor(0.3499, dtype=torch.float64)
+tensor(0.3464, dtype=torch.float64)
+tensor(0.3431, dtype=torch.float64)
+tensor(0.3398, dtype=torch.float64)
+tensor(0.3366, dtype=torch.float64)
+tensor(0.3334, dtype=torch.float64)
+tensor(0.3303, dtype=torch.float64)
+tensor(0.3272, dtype=torch.float64)
+tensor(0.3242, dtype=torch.float64)
+tensor(0.3212, dtype=torch.float64)
+tensor(0.3183, dtype=torch.float64)
+tensor(0.3154, dtype=torch.float64)
+tensor(0.3126, dtype=torch.float64)
+tensor(0.3098, dtype=torch.float64)
+tensor(0.3071, dtype=torch.float64)
+tensor(0.3044, dtype=torch.float64)
+tensor(0.3018, dtype=torch.float64)
+tensor(0.2991, dtype=torch.float64)
+tensor(0.2966, dtype=torch.float64)
+tensor(0.2940, dtype=torch.float64)
+tensor(0.2915, dtype=torch.float64)
+tensor(0.2890, dtype=torch.float64)
+tensor(0.2865, dtype=torch.float64)
+tensor(0.2841, dtype=torch.float64)
+tensor(0.2817, dtype=torch.float64)
+tensor(0.2793, dtype=torch.float64)
+tensor(0.2770, dtype=torch.float64)
+tensor(0.2746, dtype=torch.float64)
+tensor(0.2723, dtype=torch.float64)
+tensor(0.2700, dtype=torch.float64)
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/examples_model-50_12_1.png" src="../_images/examples_model-50_12_1.png" />
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Apply corrections</span>
+
+<span class="n">lattice</span><span class="p">:</span><span class="n">Line</span> <span class="o">=</span> <span class="n">error</span><span class="o">.</span><span class="n">clone</span><span class="p">()</span>
+
+<span class="n">index</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">label</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+
+<span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">lattice</span><span class="o">.</span><span class="n">sequence</span><span class="p">:</span>
+    <span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">line</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">element</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;Quadrupole&#39;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">label</span> <span class="o">!=</span> <span class="n">element</span><span class="o">.</span><span class="n">name</span><span class="p">:</span>
+                <span class="n">index</span> <span class="o">+=</span><span class="mi">1</span>
+            <span class="n">label</span> <span class="o">=</span> <span class="n">element</span><span class="o">.</span><span class="n">name</span>
+            <span class="n">element</span><span class="o">.</span><span class="n">kn</span> <span class="o">=</span> <span class="p">(</span><span class="n">element</span><span class="o">.</span><span class="n">kn</span> <span class="o">-</span> <span class="n">kn</span><span class="p">[</span><span class="n">index</span> <span class="o">-</span> <span class="mi">1</span><span class="p">])</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Compute twiss and plot beta beating</span>
+
+<span class="n">ax_model</span><span class="p">,</span> <span class="n">bx_model</span><span class="p">,</span> <span class="n">ay_model</span><span class="p">,</span> <span class="n">by_model</span> <span class="o">=</span> <span class="n">twiss</span><span class="p">(</span><span class="n">ring</span><span class="p">,</span> <span class="p">[],</span> <span class="n">alignment</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">matched</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">advance</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">full</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">convert</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>
+<span class="n">ax_error</span><span class="p">,</span> <span class="n">bx_error</span><span class="p">,</span> <span class="n">ay_error</span><span class="p">,</span> <span class="n">by_error</span> <span class="o">=</span> <span class="n">twiss</span><span class="p">(</span><span class="n">error</span><span class="p">,</span> <span class="p">[],</span> <span class="n">alignment</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">matched</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">advance</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">full</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">convert</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>
+<span class="n">ax_final</span><span class="p">,</span> <span class="n">bx_final</span><span class="p">,</span> <span class="n">ay_final</span><span class="p">,</span> <span class="n">by_final</span> <span class="o">=</span> <span class="n">twiss</span><span class="p">(</span><span class="n">lattice</span><span class="p">,</span> <span class="p">[],</span> <span class="n">alignment</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">matched</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">advance</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">full</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">convert</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>
+
+<span class="c1"># Plot beta beating</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ring</span><span class="o">.</span><span class="n">locations</span><span class="p">()</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> <span class="mi">100</span><span class="o">*</span><span class="p">((</span><span class="n">bx_model</span> <span class="o">-</span> <span class="n">bx_error</span><span class="p">)</span><span class="o">/</span><span class="n">bx_model</span><span class="p">)</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.75</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;o&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ring</span><span class="o">.</span><span class="n">locations</span><span class="p">()</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> <span class="mi">100</span><span class="o">*</span><span class="p">((</span><span class="n">by_model</span> <span class="o">-</span> <span class="n">by_error</span><span class="p">)</span><span class="o">/</span><span class="n">by_model</span><span class="p">)</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;blue&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.75</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;o&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ring</span><span class="o">.</span><span class="n">locations</span><span class="p">()</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> <span class="mi">100</span><span class="o">*</span><span class="p">((</span><span class="n">bx_model</span> <span class="o">-</span> <span class="n">bx_final</span><span class="p">)</span><span class="o">/</span><span class="n">bx_model</span><span class="p">)</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.75</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;x&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ring</span><span class="o">.</span><span class="n">locations</span><span class="p">()</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> <span class="mi">100</span><span class="o">*</span><span class="p">((</span><span class="n">by_model</span> <span class="o">-</span> <span class="n">by_final</span><span class="p">)</span><span class="o">/</span><span class="n">by_model</span><span class="p">)</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;blue&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.75</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;x&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xticks</span><span class="p">(</span><span class="n">ticks</span><span class="o">=</span><span class="n">positions</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;BPM05&#39;</span><span class="p">,</span> <span class="s1">&#39;BPM07&#39;</span><span class="p">,</span> <span class="s1">&#39;BPM08&#39;</span><span class="p">,</span> <span class="s1">&#39;BPM09&#39;</span><span class="p">,</span> <span class="s1">&#39;BPM10&#39;</span><span class="p">,</span> <span class="s1">&#39;BPM11&#39;</span><span class="p">,</span> <span class="s1">&#39;BPM12&#39;</span><span class="p">,</span> <span class="s1">&#39;BPM13&#39;</span><span class="p">,</span> <span class="s1">&#39;BPM14&#39;</span><span class="p">,</span> <span class="s1">&#39;BPM15&#39;</span><span class="p">,</span> <span class="s1">&#39;BPM16&#39;</span><span class="p">,</span> <span class="s1">&#39;BPM17&#39;</span><span class="p">,</span> <span class="s1">&#39;BPM01&#39;</span><span class="p">,</span> <span class="s1">&#39;BPM02&#39;</span><span class="p">,</span> <span class="s1">&#39;BPM03&#39;</span><span class="p">,</span> <span class="s1">&#39;BPM04&#39;</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/examples_model-50_14_0.png" src="../_images/examples_model-50_14_0.png" />
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Test Twiss response (chromatic)</span>
+
+<span class="n">twiss_error</span> <span class="o">=</span> <span class="n">chromatic_advance</span><span class="p">(</span><span class="n">error</span><span class="p">,</span> <span class="p">[],</span> <span class="n">alignment</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">matched</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">twiss_model</span> <span class="o">=</span> <span class="n">chromatic_advance</span><span class="p">(</span><span class="n">ring</span><span class="p">,</span> <span class="p">[],</span> <span class="n">alignment</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">matched</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">((</span><span class="n">twiss_error</span> <span class="o">-</span> <span class="p">(</span><span class="n">twiss_model</span> <span class="o">+</span> <span class="mf">0.0</span><span class="o">*</span><span class="p">(</span><span class="n">dtwiss_dp_dkn</span> <span class="o">@</span> <span class="n">error_kn</span><span class="p">)))</span><span class="o">.</span><span class="n">norm</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">((</span><span class="n">twiss_error</span> <span class="o">-</span> <span class="p">(</span><span class="n">twiss_model</span> <span class="o">+</span> <span class="mf">1.0</span><span class="o">*</span><span class="p">(</span><span class="n">dtwiss_dp_dkn</span> <span class="o">@</span> <span class="n">error_kn</span><span class="p">)))</span><span class="o">.</span><span class="n">norm</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+tensor(13.0000, dtype=torch.float64)
+tensor(1.2593, dtype=torch.float64)
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Perform correction (model to experiment) including chromatic twiss</span>
+
+<span class="c1"># Set response matrix</span>
+
+<span class="n">matrix</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">vstack</span><span class="p">([</span><span class="n">dtwiss_dkn</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">nq</span><span class="p">),</span> <span class="n">dtwiss_dp_dkn</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">nq</span><span class="p">)])</span>
+
+<span class="c1"># Set target twiss parameters</span>
+
+<span class="n">twiss_error</span> <span class="o">=</span> <span class="n">advance</span><span class="p">(</span><span class="n">error</span><span class="p">,</span> <span class="p">[],</span> <span class="n">alignment</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">matched</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">chromatic_twiss_error</span> <span class="o">=</span> <span class="n">chromatic_advance</span><span class="p">(</span><span class="n">error</span><span class="p">,</span> <span class="p">[],</span> <span class="n">alignment</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">matched</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># Set learning rate</span>
+
+<span class="n">lr</span> <span class="o">=</span> <span class="mf">0.01</span>
+
+<span class="c1"># Set initial values</span>
+
+<span class="n">kn</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">error_kn</span><span class="p">)</span>
+
+<span class="c1"># Fit</span>
+
+<span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">32</span><span class="p">):</span>
+    <span class="n">twiss_model</span> <span class="o">=</span> <span class="n">advance</span><span class="p">(</span><span class="n">ring</span><span class="p">,</span> <span class="p">[</span><span class="n">kn</span><span class="p">],</span> <span class="p">(</span><span class="s1">&#39;kn&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;Quadrupole&#39;</span><span class="p">],</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span> <span class="n">alignment</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">matched</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">chromatic_twiss_model</span> <span class="o">=</span> <span class="n">chromatic_advance</span><span class="p">(</span><span class="n">ring</span><span class="p">,</span> <span class="p">[</span><span class="n">kn</span><span class="p">],</span> <span class="p">(</span><span class="s1">&#39;kn&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;Quadrupole&#39;</span><span class="p">],</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span> <span class="n">alignment</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">matched</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">dkn</span> <span class="o">=</span> <span class="o">-</span> <span class="n">lr</span><span class="o">*</span><span class="n">torch</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">lstsq</span><span class="p">(</span><span class="n">matrix</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span><span class="n">twiss_model</span> <span class="o">-</span> <span class="n">twiss_error</span><span class="p">,</span> <span class="n">chromatic_twiss_model</span> <span class="o">-</span> <span class="n">chromatic_twiss_error</span><span class="p">])</span><span class="o">.</span><span class="n">flatten</span><span class="p">(),</span> <span class="n">driver</span><span class="o">=</span><span class="s1">&#39;gelsd&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">solution</span>
+    <span class="n">kn</span> <span class="o">+=</span> <span class="n">dkn</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span><span class="n">twiss_model</span> <span class="o">-</span> <span class="n">twiss_error</span><span class="p">,</span> <span class="n">chromatic_twiss_model</span> <span class="o">-</span> <span class="n">chromatic_twiss_error</span><span class="p">])</span><span class="o">.</span><span class="n">norm</span><span class="p">())</span>
+
+<span class="c1"># Plot final quadrupole settings</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">error_kn</span><span class="p">)),</span> <span class="n">error_kn</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.75</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">kn</span><span class="p">)),</span> <span class="o">+</span><span class="n">kn</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;blue&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.75</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mf">0.75</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+tensor(13.0049, dtype=torch.float64)
+tensor(12.8748, dtype=torch.float64)
+tensor(12.7459, dtype=torch.float64)
+tensor(12.6181, dtype=torch.float64)
+tensor(12.4914, dtype=torch.float64)
+tensor(12.3658, dtype=torch.float64)
+tensor(12.2412, dtype=torch.float64)
+tensor(12.1178, dtype=torch.float64)
+tensor(11.9954, dtype=torch.float64)
+tensor(11.8742, dtype=torch.float64)
+tensor(11.7539, dtype=torch.float64)
+tensor(11.6348, dtype=torch.float64)
+tensor(11.5167, dtype=torch.float64)
+tensor(11.3996, dtype=torch.float64)
+tensor(11.2835, dtype=torch.float64)
+tensor(11.1685, dtype=torch.float64)
+tensor(11.0546, dtype=torch.float64)
+tensor(10.9416, dtype=torch.float64)
+tensor(10.8296, dtype=torch.float64)
+tensor(10.7187, dtype=torch.float64)
+tensor(10.6087, dtype=torch.float64)
+tensor(10.4997, dtype=torch.float64)
+tensor(10.3917, dtype=torch.float64)
+tensor(10.2847, dtype=torch.float64)
+tensor(10.1786, dtype=torch.float64)
+tensor(10.0735, dtype=torch.float64)
+tensor(9.9694, dtype=torch.float64)
+tensor(9.8661, dtype=torch.float64)
+tensor(9.7639, dtype=torch.float64)
+tensor(9.6625, dtype=torch.float64)
+tensor(9.5621, dtype=torch.float64)
+tensor(9.4626, dtype=torch.float64)
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/examples_model-50_16_1.png" src="../_images/examples_model-50_16_1.png" />
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Apply corrections</span>
+
+<span class="n">lattice</span><span class="p">:</span><span class="n">Line</span> <span class="o">=</span> <span class="n">error</span><span class="o">.</span><span class="n">clone</span><span class="p">()</span>
+
+<span class="n">index</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">label</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+
+<span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">lattice</span><span class="o">.</span><span class="n">sequence</span><span class="p">:</span>
+    <span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">line</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">element</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;Quadrupole&#39;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">label</span> <span class="o">!=</span> <span class="n">element</span><span class="o">.</span><span class="n">name</span><span class="p">:</span>
+                <span class="n">index</span> <span class="o">+=</span><span class="mi">1</span>
+            <span class="n">label</span> <span class="o">=</span> <span class="n">element</span><span class="o">.</span><span class="n">name</span>
+            <span class="n">element</span><span class="o">.</span><span class="n">kn</span> <span class="o">=</span> <span class="p">(</span><span class="n">element</span><span class="o">.</span><span class="n">kn</span> <span class="o">-</span> <span class="n">kn</span><span class="p">[</span><span class="n">index</span> <span class="o">-</span> <span class="mi">1</span><span class="p">])</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Compute twiss and plot beta beating</span>
+
+<span class="n">ax_model</span><span class="p">,</span> <span class="n">bx_model</span><span class="p">,</span> <span class="n">ay_model</span><span class="p">,</span> <span class="n">by_model</span> <span class="o">=</span> <span class="n">twiss</span><span class="p">(</span><span class="n">ring</span><span class="p">,</span> <span class="p">[],</span> <span class="n">alignment</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">matched</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">advance</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">full</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">convert</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>
+<span class="n">ax_error</span><span class="p">,</span> <span class="n">bx_error</span><span class="p">,</span> <span class="n">ay_error</span><span class="p">,</span> <span class="n">by_error</span> <span class="o">=</span> <span class="n">twiss</span><span class="p">(</span><span class="n">error</span><span class="p">,</span> <span class="p">[],</span> <span class="n">alignment</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">matched</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">advance</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">full</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">convert</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>
+<span class="n">ax_final</span><span class="p">,</span> <span class="n">bx_final</span><span class="p">,</span> <span class="n">ay_final</span><span class="p">,</span> <span class="n">by_final</span> <span class="o">=</span> <span class="n">twiss</span><span class="p">(</span><span class="n">lattice</span><span class="p">,</span> <span class="p">[],</span> <span class="n">alignment</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">matched</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">advance</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">full</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">convert</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>
+
+<span class="c1"># Plot beta beating</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ring</span><span class="o">.</span><span class="n">locations</span><span class="p">()</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> <span class="mi">100</span><span class="o">*</span><span class="p">((</span><span class="n">bx_model</span> <span class="o">-</span> <span class="n">bx_error</span><span class="p">)</span><span class="o">/</span><span class="n">bx_model</span><span class="p">)</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.75</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;o&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ring</span><span class="o">.</span><span class="n">locations</span><span class="p">()</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> <span class="mi">100</span><span class="o">*</span><span class="p">((</span><span class="n">by_model</span> <span class="o">-</span> <span class="n">by_error</span><span class="p">)</span><span class="o">/</span><span class="n">by_model</span><span class="p">)</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;blue&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.75</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;o&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ring</span><span class="o">.</span><span class="n">locations</span><span class="p">()</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> <span class="mi">100</span><span class="o">*</span><span class="p">((</span><span class="n">bx_model</span> <span class="o">-</span> <span class="n">bx_final</span><span class="p">)</span><span class="o">/</span><span class="n">bx_model</span><span class="p">)</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.75</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;x&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ring</span><span class="o">.</span><span class="n">locations</span><span class="p">()</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> <span class="mi">100</span><span class="o">*</span><span class="p">((</span><span class="n">by_model</span> <span class="o">-</span> <span class="n">by_final</span><span class="p">)</span><span class="o">/</span><span class="n">by_model</span><span class="p">)</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;blue&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.75</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;x&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xticks</span><span class="p">(</span><span class="n">ticks</span><span class="o">=</span><span class="n">positions</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;BPM05&#39;</span><span class="p">,</span> <span class="s1">&#39;BPM07&#39;</span><span class="p">,</span> <span class="s1">&#39;BPM08&#39;</span><span class="p">,</span> <span class="s1">&#39;BPM09&#39;</span><span class="p">,</span> <span class="s1">&#39;BPM10&#39;</span><span class="p">,</span> <span class="s1">&#39;BPM11&#39;</span><span class="p">,</span> <span class="s1">&#39;BPM12&#39;</span><span class="p">,</span> <span class="s1">&#39;BPM13&#39;</span><span class="p">,</span> <span class="s1">&#39;BPM14&#39;</span><span class="p">,</span> <span class="s1">&#39;BPM15&#39;</span><span class="p">,</span> <span class="s1">&#39;BPM16&#39;</span><span class="p">,</span> <span class="s1">&#39;BPM17&#39;</span><span class="p">,</span> <span class="s1">&#39;BPM01&#39;</span><span class="p">,</span> <span class="s1">&#39;BPM02&#39;</span><span class="p">,</span> <span class="s1">&#39;BPM03&#39;</span><span class="p">,</span> <span class="s1">&#39;BPM04&#39;</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/examples_model-50_18_0.png" src="../_images/examples_model-50_18_0.png" />
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># ML style correction (model to experiment)</span>
+
+<span class="c1"># Set target twiss parameters</span>
+
+<span class="n">twiss_error</span> <span class="o">=</span> <span class="n">advance</span><span class="p">(</span><span class="n">error</span><span class="p">,</span> <span class="p">[],</span> <span class="n">alignment</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">matched</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># Set learning rate</span>
+
+<span class="n">lr</span> <span class="o">=</span> <span class="mf">0.005</span>
+
+<span class="c1"># Set parametric twiss</span>
+
+<span class="k">def</span> <span class="nf">twiss_model</span><span class="p">(</span><span class="n">kn</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">advance</span><span class="p">(</span><span class="n">ring</span><span class="p">,</span> <span class="p">[</span><span class="n">kn</span><span class="p">],</span> <span class="p">(</span><span class="s1">&#39;kn&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;Quadrupole&#39;</span><span class="p">],</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span> <span class="n">alignment</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">matched</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># Set objective function</span>
+
+<span class="k">def</span> <span class="nf">objective</span><span class="p">(</span><span class="n">kn</span><span class="p">):</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">twiss_error</span> <span class="o">-</span> <span class="n">twiss_model</span><span class="p">(</span><span class="n">kn</span><span class="p">))</span><span class="o">.</span><span class="n">norm</span><span class="p">()</span>
+
+<span class="c1"># Set initial values</span>
+
+<span class="n">kn</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">error_kn</span><span class="p">)</span>
+
+<span class="c1"># Test objective function</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">objective</span><span class="p">(</span><span class="mf">0.0</span><span class="o">*</span><span class="n">error_kn</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">objective</span><span class="p">(</span><span class="mf">1.0</span><span class="o">*</span><span class="n">error_kn</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">()</span>
+
+<span class="c1"># Set normalized objective</span>
+
+<span class="n">objective</span> <span class="o">=</span> <span class="n">normalize</span><span class="p">(</span><span class="n">objective</span><span class="p">,</span> <span class="p">[(</span><span class="o">-</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">)])</span>
+
+<span class="c1"># Test normalized objective</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">objective</span><span class="p">(</span><span class="o">*</span><span class="n">forward</span><span class="p">([</span><span class="mf">0.0</span><span class="o">*</span><span class="n">error_kn</span><span class="p">],</span> <span class="p">[(</span><span class="o">-</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">)])))</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">objective</span><span class="p">(</span><span class="o">*</span><span class="n">forward</span><span class="p">([</span><span class="mf">1.0</span><span class="o">*</span><span class="n">error_kn</span><span class="p">],</span> <span class="p">[(</span><span class="o">-</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">)])))</span>
+<span class="nb">print</span><span class="p">()</span>
+
+<span class="c1"># Normalize initial settings</span>
+
+<span class="n">kn</span><span class="p">,</span> <span class="o">*</span><span class="n">_</span> <span class="o">=</span> <span class="n">forward</span><span class="p">([</span><span class="n">kn</span><span class="p">],</span> <span class="p">[(</span><span class="o">-</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">)])</span>
+
+<span class="c1"># Set model (forward returns evaluated objective)</span>
+
+<span class="n">model</span> <span class="o">=</span> <span class="n">Wrapper</span><span class="p">(</span><span class="n">objective</span><span class="p">,</span> <span class="n">kn</span><span class="p">)</span>
+
+<span class="c1"># Set optimizer</span>
+
+<span class="n">optimizer</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">optim</span><span class="o">.</span><span class="n">Adam</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span> <span class="n">lr</span><span class="o">=</span><span class="n">lr</span><span class="p">)</span>
+
+<span class="c1"># Perform optimization</span>
+
+<span class="k">for</span> <span class="n">epoch</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">64</span><span class="p">):</span>
+    <span class="n">value</span> <span class="o">=</span> <span class="n">model</span><span class="p">()</span>
+    <span class="n">value</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
+    <span class="n">optimizer</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
+    <span class="n">optimizer</span><span class="o">.</span><span class="n">zero_grad</span><span class="p">()</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">value</span><span class="o">.</span><span class="n">detach</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+tensor(0.3569, dtype=torch.float64)
+tensor(0., dtype=torch.float64)
+
+tensor(0.3569, dtype=torch.float64)
+tensor(0., dtype=torch.float64)
+
+tensor(0.3569, dtype=torch.float64)
+tensor(0.3282, dtype=torch.float64)
+tensor(0.3006, dtype=torch.float64)
+tensor(0.2745, dtype=torch.float64)
+tensor(0.2504, dtype=torch.float64)
+tensor(0.2285, dtype=torch.float64)
+tensor(0.2089, dtype=torch.float64)
+tensor(0.1917, dtype=torch.float64)
+tensor(0.1769, dtype=torch.float64)
+tensor(0.1645, dtype=torch.float64)
+tensor(0.1540, dtype=torch.float64)
+tensor(0.1446, dtype=torch.float64)
+tensor(0.1356, dtype=torch.float64)
+tensor(0.1264, dtype=torch.float64)
+tensor(0.1172, dtype=torch.float64)
+tensor(0.1082, dtype=torch.float64)
+tensor(0.0999, dtype=torch.float64)
+tensor(0.0927, dtype=torch.float64)
+tensor(0.0875, dtype=torch.float64)
+tensor(0.0845, dtype=torch.float64)
+tensor(0.0832, dtype=torch.float64)
+tensor(0.0822, dtype=torch.float64)
+tensor(0.0806, dtype=torch.float64)
+tensor(0.0776, dtype=torch.float64)
+tensor(0.0733, dtype=torch.float64)
+tensor(0.0685, dtype=torch.float64)
+tensor(0.0639, dtype=torch.float64)
+tensor(0.0601, dtype=torch.float64)
+tensor(0.0572, dtype=torch.float64)
+tensor(0.0547, dtype=torch.float64)
+tensor(0.0521, dtype=torch.float64)
+tensor(0.0494, dtype=torch.float64)
+tensor(0.0469, dtype=torch.float64)
+tensor(0.0452, dtype=torch.float64)
+tensor(0.0443, dtype=torch.float64)
+tensor(0.0441, dtype=torch.float64)
+tensor(0.0442, dtype=torch.float64)
+tensor(0.0441, dtype=torch.float64)
+tensor(0.0431, dtype=torch.float64)
+tensor(0.0412, dtype=torch.float64)
+tensor(0.0389, dtype=torch.float64)
+tensor(0.0368, dtype=torch.float64)
+tensor(0.0350, dtype=torch.float64)
+tensor(0.0336, dtype=torch.float64)
+tensor(0.0325, dtype=torch.float64)
+tensor(0.0315, dtype=torch.float64)
+tensor(0.0308, dtype=torch.float64)
+tensor(0.0302, dtype=torch.float64)
+tensor(0.0297, dtype=torch.float64)
+tensor(0.0292, dtype=torch.float64)
+tensor(0.0284, dtype=torch.float64)
+tensor(0.0275, dtype=torch.float64)
+tensor(0.0268, dtype=torch.float64)
+tensor(0.0265, dtype=torch.float64)
+tensor(0.0263, dtype=torch.float64)
+tensor(0.0261, dtype=torch.float64)
+tensor(0.0258, dtype=torch.float64)
+tensor(0.0254, dtype=torch.float64)
+tensor(0.0249, dtype=torch.float64)
+tensor(0.0245, dtype=torch.float64)
+tensor(0.0239, dtype=torch.float64)
+tensor(0.0234, dtype=torch.float64)
+tensor(0.0231, dtype=torch.float64)
+tensor(0.0229, dtype=torch.float64)
+</pre></div></div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Apply corrections</span>
+
+<span class="n">kn</span><span class="p">,</span> <span class="o">*</span><span class="n">_</span> <span class="o">=</span> <span class="n">inverse</span><span class="p">([</span><span class="n">kn</span><span class="p">],</span> <span class="p">[(</span><span class="o">-</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">)])</span>
+
+<span class="n">lattice</span><span class="p">:</span><span class="n">Line</span> <span class="o">=</span> <span class="n">error</span><span class="o">.</span><span class="n">clone</span><span class="p">()</span>
+
+<span class="n">index</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">label</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+
+<span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">lattice</span><span class="o">.</span><span class="n">sequence</span><span class="p">:</span>
+    <span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">line</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">element</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;Quadrupole&#39;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">label</span> <span class="o">!=</span> <span class="n">element</span><span class="o">.</span><span class="n">name</span><span class="p">:</span>
+                <span class="n">index</span> <span class="o">+=</span><span class="mi">1</span>
+            <span class="n">label</span> <span class="o">=</span> <span class="n">element</span><span class="o">.</span><span class="n">name</span>
+            <span class="n">element</span><span class="o">.</span><span class="n">kn</span> <span class="o">=</span> <span class="p">(</span><span class="n">element</span><span class="o">.</span><span class="n">kn</span> <span class="o">-</span> <span class="n">kn</span><span class="p">[</span><span class="n">index</span> <span class="o">-</span> <span class="mi">1</span><span class="p">])</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[21]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Compute twiss and plot beta beating</span>
+
+<span class="n">ax_model</span><span class="p">,</span> <span class="n">bx_model</span><span class="p">,</span> <span class="n">ay_model</span><span class="p">,</span> <span class="n">by_model</span> <span class="o">=</span> <span class="n">twiss</span><span class="p">(</span><span class="n">ring</span><span class="p">,</span> <span class="p">[],</span> <span class="n">alignment</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">matched</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">advance</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">full</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">convert</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>
+<span class="n">ax_error</span><span class="p">,</span> <span class="n">bx_error</span><span class="p">,</span> <span class="n">ay_error</span><span class="p">,</span> <span class="n">by_error</span> <span class="o">=</span> <span class="n">twiss</span><span class="p">(</span><span class="n">error</span><span class="p">,</span> <span class="p">[],</span> <span class="n">alignment</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">matched</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">advance</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">full</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">convert</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>
+<span class="n">ax_final</span><span class="p">,</span> <span class="n">bx_final</span><span class="p">,</span> <span class="n">ay_final</span><span class="p">,</span> <span class="n">by_final</span> <span class="o">=</span> <span class="n">twiss</span><span class="p">(</span><span class="n">lattice</span><span class="p">,</span> <span class="p">[],</span> <span class="n">alignment</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">matched</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">advance</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">full</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">convert</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>
+
+<span class="c1"># Plot beta beating</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ring</span><span class="o">.</span><span class="n">locations</span><span class="p">()</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> <span class="mi">100</span><span class="o">*</span><span class="p">((</span><span class="n">bx_model</span> <span class="o">-</span> <span class="n">bx_error</span><span class="p">)</span><span class="o">/</span><span class="n">bx_model</span><span class="p">)</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.75</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;o&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ring</span><span class="o">.</span><span class="n">locations</span><span class="p">()</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> <span class="mi">100</span><span class="o">*</span><span class="p">((</span><span class="n">by_model</span> <span class="o">-</span> <span class="n">by_error</span><span class="p">)</span><span class="o">/</span><span class="n">by_model</span><span class="p">)</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;blue&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.75</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;o&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ring</span><span class="o">.</span><span class="n">locations</span><span class="p">()</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> <span class="mi">100</span><span class="o">*</span><span class="p">((</span><span class="n">bx_model</span> <span class="o">-</span> <span class="n">bx_final</span><span class="p">)</span><span class="o">/</span><span class="n">bx_model</span><span class="p">)</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.75</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;x&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ring</span><span class="o">.</span><span class="n">locations</span><span class="p">()</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> <span class="mi">100</span><span class="o">*</span><span class="p">((</span><span class="n">by_model</span> <span class="o">-</span> <span class="n">by_final</span><span class="p">)</span><span class="o">/</span><span class="n">by_model</span><span class="p">)</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;blue&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.75</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;x&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xticks</span><span class="p">(</span><span class="n">ticks</span><span class="o">=</span><span class="n">positions</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;BPM05&#39;</span><span class="p">,</span> <span class="s1">&#39;BPM07&#39;</span><span class="p">,</span> <span class="s1">&#39;BPM08&#39;</span><span class="p">,</span> <span class="s1">&#39;BPM09&#39;</span><span class="p">,</span> <span class="s1">&#39;BPM10&#39;</span><span class="p">,</span> <span class="s1">&#39;BPM11&#39;</span><span class="p">,</span> <span class="s1">&#39;BPM12&#39;</span><span class="p">,</span> <span class="s1">&#39;BPM13&#39;</span><span class="p">,</span> <span class="s1">&#39;BPM14&#39;</span><span class="p">,</span> <span class="s1">&#39;BPM15&#39;</span><span class="p">,</span> <span class="s1">&#39;BPM16&#39;</span><span class="p">,</span> <span class="s1">&#39;BPM17&#39;</span><span class="p">,</span> <span class="s1">&#39;BPM01&#39;</span><span class="p">,</span> <span class="s1">&#39;BPM02&#39;</span><span class="p">,</span> <span class="s1">&#39;BPM03&#39;</span><span class="p">,</span> <span class="s1">&#39;BPM04&#39;</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/examples_model-50_21_0.png" src="../_images/examples_model-50_21_0.png" />
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[22]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># ML style correction (batched)</span>
+
+<span class="c1"># Set target twiss parameters</span>
+
+<span class="n">twiss_error</span> <span class="o">=</span> <span class="n">advance</span><span class="p">(</span><span class="n">error</span><span class="p">,</span> <span class="p">[],</span> <span class="n">alignment</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">matched</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># Set learning rate</span>
+
+<span class="n">lr</span> <span class="o">=</span> <span class="mf">0.005</span>
+
+
+<span class="c1"># Set batched function</span>
+
+<span class="k">def</span> <span class="nf">task</span><span class="p">(</span><span class="n">Is</span><span class="p">,</span> <span class="n">kn</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">advance</span><span class="p">(</span><span class="n">ring</span><span class="p">,</span> <span class="p">[</span><span class="n">kn</span><span class="p">],</span> <span class="p">(</span><span class="s1">&#39;kn&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;Quadrupole&#39;</span><span class="p">],</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span> <span class="n">alignment</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">matched</span><span class="o">=</span><span class="kc">True</span><span class="p">)[</span><span class="n">Is</span><span class="p">]</span>
+
+<span class="c1"># Set initial values</span>
+
+<span class="n">kn</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">error_kn</span><span class="p">)</span>
+
+<span class="c1"># Normalize objective</span>
+
+<span class="n">task</span> <span class="o">=</span> <span class="n">normalize</span><span class="p">(</span><span class="n">task</span><span class="p">,</span> <span class="p">[(</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span> <span class="p">(</span><span class="o">-</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">)])</span>
+
+<span class="c1"># Normalize initial settings</span>
+
+<span class="n">kn</span><span class="p">,</span> <span class="o">*</span><span class="n">_</span> <span class="o">=</span> <span class="n">forward</span><span class="p">([</span><span class="n">kn</span><span class="p">],</span> <span class="p">[(</span><span class="o">-</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">)])</span>
+
+<span class="c1"># Set model</span>
+
+<span class="n">model</span> <span class="o">=</span> <span class="n">Wrapper</span><span class="p">(</span><span class="n">task</span><span class="p">,</span> <span class="n">kn</span><span class="p">)</span>
+
+<span class="c1"># Set optimizer</span>
+
+<span class="n">optimizer</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">optim</span><span class="o">.</span><span class="n">Adam</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span> <span class="n">lr</span><span class="o">=</span><span class="n">lr</span><span class="p">)</span>
+
+<span class="c1"># Set features and labels</span>
+
+<span class="n">X</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">ring</span><span class="p">))</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">twiss_error</span><span class="o">.</span><span class="n">clone</span><span class="p">()</span>
+
+<span class="c1"># Set dataset</span>
+
+<span class="n">batch_size</span> <span class="o">=</span> <span class="mi">16</span>
+<span class="n">dataset</span> <span class="o">=</span> <span class="n">TensorDataset</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">clone</span><span class="p">(),</span> <span class="n">y</span><span class="o">.</span><span class="n">clone</span><span class="p">())</span>
+<span class="n">dataloader</span> <span class="o">=</span> <span class="n">DataLoader</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="n">batch_size</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># Set loss funtion</span>
+
+<span class="n">lf</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">MSELoss</span><span class="p">()</span>
+
+<span class="c1"># Perfom optimization</span>
+
+<span class="k">for</span> <span class="n">epoch</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">64</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">batch</span><span class="p">,</span> <span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">dataloader</span><span class="p">):</span>
+        <span class="n">y_hat</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="n">lf</span><span class="p">(</span><span class="n">y_hat</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+        <span class="n">value</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
+        <span class="n">optimizer</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
+        <span class="n">optimizer</span><span class="o">.</span><span class="n">zero_grad</span><span class="p">()</span>
+    <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">value</span><span class="o">.</span><span class="n">detach</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+tensor(0.0040, dtype=torch.float64)
+tensor(0.0034, dtype=torch.float64)
+tensor(0.0028, dtype=torch.float64)
+tensor(0.0024, dtype=torch.float64)
+tensor(0.0020, dtype=torch.float64)
+tensor(0.0016, dtype=torch.float64)
+tensor(0.0014, dtype=torch.float64)
+tensor(0.0012, dtype=torch.float64)
+tensor(0.0010, dtype=torch.float64)
+tensor(0.0009, dtype=torch.float64)
+tensor(0.0008, dtype=torch.float64)
+tensor(0.0007, dtype=torch.float64)
+tensor(0.0006, dtype=torch.float64)
+tensor(0.0006, dtype=torch.float64)
+tensor(0.0005, dtype=torch.float64)
+tensor(0.0005, dtype=torch.float64)
+tensor(0.0004, dtype=torch.float64)
+tensor(0.0004, dtype=torch.float64)
+tensor(0.0003, dtype=torch.float64)
+tensor(0.0003, dtype=torch.float64)
+tensor(0.0003, dtype=torch.float64)
+tensor(0.0002, dtype=torch.float64)
+tensor(0.0002, dtype=torch.float64)
+tensor(0.0002, dtype=torch.float64)
+tensor(0.0002, dtype=torch.float64)
+tensor(0.0002, dtype=torch.float64)
+tensor(0.0002, dtype=torch.float64)
+tensor(0.0002, dtype=torch.float64)
+tensor(0.0002, dtype=torch.float64)
+tensor(0.0002, dtype=torch.float64)
+tensor(0.0002, dtype=torch.float64)
+tensor(0.0002, dtype=torch.float64)
+tensor(0.0002, dtype=torch.float64)
+tensor(0.0001, dtype=torch.float64)
+tensor(0.0001, dtype=torch.float64)
+tensor(0.0001, dtype=torch.float64)
+tensor(0.0001, dtype=torch.float64)
+tensor(9.6877e-05, dtype=torch.float64)
+tensor(9.1666e-05, dtype=torch.float64)
+tensor(8.7230e-05, dtype=torch.float64)
+tensor(8.3082e-05, dtype=torch.float64)
+tensor(7.8988e-05, dtype=torch.float64)
+tensor(7.4955e-05, dtype=torch.float64)
+tensor(7.1150e-05, dtype=torch.float64)
+tensor(6.7778e-05, dtype=torch.float64)
+tensor(6.4986e-05, dtype=torch.float64)
+tensor(6.2814e-05, dtype=torch.float64)
+tensor(6.1198e-05, dtype=torch.float64)
+tensor(6.0007e-05, dtype=torch.float64)
+tensor(5.9105e-05, dtype=torch.float64)
+tensor(5.8375e-05, dtype=torch.float64)
+tensor(5.7739e-05, dtype=torch.float64)
+tensor(5.7134e-05, dtype=torch.float64)
+tensor(5.6496e-05, dtype=torch.float64)
+tensor(5.5748e-05, dtype=torch.float64)
+tensor(5.4812e-05, dtype=torch.float64)
+tensor(5.3630e-05, dtype=torch.float64)
+tensor(5.2191e-05, dtype=torch.float64)
+tensor(5.0546e-05, dtype=torch.float64)
+tensor(4.8795e-05, dtype=torch.float64)
+tensor(4.7061e-05, dtype=torch.float64)
+tensor(4.5458e-05, dtype=torch.float64)
+tensor(4.4060e-05, dtype=torch.float64)
+tensor(4.2890e-05, dtype=torch.float64)
+</pre></div></div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[23]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Apply corrections</span>
+
+<span class="n">kn</span><span class="p">,</span> <span class="o">*</span><span class="n">_</span> <span class="o">=</span> <span class="n">inverse</span><span class="p">([</span><span class="n">kn</span><span class="p">],</span> <span class="p">[(</span><span class="o">-</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">)])</span>
+
+<span class="n">lattice</span><span class="p">:</span><span class="n">Line</span> <span class="o">=</span> <span class="n">error</span><span class="o">.</span><span class="n">clone</span><span class="p">()</span>
+
+<span class="n">index</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">label</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+
+<span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">lattice</span><span class="o">.</span><span class="n">sequence</span><span class="p">:</span>
+    <span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">line</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">element</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;Quadrupole&#39;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">label</span> <span class="o">!=</span> <span class="n">element</span><span class="o">.</span><span class="n">name</span><span class="p">:</span>
+                <span class="n">index</span> <span class="o">+=</span><span class="mi">1</span>
+            <span class="n">label</span> <span class="o">=</span> <span class="n">element</span><span class="o">.</span><span class="n">name</span>
+            <span class="n">element</span><span class="o">.</span><span class="n">kn</span> <span class="o">=</span> <span class="p">(</span><span class="n">element</span><span class="o">.</span><span class="n">kn</span> <span class="o">-</span> <span class="n">kn</span><span class="p">[</span><span class="n">index</span> <span class="o">-</span> <span class="mi">1</span><span class="p">])</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[24]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Compute twiss and plot beta beating</span>
+
+<span class="n">ax_model</span><span class="p">,</span> <span class="n">bx_model</span><span class="p">,</span> <span class="n">ay_model</span><span class="p">,</span> <span class="n">by_model</span> <span class="o">=</span> <span class="n">twiss</span><span class="p">(</span><span class="n">ring</span><span class="p">,</span> <span class="p">[],</span> <span class="n">alignment</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">matched</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">advance</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">full</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">convert</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>
+<span class="n">ax_error</span><span class="p">,</span> <span class="n">bx_error</span><span class="p">,</span> <span class="n">ay_error</span><span class="p">,</span> <span class="n">by_error</span> <span class="o">=</span> <span class="n">twiss</span><span class="p">(</span><span class="n">error</span><span class="p">,</span> <span class="p">[],</span> <span class="n">alignment</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">matched</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">advance</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">full</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">convert</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>
+<span class="n">ax_final</span><span class="p">,</span> <span class="n">bx_final</span><span class="p">,</span> <span class="n">ay_final</span><span class="p">,</span> <span class="n">by_final</span> <span class="o">=</span> <span class="n">twiss</span><span class="p">(</span><span class="n">lattice</span><span class="p">,</span> <span class="p">[],</span> <span class="n">alignment</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">matched</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">advance</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">full</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">convert</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>
+
+<span class="c1"># Plot beta beating</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ring</span><span class="o">.</span><span class="n">locations</span><span class="p">()</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> <span class="mi">100</span><span class="o">*</span><span class="p">((</span><span class="n">bx_model</span> <span class="o">-</span> <span class="n">bx_error</span><span class="p">)</span><span class="o">/</span><span class="n">bx_model</span><span class="p">)</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.75</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;o&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ring</span><span class="o">.</span><span class="n">locations</span><span class="p">()</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> <span class="mi">100</span><span class="o">*</span><span class="p">((</span><span class="n">by_model</span> <span class="o">-</span> <span class="n">by_error</span><span class="p">)</span><span class="o">/</span><span class="n">by_model</span><span class="p">)</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;blue&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.75</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;o&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ring</span><span class="o">.</span><span class="n">locations</span><span class="p">()</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> <span class="mi">100</span><span class="o">*</span><span class="p">((</span><span class="n">bx_model</span> <span class="o">-</span> <span class="n">bx_final</span><span class="p">)</span><span class="o">/</span><span class="n">bx_model</span><span class="p">)</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.75</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;x&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ring</span><span class="o">.</span><span class="n">locations</span><span class="p">()</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> <span class="mi">100</span><span class="o">*</span><span class="p">((</span><span class="n">by_model</span> <span class="o">-</span> <span class="n">by_final</span><span class="p">)</span><span class="o">/</span><span class="n">by_model</span><span class="p">)</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;blue&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.75</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;x&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xticks</span><span class="p">(</span><span class="n">ticks</span><span class="o">=</span><span class="n">positions</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;BPM05&#39;</span><span class="p">,</span> <span class="s1">&#39;BPM07&#39;</span><span class="p">,</span> <span class="s1">&#39;BPM08&#39;</span><span class="p">,</span> <span class="s1">&#39;BPM09&#39;</span><span class="p">,</span> <span class="s1">&#39;BPM10&#39;</span><span class="p">,</span> <span class="s1">&#39;BPM11&#39;</span><span class="p">,</span> <span class="s1">&#39;BPM12&#39;</span><span class="p">,</span> <span class="s1">&#39;BPM13&#39;</span><span class="p">,</span> <span class="s1">&#39;BPM14&#39;</span><span class="p">,</span> <span class="s1">&#39;BPM15&#39;</span><span class="p">,</span> <span class="s1">&#39;BPM16&#39;</span><span class="p">,</span> <span class="s1">&#39;BPM17&#39;</span><span class="p">,</span> <span class="s1">&#39;BPM01&#39;</span><span class="p">,</span> <span class="s1">&#39;BPM02&#39;</span><span class="p">,</span> <span class="s1">&#39;BPM03&#39;</span><span class="p">,</span> <span class="s1">&#39;BPM04&#39;</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/examples_model-50_24_0.png" src="../_images/examples_model-50_24_0.png" />
+</div>
+</div>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="model-49.html" class="btn btn-neutral float-left" title="Example-50: Advance (Phase advance sensitivity)" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../modules/library/bpm.html" class="btn btn-neutral float-right" title="BPM" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Ivan Morozov.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
