@@ -102,7 +102,7 @@ def advance(line:Line,
         mu, nm = propagate(nm, matrix)
         mus.append(mu)
         point = mapping(point, *parameters)
-    return torch.stack(mus).T
+    return torch.stack(mus)
 
 
 def chromatic_advance(line:Line,
@@ -157,7 +157,6 @@ def chromatic_advance(line:Line,
                     alignment=alignment,
                     matched=matched,
                     guess=guess,
-                    advance=advance,
                     limit=limit,
                     epsilon=epsilon,
                     solve=solve,
