@@ -166,6 +166,23 @@ class Element(ABC):
 
 
     @property
+    def kind(self) -> str:
+        """
+        Get kind
+
+        Parameters
+        ----------
+        None
+
+        Returns
+        -------
+        str
+
+        """
+        return self.__class__.__name__
+
+
+    @property
     def serialize(self) -> dict[str, str|int|float|bool]:
         """
         Serialize element
