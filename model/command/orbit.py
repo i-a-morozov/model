@@ -72,7 +72,7 @@ def orbit(line:Line,
         flag to include the alignment parameters in the default deviation table
     advance: bool, default=False
         flag to advance the parametric orbit over elements or lines
-    full: bool, default=False
+    full: bool, default=True
         flag to perform full propagation
     limit: int, positive, default=32
         maximum number of newton iterations
@@ -171,7 +171,7 @@ def parametric_orbit(line:Line,
         flag to include the alignment parameters in the default deviation table
     advance: bool, default=False
         flag to advance the parametric orbit over elements or lines
-    full: bool, default=False
+    full: bool, default=True
         flag to perform full propagation
     power: int, positive, default=1
         function power / fixed point order
@@ -399,6 +399,8 @@ def dispersion(line:Line,
                *groups:tuple[str, list[str]|None, list[str]|None, list[str|None]],
                start:int=0,
                alignment:bool=False,
+               advance:bool=True,
+               full:bool=False,
                limit:int=1,
                epsilon:Optional[float]=None,
                factor:float=1.0,
@@ -427,6 +429,10 @@ def dispersion(line:Line,
         start element index or name (change start)
     alignment: bool, default=False
         flag to include the alignment parameters in the default deviation table
+    advance: bool, default=True
+        flag to advance the parametric orbit over elements or lines
+    full: bool, default=False
+        flag to perform full propagation
     limit: int, positive, default=1
         maximum number of newton iterations
     epsilon: Optional[float]
@@ -456,8 +462,8 @@ def dispersion(line:Line,
                           ('dp', None, None, None),
                           *groups,
                           start=start,
-                          advance=True,
-                          full=False,
+                          advance=advance,
+                          full=full,
                           alignment=alignment,
                           limit=limit,
                           epsilon=epsilon,

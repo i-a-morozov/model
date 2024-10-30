@@ -55,7 +55,7 @@ def twiss(line:Line,
         closed orbit guess
     advance: bool, default=False
         flag to advance the parametric orbit over elements or lines
-    full: bool, default=False
+    full: bool, default=True
         flag to perform full propagation
     limit: int, positive, default=1
         maximum number of newton iterations
@@ -155,7 +155,7 @@ def chromatic_twiss(line:Line,
         closed orbit guess
     advance: bool, default=False
         flag to advance the parametric orbit over elements or lines
-    full: bool, default=False
+    full: bool, default=True
         flag to perform full propagation
     limit: int, positive, default=1
         maximum number of newton iterations
