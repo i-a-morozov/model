@@ -100,7 +100,7 @@ def advance(line:Line,
             return mapping(state + point, *parameters) - point
         matrix = jacobian(wrapper)(state, *parameters)
         mu, nm = propagate(nm, matrix)
-        mus.append(mu)
+        mus.append(mu % (2*torch.pi))
         point = mapping(point, *parameters)
     return torch.stack(mus)
 
