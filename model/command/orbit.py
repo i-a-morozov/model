@@ -471,7 +471,8 @@ def dispersion(line:Line,
                           alpha=alpha,
                           solve=solve,
                           jacobian=jacobian)
-        qx, px, qy, py = points.T
+
+        qx, px, qy, py = points.T if advance else points
 
         return torch.stack([qx, px, py, qy])
 
