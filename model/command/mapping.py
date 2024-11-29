@@ -55,7 +55,7 @@ def mapping(line:Line,
         flat to extract names from original line
     name: str, default='LINE'
         constructed line name
-    alignment: bool, default=True
+    alignment: bool, default=False
         flag to include the alignment parameters in the default deviation table
     last: bool, default=True
         flag to use last occurance position
@@ -99,7 +99,7 @@ def mapping(line:Line,
     ring.roll(probe)
 
     def wrapper(state, *args):
-        point, *_ = orbit(ring, guess, [*args], *groups, alignment=alignment, full=False, limit=limit, epsilon=epsilon, solve=solve,jacobian=jacobian)
+        point, *_ = orbit(ring, guess, [*args], *groups, alignment=alignment, full=False, limit=limit, epsilon=epsilon, solve=solve, jacobian=jacobian)
         return transport(state + point, *args) - transport(point, *args)
 
     return wrapper, table

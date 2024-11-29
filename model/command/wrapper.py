@@ -110,7 +110,7 @@ def group(line:Line,
         flat to extract names from original line
     name: str, default='LINE'
         constructed line name
-    alignment: bool, default=True
+    alignment: bool, default=False
         flag to include the alignment parameters in the default deviation table
 
     Returns
