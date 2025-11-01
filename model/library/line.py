@@ -50,6 +50,7 @@ ns          : (property) get/set number of integration steps
 order       : (property) get/set integration order
 output      : (property) get/set output flag
 matrix      : (property) get/set matrix flag
+query       : query line 
 __call__    : transform state
 __len__     : get number of elements (first level)
 __getitem__ : get (first level) element by key
@@ -60,6 +61,8 @@ __repr__    : print line
 
 """
 from __future__ import annotations
+
+import re
 
 from math import ceil
 from collections import Counter
@@ -1417,6 +1420,42 @@ class Line(Element):
             for element in self.sequence:
                 if isinstance(element, Line):
                     element.matrix = matrix
+
+
+    def query(self, *,
+             kinds:Optional[list[str]] = None,
+             patterns:Optional[list[str]] = None,
+             checks:Optional[Callable[[Element], bool]] = None) -> list[Element]:
+        """
+        Query line (all levels) for specific elements
+
+        Parameters
+        ----------
+        kinds: Optional[list[str]]
+            list of kinds to select
+        patterns: Optional[list[str]]
+            list of patterns to select
+        checks: checks:Optional[Callable[[Element], bool]]
+            list of check functions
+
+        Returns
+        -------
+        list[Element]
+
+        """
+        elements:list[Element] = [*self.scan('name')]
+
+        if kinds:
+            elements = [element for element in elements if element.__class__.__name__ in kinds]
+
+        if patterns:
+            patterns = [re.compile(pattern) for pattern in patterns]
+            elements = [element for element in elements if any(pattern.search(element.name) for pattern in patterns)]
+
+        for check in checks:
+            elements = [element for element in elements if check(element)]
+
+        return elements
 
 
     def __call__(self,
