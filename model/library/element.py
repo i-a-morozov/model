@@ -130,7 +130,6 @@ class Element(ABC):
         matrix: bool, default=False
             flag to save matrix at each step
 
-
         Returns
         -------
         None
@@ -153,6 +152,7 @@ class Element(ABC):
         self._output: bool = output
         self._matrix: bool = matrix
 
+        self.lines: set[str] = set()
         self.is_inversed: bool = False
 
         self._lmatrix: Tensor

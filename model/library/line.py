@@ -138,6 +138,10 @@ class Line(Element):
         self._output: bool = output
         self._matrix: bool = matrix
 
+        elements:list[Element] = [*self.scan('name')]
+        for element in elements:
+            element.lines.add(name) 
+
         self._propagate: bool = propagate
         if self._propagate:
             self.set('dp', dp)
@@ -409,6 +413,10 @@ class Line(Element):
         None
         """
         self.sequence = [*self.scan('name')]
+        elements:list[Element] = [*self.scan('name')]
+        for element in elements:
+            element.lines = set()
+            element.lines.add(self.name)
 
 
     def rename(self,
@@ -1210,25 +1218,28 @@ class Line(Element):
         Note
 
         """
-        elements:dict[str,Element] = {element.name: element for element in set(self.scan('name'))}
+        elements:list[Element] = [*self.scan('name')]
 
         if isinstance(value, int):
-            for element in elements.values():
+            for element in elements:
                 setattr(element, 'ns', value)
             return
 
         if isinstance(value, float):
-            for element in elements.values():
+            for element in elements:
                 setattr(element, 'ns', ceil(element.length/value) or 1)
             return
 
+        names:list[str] = [element.name for element in elements]
+
         for key, parameter in value:
-            if key in elements:
-                element = elements[key]
-                setattr(element, 'ns', parameter if isinstance(parameter, int) else ceil(element.length/parameter))
-                continue
-            for element in self.select(elements.values(), kinds=[key]):
-                setattr(element, 'ns', parameter if isinstance(parameter, int) else ceil(element.length/parameter))
+            if key in names:
+                for name, element in zip(names, elements):
+                    if name == key:
+                        setattr(element, 'ns', parameter if isinstance(parameter, int) else (ceil(element.length/parameter) or 1))
+                        continue
+            for element in self.select(elements, kinds=[key]):
+                setattr(element, 'ns', parameter if isinstance(parameter, int) else (ceil(element.length/parameter) or 1))
 
 
     @property
@@ -1264,19 +1275,22 @@ class Line(Element):
         Note
 
         """
-        elements:dict[str,Element] = {element.name: element for element in set(self.scan('name'))}
+        elements:list[Element] = [*self.scan('name')]
 
         if isinstance(value, int):
-            for element in elements.values():
+            for element in elements:
                 setattr(element, 'order', value)
             return
 
+        names:list[str] = [element.name for element in elements]
+
         for key, parameter in value:
-            if key in elements:
-                element = elements[key]
-                setattr(element, 'order', parameter)
-                continue
-            for element in self.select(elements.values(), kinds=[key]):
+            if key in names:
+                for name, element in zip(names, elements):
+                    if name == key:
+                        setattr(element, 'order', parameter)
+                        continue
+            for element in self.select(elements, kinds=[key]):
                 setattr(element, 'order', parameter)
 
 
