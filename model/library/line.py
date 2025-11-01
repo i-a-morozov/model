@@ -50,7 +50,7 @@ ns          : (property) get/set number of integration steps
 order       : (property) get/set integration order
 output      : (property) get/set output flag
 matrix      : (property) get/set matrix flag
-query       : query line 
+query       : query line
 __call__    : transform state
 __len__     : get number of elements (first level)
 __getitem__ : get (first level) element by key
@@ -76,6 +76,7 @@ import torch
 from torch import Tensor
 
 from model.library.element import Element
+from model.library.element import transform
 
 from model.command.util import rotate
 
@@ -143,7 +144,7 @@ class Line(Element):
 
         elements:list[Element] = [*self.scan('name')]
         for element in elements:
-            element.lines.add(name) 
+            element.lines.add(name)
 
         self._propagate: bool = propagate
         if self._propagate:
@@ -1488,6 +1489,10 @@ class Line(Element):
         if self.matrix:
             container_matrix: list[Tensor] = []
 
+        if alignment and self.alignment:
+            state = transform(self, state, data)
+            return state
+
         for element in self.sequence:
             state = element(state, alignment=alignment, data=data.get(element.name))
             if self.output:
@@ -1508,6 +1513,8 @@ class Line(Element):
             self.container_matrix = torch.vstack(container_matrix) if self._propagate else torch.stack(container_matrix)
 
         return state
+        
+
 
 
     def __len__(self) -> int:
