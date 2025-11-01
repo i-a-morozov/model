@@ -1461,8 +1461,9 @@ class Line(Element):
             patterns = [re.compile(pattern) for pattern in patterns]
             elements = [element for element in elements if any(pattern.search(element.name) for pattern in patterns)]
 
-        for check in checks:
-            elements = [element for element in elements if check(element)]
+        if checks:
+            for check in checks:
+                elements = [element for element in elements if check(element)]
 
         return elements
 
