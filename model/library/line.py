@@ -6,57 +6,63 @@ Group ordered sequence of elements or (nested) lines
 
 Methods and properties
 
-__init__    : line instance initialization
-serialize   : (property) serialize line
-inverse     : inverse line
-data        : generate default deviation data for all unique elements
-scan        : scan line and yeild (with duplicates) all elements with given attribute
-select      : (static) select elements
-get         : get given attribute from selected elements
-set         : set value to a given attribute for selected elements
-name        : (property) get/set name of the line
-sequence    : (property) get/set sequence
-flatten     : flatten line (all levels)
-rename      : rename first level element
-append      : append element
-extend      : extend line
-insert      : insert element
-remove      : remove first occurrance of element with given name
-replace     : replace first occurrance of element with given name
-names       : (property) get list of first level element names
-layout      : generate data for layout plotting
-locations   : first level element/line entrance frame locations
-position    : get element position in sequence
-positions   : get all element position in sequence
-start       : (property) set/get the first element
-roll        : roll first level sequence
-unique      : (property) get unique elements
-index       : return list of unique element names and their indices from first level sequence
-duplicate   : (property) get duplicate elements
-itemize     : get list of all elements with matching kind
-describe    : (property) return number of elements (with unique names) for each kind
-split       : split elements
-clean       : clean first level sequence
-mangle      : mangle elements
-merge       : merge drift elements
-splice      : splice line
-group       : replace sequence part (first level) from probe to other with a line
-dp          : (property) get/set momentum deviation
-exact       : (property) get/set exact flag
-length      : (property) get line length
-angle       : (property) get line angle
-flag        : (property) get layout flag
-ns          : (property) get/set number of integration steps
-order       : (property) get/set integration order
-output      : (property) get/set output flag
-matrix      : (property) get/set matrix flag
-query       : query line
-__call__    : transform state
-__len__     : get number of elements (first level)
-__getitem__ : get (first level) element by key
-__setitem__ : set (first level) element by key
-__delitem__ : del (first level) element by key
-__repr__    : print line
+__init__      : line instance initialization
+serialize     : (property) serialize line
+inverse       : inverse line
+data          : generate default deviation data for all unique elements
+scan          : scan line and yeild (with duplicates) all elements with given attribute
+select        : (static) select elements
+get           : get given attribute from selected elements
+set           : set value to a given attribute for selected elements
+name          : (property) get/set name of the line
+sequence      : (property) get/set sequence
+flatten       : flatten line (all levels)
+rename        : rename first level element
+append        : append element
+extend        : extend line
+insert        : insert element
+remove        : remove first occurrance of element with given name
+replace       : replace first occurrance of element with given name
+names         : (property) get list of first level element names
+layout        : generate data for layout plotting
+locations     : first level element/line entrance frame locations
+position      : get element position in sequence
+positions     : get all element position in sequence
+start         : (property) set/get the first element
+roll          : roll first level sequence
+unique        : (property) get unique elements
+index         : return list of unique element names and their indices from first level sequence
+duplicate     : (property) get duplicate elements
+itemize       : get list of all elements with matching kind
+describe      : (property) return number of elements (with unique names) for each kind
+split         : split elements
+clean         : clean first level sequence
+mangle        : mangle elements
+merge         : merge drift elements
+splice        : splice line
+group         : replace sequence part (first level) from probe to other with a line
+dp            : (property) get/set momentum deviation
+exact         : (property) get/set exact flag
+length        : (property) get line length
+angle         : (property) get line angle
+flag          : (property) get layout flag
+ns            : (property) get/set number of integration steps
+order         : (property) get/set integration order
+output        : (property) get/set output flag
+matrix        : (property) get/set matrix flag
+query         : query line
+apply         : apply function for specific elements
+before        : insert element before
+after         : insert element after
+swap          : swap elements
+rename_group  : rename element group
+replace_group : replace element group
+__call__      : transform state
+__len__       : get number of elements (first level)
+__getitem__   : get (first level) element by key
+__setitem__   : set (first level) element by key
+__delitem__   : del (first level) element by key
+__repr__      : print line
 
 
 """
@@ -1459,6 +1465,150 @@ class Line(Element):
             elements = [element for element in elements if check(element)]
 
         return elements
+
+
+    def apply(self,
+             funcion:Callable[[Element], None], *,
+             kinds: Optional[list[str]]=None,
+             patterns: Optional[list[str]]=None,
+             checks: Optional[list[Callable[[Element], bool]]]=None) -> None:
+        """
+        Apply function for specific elements
+
+        Parameters
+        ----------
+        kinds: Optional[list[str]]
+            list of kinds to select
+        patterns: Optional[list[str]]
+            list of patterns to select
+        checks: checks:Optional[;ist[Callable[[Element], bool]]]
+            list of check functions
+
+        Returns
+        -------
+        None
+
+        """            
+        for element in self.query(kinds=kinds, patterns=patterns, checks=checks or []):
+            funcion(element)
+
+
+    def before(self,
+               name:str,
+               element:Element) -> None:
+        """
+        Insert element before name
+
+        Parameters
+        ----------
+        name: str
+            element name
+        element: Element
+            element to insert
+
+        Returns
+        -------
+        None
+
+        """
+        self.sequence.insert(self.position(name), element)
+
+
+    def after(self,
+              name:str,
+              element:Element) -> None:
+        """
+        Insert element after name
+
+        Parameters
+        ----------
+        name: str
+            element name
+        element: Element
+            element to insert
+
+        Returns
+        -------
+        None
+
+        """
+        self.sequence.insert(self.position(name) + 1, element)
+
+
+    def swap(self,
+             first:str|int,
+             second:str|int) -> None:
+        """
+        Swap elements
+
+        Parameters
+        ----------
+        first: str|int
+            first element
+        second: str|int
+            second element
+
+        Returns
+        -------
+        None
+
+        """
+        first = self.position(first) if isinstance(first, str) else first
+        second = self.position(second) if isinstance(second, str) else second
+        self.sequence[first], self.sequence[second] = self.sequence[second], self.sequence[first]
+
+
+    def rename_group(self,
+                     pattern:str,
+                     replace:str,
+                     kinds:Optional[list[str]]=None) -> None:
+        """
+        Rename group
+
+        Parameters
+        ----------
+        pattern: str
+            regex pattern
+        replace: str
+            replacement string
+        kinds: Optional[list[str]]
+            list of kinds to select
+
+        Returns
+        -------
+        None
+
+        """
+        for element in self.query(kinds=kinds):
+            name = re.compile(pattern).sub(replace, element.name)
+            if name != element.name:
+                element.name = name
+
+
+        def replace_group(self,
+                        pattern:str,
+                        factory:Callable[[Element], Element], *,
+                        kinds:Optional[list[str]]=None) -> None:
+            """
+            Replace group
+
+            Parameters
+            ----------
+            pattern: str
+                regex pattern
+            factory: Callable[[Element], Element]
+                factory function
+            kinds: Optional[list[str]]
+                list of kinds to select
+
+            Returns
+            -------
+            None
+
+            """
+            for i, element in enumerate(self.sequence):
+                if (not kinds or element.__class__.__name__ in kinds) and re.compile(pattern).search(element.name):
+                    self.sequence[i] = factory(element)
 
 
     def __call__(self,
