@@ -7,7 +7,7 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Example-22: Line serialization and deserialization (YAML) &mdash; model  documentation</title>
-      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../_static/nbsphinx-code-cells.css?v=2aa19091" />
 
@@ -104,9 +104,9 @@
 <li class="toctree-l1"><a class="reference internal" href="model-52.html">Example-53: Coupling (Minimal tune distance computation)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="model-53.html">Example-54: Coupling (Coupling correction based on minimal tune)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="model-54.html">Example-55: Demo</a></li>
-<li class="toctree-l1"><a class="reference internal" href="model-55.html">Example-56: Trajectory</a></li>
-<li class="toctree-l1"><a class="reference internal" href="model-56.html">Example-57: Approximate invariants spread</a></li>
-<li class="toctree-l1"><a class="reference internal" href="model-57.html">Example-58: Frequency (parametric derivatives for linear system)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-55.html">Example-56: Trajectory (Differentiable trajectory generation)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-56.html">Example-57: Trajectory (Approximate invariants spread)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-57.html">Example-58: Frequency (Parametric derivatives for linear system)</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API:</span></p>
 <ul>
@@ -202,22 +202,22 @@
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Import</span>
 
-<span class="kn">import</span> <span class="nn">torch</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
 
-<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
-<span class="kn">from</span> <span class="nn">pprint</span> <span class="kn">import</span> <span class="n">pprint</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pprint</span><span class="w"> </span><span class="kn">import</span> <span class="n">pprint</span>
 
-<span class="kn">from</span> <span class="nn">model.library.drift</span> <span class="kn">import</span> <span class="n">Drift</span>
-<span class="kn">from</span> <span class="nn">model.library.quadrupole</span> <span class="kn">import</span> <span class="n">Quadrupole</span>
-<span class="kn">from</span> <span class="nn">model.library.sextupole</span> <span class="kn">import</span> <span class="n">Sextupole</span>
-<span class="kn">from</span> <span class="nn">model.library.dipole</span> <span class="kn">import</span> <span class="n">Dipole</span>
-<span class="kn">from</span> <span class="nn">model.library.bpm</span> <span class="kn">import</span> <span class="n">BPM</span>
-<span class="kn">from</span> <span class="nn">model.library.line</span> <span class="kn">import</span> <span class="n">Line</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">model.library.drift</span><span class="w"> </span><span class="kn">import</span> <span class="n">Drift</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">model.library.quadrupole</span><span class="w"> </span><span class="kn">import</span> <span class="n">Quadrupole</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">model.library.sextupole</span><span class="w"> </span><span class="kn">import</span> <span class="n">Sextupole</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">model.library.dipole</span><span class="w"> </span><span class="kn">import</span> <span class="n">Dipole</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">model.library.bpm</span><span class="w"> </span><span class="kn">import</span> <span class="n">BPM</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">model.library.line</span><span class="w"> </span><span class="kn">import</span> <span class="n">Line</span>
 
-<span class="kn">from</span> <span class="nn">model.command.external</span> <span class="kn">import</span> <span class="n">load_lattice</span>
-<span class="kn">from</span> <span class="nn">model.command.build</span> <span class="kn">import</span> <span class="n">build</span>
-<span class="kn">from</span> <span class="nn">model.command.build</span> <span class="kn">import</span> <span class="n">save_line</span>
-<span class="kn">from</span> <span class="nn">model.command.build</span> <span class="kn">import</span> <span class="n">load_line</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">model.command.external</span><span class="w"> </span><span class="kn">import</span> <span class="n">load_lattice</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">model.command.build</span><span class="w"> </span><span class="kn">import</span> <span class="n">build</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">model.command.build</span><span class="w"> </span><span class="kn">import</span> <span class="n">save_line</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">model.command.build</span><span class="w"> </span><span class="kn">import</span> <span class="n">load_line</span>
 </pre></div>
 </div>
 </div>

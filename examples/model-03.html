@@ -7,7 +7,7 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Example-04: Transformations benchmark (PTC) &mdash; model  documentation</title>
-      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../_static/nbsphinx-code-cells.css?v=2aa19091" />
 
@@ -104,9 +104,9 @@
 <li class="toctree-l1"><a class="reference internal" href="model-52.html">Example-53: Coupling (Minimal tune distance computation)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="model-53.html">Example-54: Coupling (Coupling correction based on minimal tune)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="model-54.html">Example-55: Demo</a></li>
-<li class="toctree-l1"><a class="reference internal" href="model-55.html">Example-56: Trajectory</a></li>
-<li class="toctree-l1"><a class="reference internal" href="model-56.html">Example-57: Approximate invariants spread</a></li>
-<li class="toctree-l1"><a class="reference internal" href="model-57.html">Example-58: Frequency (parametric derivatives for linear system)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-55.html">Example-56: Trajectory (Differentiable trajectory generation)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-56.html">Example-57: Trajectory (Approximate invariants spread)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-57.html">Example-58: Frequency (Parametric derivatives for linear system)</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API:</span></p>
 <ul>
@@ -196,10 +196,10 @@
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># calibration</span>
 
-<span class="kn">import</span> <span class="nn">torch</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
 
-<span class="kn">from</span> <span class="nn">model.library.transformations</span> <span class="kn">import</span> <span class="n">calibration_forward</span>
-<span class="kn">from</span> <span class="nn">model.library.transformations</span> <span class="kn">import</span> <span class="n">calibration_inverse</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">model.library.transformations</span><span class="w"> </span><span class="kn">import</span> <span class="n">calibration_forward</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">model.library.transformations</span><span class="w"> </span><span class="kn">import</span> <span class="n">calibration_inverse</span>
 
 <span class="n">gxx</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="mf">1.005</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
 <span class="n">gxy</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="mf">0.001</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
@@ -233,11 +233,11 @@
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># drift</span>
 
-<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
-<span class="kn">from</span> <span class="nn">os</span> <span class="kn">import</span> <span class="n">system</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">os</span><span class="w"> </span><span class="kn">import</span> <span class="n">system</span>
 
-<span class="kn">import</span> <span class="nn">torch</span>
-<span class="kn">from</span> <span class="nn">model.library.transformations</span> <span class="kn">import</span> <span class="n">drift</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">model.library.transformations</span><span class="w"> </span><span class="kn">import</span> <span class="n">drift</span>
 
 <span class="n">ptc</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s1">&#39;ptc&#39;</span><span class="p">)</span>
 <span class="n">obs</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s1">&#39;track.obs0001.p0001&#39;</span><span class="p">)</span>
@@ -302,12 +302,12 @@
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># drift (with kinematic)</span>
 
-<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
-<span class="kn">from</span> <span class="nn">os</span> <span class="kn">import</span> <span class="n">system</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">os</span><span class="w"> </span><span class="kn">import</span> <span class="n">system</span>
 
-<span class="kn">import</span> <span class="nn">torch</span>
-<span class="kn">from</span> <span class="nn">model.library.transformations</span> <span class="kn">import</span> <span class="n">drift</span>
-<span class="kn">from</span> <span class="nn">model.library.transformations</span> <span class="kn">import</span> <span class="n">kinematic</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">model.library.transformations</span><span class="w"> </span><span class="kn">import</span> <span class="n">drift</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">model.library.transformations</span><span class="w"> </span><span class="kn">import</span> <span class="n">kinematic</span>
 
 <span class="n">ptc</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s1">&#39;ptc&#39;</span><span class="p">)</span>
 <span class="n">obs</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s1">&#39;track.obs0001.p0001&#39;</span><span class="p">)</span>
@@ -374,11 +374,11 @@
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># corrector</span>
 
-<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
-<span class="kn">from</span> <span class="nn">os</span> <span class="kn">import</span> <span class="n">system</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">os</span><span class="w"> </span><span class="kn">import</span> <span class="n">system</span>
 
-<span class="kn">import</span> <span class="nn">torch</span>
-<span class="kn">from</span> <span class="nn">model.library.transformations</span> <span class="kn">import</span> <span class="n">corrector</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">model.library.transformations</span><span class="w"> </span><span class="kn">import</span> <span class="n">corrector</span>
 
 <span class="n">ptc</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s1">&#39;ptc&#39;</span><span class="p">)</span>
 <span class="n">obs</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s1">&#39;track.obs0001.p0001&#39;</span><span class="p">)</span>
@@ -445,14 +445,14 @@
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># focusing quadrupole</span>
 
-<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
-<span class="kn">from</span> <span class="nn">os</span> <span class="kn">import</span> <span class="n">system</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">os</span><span class="w"> </span><span class="kn">import</span> <span class="n">system</span>
 
 <span class="n">ptc</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s1">&#39;ptc&#39;</span><span class="p">)</span>
 <span class="n">obs</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s1">&#39;track.obs0001.p0001&#39;</span><span class="p">)</span>
 
-<span class="kn">import</span> <span class="nn">torch</span>
-<span class="kn">from</span> <span class="nn">model.library.transformations</span> <span class="kn">import</span> <span class="n">fquad</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">model.library.transformations</span><span class="w"> </span><span class="kn">import</span> <span class="n">fquad</span>
 
 <span class="n">kn</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
 <span class="n">dp</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="mf">0.005</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
@@ -515,11 +515,11 @@
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># defocusing quadrupole</span>
 
-<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
-<span class="kn">from</span> <span class="nn">os</span> <span class="kn">import</span> <span class="n">system</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">os</span><span class="w"> </span><span class="kn">import</span> <span class="n">system</span>
 
-<span class="kn">import</span> <span class="nn">torch</span>
-<span class="kn">from</span> <span class="nn">model.library.transformations</span> <span class="kn">import</span> <span class="n">dquad</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">model.library.transformations</span><span class="w"> </span><span class="kn">import</span> <span class="n">dquad</span>
 
 <span class="n">ptc</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s1">&#39;ptc&#39;</span><span class="p">)</span>
 <span class="n">obs</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s1">&#39;track.obs0001.p0001&#39;</span><span class="p">)</span>
@@ -585,11 +585,11 @@
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># generic quadrupole</span>
 
-<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
-<span class="kn">from</span> <span class="nn">os</span> <span class="kn">import</span> <span class="n">system</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">os</span><span class="w"> </span><span class="kn">import</span> <span class="n">system</span>
 
-<span class="kn">import</span> <span class="nn">torch</span>
-<span class="kn">from</span> <span class="nn">model.library.transformations</span> <span class="kn">import</span> <span class="n">quadrupole</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">model.library.transformations</span><span class="w"> </span><span class="kn">import</span> <span class="n">quadrupole</span>
 
 <span class="n">ptc</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s1">&#39;ptc&#39;</span><span class="p">)</span>
 <span class="n">obs</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s1">&#39;track.obs0001.p0001&#39;</span><span class="p">)</span>
@@ -656,9 +656,9 @@
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># generic linear transformation</span>
 
-<span class="kn">import</span> <span class="nn">torch</span>
-<span class="kn">from</span> <span class="nn">model.library.transformations</span> <span class="kn">import</span> <span class="n">quadrupole</span>
-<span class="kn">from</span> <span class="nn">model.library.transformations</span> <span class="kn">import</span> <span class="n">linear</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">model.library.transformations</span><span class="w"> </span><span class="kn">import</span> <span class="n">quadrupole</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">model.library.transformations</span><span class="w"> </span><span class="kn">import</span> <span class="n">linear</span>
 
 <span class="n">kn</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
 <span class="n">ks</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="o">+</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
@@ -694,11 +694,11 @@
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># quadrupole kick</span>
 
-<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
-<span class="kn">from</span> <span class="nn">os</span> <span class="kn">import</span> <span class="n">system</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">os</span><span class="w"> </span><span class="kn">import</span> <span class="n">system</span>
 
-<span class="kn">import</span> <span class="nn">torch</span>
-<span class="kn">from</span> <span class="nn">model.library.transformations</span> <span class="kn">import</span> <span class="n">gradient</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">model.library.transformations</span><span class="w"> </span><span class="kn">import</span> <span class="n">gradient</span>
 
 <span class="n">ptc</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s1">&#39;ptc&#39;</span><span class="p">)</span>
 <span class="n">obs</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s1">&#39;track.obs0001.p0001&#39;</span><span class="p">)</span>
@@ -764,11 +764,11 @@
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># sextupole kick</span>
 
-<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
-<span class="kn">from</span> <span class="nn">os</span> <span class="kn">import</span> <span class="n">system</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">os</span><span class="w"> </span><span class="kn">import</span> <span class="n">system</span>
 
-<span class="kn">import</span> <span class="nn">torch</span>
-<span class="kn">from</span> <span class="nn">model.library.transformations</span> <span class="kn">import</span> <span class="n">sextupole</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">model.library.transformations</span><span class="w"> </span><span class="kn">import</span> <span class="n">sextupole</span>
 
 <span class="n">ptc</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s1">&#39;ptc&#39;</span><span class="p">)</span>
 <span class="n">obs</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s1">&#39;track.obs0001.p0001&#39;</span><span class="p">)</span>
@@ -833,11 +833,11 @@
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># octupole kick</span>
 
-<span class="kn">import</span> <span class="nn">torch</span>
-<span class="kn">from</span> <span class="nn">model.library.transformations</span> <span class="kn">import</span> <span class="n">octupole</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">model.library.transformations</span><span class="w"> </span><span class="kn">import</span> <span class="n">octupole</span>
 
-<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
-<span class="kn">from</span> <span class="nn">os</span> <span class="kn">import</span> <span class="n">system</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">os</span><span class="w"> </span><span class="kn">import</span> <span class="n">system</span>
 
 <span class="n">ptc</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s1">&#39;ptc&#39;</span><span class="p">)</span>
 <span class="n">obs</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s1">&#39;track.obs0001.p0001&#39;</span><span class="p">)</span>
@@ -902,11 +902,11 @@
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># pure dipole (no edge effects if e1 = e2 = 0)</span>
 
-<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
-<span class="kn">from</span> <span class="nn">os</span> <span class="kn">import</span> <span class="n">system</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">os</span><span class="w"> </span><span class="kn">import</span> <span class="n">system</span>
 
-<span class="kn">import</span> <span class="nn">torch</span>
-<span class="kn">from</span> <span class="nn">model.library.transformations</span> <span class="kn">import</span> <span class="n">dipole</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">model.library.transformations</span><span class="w"> </span><span class="kn">import</span> <span class="n">dipole</span>
 
 <span class="n">ptc</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s1">&#39;ptc&#39;</span><span class="p">)</span>
 <span class="n">obs</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s1">&#39;track.obs0001.p0001&#39;</span><span class="p">)</span>
@@ -972,11 +972,11 @@
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># combined function dipole (no edge effects if e1 = e2 = 0)</span>
 
-<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
-<span class="kn">from</span> <span class="nn">os</span> <span class="kn">import</span> <span class="n">system</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">os</span><span class="w"> </span><span class="kn">import</span> <span class="n">system</span>
 
-<span class="kn">import</span> <span class="nn">torch</span>
-<span class="kn">from</span> <span class="nn">model.library.transformations</span> <span class="kn">import</span> <span class="n">bend</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">model.library.transformations</span><span class="w"> </span><span class="kn">import</span> <span class="n">bend</span>
 
 <span class="n">ptc</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s1">&#39;ptc&#39;</span><span class="p">)</span>
 <span class="n">obs</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s1">&#39;track.obs0001.p0001&#39;</span><span class="p">)</span>
@@ -1044,12 +1044,12 @@
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># combined function dipole with edge effects</span>
 
-<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
-<span class="kn">from</span> <span class="nn">os</span> <span class="kn">import</span> <span class="n">system</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">os</span><span class="w"> </span><span class="kn">import</span> <span class="n">system</span>
 
-<span class="kn">import</span> <span class="nn">torch</span>
-<span class="kn">from</span> <span class="nn">model.library.transformations</span> <span class="kn">import</span> <span class="n">bend</span>
-<span class="kn">from</span> <span class="nn">model.library.transformations</span> <span class="kn">import</span> <span class="n">wedge</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">model.library.transformations</span><span class="w"> </span><span class="kn">import</span> <span class="n">bend</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">model.library.transformations</span><span class="w"> </span><span class="kn">import</span> <span class="n">wedge</span>
 
 <span class="n">ptc</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s1">&#39;ptc&#39;</span><span class="p">)</span>
 <span class="n">obs</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s1">&#39;track.obs0001.p0001&#39;</span><span class="p">)</span>
@@ -1122,13 +1122,13 @@
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># translations (exact alignment, straight layout, act on a thin representation at the entrance frame)</span>
 
-<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
-<span class="kn">from</span> <span class="nn">os</span> <span class="kn">import</span> <span class="n">system</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">os</span><span class="w"> </span><span class="kn">import</span> <span class="n">system</span>
 
-<span class="kn">import</span> <span class="nn">torch</span>
-<span class="kn">from</span> <span class="nn">model.library.transformations</span> <span class="kn">import</span> <span class="n">drift</span>
-<span class="kn">from</span> <span class="nn">model.library.transformations</span> <span class="kn">import</span> <span class="n">quadrupole</span>
-<span class="kn">from</span> <span class="nn">model.library.transformations</span> <span class="kn">import</span> <span class="n">tx</span><span class="p">,</span> <span class="n">ty</span><span class="p">,</span> <span class="n">tz</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">model.library.transformations</span><span class="w"> </span><span class="kn">import</span> <span class="n">drift</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">model.library.transformations</span><span class="w"> </span><span class="kn">import</span> <span class="n">quadrupole</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">model.library.transformations</span><span class="w"> </span><span class="kn">import</span> <span class="n">tx</span><span class="p">,</span> <span class="n">ty</span><span class="p">,</span> <span class="n">tz</span>
 
 <span class="n">ptc</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s1">&#39;ptc&#39;</span><span class="p">)</span>
 <span class="n">obs</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s1">&#39;track.obs0001.p0001&#39;</span><span class="p">)</span>
@@ -1213,13 +1213,13 @@
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># translations + rotations (exact alignment, straight layout, act on a thin representation at the entrance frame)</span>
 
-<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
-<span class="kn">from</span> <span class="nn">os</span> <span class="kn">import</span> <span class="n">system</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">os</span><span class="w"> </span><span class="kn">import</span> <span class="n">system</span>
 
-<span class="kn">import</span> <span class="nn">torch</span>
-<span class="kn">from</span> <span class="nn">model.library.transformations</span> <span class="kn">import</span> <span class="n">quadrupole</span>
-<span class="kn">from</span> <span class="nn">model.library.transformations</span> <span class="kn">import</span> <span class="n">tx</span><span class="p">,</span> <span class="n">ty</span><span class="p">,</span> <span class="n">tz</span>
-<span class="kn">from</span> <span class="nn">model.library.transformations</span> <span class="kn">import</span> <span class="n">rx</span><span class="p">,</span> <span class="n">ry</span><span class="p">,</span> <span class="n">rz</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">model.library.transformations</span><span class="w"> </span><span class="kn">import</span> <span class="n">quadrupole</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">model.library.transformations</span><span class="w"> </span><span class="kn">import</span> <span class="n">tx</span><span class="p">,</span> <span class="n">ty</span><span class="p">,</span> <span class="n">tz</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">model.library.transformations</span><span class="w"> </span><span class="kn">import</span> <span class="n">rx</span><span class="p">,</span> <span class="n">ry</span><span class="p">,</span> <span class="n">rz</span>
 
 <span class="n">ptc</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s1">&#39;ptc&#39;</span><span class="p">)</span>
 <span class="n">obs</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s1">&#39;track.obs0001.p0001&#39;</span><span class="p">)</span>
@@ -1320,14 +1320,14 @@
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># translations + rotations (exact alignment, curved layout, act on a thin representation at the entrance frame)</span>
 
-<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
-<span class="kn">from</span> <span class="nn">os</span> <span class="kn">import</span> <span class="n">system</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">os</span><span class="w"> </span><span class="kn">import</span> <span class="n">system</span>
 
-<span class="kn">import</span> <span class="nn">torch</span>
-<span class="kn">from</span> <span class="nn">model.library.transformations</span> <span class="kn">import</span> <span class="n">bend</span>
-<span class="kn">from</span> <span class="nn">model.library.transformations</span> <span class="kn">import</span> <span class="n">wedge</span>
-<span class="kn">from</span> <span class="nn">model.library.transformations</span> <span class="kn">import</span> <span class="n">tx</span><span class="p">,</span> <span class="n">ty</span><span class="p">,</span> <span class="n">tz</span>
-<span class="kn">from</span> <span class="nn">model.library.transformations</span> <span class="kn">import</span> <span class="n">rx</span><span class="p">,</span> <span class="n">ry</span><span class="p">,</span> <span class="n">rz</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">model.library.transformations</span><span class="w"> </span><span class="kn">import</span> <span class="n">bend</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">model.library.transformations</span><span class="w"> </span><span class="kn">import</span> <span class="n">wedge</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">model.library.transformations</span><span class="w"> </span><span class="kn">import</span> <span class="n">tx</span><span class="p">,</span> <span class="n">ty</span><span class="p">,</span> <span class="n">tz</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">model.library.transformations</span><span class="w"> </span><span class="kn">import</span> <span class="n">rx</span><span class="p">,</span> <span class="n">ry</span><span class="p">,</span> <span class="n">rz</span>
 
 <span class="n">ptc</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s1">&#39;ptc&#39;</span><span class="p">)</span>
 <span class="n">obs</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s1">&#39;track.obs0001.p0001&#39;</span><span class="p">)</span>
@@ -1437,11 +1437,11 @@
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># exact sector bend (without fringe)</span>
 
-<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
-<span class="kn">from</span> <span class="nn">os</span> <span class="kn">import</span> <span class="n">system</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">os</span><span class="w"> </span><span class="kn">import</span> <span class="n">system</span>
 
-<span class="kn">import</span> <span class="nn">torch</span>
-<span class="kn">from</span> <span class="nn">model.library.transformations</span> <span class="kn">import</span> <span class="n">sector_bend</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">model.library.transformations</span><span class="w"> </span><span class="kn">import</span> <span class="n">sector_bend</span>
 
 <span class="n">ptc</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s1">&#39;ptc&#39;</span><span class="p">)</span>
 <span class="n">obs</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s1">&#39;track.obs0001.p0001&#39;</span><span class="p">)</span>
@@ -1517,12 +1517,12 @@
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># exact sector bend (with fringe)</span>
 
-<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
-<span class="kn">from</span> <span class="nn">os</span> <span class="kn">import</span> <span class="n">system</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">os</span><span class="w"> </span><span class="kn">import</span> <span class="n">system</span>
 
-<span class="kn">import</span> <span class="nn">torch</span>
-<span class="kn">from</span> <span class="nn">model.library.transformations</span> <span class="kn">import</span> <span class="n">sector_bend</span>
-<span class="kn">from</span> <span class="nn">model.library.transformations</span> <span class="kn">import</span> <span class="n">sector_bend_fringe</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">model.library.transformations</span><span class="w"> </span><span class="kn">import</span> <span class="n">sector_bend</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">model.library.transformations</span><span class="w"> </span><span class="kn">import</span> <span class="n">sector_bend_fringe</span>
 
 <span class="n">ptc</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s1">&#39;ptc&#39;</span><span class="p">)</span>
 <span class="n">obs</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s1">&#39;track.obs0001.p0001&#39;</span><span class="p">)</span>
@@ -1600,14 +1600,14 @@
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># exact sector bend (with fringe and wedges)</span>
 
-<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
-<span class="kn">from</span> <span class="nn">os</span> <span class="kn">import</span> <span class="n">system</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">os</span><span class="w"> </span><span class="kn">import</span> <span class="n">system</span>
 
-<span class="kn">import</span> <span class="nn">torch</span>
-<span class="kn">from</span> <span class="nn">model.library.transformations</span> <span class="kn">import</span> <span class="n">sector_bend</span>
-<span class="kn">from</span> <span class="nn">model.library.transformations</span> <span class="kn">import</span> <span class="n">sector_bend_fringe</span>
-<span class="kn">from</span> <span class="nn">model.library.transformations</span> <span class="kn">import</span> <span class="n">sector_bend_wedge</span>
-<span class="kn">from</span> <span class="nn">model.library.transformations</span> <span class="kn">import</span> <span class="n">polar</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">model.library.transformations</span><span class="w"> </span><span class="kn">import</span> <span class="n">sector_bend</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">model.library.transformations</span><span class="w"> </span><span class="kn">import</span> <span class="n">sector_bend_fringe</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">model.library.transformations</span><span class="w"> </span><span class="kn">import</span> <span class="n">sector_bend_wedge</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">model.library.transformations</span><span class="w"> </span><span class="kn">import</span> <span class="n">polar</span>
 
 <span class="n">ptc</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s1">&#39;ptc&#39;</span><span class="p">)</span>
 <span class="n">obs</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s1">&#39;track.obs0001.p0001&#39;</span><span class="p">)</span>
@@ -1689,10 +1689,10 @@
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># linear wedge matrix</span>
 
-<span class="kn">from</span> <span class="nn">model.library.transformations</span> <span class="kn">import</span> <span class="n">wedge</span>
-<span class="kn">from</span> <span class="nn">model.library.transformations</span> <span class="kn">import</span> <span class="n">polar</span>
-<span class="kn">from</span> <span class="nn">model.library.transformations</span> <span class="kn">import</span> <span class="n">sector_bend_fringe</span>
-<span class="kn">from</span> <span class="nn">model.library.transformations</span> <span class="kn">import</span> <span class="n">sector_bend_wedge</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">model.library.transformations</span><span class="w"> </span><span class="kn">import</span> <span class="n">wedge</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">model.library.transformations</span><span class="w"> </span><span class="kn">import</span> <span class="n">polar</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">model.library.transformations</span><span class="w"> </span><span class="kn">import</span> <span class="n">sector_bend_fringe</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">model.library.transformations</span><span class="w"> </span><span class="kn">import</span> <span class="n">sector_bend_wedge</span>
 
 <span class="n">length</span> <span class="o">=</span> <span class="mf">2.5</span>
 <span class="n">angle</span> <span class="o">=</span> <span class="mf">0.1</span>
@@ -1708,13 +1708,13 @@
 <span class="n">e2</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">e2</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
 <span class="n">dp</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">dp</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
 
-<span class="k">def</span> <span class="nf">wedge_entrance</span><span class="p">(</span><span class="n">state</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">wedge_entrance</span><span class="p">(</span><span class="n">state</span><span class="p">):</span>
     <span class="n">state</span> <span class="o">=</span> <span class="n">polar</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">e1</span><span class="p">,</span> <span class="n">dp</span><span class="p">)</span>
     <span class="n">state</span> <span class="o">=</span> <span class="n">sector_bend_fringe</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="o">+</span><span class="n">length</span><span class="o">/</span><span class="n">angle</span><span class="p">,</span> <span class="n">dp</span><span class="p">)</span>
     <span class="n">state</span> <span class="o">=</span> <span class="n">sector_bend_wedge</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="o">-</span><span class="n">e1</span><span class="p">,</span> <span class="n">length</span><span class="o">/</span><span class="n">angle</span><span class="p">,</span> <span class="n">dp</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">state</span>
 
-<span class="k">def</span> <span class="nf">wedge_exit</span><span class="p">(</span><span class="n">state</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">wedge_exit</span><span class="p">(</span><span class="n">state</span><span class="p">):</span>
     <span class="n">state</span> <span class="o">=</span> <span class="n">sector_bend_wedge</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="o">-</span><span class="n">e2</span><span class="p">,</span> <span class="n">length</span><span class="o">/</span><span class="n">angle</span><span class="p">,</span> <span class="n">dp</span><span class="p">)</span>
     <span class="n">state</span> <span class="o">=</span> <span class="n">sector_bend_fringe</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="o">-</span><span class="n">length</span><span class="o">/</span><span class="n">angle</span><span class="p">,</span> <span class="n">dp</span><span class="p">)</span>
     <span class="n">state</span> <span class="o">=</span> <span class="n">polar</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">e2</span><span class="p">,</span> <span class="n">dp</span><span class="p">)</span>

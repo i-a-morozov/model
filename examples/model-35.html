@@ -7,7 +7,7 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Example-36: Orbit (ORM optics correction) &mdash; model  documentation</title>
-      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../_static/nbsphinx-code-cells.css?v=2aa19091" />
 
@@ -104,9 +104,9 @@
 <li class="toctree-l1"><a class="reference internal" href="model-52.html">Example-53: Coupling (Minimal tune distance computation)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="model-53.html">Example-54: Coupling (Coupling correction based on minimal tune)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="model-54.html">Example-55: Demo</a></li>
-<li class="toctree-l1"><a class="reference internal" href="model-55.html">Example-56: Trajectory</a></li>
-<li class="toctree-l1"><a class="reference internal" href="model-56.html">Example-57: Approximate invariants spread</a></li>
-<li class="toctree-l1"><a class="reference internal" href="model-57.html">Example-58: Frequency (parametric derivatives for linear system)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-55.html">Example-56: Trajectory (Differentiable trajectory generation)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-56.html">Example-57: Trajectory (Approximate invariants spread)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-57.html">Example-58: Frequency (Parametric derivatives for linear system)</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API:</span></p>
 <ul>
@@ -207,49 +207,49 @@
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Import</span>
 
-<span class="kn">from</span> <span class="nn">pprint</span> <span class="kn">import</span> <span class="n">pprint</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pprint</span><span class="w"> </span><span class="kn">import</span> <span class="n">pprint</span>
 
-<span class="kn">import</span> <span class="nn">torch</span>
-<span class="kn">from</span> <span class="nn">torch.utils.data</span> <span class="kn">import</span> <span class="n">TensorDataset</span>
-<span class="kn">from</span> <span class="nn">torch.utils.data</span> <span class="kn">import</span> <span class="n">DataLoader</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">torch.utils.data</span><span class="w"> </span><span class="kn">import</span> <span class="n">TensorDataset</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">torch.utils.data</span><span class="w"> </span><span class="kn">import</span> <span class="n">DataLoader</span>
 
-<span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="kn">import</span> <span class="n">Lasso</span>
-<span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="kn">import</span> <span class="n">OrthogonalMatchingPursuit</span>
-<span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="kn">import</span> <span class="n">Lars</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.linear_model</span><span class="w"> </span><span class="kn">import</span> <span class="n">Lasso</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.linear_model</span><span class="w"> </span><span class="kn">import</span> <span class="n">OrthogonalMatchingPursuit</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.linear_model</span><span class="w"> </span><span class="kn">import</span> <span class="n">Lars</span>
 
-<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
 
-<span class="kn">import</span> <span class="nn">matplotlib</span>
-<span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">pyplot</span> <span class="k">as</span> <span class="n">plt</span>
-<span class="kn">from</span> <span class="nn">matplotlib.patches</span> <span class="kn">import</span> <span class="n">Rectangle</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">matplotlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">matplotlib.patches</span><span class="w"> </span><span class="kn">import</span> <span class="n">Rectangle</span>
 <span class="n">matplotlib</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s1">&#39;text.usetex&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
 
-<span class="kn">from</span> <span class="nn">twiss</span> <span class="kn">import</span> <span class="n">twiss</span>
-<span class="kn">from</span> <span class="nn">twiss</span> <span class="kn">import</span> <span class="n">propagate</span>
-<span class="kn">from</span> <span class="nn">twiss</span> <span class="kn">import</span> <span class="n">wolski_to_cs</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">twiss</span><span class="w"> </span><span class="kn">import</span> <span class="n">twiss</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">twiss</span><span class="w"> </span><span class="kn">import</span> <span class="n">propagate</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">twiss</span><span class="w"> </span><span class="kn">import</span> <span class="n">wolski_to_cs</span>
 
-<span class="kn">from</span> <span class="nn">model.library.corrector</span> <span class="kn">import</span> <span class="n">Corrector</span>
-<span class="kn">from</span> <span class="nn">model.library.line</span> <span class="kn">import</span> <span class="n">Line</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">model.library.corrector</span><span class="w"> </span><span class="kn">import</span> <span class="n">Corrector</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">model.library.line</span><span class="w"> </span><span class="kn">import</span> <span class="n">Line</span>
 
-<span class="kn">from</span> <span class="nn">model.command.util</span> <span class="kn">import</span> <span class="n">chop</span>
-<span class="kn">from</span> <span class="nn">model.command.util</span> <span class="kn">import</span> <span class="n">select</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">model.command.util</span><span class="w"> </span><span class="kn">import</span> <span class="n">chop</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">model.command.util</span><span class="w"> </span><span class="kn">import</span> <span class="n">select</span>
 
-<span class="kn">from</span> <span class="nn">model.command.external</span> <span class="kn">import</span> <span class="n">load_sdds</span>
-<span class="kn">from</span> <span class="nn">model.command.external</span> <span class="kn">import</span> <span class="n">load_lattice</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">model.command.external</span><span class="w"> </span><span class="kn">import</span> <span class="n">load_sdds</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">model.command.external</span><span class="w"> </span><span class="kn">import</span> <span class="n">load_lattice</span>
 
-<span class="kn">from</span> <span class="nn">model.command.build</span> <span class="kn">import</span> <span class="n">build</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">model.command.build</span><span class="w"> </span><span class="kn">import</span> <span class="n">build</span>
 
-<span class="kn">from</span> <span class="nn">model.command.wrapper</span> <span class="kn">import</span> <span class="n">group</span>
-<span class="kn">from</span> <span class="nn">model.command.wrapper</span> <span class="kn">import</span> <span class="n">forward</span>
-<span class="kn">from</span> <span class="nn">model.command.wrapper</span> <span class="kn">import</span> <span class="n">inverse</span>
-<span class="kn">from</span> <span class="nn">model.command.wrapper</span> <span class="kn">import</span> <span class="n">normalize</span>
-<span class="kn">from</span> <span class="nn">model.command.wrapper</span> <span class="kn">import</span> <span class="n">Wrapper</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">model.command.wrapper</span><span class="w"> </span><span class="kn">import</span> <span class="n">group</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">model.command.wrapper</span><span class="w"> </span><span class="kn">import</span> <span class="n">forward</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">model.command.wrapper</span><span class="w"> </span><span class="kn">import</span> <span class="n">inverse</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">model.command.wrapper</span><span class="w"> </span><span class="kn">import</span> <span class="n">normalize</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">model.command.wrapper</span><span class="w"> </span><span class="kn">import</span> <span class="n">Wrapper</span>
 
-<span class="kn">from</span> <span class="nn">model.command.orbit</span> <span class="kn">import</span> <span class="n">orbit</span>
-<span class="kn">from</span> <span class="nn">model.command.orbit</span> <span class="kn">import</span> <span class="n">ORM</span>
-<span class="kn">from</span> <span class="nn">model.command.orbit</span> <span class="kn">import</span> <span class="n">ORM_IJ</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">model.command.orbit</span><span class="w"> </span><span class="kn">import</span> <span class="n">orbit</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">model.command.orbit</span><span class="w"> </span><span class="kn">import</span> <span class="n">ORM</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">model.command.orbit</span><span class="w"> </span><span class="kn">import</span> <span class="n">ORM_IJ</span>
 
-<span class="kn">from</span> <span class="nn">model.command.layout</span> <span class="kn">import</span> <span class="n">Layout</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">model.command.layout</span><span class="w"> </span><span class="kn">import</span> <span class="n">Layout</span>
 </pre></div>
 </div>
 </div>
@@ -489,7 +489,7 @@ torch.Size([32, 72])
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Setup twiss computation</span>
 
-<span class="k">def</span> <span class="nf">task</span><span class="p">(</span><span class="n">line</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">task</span><span class="p">(</span><span class="n">line</span><span class="p">):</span>
 
     <span class="n">line</span><span class="p">:</span><span class="n">Line</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">clone</span><span class="p">()</span>
 
@@ -632,7 +632,7 @@ torch.Size([32, 72])
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Define parametric ORM</span>
 
-<span class="k">def</span> <span class="nf">ORM_knks</span><span class="p">(</span><span class="n">knks</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">ORM_knks</span><span class="p">(</span><span class="n">knks</span><span class="p">):</span>
     <span class="n">kn</span><span class="p">,</span> <span class="n">ks</span> <span class="o">=</span> <span class="n">knks</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">ORM</span><span class="p">(</span><span class="n">ring</span><span class="p">,</span> <span class="n">fp</span><span class="p">,</span> <span class="p">[</span><span class="n">kn</span><span class="p">,</span> <span class="n">ks</span><span class="p">],</span> <span class="p">(</span><span class="s1">&#39;kn&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;Quadrupole&#39;</span><span class="p">],</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;ks&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;Quadrupole&#39;</span><span class="p">],</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span> <span class="n">limit</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">epsilon</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
 
@@ -890,44 +890,44 @@ tensor(0.0004, dtype=torch.float64)
 <span class="c1"># It might be usefull to compute block separately</span>
 <span class="c1"># This can be done directly with orbit function as follows</span>
 
-<span class="k">def</span> <span class="nf">Rxx</span><span class="p">(</span><span class="n">knks</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">Rxx</span><span class="p">(</span><span class="n">knks</span><span class="p">):</span>
     <span class="n">kn</span><span class="p">,</span> <span class="n">ks</span> <span class="o">=</span> <span class="n">knks</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
     <span class="n">count</span> <span class="o">=</span> <span class="n">ring</span><span class="o">.</span><span class="n">describe</span><span class="p">[</span><span class="s1">&#39;Corrector&#39;</span><span class="p">]</span>
     <span class="n">cx</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">count</span><span class="o">*</span><span class="p">[</span><span class="mf">0.0</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">line</span><span class="o">.</span><span class="n">dtype</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="n">line</span><span class="o">.</span><span class="n">device</span><span class="p">)</span>
-    <span class="k">def</span> <span class="nf">task</span><span class="p">(</span><span class="n">cx</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">task</span><span class="p">(</span><span class="n">cx</span><span class="p">):</span>
         <span class="n">points</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">orbit</span><span class="p">(</span><span class="n">ring</span><span class="p">,</span> <span class="n">fp</span><span class="p">,</span> <span class="p">[</span><span class="n">cx</span><span class="p">,</span> <span class="n">kn</span><span class="p">,</span> <span class="n">ks</span><span class="p">],</span> <span class="p">(</span><span class="s1">&#39;cx&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;Corrector&#39;</span><span class="p">],</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;kn&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;Quadrupole&#39;</span><span class="p">],</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;ks&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;Quadrupole&#39;</span><span class="p">],</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span> <span class="n">advance</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">full</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">alignment</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">epsilon</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
         <span class="n">qx</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">qy</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">points</span><span class="o">.</span><span class="n">T</span>
         <span class="k">return</span> <span class="n">qx</span>
     <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">func</span><span class="o">.</span><span class="n">jacrev</span><span class="p">(</span><span class="n">task</span><span class="p">)(</span><span class="n">cx</span><span class="p">)</span>
 
 
-<span class="k">def</span> <span class="nf">Rxy</span><span class="p">(</span><span class="n">knks</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">Rxy</span><span class="p">(</span><span class="n">knks</span><span class="p">):</span>
     <span class="n">kn</span><span class="p">,</span> <span class="n">ks</span> <span class="o">=</span> <span class="n">knks</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
     <span class="n">count</span> <span class="o">=</span> <span class="n">ring</span><span class="o">.</span><span class="n">describe</span><span class="p">[</span><span class="s1">&#39;Corrector&#39;</span><span class="p">]</span>
     <span class="n">cy</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">count</span><span class="o">*</span><span class="p">[</span><span class="mf">0.0</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">line</span><span class="o">.</span><span class="n">dtype</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="n">line</span><span class="o">.</span><span class="n">device</span><span class="p">)</span>
-    <span class="k">def</span> <span class="nf">task</span><span class="p">(</span><span class="n">cy</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">task</span><span class="p">(</span><span class="n">cy</span><span class="p">):</span>
         <span class="n">points</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">orbit</span><span class="p">(</span><span class="n">ring</span><span class="p">,</span> <span class="n">fp</span><span class="p">,</span> <span class="p">[</span><span class="n">cy</span><span class="p">,</span> <span class="n">kn</span><span class="p">,</span> <span class="n">ks</span><span class="p">],</span> <span class="p">(</span><span class="s1">&#39;cy&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;Corrector&#39;</span><span class="p">],</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;kn&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;Quadrupole&#39;</span><span class="p">],</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;ks&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;Quadrupole&#39;</span><span class="p">],</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span> <span class="n">advance</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">full</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">alignment</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">epsilon</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
         <span class="n">qx</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">qy</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">points</span><span class="o">.</span><span class="n">T</span>
         <span class="k">return</span> <span class="n">qx</span>
     <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">func</span><span class="o">.</span><span class="n">jacrev</span><span class="p">(</span><span class="n">task</span><span class="p">)(</span><span class="n">cy</span><span class="p">)</span>
 
 
-<span class="k">def</span> <span class="nf">Ryx</span><span class="p">(</span><span class="n">knks</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">Ryx</span><span class="p">(</span><span class="n">knks</span><span class="p">):</span>
     <span class="n">kn</span><span class="p">,</span> <span class="n">ks</span> <span class="o">=</span> <span class="n">knks</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
     <span class="n">count</span> <span class="o">=</span> <span class="n">ring</span><span class="o">.</span><span class="n">describe</span><span class="p">[</span><span class="s1">&#39;Corrector&#39;</span><span class="p">]</span>
     <span class="n">cx</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">count</span><span class="o">*</span><span class="p">[</span><span class="mf">0.0</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">line</span><span class="o">.</span><span class="n">dtype</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="n">line</span><span class="o">.</span><span class="n">device</span><span class="p">)</span>
-    <span class="k">def</span> <span class="nf">task</span><span class="p">(</span><span class="n">cy</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">task</span><span class="p">(</span><span class="n">cy</span><span class="p">):</span>
         <span class="n">points</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">orbit</span><span class="p">(</span><span class="n">ring</span><span class="p">,</span> <span class="n">fp</span><span class="p">,</span> <span class="p">[</span><span class="n">cx</span><span class="p">,</span> <span class="n">kn</span><span class="p">,</span> <span class="n">ks</span><span class="p">],</span> <span class="p">(</span><span class="s1">&#39;cx&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;Corrector&#39;</span><span class="p">],</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;kn&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;Quadrupole&#39;</span><span class="p">],</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;ks&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;Quadrupole&#39;</span><span class="p">],</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span> <span class="n">advance</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">full</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">alignment</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">epsilon</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
         <span class="n">qx</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">qy</span><span class="p">,</span> <span class="n">_</span>  <span class="o">=</span> <span class="n">points</span><span class="o">.</span><span class="n">T</span>
         <span class="k">return</span> <span class="n">qy</span>
     <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">func</span><span class="o">.</span><span class="n">jacrev</span><span class="p">(</span><span class="n">task</span><span class="p">)(</span><span class="n">cx</span><span class="p">)</span>
 
 
-<span class="k">def</span> <span class="nf">Ryy</span><span class="p">(</span><span class="n">knks</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">Ryy</span><span class="p">(</span><span class="n">knks</span><span class="p">):</span>
     <span class="n">kn</span><span class="p">,</span> <span class="n">ks</span> <span class="o">=</span> <span class="n">knks</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
     <span class="n">count</span> <span class="o">=</span> <span class="n">ring</span><span class="o">.</span><span class="n">describe</span><span class="p">[</span><span class="s1">&#39;Corrector&#39;</span><span class="p">]</span>
     <span class="n">cy</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">count</span><span class="o">*</span><span class="p">[</span><span class="mf">0.0</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">line</span><span class="o">.</span><span class="n">dtype</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="n">line</span><span class="o">.</span><span class="n">device</span><span class="p">)</span>
-    <span class="k">def</span> <span class="nf">task</span><span class="p">(</span><span class="n">cy</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">task</span><span class="p">(</span><span class="n">cy</span><span class="p">):</span>
         <span class="n">points</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">orbit</span><span class="p">(</span><span class="n">ring</span><span class="p">,</span> <span class="n">fp</span><span class="p">,</span> <span class="p">[</span><span class="n">cy</span><span class="p">,</span> <span class="n">kn</span><span class="p">,</span> <span class="n">ks</span><span class="p">],</span> <span class="p">(</span><span class="s1">&#39;cy&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;Corrector&#39;</span><span class="p">],</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;kn&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;Quadrupole&#39;</span><span class="p">],</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;ks&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;Quadrupole&#39;</span><span class="p">],</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span> <span class="n">advance</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">full</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">alignment</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">epsilon</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
         <span class="n">qx</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">qy</span><span class="p">,</span> <span class="n">_</span>  <span class="o">=</span> <span class="n">points</span><span class="o">.</span><span class="n">T</span>
         <span class="k">return</span> <span class="n">qy</span>
@@ -970,7 +970,7 @@ True
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Blocks can be used for more targeted correction</span>
 <span class="c1"># For example, coupling correction can be performed using only rxy and ryx blocks</span>
 
-<span class="k">def</span> <span class="nf">objective</span><span class="p">(</span><span class="n">kn</span><span class="p">,</span> <span class="n">ks</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">objective</span><span class="p">(</span><span class="n">kn</span><span class="p">,</span> <span class="n">ks</span><span class="p">):</span>
     <span class="n">knks</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">([</span><span class="n">kn</span><span class="p">,</span> <span class="n">ks</span><span class="p">])</span>
     <span class="n">rxy</span> <span class="o">=</span> <span class="n">Rxy</span><span class="p">(</span><span class="n">knks</span><span class="p">)</span>
     <span class="n">ryx</span> <span class="o">=</span> <span class="n">Ryx</span><span class="p">(</span><span class="n">knks</span><span class="p">)</span>
@@ -1028,7 +1028,7 @@ tensor(0.0296, dtype=torch.float64)
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Use rxx and ryy blocks to fit kn values</span>
 
-<span class="k">def</span> <span class="nf">objective</span><span class="p">(</span><span class="n">kn</span><span class="p">,</span> <span class="n">ks</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">objective</span><span class="p">(</span><span class="n">kn</span><span class="p">,</span> <span class="n">ks</span><span class="p">):</span>
     <span class="n">knks</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">([</span><span class="n">kn</span><span class="p">,</span> <span class="n">ks</span><span class="p">])</span>
     <span class="n">rxx</span> <span class="o">=</span> <span class="n">Rxx</span><span class="p">(</span><span class="n">knks</span><span class="p">)</span>
     <span class="n">ryy</span> <span class="o">=</span> <span class="n">Ryy</span><span class="p">(</span><span class="n">knks</span><span class="p">)</span>
@@ -1085,12 +1085,12 @@ tensor(0.0314, dtype=torch.float64)
 
 <span class="c1"># Set parametric ORM</span>
 
-<span class="k">def</span> <span class="nf">ORM_knks</span><span class="p">(</span><span class="n">kn</span><span class="p">,</span> <span class="n">ks</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">ORM_knks</span><span class="p">(</span><span class="n">kn</span><span class="p">,</span> <span class="n">ks</span><span class="p">):</span>
     <span class="k">return</span> <span class="n">ORM</span><span class="p">(</span><span class="n">ring</span><span class="p">,</span> <span class="n">fp</span><span class="p">,</span> <span class="p">[</span><span class="n">kn</span><span class="p">,</span> <span class="n">ks</span><span class="p">],</span> <span class="p">(</span><span class="s1">&#39;kn&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;Quadrupole&#39;</span><span class="p">],</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;ks&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;Quadrupole&#39;</span><span class="p">],</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span> <span class="n">limit</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">epsilon</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
 
 <span class="c1"># Setup objective function</span>
 
-<span class="k">def</span> <span class="nf">objective</span><span class="p">(</span><span class="n">kn</span><span class="p">,</span> <span class="n">ks</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">objective</span><span class="p">(</span><span class="n">kn</span><span class="p">,</span> <span class="n">ks</span><span class="p">):</span>
     <span class="n">orm</span> <span class="o">=</span> <span class="n">ORM_knks</span><span class="p">(</span><span class="n">kn</span><span class="p">,</span> <span class="n">ks</span><span class="p">)</span>
     <span class="k">return</span> <span class="p">(</span><span class="n">orm</span> <span class="o">-</span> <span class="n">orm_error</span><span class="p">)</span><span class="o">.</span><span class="n">norm</span><span class="p">()</span>
 
@@ -1391,7 +1391,7 @@ tensor(0.3623, dtype=torch.float64)
 <span class="c1"># As it is the case for orbit correction, evaluation of full ORM and selecting specific elements is now faster</span>
 <span class="c1"># Here, only several interations are performed for demonstration</span>
 
-<span class="k">def</span> <span class="nf">ORM_knks</span><span class="p">(</span><span class="n">IJs</span><span class="p">,</span> <span class="n">kn</span><span class="p">,</span> <span class="n">ks</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">ORM_knks</span><span class="p">(</span><span class="n">IJs</span><span class="p">,</span> <span class="n">kn</span><span class="p">,</span> <span class="n">ks</span><span class="p">):</span>
     <span class="n">result</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">for</span> <span class="n">IJ</span> <span class="ow">in</span> <span class="n">IJs</span><span class="p">:</span>
         <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ORM_IJ</span><span class="p">(</span><span class="n">line</span><span class="p">,</span> <span class="n">fp</span><span class="p">,</span> <span class="o">*</span><span class="n">IJ</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span> <span class="p">[</span><span class="n">kn</span><span class="p">,</span> <span class="n">ks</span><span class="p">],</span> <span class="p">(</span><span class="s1">&#39;kn&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;Quadrupole&#39;</span><span class="p">],</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;ks&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;Quadrupole&#39;</span><span class="p">],</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span> <span class="n">limit</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">epsilon</span><span class="o">=</span><span class="kc">None</span><span class="p">))</span>
@@ -1608,7 +1608,7 @@ tensor(0.3623, dtype=torch.float64)
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Set parametric ORM</span>
 
-<span class="k">def</span> <span class="nf">ORM_knks</span><span class="p">(</span><span class="n">kn</span><span class="p">,</span> <span class="n">ks</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">ORM_knks</span><span class="p">(</span><span class="n">kn</span><span class="p">,</span> <span class="n">ks</span><span class="p">):</span>
     <span class="k">return</span> <span class="n">ORM</span><span class="p">(</span><span class="n">ring</span><span class="p">,</span> <span class="n">fp</span><span class="p">,</span> <span class="p">[</span><span class="n">kn</span><span class="p">,</span> <span class="n">ks</span><span class="p">],</span> <span class="p">(</span><span class="s1">&#39;kn&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;Quadrupole&#39;</span><span class="p">],</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;ks&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;Quadrupole&#39;</span><span class="p">],</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span> <span class="n">limit</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">epsilon</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
 </pre></div>
 </div>

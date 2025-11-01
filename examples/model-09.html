@@ -7,7 +7,7 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Example-10: Dipole (element) &mdash; model  documentation</title>
-      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../_static/nbsphinx-code-cells.css?v=2aa19091" />
 
@@ -104,9 +104,9 @@
 <li class="toctree-l1"><a class="reference internal" href="model-52.html">Example-53: Coupling (Minimal tune distance computation)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="model-53.html">Example-54: Coupling (Coupling correction based on minimal tune)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="model-54.html">Example-55: Demo</a></li>
-<li class="toctree-l1"><a class="reference internal" href="model-55.html">Example-56: Trajectory</a></li>
-<li class="toctree-l1"><a class="reference internal" href="model-56.html">Example-57: Approximate invariants spread</a></li>
-<li class="toctree-l1"><a class="reference internal" href="model-57.html">Example-58: Frequency (parametric derivatives for linear system)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-55.html">Example-56: Trajectory (Differentiable trajectory generation)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-56.html">Example-57: Trajectory (Approximate invariants spread)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-57.html">Example-58: Frequency (Parametric derivatives for linear system)</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API:</span></p>
 <ul>
@@ -198,14 +198,14 @@
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
-<span class="kn">from</span> <span class="nn">os</span> <span class="kn">import</span> <span class="n">system</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">os</span><span class="w"> </span><span class="kn">import</span> <span class="n">system</span>
 
-<span class="kn">import</span> <span class="nn">torch</span>
-<span class="kn">from</span> <span class="nn">model.library.drift</span> <span class="kn">import</span> <span class="n">Drift</span>
-<span class="kn">from</span> <span class="nn">model.library.quadrupole</span> <span class="kn">import</span> <span class="n">Quadrupole</span>
-<span class="kn">from</span> <span class="nn">model.library.sextupole</span> <span class="kn">import</span> <span class="n">Sextupole</span>
-<span class="kn">from</span> <span class="nn">model.library.dipole</span> <span class="kn">import</span> <span class="n">Dipole</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">model.library.drift</span><span class="w"> </span><span class="kn">import</span> <span class="n">Drift</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">model.library.quadrupole</span><span class="w"> </span><span class="kn">import</span> <span class="n">Quadrupole</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">model.library.sextupole</span><span class="w"> </span><span class="kn">import</span> <span class="n">Sextupole</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">model.library.dipole</span><span class="w"> </span><span class="kn">import</span> <span class="n">Dipole</span>
 </pre></div>
 </div>
 </div>
@@ -1166,8 +1166,8 @@ tensor([0., 0., 0., 0.], dtype=torch.float64)
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Insertion element</span>
 
-<span class="kn">import</span> <span class="nn">torch</span>
-<span class="kn">from</span> <span class="nn">model.library.dipole</span> <span class="kn">import</span> <span class="n">Dipole</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">model.library.dipole</span><span class="w"> </span><span class="kn">import</span> <span class="n">Dipole</span>
 
 <span class="c1"># In this mode elements are treated as thin insertions (at the center)</span>
 <span class="c1"># Using parameters specified on initialization, transport two matrices are computed</span>
@@ -1269,7 +1269,7 @@ tensor([-2.3859e-06, -5.8600e-06, -7.2738e-07, -2.4947e-07],
 
 <span class="c1"># To map over deviations parameters a wrapper function (or a lambda expression) can be used</span>
 
-<span class="k">def</span> <span class="nf">wrapper</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">dp</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">wrapper</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">dp</span><span class="p">):</span>
     <span class="k">return</span> <span class="n">D</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="p">{</span><span class="o">**</span><span class="n">D</span><span class="o">.</span><span class="n">data</span><span class="p">(),</span> <span class="o">**</span><span class="p">{</span><span class="s1">&#39;dp&#39;</span><span class="p">:</span> <span class="n">dp</span><span class="p">}})</span>
 
 <span class="n">dp</span> <span class="o">=</span> <span class="mf">1.0E-3</span><span class="o">*</span><span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">512</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">D</span><span class="o">.</span><span class="n">dtype</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="n">D</span><span class="o">.</span><span class="n">device</span><span class="p">)</span>
@@ -1329,7 +1329,7 @@ torch.Size([512, 4])
 
 <span class="n">e1</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
 
-<span class="k">def</span> <span class="nf">wrapper</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">e1</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">wrapper</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">e1</span><span class="p">):</span>
     <span class="k">return</span> <span class="n">D</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="p">{</span><span class="o">**</span><span class="n">D</span><span class="o">.</span><span class="n">data</span><span class="p">(),</span> <span class="o">**</span><span class="p">{</span><span class="s1">&#39;e1&#39;</span><span class="p">:</span> <span class="n">e1</span><span class="p">}})</span>
 
 <span class="nb">print</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">func</span><span class="o">.</span><span class="n">jacrev</span><span class="p">(</span><span class="n">wrapper</span><span class="p">,</span> <span class="mi">1</span><span class="p">)(</span><span class="n">state</span><span class="p">,</span> <span class="n">e1</span><span class="p">))</span>
@@ -1491,10 +1491,10 @@ torch.Size([100, 4, 4])
 <span class="c1"># pip install git+https://github.com/i-a-morozov/twiss.git@main</span>
 <span class="c1"># pip install git+https://github.com/i-a-morozov/ndmap.git@main</span>
 
-<span class="kn">from</span> <span class="nn">twiss</span> <span class="kn">import</span> <span class="n">twiss</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">twiss</span><span class="w"> </span><span class="kn">import</span> <span class="n">twiss</span>
 
-<span class="kn">from</span> <span class="nn">ndmap.pfp</span> <span class="kn">import</span> <span class="n">parametric_fixed_point</span>
-<span class="kn">from</span> <span class="nn">ndmap.evaluate</span> <span class="kn">import</span> <span class="n">evaluate</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">ndmap.pfp</span><span class="w"> </span><span class="kn">import</span> <span class="n">parametric_fixed_point</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">ndmap.evaluate</span><span class="w"> </span><span class="kn">import</span> <span class="n">evaluate</span>
 
 <span class="n">QF</span> <span class="o">=</span> <span class="n">Quadrupole</span><span class="p">(</span><span class="s1">&#39;QF&#39;</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="o">+</span><span class="mf">0.21</span><span class="p">)</span>
 <span class="n">QD</span> <span class="o">=</span> <span class="n">Quadrupole</span><span class="p">(</span><span class="s1">&#39;QD&#39;</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.19</span><span class="p">)</span>
@@ -1503,7 +1503,7 @@ torch.Size([100, 4, 4])
 <span class="n">DR</span> <span class="o">=</span> <span class="n">Drift</span><span class="p">(</span><span class="s1">&#39;DR&#39;</span><span class="p">,</span> <span class="mf">0.25</span><span class="p">)</span>
 <span class="n">BM</span> <span class="o">=</span> <span class="n">Dipole</span><span class="p">(</span><span class="s1">&#39;DR&#39;</span><span class="p">,</span> <span class="mf">3.50</span><span class="p">,</span> <span class="mf">0.15</span><span class="p">)</span>
 
-<span class="k">def</span> <span class="nf">fodo</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">dp</span><span class="p">,</span> <span class="n">ms</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">fodo</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">dp</span><span class="p">,</span> <span class="n">ms</span><span class="p">):</span>
     <span class="n">dp</span><span class="p">,</span> <span class="o">*</span><span class="n">_</span> <span class="o">=</span> <span class="n">dp</span>
     <span class="n">msf</span><span class="p">,</span> <span class="n">msd</span><span class="p">,</span> <span class="o">*</span><span class="n">_</span> <span class="o">=</span> <span class="n">ms</span>
     <span class="n">state</span> <span class="o">=</span> <span class="n">QF</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="p">{</span><span class="o">**</span><span class="n">QF</span><span class="o">.</span><span class="n">data</span><span class="p">(),</span> <span class="o">**</span><span class="p">{</span><span class="s1">&#39;dp&#39;</span><span class="p">:</span> <span class="n">dp</span><span class="p">}})</span>
@@ -1545,19 +1545,19 @@ torch.Size([100, 4, 4])
 
 <span class="c1"># Define transformation around fixed point</span>
 
-<span class="k">def</span> <span class="nf">pfp_fodo</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">dp</span><span class="p">,</span> <span class="n">ms</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">pfp_fodo</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">dp</span><span class="p">,</span> <span class="n">ms</span><span class="p">):</span>
     <span class="k">return</span> <span class="n">fodo</span><span class="p">(</span><span class="n">state</span> <span class="o">+</span> <span class="n">evaluate</span><span class="p">(</span><span class="n">pfp</span><span class="p">,</span> <span class="p">[</span><span class="n">dp</span><span class="p">]),</span> <span class="n">dp</span><span class="p">,</span> <span class="n">ms</span><span class="p">)</span> <span class="o">-</span> <span class="n">evaluate</span><span class="p">(</span><span class="n">pfp</span><span class="p">,</span> <span class="p">[</span><span class="n">dp</span><span class="p">])</span>
 
 <span class="c1"># Tune</span>
 
-<span class="k">def</span> <span class="nf">tune</span><span class="p">(</span><span class="n">dp</span><span class="p">,</span> <span class="n">ms</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">tune</span><span class="p">(</span><span class="n">dp</span><span class="p">,</span> <span class="n">ms</span><span class="p">):</span>
     <span class="n">matrix</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">func</span><span class="o">.</span><span class="n">jacrev</span><span class="p">(</span><span class="n">pfp_fodo</span><span class="p">)(</span><span class="n">fp</span><span class="p">,</span> <span class="n">dp</span><span class="p">,</span> <span class="n">ms</span><span class="p">)</span>
     <span class="n">tune</span><span class="p">,</span> <span class="o">*</span><span class="n">_</span> <span class="o">=</span> <span class="n">twiss</span><span class="p">(</span><span class="n">matrix</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">tune</span>
 
 <span class="c1"># Chromaticity</span>
 
-<span class="k">def</span> <span class="nf">chromaticity</span><span class="p">(</span><span class="n">ms</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">chromaticity</span><span class="p">(</span><span class="n">ms</span><span class="p">):</span>
     <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">func</span><span class="o">.</span><span class="n">jacrev</span><span class="p">(</span><span class="n">tune</span><span class="p">)(</span><span class="n">dp</span><span class="p">,</span> <span class="n">ms</span><span class="p">)</span>
 
 <span class="c1"># Compute tunes</span>

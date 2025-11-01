@@ -7,7 +7,7 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Example-30: Orbit (effect of transverse shift) &mdash; model  documentation</title>
-      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../_static/nbsphinx-code-cells.css?v=2aa19091" />
 
@@ -104,9 +104,9 @@
 <li class="toctree-l1"><a class="reference internal" href="model-52.html">Example-53: Coupling (Minimal tune distance computation)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="model-53.html">Example-54: Coupling (Coupling correction based on minimal tune)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="model-54.html">Example-55: Demo</a></li>
-<li class="toctree-l1"><a class="reference internal" href="model-55.html">Example-56: Trajectory</a></li>
-<li class="toctree-l1"><a class="reference internal" href="model-56.html">Example-57: Approximate invariants spread</a></li>
-<li class="toctree-l1"><a class="reference internal" href="model-57.html">Example-58: Frequency (parametric derivatives for linear system)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-55.html">Example-56: Trajectory (Differentiable trajectory generation)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-56.html">Example-57: Trajectory (Approximate invariants spread)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-57.html">Example-58: Frequency (Parametric derivatives for linear system)</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API:</span></p>
 <ul>
@@ -198,33 +198,33 @@
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Import</span>
 
-<span class="kn">import</span> <span class="nn">torch</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
 <span class="n">torch</span><span class="o">.</span><span class="n">set_printoptions</span><span class="p">(</span><span class="n">linewidth</span><span class="o">=</span><span class="mi">128</span><span class="p">)</span>
 
-<span class="kn">import</span> <span class="nn">matplotlib</span>
-<span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">matplotlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">pyplot</span> <span class="k">as</span> <span class="n">plt</span>
 <span class="n">matplotlib</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s1">&#39;text.usetex&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
 
-<span class="kn">from</span> <span class="nn">twiss</span> <span class="kn">import</span> <span class="n">twiss</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">twiss</span><span class="w"> </span><span class="kn">import</span> <span class="n">twiss</span>
 
-<span class="kn">from</span> <span class="nn">ndmap.signature</span> <span class="kn">import</span> <span class="n">chop</span>
-<span class="kn">from</span> <span class="nn">ndmap.evaluate</span> <span class="kn">import</span> <span class="n">evaluate</span>
-<span class="kn">from</span> <span class="nn">ndmap.pfp</span> <span class="kn">import</span> <span class="n">parametric_fixed_point</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">ndmap.signature</span><span class="w"> </span><span class="kn">import</span> <span class="n">chop</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">ndmap.evaluate</span><span class="w"> </span><span class="kn">import</span> <span class="n">evaluate</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">ndmap.pfp</span><span class="w"> </span><span class="kn">import</span> <span class="n">parametric_fixed_point</span>
 
-<span class="kn">from</span> <span class="nn">ndmap.pfp</span> <span class="kn">import</span> <span class="n">clean_point</span>
-<span class="kn">from</span> <span class="nn">ndmap.pfp</span> <span class="kn">import</span> <span class="n">chain_point</span>
-<span class="kn">from</span> <span class="nn">ndmap.pfp</span> <span class="kn">import</span> <span class="n">matrix</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">ndmap.pfp</span><span class="w"> </span><span class="kn">import</span> <span class="n">clean_point</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">ndmap.pfp</span><span class="w"> </span><span class="kn">import</span> <span class="n">chain_point</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">ndmap.pfp</span><span class="w"> </span><span class="kn">import</span> <span class="n">matrix</span>
 
-<span class="kn">from</span> <span class="nn">model.library.drift</span> <span class="kn">import</span> <span class="n">Drift</span>
-<span class="kn">from</span> <span class="nn">model.library.quadrupole</span> <span class="kn">import</span> <span class="n">Quadrupole</span>
-<span class="kn">from</span> <span class="nn">model.library.sextupole</span> <span class="kn">import</span> <span class="n">Sextupole</span>
-<span class="kn">from</span> <span class="nn">model.library.dipole</span> <span class="kn">import</span> <span class="n">Dipole</span>
-<span class="kn">from</span> <span class="nn">model.library.line</span> <span class="kn">import</span> <span class="n">Line</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">model.library.drift</span><span class="w"> </span><span class="kn">import</span> <span class="n">Drift</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">model.library.quadrupole</span><span class="w"> </span><span class="kn">import</span> <span class="n">Quadrupole</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">model.library.sextupole</span><span class="w"> </span><span class="kn">import</span> <span class="n">Sextupole</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">model.library.dipole</span><span class="w"> </span><span class="kn">import</span> <span class="n">Dipole</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">model.library.line</span><span class="w"> </span><span class="kn">import</span> <span class="n">Line</span>
 
-<span class="kn">from</span> <span class="nn">model.command.wrapper</span> <span class="kn">import</span> <span class="n">wrapper</span>
-<span class="kn">from</span> <span class="nn">model.command.wrapper</span> <span class="kn">import</span> <span class="n">group</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">model.command.wrapper</span><span class="w"> </span><span class="kn">import</span> <span class="n">wrapper</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">model.command.wrapper</span><span class="w"> </span><span class="kn">import</span> <span class="n">group</span>
 
-<span class="kn">from</span> <span class="nn">model.command.orbit</span> <span class="kn">import</span> <span class="n">orbit</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">model.command.orbit</span><span class="w"> </span><span class="kn">import</span> <span class="n">orbit</span>
 </pre></div>
 </div>
 </div>
@@ -351,7 +351,7 @@ tensor([ 1.7361e-04, -5.1339e-06, -2.9886e-04, -3.6663e-05], dtype=torch.float64
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Orbit sensitivity with MC</span>
 
-<span class="k">def</span> <span class="nf">fn</span><span class="p">(</span><span class="n">dx_quad</span><span class="p">,</span> <span class="n">dy_quad</span><span class="p">,</span> <span class="n">dx_sext</span><span class="p">,</span> <span class="n">dy_sext</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">fn</span><span class="p">(</span><span class="n">dx_quad</span><span class="p">,</span> <span class="n">dy_quad</span><span class="p">,</span> <span class="n">dx_sext</span><span class="p">,</span> <span class="n">dy_sext</span><span class="p">):</span>
     <span class="n">guess</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="mi">4</span><span class="o">*</span><span class="p">[</span><span class="mf">0.0</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
     <span class="n">point</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">orbit</span><span class="p">(</span><span class="n">RING</span><span class="p">,</span> <span class="n">guess</span><span class="p">,</span>  <span class="p">[</span><span class="n">dx_quad</span><span class="p">,</span> <span class="n">dy_quad</span><span class="p">,</span> <span class="n">dx_sext</span><span class="p">,</span> <span class="n">dy_sext</span><span class="p">],</span> <span class="o">*</span><span class="n">groups</span><span class="p">,</span> <span class="n">alignment</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="mi">64</span><span class="p">,</span> <span class="n">epsilon</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">point</span>

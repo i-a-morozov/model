@@ -7,7 +7,7 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Example-33: Orbit (sextupole shift) &mdash; model  documentation</title>
-      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../_static/nbsphinx-code-cells.css?v=2aa19091" />
 
@@ -104,9 +104,9 @@
 <li class="toctree-l1"><a class="reference internal" href="model-52.html">Example-53: Coupling (Minimal tune distance computation)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="model-53.html">Example-54: Coupling (Coupling correction based on minimal tune)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="model-54.html">Example-55: Demo</a></li>
-<li class="toctree-l1"><a class="reference internal" href="model-55.html">Example-56: Trajectory</a></li>
-<li class="toctree-l1"><a class="reference internal" href="model-56.html">Example-57: Approximate invariants spread</a></li>
-<li class="toctree-l1"><a class="reference internal" href="model-57.html">Example-58: Frequency (parametric derivatives for linear system)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-55.html">Example-56: Trajectory (Differentiable trajectory generation)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-56.html">Example-57: Trajectory (Approximate invariants spread)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-57.html">Example-58: Frequency (Parametric derivatives for linear system)</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API:</span></p>
 <ul>
@@ -197,33 +197,33 @@
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Import</span>
 
-<span class="kn">from</span> <span class="nn">pprint</span> <span class="kn">import</span> <span class="n">pprint</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pprint</span><span class="w"> </span><span class="kn">import</span> <span class="n">pprint</span>
 
-<span class="kn">import</span> <span class="nn">torch</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
 
-<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
 
-<span class="kn">import</span> <span class="nn">matplotlib</span>
-<span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">pyplot</span> <span class="k">as</span> <span class="n">plt</span>
-<span class="kn">from</span> <span class="nn">matplotlib.patches</span> <span class="kn">import</span> <span class="n">Rectangle</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">matplotlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">matplotlib.patches</span><span class="w"> </span><span class="kn">import</span> <span class="n">Rectangle</span>
 <span class="n">matplotlib</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s1">&#39;text.usetex&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
 
-<span class="kn">from</span> <span class="nn">twiss</span> <span class="kn">import</span> <span class="n">twiss</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">twiss</span><span class="w"> </span><span class="kn">import</span> <span class="n">twiss</span>
 
-<span class="kn">from</span> <span class="nn">model.library.line</span> <span class="kn">import</span> <span class="n">Line</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">model.library.line</span><span class="w"> </span><span class="kn">import</span> <span class="n">Line</span>
 
-<span class="kn">from</span> <span class="nn">model.command.util</span> <span class="kn">import</span> <span class="n">chop</span>
-<span class="kn">from</span> <span class="nn">model.command.util</span> <span class="kn">import</span> <span class="n">evaluate</span>
-<span class="kn">from</span> <span class="nn">model.command.util</span> <span class="kn">import</span> <span class="n">series</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">model.command.util</span><span class="w"> </span><span class="kn">import</span> <span class="n">chop</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">model.command.util</span><span class="w"> </span><span class="kn">import</span> <span class="n">evaluate</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">model.command.util</span><span class="w"> </span><span class="kn">import</span> <span class="n">series</span>
 
-<span class="kn">from</span> <span class="nn">model.command.external</span> <span class="kn">import</span> <span class="n">load_lattice</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">model.command.external</span><span class="w"> </span><span class="kn">import</span> <span class="n">load_lattice</span>
 
-<span class="kn">from</span> <span class="nn">model.command.build</span> <span class="kn">import</span> <span class="n">build</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">model.command.build</span><span class="w"> </span><span class="kn">import</span> <span class="n">build</span>
 
-<span class="kn">from</span> <span class="nn">model.command.wrapper</span> <span class="kn">import</span> <span class="n">group</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">model.command.wrapper</span><span class="w"> </span><span class="kn">import</span> <span class="n">group</span>
 
-<span class="kn">from</span> <span class="nn">model.command.orbit</span> <span class="kn">import</span> <span class="n">orbit</span>
-<span class="kn">from</span> <span class="nn">model.command.orbit</span> <span class="kn">import</span> <span class="n">parametric_orbit</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">model.command.orbit</span><span class="w"> </span><span class="kn">import</span> <span class="n">orbit</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">model.command.orbit</span><span class="w"> </span><span class="kn">import</span> <span class="n">parametric_orbit</span>
 </pre></div>
 </div>
 </div>
@@ -400,7 +400,7 @@ tensor([0., 0., 0., 0.], dtype=torch.float64)
 
 <span class="c1"># Evaluate parametric fixed point for given deviations</span>
 
-<span class="k">def</span> <span class="nf">taylor</span><span class="p">(</span><span class="n">lxx</span><span class="p">,</span> <span class="n">lxy</span><span class="p">,</span> <span class="n">lyy</span><span class="p">,</span> <span class="n">dx</span><span class="p">,</span> <span class="n">dy</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">taylor</span><span class="p">(</span><span class="n">lxx</span><span class="p">,</span> <span class="n">lxy</span><span class="p">,</span> <span class="n">lyy</span><span class="p">,</span> <span class="n">dx</span><span class="p">,</span> <span class="n">dy</span><span class="p">):</span>
     <span class="k">return</span> <span class="n">evaluate</span><span class="p">(</span><span class="n">lxx</span><span class="p">,</span> <span class="p">[</span><span class="n">fp</span><span class="p">,</span> <span class="n">dx</span><span class="p">])</span> <span class="o">+</span> <span class="n">evaluate</span><span class="p">(</span><span class="n">lxy</span><span class="p">,</span> <span class="p">[</span><span class="n">fp</span><span class="p">,</span> <span class="n">dx</span><span class="p">,</span> <span class="n">dy</span><span class="p">])</span> <span class="o">+</span> <span class="n">evaluate</span><span class="p">(</span><span class="n">lyy</span><span class="p">,</span> <span class="p">[</span><span class="n">fp</span><span class="p">,</span> <span class="n">dy</span><span class="p">])</span>
 
 <span class="n">lxx</span><span class="p">,</span> <span class="o">*</span><span class="n">_</span> <span class="o">=</span> <span class="n">data_xx</span>
@@ -545,7 +545,7 @@ tensor([ 6.3099e-09,  9.0244e-09, -6.9332e-09, -4.2968e-09, -1.6105e-08,
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Estimate center and spread at all BPM using direct tracking and MC sampling</span>
 <span class="c1"># Note, epsilon should be None for vmap, convergence not checked</span>
 
-<span class="k">def</span> <span class="nf">fn</span><span class="p">(</span><span class="n">dx</span><span class="p">,</span> <span class="n">dy</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">fn</span><span class="p">(</span><span class="n">dx</span><span class="p">,</span> <span class="n">dy</span><span class="p">):</span>
     <span class="n">guess</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="mi">4</span><span class="o">*</span><span class="p">[</span><span class="mf">0.0</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
     <span class="n">point</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">orbit</span><span class="p">(</span><span class="n">ring</span><span class="p">,</span> <span class="n">guess</span><span class="p">,</span>  <span class="p">[</span><span class="n">dx</span><span class="p">,</span> <span class="n">dy</span><span class="p">],</span> <span class="p">(</span><span class="s1">&#39;dx&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;Sextupole&#39;</span><span class="p">],</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;dy&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;Sextupole&#39;</span><span class="p">],</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span> <span class="n">alignment</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">advance</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">full</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">epsilon</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">point</span>
@@ -592,7 +592,7 @@ tensor([ 6.3099e-09,  9.0244e-09, -6.9332e-09, -4.2968e-09, -1.6105e-08,
 <span class="n">dxs</span> <span class="o">=</span> <span class="mf">100.0E-6</span><span class="o">*</span><span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">((</span><span class="mi">8192</span><span class="p">,</span> <span class="n">n_sext</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
 <span class="n">dys</span> <span class="o">=</span> <span class="mf">100.0E-6</span><span class="o">*</span><span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">((</span><span class="mi">8192</span><span class="p">,</span> <span class="n">n_sext</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
 
-<span class="k">def</span> <span class="nf">taylor</span><span class="p">(</span><span class="n">lxx</span><span class="p">,</span> <span class="n">lxy</span><span class="p">,</span> <span class="n">lyy</span><span class="p">,</span> <span class="n">dx</span><span class="p">,</span> <span class="n">dy</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">taylor</span><span class="p">(</span><span class="n">lxx</span><span class="p">,</span> <span class="n">lxy</span><span class="p">,</span> <span class="n">lyy</span><span class="p">,</span> <span class="n">dx</span><span class="p">,</span> <span class="n">dy</span><span class="p">):</span>
     <span class="k">return</span> <span class="n">evaluate</span><span class="p">(</span><span class="n">lxx</span><span class="p">,</span> <span class="p">[</span><span class="n">fp</span><span class="p">,</span> <span class="n">dx</span><span class="p">])</span> <span class="o">+</span> <span class="n">evaluate</span><span class="p">(</span><span class="n">lxy</span><span class="p">,</span> <span class="p">[</span><span class="n">fp</span><span class="p">,</span> <span class="n">dx</span><span class="p">,</span> <span class="n">dy</span><span class="p">])</span> <span class="o">+</span> <span class="n">evaluate</span><span class="p">(</span><span class="n">lyy</span><span class="p">,</span> <span class="p">[</span><span class="n">fp</span><span class="p">,</span> <span class="n">dy</span><span class="p">])</span>
 
 <span class="n">cqxs</span><span class="p">,</span> <span class="n">cpxs</span><span class="p">,</span> <span class="n">cqys</span><span class="p">,</span> <span class="n">cpys</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span><span class="n">torch</span><span class="o">.</span><span class="n">vmap</span><span class="p">(</span><span class="k">lambda</span> <span class="n">dx</span><span class="p">,</span> <span class="n">dy</span><span class="p">:</span> <span class="n">taylor</span><span class="p">(</span><span class="n">lxx</span><span class="p">,</span> <span class="n">lxy</span><span class="p">,</span> <span class="n">lyy</span><span class="p">,</span> <span class="n">dx</span><span class="p">,</span> <span class="n">dy</span><span class="p">))(</span><span class="n">dxs</span><span class="p">,</span> <span class="n">dys</span><span class="p">)</span> <span class="k">for</span> <span class="n">lxx</span><span class="p">,</span> <span class="n">lxy</span><span class="p">,</span> <span class="n">lyy</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">data_xx</span><span class="p">,</span> <span class="n">data_xy</span><span class="p">,</span> <span class="n">data_yy</span><span class="p">)])</span><span class="o">.</span><span class="n">swapaxes</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>

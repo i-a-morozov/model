@@ -7,7 +7,7 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Example-55: Demo &mdash; model  documentation</title>
-      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../_static/nbsphinx-code-cells.css?v=2aa19091" />
 
@@ -23,7 +23,7 @@
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Example-56: Trajectory" href="model-55.html" />
+    <link rel="next" title="Example-56: Trajectory (Differentiable trajectory generation)" href="model-55.html" />
     <link rel="prev" title="Example-54: Coupling (Coupling correction based on minimal tune)" href="model-53.html" /> 
 </head>
 
@@ -104,9 +104,9 @@
 <li class="toctree-l1"><a class="reference internal" href="model-52.html">Example-53: Coupling (Minimal tune distance computation)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="model-53.html">Example-54: Coupling (Coupling correction based on minimal tune)</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Example-55: Demo</a></li>
-<li class="toctree-l1"><a class="reference internal" href="model-55.html">Example-56: Trajectory</a></li>
-<li class="toctree-l1"><a class="reference internal" href="model-56.html">Example-57: Approximate invariants spread</a></li>
-<li class="toctree-l1"><a class="reference internal" href="model-57.html">Example-58: Frequency (parametric derivatives for linear system)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-55.html">Example-56: Trajectory (Differentiable trajectory generation)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-56.html">Example-57: Trajectory (Approximate invariants spread)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-57.html">Example-58: Frequency (Parametric derivatives for linear system)</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API:</span></p>
 <ul>
@@ -196,7 +196,7 @@
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Set data type and device</span>
 
-<span class="kn">import</span> <span class="nn">torch</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
 
 <span class="n">dtype</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">float64</span>
 <span class="n">device</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="s1">&#39;cuda&#39;</span><span class="p">)</span> <span class="k">if</span> <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">is_available</span><span class="p">()</span> <span class="k">else</span> <span class="n">torch</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="s1">&#39;cpu&#39;</span><span class="p">)</span>
@@ -209,7 +209,7 @@
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Use selected data type and device for all elements</span>
 
-<span class="kn">from</span> <span class="nn">model.library.element</span> <span class="kn">import</span> <span class="n">Element</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">model.library.element</span><span class="w"> </span><span class="kn">import</span> <span class="n">Element</span>
 
 <span class="n">Element</span><span class="o">.</span><span class="n">dtype</span> <span class="o">=</span> <span class="n">dtype</span>
 <span class="n">Element</span><span class="o">.</span><span class="n">device</span> <span class="o">=</span> <span class="n">device</span>
@@ -222,8 +222,8 @@
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Load ELEGANT SDDS twiss or other table</span>
 
-<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
-<span class="kn">from</span> <span class="nn">model.command.external</span> <span class="kn">import</span> <span class="n">load_sdds</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">model.command.external</span><span class="w"> </span><span class="kn">import</span> <span class="n">load_sdds</span>
 
 <span class="n">path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s1">&#39;ic.twiss&#39;</span><span class="p">)</span>
 
@@ -240,7 +240,7 @@
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Set tunes, twiss parameters, phase advances and dispersion at BPMs</span>
 
-<span class="kn">from</span> <span class="nn">model.command.util</span> <span class="kn">import</span> <span class="n">select</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">model.command.util</span><span class="w"> </span><span class="kn">import</span> <span class="n">select</span>
 
 <span class="n">NUX</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">parameters</span><span class="p">[</span><span class="s1">&#39;nux&#39;</span><span class="p">]</span> <span class="o">%</span> <span class="mi">1</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
 <span class="n">NUY</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">parameters</span><span class="p">[</span><span class="s1">&#39;nuy&#39;</span><span class="p">]</span> <span class="o">%</span> <span class="mi">1</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
@@ -270,13 +270,13 @@
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Load and build ELEGANT lattice</span>
 
-<span class="kn">from</span> <span class="nn">model.command.external</span> <span class="kn">import</span> <span class="n">load_lattice</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">model.command.external</span><span class="w"> </span><span class="kn">import</span> <span class="n">load_lattice</span>
 
 <span class="n">path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s1">&#39;ic.lte&#39;</span><span class="p">)</span>
 <span class="n">data</span> <span class="o">=</span> <span class="n">load_lattice</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
 
-<span class="kn">from</span> <span class="nn">model.library.line</span> <span class="kn">import</span> <span class="n">Line</span>
-<span class="kn">from</span> <span class="nn">model.command.build</span> <span class="kn">import</span> <span class="n">build</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">model.library.line</span><span class="w"> </span><span class="kn">import</span> <span class="n">Line</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">model.command.build</span><span class="w"> </span><span class="kn">import</span> <span class="n">build</span>
 
 <span class="n">ring</span><span class="p">:</span><span class="n">Line</span> <span class="o">=</span> <span class="n">build</span><span class="p">(</span><span class="s1">&#39;RING&#39;</span><span class="p">,</span> <span class="s1">&#39;ELEGANT&#39;</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
 
@@ -321,7 +321,7 @@
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plot 2D layout</span>
 
-<span class="kn">from</span> <span class="nn">model.command.layout</span> <span class="kn">import</span> <span class="n">Layout</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">model.command.layout</span><span class="w"> </span><span class="kn">import</span> <span class="n">Layout</span>
 
 <span class="n">line</span> <span class="o">=</span> <span class="n">ring</span><span class="o">.</span><span class="n">clone</span><span class="p">()</span>
 <span class="n">line</span><span class="o">.</span><span class="n">ns</span> <span class="o">=</span> <span class="mf">0.01</span>
@@ -338,7 +338,7 @@
 
 <span class="c1"># Plot</span>
 
-<span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">matplotlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">pyplot</span> <span class="k">as</span> <span class="n">plt</span>
 
 <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">)</span>
@@ -427,7 +427,7 @@ tensor([-0.0044,  0.0089,  0.0000,  0.0000], dtype=torch.float64)
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Tracking (wrapper)</span>
 
-<span class="kn">from</span> <span class="nn">model.command.wrapper</span> <span class="kn">import</span> <span class="n">group</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">model.command.wrapper</span><span class="w"> </span><span class="kn">import</span> <span class="n">group</span>
 
 <span class="n">kn</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">0.25</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="n">device</span><span class="p">)</span>
 <span class="n">mapping</span><span class="p">,</span> <span class="o">*</span><span class="n">_</span> <span class="o">=</span> <span class="n">group</span><span class="p">(</span><span class="n">ring</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">ring</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="p">(</span><span class="s1">&#39;kn&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;Q3D3&#39;</span><span class="p">],</span> <span class="kc">None</span><span class="p">))</span>
@@ -497,7 +497,7 @@ tensor([[ 0.0004],
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Tunes</span>
 
-<span class="kn">from</span> <span class="nn">model.command.tune</span> <span class="kn">import</span> <span class="n">tune</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">model.command.tune</span><span class="w"> </span><span class="kn">import</span> <span class="n">tune</span>
 
 <span class="n">nux</span><span class="p">,</span> <span class="n">nuy</span> <span class="o">=</span> <span class="n">tune</span><span class="p">(</span><span class="n">ring</span><span class="p">,</span> <span class="p">[],</span> <span class="n">matched</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
@@ -521,7 +521,7 @@ True
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Parametric tunes</span>
 
-<span class="k">def</span> <span class="nf">fn</span><span class="p">(</span><span class="n">dp</span><span class="p">,</span> <span class="n">kn</span><span class="p">,</span> <span class="n">ks</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">fn</span><span class="p">(</span><span class="n">dp</span><span class="p">,</span> <span class="n">kn</span><span class="p">,</span> <span class="n">ks</span><span class="p">):</span>
     <span class="k">return</span> <span class="n">tune</span><span class="p">(</span><span class="n">ring</span><span class="p">,</span> <span class="p">[</span><span class="n">dp</span><span class="p">,</span> <span class="n">kn</span><span class="p">,</span> <span class="n">ks</span><span class="p">],</span> <span class="p">(</span><span class="s1">&#39;dp&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;kn&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;Quadrupole&#39;</span><span class="p">],</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>  <span class="p">(</span><span class="s1">&#39;ks&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;Quadrupole&#39;</span><span class="p">],</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span> <span class="n">matched</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
 <span class="c1"># Vectorizing map</span>
@@ -564,7 +564,7 @@ tensor([[ 0.0187,  0.0217,  0.0461,  0.0601,  0.0484,  0.0297,  0.0299,  0.0488,
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Twiss parameters</span>
 
-<span class="kn">from</span> <span class="nn">model.command.twiss</span> <span class="kn">import</span> <span class="n">twiss</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">model.command.twiss</span><span class="w"> </span><span class="kn">import</span> <span class="n">twiss</span>
 
 <span class="n">ax</span><span class="p">,</span> <span class="n">bx</span><span class="p">,</span> <span class="n">ay</span><span class="p">,</span> <span class="n">by</span> <span class="o">=</span> <span class="n">twiss</span><span class="p">(</span><span class="n">ring</span><span class="p">,</span> <span class="p">[],</span> <span class="n">alignment</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">matched</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">advance</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">full</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>
 </pre></div>
@@ -602,7 +602,7 @@ True
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plot beta functions</span>
 
-<span class="kn">from</span> <span class="nn">matplotlib.patches</span> <span class="kn">import</span> <span class="n">Rectangle</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">matplotlib.patches</span><span class="w"> </span><span class="kn">import</span> <span class="n">Rectangle</span>
 
 <span class="n">layout</span> <span class="o">=</span> <span class="n">Layout</span><span class="p">(</span><span class="n">ring</span><span class="p">)</span>
 <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">lengths</span><span class="p">,</span> <span class="o">*</span><span class="n">_</span> <span class="o">=</span> <span class="n">layout</span><span class="o">.</span><span class="n">slicing_table</span><span class="p">()</span>
@@ -634,7 +634,7 @@ True
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Parametric twiss (lattice start location)</span>
 
-<span class="k">def</span> <span class="nf">fn</span><span class="p">(</span><span class="n">dp</span><span class="p">,</span> <span class="n">kn</span><span class="p">,</span> <span class="n">ks</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">fn</span><span class="p">(</span><span class="n">dp</span><span class="p">,</span> <span class="n">kn</span><span class="p">,</span> <span class="n">ks</span><span class="p">):</span>
     <span class="k">return</span> <span class="n">twiss</span><span class="p">(</span><span class="n">ring</span><span class="p">,</span> <span class="p">[</span><span class="n">dp</span><span class="p">,</span> <span class="n">kn</span><span class="p">,</span> <span class="n">ks</span><span class="p">],</span> <span class="p">(</span><span class="s1">&#39;dp&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;kn&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;Quadrupole&#39;</span><span class="p">],</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>  <span class="p">(</span><span class="s1">&#39;ks&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;Quadrupole&#39;</span><span class="p">],</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span> <span class="n">advance</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">matched</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
 <span class="c1"># Vectorizing map</span>
@@ -687,7 +687,7 @@ tensor([[-0.0893,  0.4014,  1.2554, -0.9068, -1.5491, -0.9866, -0.6147, -0.7071,
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Phase advance</span>
 
-<span class="kn">from</span> <span class="nn">model.command.advance</span> <span class="kn">import</span> <span class="n">advance</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">model.command.advance</span><span class="w"> </span><span class="kn">import</span> <span class="n">advance</span>
 
 <span class="n">mux</span><span class="p">,</span> <span class="n">muy</span> <span class="o">=</span>  <span class="n">advance</span><span class="p">(</span><span class="n">ring</span><span class="p">,</span> <span class="p">[],</span> <span class="n">alignment</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">matched</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>
 </pre></div>
@@ -752,7 +752,7 @@ True
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Parametric advance</span>
 
-<span class="k">def</span> <span class="nf">fn</span><span class="p">(</span><span class="n">dp</span><span class="p">,</span> <span class="n">kn</span><span class="p">,</span> <span class="n">ks</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">fn</span><span class="p">(</span><span class="n">dp</span><span class="p">,</span> <span class="n">kn</span><span class="p">,</span> <span class="n">ks</span><span class="p">):</span>
     <span class="k">return</span> <span class="n">advance</span><span class="p">(</span><span class="n">ring</span><span class="p">,</span> <span class="p">[</span><span class="n">dp</span><span class="p">,</span> <span class="n">kn</span><span class="p">,</span> <span class="n">ks</span><span class="p">],</span> <span class="p">(</span><span class="s1">&#39;dp&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;kn&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;Quadrupole&#39;</span><span class="p">],</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>  <span class="p">(</span><span class="s1">&#39;ks&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;Quadrupole&#39;</span><span class="p">],</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span> <span class="n">matched</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
 <span class="c1"># Vectorizing map</span>
@@ -787,7 +787,7 @@ torch.Size([136, 2, 28])
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Dispersion</span>
 
-<span class="kn">from</span> <span class="nn">model.command.orbit</span> <span class="kn">import</span> <span class="n">dispersion</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">model.command.orbit</span><span class="w"> </span><span class="kn">import</span> <span class="n">dispersion</span>
 
 <span class="n">guess</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="mi">4</span><span class="o">*</span><span class="p">[</span><span class="mf">0.0</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="n">device</span><span class="p">)</span>
 <span class="n">dqx</span><span class="p">,</span> <span class="n">dpx</span><span class="p">,</span> <span class="n">dqy</span><span class="p">,</span> <span class="n">dpy</span> <span class="o">=</span> <span class="n">dispersion</span><span class="p">(</span><span class="n">ring</span><span class="p">,</span> <span class="n">guess</span><span class="p">,</span> <span class="p">[],</span> <span class="n">advance</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">full</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
@@ -854,7 +854,7 @@ True
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Parametric dispersion</span>
 
-<span class="k">def</span> <span class="nf">fn</span><span class="p">(</span><span class="n">kn</span><span class="p">,</span> <span class="n">ks</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">fn</span><span class="p">(</span><span class="n">kn</span><span class="p">,</span> <span class="n">ks</span><span class="p">):</span>
     <span class="k">return</span> <span class="n">dispersion</span><span class="p">(</span><span class="n">ring</span><span class="p">,</span> <span class="n">guess</span><span class="p">,</span> <span class="p">[</span><span class="n">kn</span><span class="p">,</span> <span class="n">ks</span><span class="p">],</span> <span class="p">(</span><span class="s1">&#39;kn&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;Quadrupole&#39;</span><span class="p">],</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>  <span class="p">(</span><span class="s1">&#39;ks&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;Quadrupole&#39;</span><span class="p">],</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span> <span class="n">advance</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
 <span class="c1"># Vectorizing map</span>
@@ -933,7 +933,7 @@ tensor([[ 0.0000e+00,  0.0000e+00,  0.0000e+00,  0.0000e+00,  0.0000e+00,
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Modify lattice for ORM computation</span>
 
-<span class="kn">from</span> <span class="nn">model.library.corrector</span> <span class="kn">import</span> <span class="n">Corrector</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">model.library.corrector</span><span class="w"> </span><span class="kn">import</span> <span class="n">Corrector</span>
 
 <span class="c1"># Clone lattice</span>
 
@@ -1008,7 +1008,7 @@ BPM(name=&#34;BPM07&#34;, direction=&#34;forward&#34;, dp=0.0)
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Compute and plot ORM</span>
 
-<span class="kn">from</span> <span class="nn">model.command.orbit</span> <span class="kn">import</span> <span class="n">ORM</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">model.command.orbit</span><span class="w"> </span><span class="kn">import</span> <span class="n">ORM</span>
 
 <span class="n">orm</span> <span class="o">=</span> <span class="n">ORM</span><span class="p">(</span><span class="n">copy</span><span class="p">,</span> <span class="n">guess</span><span class="p">,</span> <span class="p">[])</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">orm</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
@@ -1045,7 +1045,7 @@ torch.Size([32, 72])
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Parametric ORM</span>
 
-<span class="k">def</span> <span class="nf">fn</span><span class="p">(</span><span class="n">dp</span><span class="p">,</span> <span class="n">kn</span><span class="p">,</span> <span class="n">ks</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">fn</span><span class="p">(</span><span class="n">dp</span><span class="p">,</span> <span class="n">kn</span><span class="p">,</span> <span class="n">ks</span><span class="p">):</span>
     <span class="k">return</span> <span class="n">ORM</span><span class="p">(</span><span class="n">copy</span><span class="p">,</span> <span class="n">guess</span><span class="p">,</span> <span class="p">[</span><span class="n">dp</span><span class="p">,</span> <span class="n">kn</span><span class="p">,</span> <span class="n">ks</span><span class="p">],</span> <span class="p">(</span><span class="s1">&#39;dp&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;kn&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;Quadrupole&#39;</span><span class="p">],</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>  <span class="p">(</span><span class="s1">&#39;ks&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;Quadrupole&#39;</span><span class="p">],</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">))</span>
 
 <span class="n">dp</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">0.0</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="n">device</span><span class="p">)</span>
@@ -1073,7 +1073,7 @@ torch.Size([32, 72, 28])
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="model-53.html" class="btn btn-neutral float-left" title="Example-54: Coupling (Coupling correction based on minimal tune)" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="model-55.html" class="btn btn-neutral float-right" title="Example-56: Trajectory" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="model-55.html" class="btn btn-neutral float-right" title="Example-56: Trajectory (Differentiable trajectory generation)" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

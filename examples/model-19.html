@@ -7,7 +7,7 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Example-20: LOGO &mdash; model  documentation</title>
-      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../_static/nbsphinx-code-cells.css?v=2aa19091" />
 
@@ -104,9 +104,9 @@
 <li class="toctree-l1"><a class="reference internal" href="model-52.html">Example-53: Coupling (Minimal tune distance computation)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="model-53.html">Example-54: Coupling (Coupling correction based on minimal tune)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="model-54.html">Example-55: Demo</a></li>
-<li class="toctree-l1"><a class="reference internal" href="model-55.html">Example-56: Trajectory</a></li>
-<li class="toctree-l1"><a class="reference internal" href="model-56.html">Example-57: Approximate invariants spread</a></li>
-<li class="toctree-l1"><a class="reference internal" href="model-57.html">Example-58: Frequency (parametric derivatives for linear system)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-55.html">Example-56: Trajectory (Differentiable trajectory generation)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-56.html">Example-57: Trajectory (Approximate invariants spread)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-57.html">Example-58: Frequency (Parametric derivatives for linear system)</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API:</span></p>
 <ul>
@@ -207,31 +207,31 @@
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Import</span>
 
-<span class="kn">import</span> <span class="nn">matplotlib</span>
-<span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">pyplot</span> <span class="k">as</span> <span class="n">plt</span>
-<span class="kn">from</span> <span class="nn">matplotlib.patches</span> <span class="kn">import</span> <span class="n">Rectangle</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">matplotlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">matplotlib.patches</span><span class="w"> </span><span class="kn">import</span> <span class="n">Rectangle</span>
 <span class="n">matplotlib</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s1">&#39;text.usetex&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
 
-<span class="kn">from</span> <span class="nn">plotly</span> <span class="kn">import</span> <span class="n">graph_objects</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">plotly</span><span class="w"> </span><span class="kn">import</span> <span class="n">graph_objects</span>
 
-<span class="kn">import</span> <span class="nn">torch</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
 
-<span class="kn">from</span> <span class="nn">twiss</span> <span class="kn">import</span> <span class="n">twiss</span>
-<span class="kn">from</span> <span class="nn">twiss</span> <span class="kn">import</span> <span class="n">propagate</span>
-<span class="kn">from</span> <span class="nn">twiss</span> <span class="kn">import</span> <span class="n">advance</span>
-<span class="kn">from</span> <span class="nn">twiss</span> <span class="kn">import</span> <span class="n">wolski_to_cs</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">twiss</span><span class="w"> </span><span class="kn">import</span> <span class="n">twiss</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">twiss</span><span class="w"> </span><span class="kn">import</span> <span class="n">propagate</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">twiss</span><span class="w"> </span><span class="kn">import</span> <span class="n">advance</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">twiss</span><span class="w"> </span><span class="kn">import</span> <span class="n">wolski_to_cs</span>
 
-<span class="kn">from</span> <span class="nn">ndmap.pfp</span> <span class="kn">import</span> <span class="n">parametric_fixed_point</span>
-<span class="kn">from</span> <span class="nn">ndmap.evaluate</span> <span class="kn">import</span> <span class="n">evaluate</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">ndmap.pfp</span><span class="w"> </span><span class="kn">import</span> <span class="n">parametric_fixed_point</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">ndmap.evaluate</span><span class="w"> </span><span class="kn">import</span> <span class="n">evaluate</span>
 
-<span class="kn">from</span> <span class="nn">model.library.drift</span> <span class="kn">import</span> <span class="n">Drift</span>
-<span class="kn">from</span> <span class="nn">model.library.quadrupole</span> <span class="kn">import</span> <span class="n">Quadrupole</span>
-<span class="kn">from</span> <span class="nn">model.library.sextupole</span> <span class="kn">import</span> <span class="n">Sextupole</span>
-<span class="kn">from</span> <span class="nn">model.library.dipole</span> <span class="kn">import</span> <span class="n">Dipole</span>
-<span class="kn">from</span> <span class="nn">model.library.bpm</span> <span class="kn">import</span> <span class="n">BPM</span>
-<span class="kn">from</span> <span class="nn">model.library.line</span> <span class="kn">import</span> <span class="n">Line</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">model.library.drift</span><span class="w"> </span><span class="kn">import</span> <span class="n">Drift</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">model.library.quadrupole</span><span class="w"> </span><span class="kn">import</span> <span class="n">Quadrupole</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">model.library.sextupole</span><span class="w"> </span><span class="kn">import</span> <span class="n">Sextupole</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">model.library.dipole</span><span class="w"> </span><span class="kn">import</span> <span class="n">Dipole</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">model.library.bpm</span><span class="w"> </span><span class="kn">import</span> <span class="n">BPM</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">model.library.line</span><span class="w"> </span><span class="kn">import</span> <span class="n">Line</span>
 
-<span class="kn">from</span> <span class="nn">model.command.layout</span> <span class="kn">import</span> <span class="n">Layout</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">model.command.layout</span><span class="w"> </span><span class="kn">import</span> <span class="n">Layout</span>
 </pre></div>
 </div>
 </div>
@@ -334,7 +334,7 @@ tensor(0.7019, dtype=torch.float64)
 
 <span class="c1"># Define tune function</span>
 
-<span class="k">def</span> <span class="nf">tune</span><span class="p">(</span><span class="n">dkn</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">tune</span><span class="p">(</span><span class="n">dkn</span><span class="p">):</span>
     <span class="n">dknf</span><span class="p">,</span> <span class="n">dknd</span> <span class="o">=</span> <span class="n">dkn</span>
     <span class="n">data</span> <span class="o">=</span> <span class="n">RING</span><span class="o">.</span><span class="n">data</span><span class="p">()</span>
     <span class="n">data</span><span class="p">[</span><span class="s1">&#39;FODO&#39;</span><span class="p">][</span><span class="s1">&#39;QF&#39;</span><span class="p">][</span><span class="s1">&#39;kn&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dknf</span>
@@ -393,14 +393,14 @@ Wall time: 1min 34s
 
 <span class="c1"># Chromaticity</span>
 
-<span class="k">def</span> <span class="nf">scan</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">target</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">scan</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">target</span><span class="p">):</span>
     <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
             <span class="n">scan</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">target</span><span class="p">)</span>
         <span class="k">elif</span> <span class="n">key</span> <span class="o">==</span> <span class="n">name</span><span class="p">:</span>
             <span class="n">data</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">target</span>
 
-<span class="k">def</span> <span class="nf">ring</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">dp</span><span class="p">,</span> <span class="n">dms</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">ring</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">dp</span><span class="p">,</span> <span class="n">dms</span><span class="p">):</span>
     <span class="n">dp</span><span class="p">,</span> <span class="o">*</span><span class="n">_</span> <span class="o">=</span> <span class="n">dp</span>
     <span class="n">dmsf</span><span class="p">,</span> <span class="n">dmsd</span><span class="p">,</span> <span class="o">*</span><span class="n">_</span> <span class="o">=</span> <span class="n">dms</span>
     <span class="n">data</span> <span class="o">=</span> <span class="n">RING</span><span class="o">.</span><span class="n">data</span><span class="p">()</span>
@@ -418,19 +418,19 @@ Wall time: 1min 34s
 
 <span class="c1"># Define transformation around fixed point</span>
 
-<span class="k">def</span> <span class="nf">pfp_ring</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">dp</span><span class="p">,</span> <span class="n">dms</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">pfp_ring</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">dp</span><span class="p">,</span> <span class="n">dms</span><span class="p">):</span>
     <span class="k">return</span> <span class="n">ring</span><span class="p">(</span><span class="n">state</span> <span class="o">+</span> <span class="n">evaluate</span><span class="p">(</span><span class="n">pfp</span><span class="p">,</span> <span class="p">[</span><span class="n">dp</span><span class="p">]),</span> <span class="n">dp</span><span class="p">,</span> <span class="n">dms</span><span class="p">)</span> <span class="o">-</span> <span class="n">evaluate</span><span class="p">(</span><span class="n">pfp</span><span class="p">,</span> <span class="p">[</span><span class="n">dp</span><span class="p">])</span>
 
 <span class="c1"># Tune</span>
 
-<span class="k">def</span> <span class="nf">tune</span><span class="p">(</span><span class="n">dp</span><span class="p">,</span> <span class="n">dms</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">tune</span><span class="p">(</span><span class="n">dp</span><span class="p">,</span> <span class="n">dms</span><span class="p">):</span>
     <span class="n">matrix</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">func</span><span class="o">.</span><span class="n">jacrev</span><span class="p">(</span><span class="n">pfp_ring</span><span class="p">)(</span><span class="n">state</span><span class="p">,</span> <span class="n">dp</span><span class="p">,</span> <span class="n">dms</span><span class="p">)</span>
     <span class="n">tunes</span><span class="p">,</span> <span class="o">*</span><span class="n">_</span> <span class="o">=</span> <span class="n">twiss</span><span class="p">(</span><span class="n">matrix</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">tunes</span>
 
 <span class="c1"># Chromaticity</span>
 
-<span class="k">def</span> <span class="nf">chromaticity</span><span class="p">(</span><span class="n">dms</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">chromaticity</span><span class="p">(</span><span class="n">dms</span><span class="p">):</span>
     <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">func</span><span class="o">.</span><span class="n">jacrev</span><span class="p">(</span><span class="n">tune</span><span class="p">)(</span><span class="n">dp</span><span class="p">,</span> <span class="n">dms</span><span class="p">)</span>
 
 <span class="c1"># Initial chomaticity values</span>

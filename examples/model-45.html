@@ -7,7 +7,7 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Example-46: Twiss (Optics correction) &mdash; model  documentation</title>
-      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../_static/nbsphinx-code-cells.css?v=2aa19091" />
 
@@ -104,9 +104,9 @@
 <li class="toctree-l1"><a class="reference internal" href="model-52.html">Example-53: Coupling (Minimal tune distance computation)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="model-53.html">Example-54: Coupling (Coupling correction based on minimal tune)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="model-54.html">Example-55: Demo</a></li>
-<li class="toctree-l1"><a class="reference internal" href="model-55.html">Example-56: Trajectory</a></li>
-<li class="toctree-l1"><a class="reference internal" href="model-56.html">Example-57: Approximate invariants spread</a></li>
-<li class="toctree-l1"><a class="reference internal" href="model-57.html">Example-58: Frequency (parametric derivatives for linear system)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-55.html">Example-56: Trajectory (Differentiable trajectory generation)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-56.html">Example-57: Trajectory (Approximate invariants spread)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-57.html">Example-58: Frequency (Parametric derivatives for linear system)</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API:</span></p>
 <ul>
@@ -197,37 +197,37 @@
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Import</span>
 
-<span class="kn">from</span> <span class="nn">pprint</span> <span class="kn">import</span> <span class="n">pprint</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pprint</span><span class="w"> </span><span class="kn">import</span> <span class="n">pprint</span>
 
-<span class="kn">import</span> <span class="nn">torch</span>
-<span class="kn">from</span> <span class="nn">torch</span> <span class="kn">import</span> <span class="n">Tensor</span>
-<span class="kn">from</span> <span class="nn">torch.utils.data</span> <span class="kn">import</span> <span class="n">TensorDataset</span>
-<span class="kn">from</span> <span class="nn">torch.utils.data</span> <span class="kn">import</span> <span class="n">DataLoader</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">torch</span><span class="w"> </span><span class="kn">import</span> <span class="n">Tensor</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">torch.utils.data</span><span class="w"> </span><span class="kn">import</span> <span class="n">TensorDataset</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">torch.utils.data</span><span class="w"> </span><span class="kn">import</span> <span class="n">DataLoader</span>
 
-<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
 
-<span class="kn">import</span> <span class="nn">matplotlib</span>
-<span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">matplotlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">pyplot</span> <span class="k">as</span> <span class="n">plt</span>
 <span class="n">matplotlib</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s1">&#39;text.usetex&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
 
-<span class="kn">from</span> <span class="nn">model.library.line</span> <span class="kn">import</span> <span class="n">Line</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">model.library.line</span><span class="w"> </span><span class="kn">import</span> <span class="n">Line</span>
 
-<span class="kn">from</span> <span class="nn">model.command.util</span> <span class="kn">import</span> <span class="n">select</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">model.command.util</span><span class="w"> </span><span class="kn">import</span> <span class="n">select</span>
 
-<span class="kn">from</span> <span class="nn">model.command.external</span> <span class="kn">import</span> <span class="n">load_sdds</span>
-<span class="kn">from</span> <span class="nn">model.command.external</span> <span class="kn">import</span> <span class="n">load_lattice</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">model.command.external</span><span class="w"> </span><span class="kn">import</span> <span class="n">load_sdds</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">model.command.external</span><span class="w"> </span><span class="kn">import</span> <span class="n">load_lattice</span>
 
-<span class="kn">from</span> <span class="nn">model.command.build</span> <span class="kn">import</span> <span class="n">build</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">model.command.build</span><span class="w"> </span><span class="kn">import</span> <span class="n">build</span>
 
-<span class="kn">from</span> <span class="nn">model.command.wrapper</span> <span class="kn">import</span> <span class="n">group</span>
-<span class="kn">from</span> <span class="nn">model.command.wrapper</span> <span class="kn">import</span> <span class="n">forward</span>
-<span class="kn">from</span> <span class="nn">model.command.wrapper</span> <span class="kn">import</span> <span class="n">inverse</span>
-<span class="kn">from</span> <span class="nn">model.command.wrapper</span> <span class="kn">import</span> <span class="n">normalize</span>
-<span class="kn">from</span> <span class="nn">model.command.wrapper</span> <span class="kn">import</span> <span class="n">Wrapper</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">model.command.wrapper</span><span class="w"> </span><span class="kn">import</span> <span class="n">group</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">model.command.wrapper</span><span class="w"> </span><span class="kn">import</span> <span class="n">forward</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">model.command.wrapper</span><span class="w"> </span><span class="kn">import</span> <span class="n">inverse</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">model.command.wrapper</span><span class="w"> </span><span class="kn">import</span> <span class="n">normalize</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">model.command.wrapper</span><span class="w"> </span><span class="kn">import</span> <span class="n">Wrapper</span>
 
-<span class="kn">from</span> <span class="nn">model.command.tune</span> <span class="kn">import</span> <span class="n">tune</span>
-<span class="kn">from</span> <span class="nn">model.command.twiss</span> <span class="kn">import</span> <span class="n">twiss</span>
-<span class="kn">from</span> <span class="nn">model.command.twiss</span> <span class="kn">import</span> <span class="n">chromatic_twiss</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">model.command.tune</span><span class="w"> </span><span class="kn">import</span> <span class="n">tune</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">model.command.twiss</span><span class="w"> </span><span class="kn">import</span> <span class="n">twiss</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">model.command.twiss</span><span class="w"> </span><span class="kn">import</span> <span class="n">chromatic_twiss</span>
 </pre></div>
 </div>
 </div>
@@ -416,10 +416,10 @@ tensor([[0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.,
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Compute twiss derivatives with respect to quadrupole settings (normal and chromatic)</span>
 
-<span class="k">def</span> <span class="nf">fn_dtwiss_dkn</span><span class="p">(</span><span class="n">kn</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">fn_dtwiss_dkn</span><span class="p">(</span><span class="n">kn</span><span class="p">):</span>
     <span class="k">return</span> <span class="n">twiss</span><span class="p">(</span><span class="n">ring</span><span class="p">,</span> <span class="p">[</span><span class="n">kn</span><span class="p">],</span> <span class="p">(</span><span class="s1">&#39;kn&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;Quadrupole&#39;</span><span class="p">],</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span> <span class="n">alignment</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">matched</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">advance</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">full</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">convert</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
-<span class="k">def</span> <span class="nf">fn_dtwiss_dp_dkn</span><span class="p">(</span><span class="n">kn</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">fn_dtwiss_dp_dkn</span><span class="p">(</span><span class="n">kn</span><span class="p">):</span>
     <span class="k">return</span> <span class="n">chromatic_twiss</span><span class="p">(</span><span class="n">ring</span><span class="p">,</span> <span class="p">[</span><span class="n">kn</span><span class="p">],</span> <span class="p">(</span><span class="s1">&#39;kn&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;Quadrupole&#39;</span><span class="p">],</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span> <span class="n">alignment</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">matched</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">advance</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">full</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">convert</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
 <span class="n">kn</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">nq</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
@@ -883,12 +883,12 @@ tensor(0.1240, dtype=torch.float64)
 
 <span class="c1"># Set parametric twiss</span>
 
-<span class="k">def</span> <span class="nf">twiss_model</span><span class="p">(</span><span class="n">kn</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">twiss_model</span><span class="p">(</span><span class="n">kn</span><span class="p">):</span>
     <span class="k">return</span> <span class="n">twiss</span><span class="p">(</span><span class="n">ring</span><span class="p">,</span> <span class="p">[</span><span class="n">kn</span><span class="p">],</span> <span class="p">(</span><span class="s1">&#39;kn&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;Quadrupole&#39;</span><span class="p">],</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span> <span class="n">alignment</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">matched</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">advance</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">full</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">convert</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
 <span class="c1"># Set objective function</span>
 
-<span class="k">def</span> <span class="nf">objective</span><span class="p">(</span><span class="n">kn</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">objective</span><span class="p">(</span><span class="n">kn</span><span class="p">):</span>
     <span class="k">return</span> <span class="p">(</span><span class="n">twiss_error</span> <span class="o">-</span> <span class="n">twiss_model</span><span class="p">(</span><span class="n">kn</span><span class="p">))</span><span class="o">.</span><span class="n">norm</span><span class="p">()</span>
 
 <span class="c1"># Set initial values</span>
@@ -1073,22 +1073,22 @@ tensor(0.0865, dtype=torch.float64)
 <span class="c1"># https://arxiv.org/abs/2409.03137</span>
 <span class="c1"># https://github.com/apple/ml-ademamix</span>
 
-<span class="kn">import</span> <span class="nn">math</span>
-<span class="kn">import</span> <span class="nn">torch</span>
-<span class="kn">from</span> <span class="nn">torch.optim</span> <span class="kn">import</span> <span class="n">Optimizer</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">math</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">torch.optim</span><span class="w"> </span><span class="kn">import</span> <span class="n">Optimizer</span>
 
 
-<span class="k">def</span> <span class="nf">linear_warmup_scheduler</span><span class="p">(</span><span class="n">step</span><span class="p">,</span> <span class="n">alpha_end</span><span class="p">,</span> <span class="n">alpha_start</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">warmup</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">linear_warmup_scheduler</span><span class="p">(</span><span class="n">step</span><span class="p">,</span> <span class="n">alpha_end</span><span class="p">,</span> <span class="n">alpha_start</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">warmup</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
     <span class="k">if</span> <span class="n">step</span> <span class="o">&lt;</span> <span class="n">warmup</span><span class="p">:</span>
         <span class="n">a</span> <span class="o">=</span> <span class="n">step</span> <span class="o">/</span> <span class="nb">float</span><span class="p">(</span><span class="n">warmup</span><span class="p">)</span>
         <span class="k">return</span> <span class="p">(</span><span class="mf">1.0</span><span class="o">-</span><span class="n">a</span><span class="p">)</span> <span class="o">*</span> <span class="n">alpha_start</span> <span class="o">+</span> <span class="n">a</span> <span class="o">*</span> <span class="n">alpha_end</span>
     <span class="k">return</span> <span class="n">alpha_end</span>
 
 
-<span class="k">def</span> <span class="nf">linear_hl_warmup_scheduler</span><span class="p">(</span><span class="n">step</span><span class="p">,</span> <span class="n">beta_end</span><span class="p">,</span> <span class="n">beta_start</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">warmup</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
-    <span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="n">beta</span><span class="p">,</span> <span class="n">eps</span><span class="o">=</span><span class="mf">1e-8</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">linear_hl_warmup_scheduler</span><span class="p">(</span><span class="n">step</span><span class="p">,</span> <span class="n">beta_end</span><span class="p">,</span> <span class="n">beta_start</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">warmup</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">f</span><span class="p">(</span><span class="n">beta</span><span class="p">,</span> <span class="n">eps</span><span class="o">=</span><span class="mf">1e-8</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">math</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="mf">0.5</span><span class="p">)</span><span class="o">/</span><span class="n">math</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">beta</span><span class="o">+</span><span class="n">eps</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span>
-    <span class="k">def</span> <span class="nf">f_inv</span><span class="p">(</span><span class="n">t</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">f_inv</span><span class="p">(</span><span class="n">t</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">math</span><span class="o">.</span><span class="n">pow</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mi">1</span><span class="o">/</span><span class="p">(</span><span class="n">t</span><span class="o">+</span><span class="mi">1</span><span class="p">))</span>
     <span class="k">if</span> <span class="n">step</span> <span class="o">&lt;</span> <span class="n">warmup</span><span class="p">:</span>
         <span class="n">a</span> <span class="o">=</span> <span class="n">step</span> <span class="o">/</span> <span class="nb">float</span><span class="p">(</span><span class="n">warmup</span><span class="p">)</span>
@@ -1096,7 +1096,7 @@ tensor(0.0865, dtype=torch.float64)
     <span class="k">return</span> <span class="n">beta_end</span>
 
 
-<span class="k">class</span> <span class="nc">AdEMAMix</span><span class="p">(</span><span class="n">Optimizer</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">AdEMAMix</span><span class="p">(</span><span class="n">Optimizer</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Implements the AdEMAMix algorithm.</span>
 
 <span class="sd">    Arguments:</span>
@@ -1113,7 +1113,7 @@ tensor(0.0865, dtype=torch.float64)
 <span class="sd">            numerical stability (default: 1e-8)</span>
 <span class="sd">        weight_decay (float, optional): weight decay as in AdamW (default: 0)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
                  <span class="n">params</span><span class="p">,</span>
                  <span class="n">lr</span><span class="o">=</span><span class="mf">1e-3</span><span class="p">,</span>
                  <span class="n">betas</span><span class="o">=</span><span class="p">(</span><span class="mf">0.9</span><span class="p">,</span> <span class="mf">0.999</span><span class="p">,</span> <span class="mf">0.9999</span><span class="p">),</span>
@@ -1133,11 +1133,11 @@ tensor(0.0865, dtype=torch.float64)
 
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">defaults</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">__setstate__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">__setstate__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">__setstate__</span><span class="p">(</span><span class="n">state</span><span class="p">)</span>
 
     <span class="nd">@torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">()</span>
-    <span class="k">def</span> <span class="nf">step</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">closure</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">step</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">closure</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Performs a single optimization step.</span>
 
 <span class="sd">        Arguments:</span>
@@ -1240,7 +1240,7 @@ tensor(0.0865, dtype=torch.float64)
 
 <span class="n">_</span><span class="p">,</span> <span class="p">((</span><span class="n">_</span><span class="p">,</span> <span class="n">names</span><span class="p">,</span> <span class="n">_</span><span class="p">),</span> <span class="o">*</span><span class="n">_</span><span class="p">),</span> <span class="n">_</span> <span class="o">=</span> <span class="n">group</span><span class="p">(</span><span class="n">ring</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">ring</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="p">(</span><span class="s1">&#39;kn&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;Quadrupole&#39;</span><span class="p">],</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">))</span>
 
-<span class="k">def</span> <span class="nf">task</span><span class="p">(</span><span class="n">Is</span><span class="p">,</span> <span class="n">kn</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">task</span><span class="p">(</span><span class="n">Is</span><span class="p">,</span> <span class="n">kn</span><span class="p">):</span>
     <span class="n">result</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">for</span> <span class="n">I</span> <span class="ow">in</span> <span class="n">Is</span><span class="p">:</span>
         <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">twiss</span><span class="p">(</span><span class="n">rings</span><span class="p">[</span><span class="n">I</span><span class="p">],</span> <span class="p">[</span><span class="n">kn</span><span class="p">],</span> <span class="p">(</span><span class="s1">&#39;kn&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">names</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span> <span class="n">alignment</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">matched</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">convert</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>

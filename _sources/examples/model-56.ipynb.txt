@@ -6,7 +6,7 @@
    "id": "262a5ec8-2553-4237-ab62-319b6ca22089",
    "metadata": {},
    "source": [
-    "# Example-57: Approximate invariants spread"
+    "# Example-57: Trajectory (Approximate invariants spread)"
    ]
   },
   {
@@ -37,11 +37,7 @@
     "from model.library.line import Line\n",
     "\n",
     "from model.command.mapping import mapping\n",
-    "from model.command.trajectory import trajectory\n",
-    "from model.command.wrapper import forward\n",
-    "from model.command.wrapper import inverse\n",
-    "from model.command.wrapper import normalize\n",
-    "from model.command.wrapper import Wrapper"
+    "from model.command.trajectory import trajectory"
    ]
   },
   {

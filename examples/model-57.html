@@ -6,8 +6,8 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Example-58: Frequency (parametric derivatives for linear system) &mdash; model  documentation</title>
-      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+  <title>Example-58: Frequency (Parametric derivatives for linear system) &mdash; model  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../_static/nbsphinx-code-cells.css?v=2aa19091" />
 
@@ -24,7 +24,7 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="BPM" href="../modules/library/bpm.html" />
-    <link rel="prev" title="Example-57: Approximate invariants spread" href="model-56.html" /> 
+    <link rel="prev" title="Example-57: Trajectory (Approximate invariants spread)" href="model-56.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -104,9 +104,9 @@
 <li class="toctree-l1"><a class="reference internal" href="model-52.html">Example-53: Coupling (Minimal tune distance computation)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="model-53.html">Example-54: Coupling (Coupling correction based on minimal tune)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="model-54.html">Example-55: Demo</a></li>
-<li class="toctree-l1"><a class="reference internal" href="model-55.html">Example-56: Trajectory</a></li>
-<li class="toctree-l1"><a class="reference internal" href="model-56.html">Example-57: Approximate invariants spread</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Example-58: Frequency (parametric derivatives for linear system)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-55.html">Example-56: Trajectory (Differentiable trajectory generation)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-56.html">Example-57: Trajectory (Approximate invariants spread)</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Example-58: Frequency (Parametric derivatives for linear system)</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API:</span></p>
 <ul>
@@ -170,7 +170,7 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
-      <li class="breadcrumb-item active">Example-58: Frequency (parametric derivatives for linear system)</li>
+      <li class="breadcrumb-item active">Example-58: Frequency (Parametric derivatives for linear system)</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../_sources/examples/model-57.ipynb.txt" rel="nofollow"> View page source</a>
       </li>
@@ -180,8 +180,8 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="Example-58:-Frequency-(parametric-derivatives-for-linear-system)">
-<h1>Example-58: Frequency (parametric derivatives for linear system)<a class="headerlink" href="#Example-58:-Frequency-(parametric-derivatives-for-linear-system)" title="Link to this heading"></a></h1>
+  <section id="Example-58:-Frequency-(Parametric-derivatives-for-linear-system)">
+<h1>Example-58: Frequency (Parametric derivatives for linear system)<a class="headerlink" href="#Example-58:-Frequency-(Parametric-derivatives-for-linear-system)" title="Link to this heading"></a></h1>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
 </pre></div>
@@ -198,21 +198,21 @@
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Import</span>
 
-<span class="kn">import</span> <span class="nn">torch</span>
-<span class="kn">from</span> <span class="nn">torch</span> <span class="kn">import</span> <span class="n">Tensor</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">torch</span><span class="w"> </span><span class="kn">import</span> <span class="n">Tensor</span>
 
-<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
 
-<span class="kn">from</span> <span class="nn">model.library.line</span> <span class="kn">import</span> <span class="n">Line</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">model.library.line</span><span class="w"> </span><span class="kn">import</span> <span class="n">Line</span>
 
-<span class="kn">from</span> <span class="nn">model.command.external</span> <span class="kn">import</span> <span class="n">load_sdds</span>
-<span class="kn">from</span> <span class="nn">model.command.external</span> <span class="kn">import</span> <span class="n">load_lattice</span>
-<span class="kn">from</span> <span class="nn">model.command.build</span> <span class="kn">import</span> <span class="n">build</span>
-<span class="kn">from</span> <span class="nn">model.command.tune</span> <span class="kn">import</span> <span class="n">tune</span>
-<span class="kn">from</span> <span class="nn">model.command.tune</span> <span class="kn">import</span> <span class="n">chromaticity</span>
-<span class="kn">from</span> <span class="nn">model.command.trajectory</span> <span class="kn">import</span> <span class="n">trajectory</span>
-<span class="kn">from</span> <span class="nn">model.command.frequency</span> <span class="kn">import</span> <span class="nb">filter</span>
-<span class="kn">from</span> <span class="nn">model.command.frequency</span> <span class="kn">import</span> <span class="n">frequency_factory</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">model.command.external</span><span class="w"> </span><span class="kn">import</span> <span class="n">load_sdds</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">model.command.external</span><span class="w"> </span><span class="kn">import</span> <span class="n">load_lattice</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">model.command.build</span><span class="w"> </span><span class="kn">import</span> <span class="n">build</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">model.command.tune</span><span class="w"> </span><span class="kn">import</span> <span class="n">tune</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">model.command.tune</span><span class="w"> </span><span class="kn">import</span> <span class="n">chromaticity</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">model.command.trajectory</span><span class="w"> </span><span class="kn">import</span> <span class="n">trajectory</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">model.command.frequency</span><span class="w"> </span><span class="kn">import</span> <span class="nb">filter</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">model.command.frequency</span><span class="w"> </span><span class="kn">import</span> <span class="n">frequency_factory</span>
 </pre></div>
 </div>
 </div>
@@ -410,7 +410,7 @@ tensor([[-7.8819],
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="model-56.html" class="btn btn-neutral float-left" title="Example-57: Approximate invariants spread" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="model-56.html" class="btn btn-neutral float-left" title="Example-57: Trajectory (Approximate invariants spread)" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
         <a href="../modules/library/bpm.html" class="btn btn-neutral float-right" title="BPM" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
