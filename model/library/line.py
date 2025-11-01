@@ -1426,7 +1426,7 @@ class Line(Element):
     def query(self, *,
              kinds:Optional[list[str]] = None,
              patterns:Optional[list[str]] = None,
-             checks:Optional[Callable[[Element], bool]] = None) -> list[Element]:
+             checks:Optional[list[Callable[[Element], bool]]] = None) -> list[Element]:
         """
         Query line (all levels) for specific elements
 
@@ -1436,7 +1436,7 @@ class Line(Element):
             list of kinds to select
         patterns: Optional[list[str]]
             list of patterns to select
-        checks: checks:Optional[Callable[[Element], bool]]
+        checks: checks:Optional[;ist[Callable[[Element], bool]]]
             list of check functions
 
         Returns
