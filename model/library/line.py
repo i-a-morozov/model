@@ -917,8 +917,10 @@ class Line(Element):
         table:dict[str, int] = dict.fromkeys(self.names, 1)
         for element in self.sequence:
             current = element.clone()
+            current.lines = set()
+            current.lines.add(self.name)           
             if element.name not in names and element.__class__.__name__ == kind and total[element.name] != 1:
-                current.name = f'{element.name}{table[element.name]:0{size}}'
+                current.name = f'{element.name}{table[element.name]:0{size}}'     
                 table[element.name] += 1
             sequence.append(current)
         self.sequence = sequence
