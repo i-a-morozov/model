@@ -108,6 +108,13 @@ class Line(Element):
                  sequence:list[Element|Line],
                  propagate:bool=False,
                  dp:float=0.0, *,
+                 alignment:bool=True,
+                 dx:float=0.0,
+                 dy:float=0.0,
+                 dz:float=0.0,
+                 wx:float=0.0,
+                 wy:float=0.0,
+                 wz:float=0.0,                
                  exact:bool=False,
                  output:bool=False,
                  matrix:bool=False) -> None:
@@ -124,6 +131,20 @@ class Line(Element):
             flat to propagate flags to elements
         dp: float, default=0.0
             momentum deviation
+         alignment: bool, default=True
+            flag to use alignment errors
+        dx: float, default=0.0
+            dx alignment error
+        dy: float, default=0.0
+            dy alignment error
+        dz: float, default=0.0
+            dz alignment error
+        wx: float, default=0.0
+            wx alignment error
+        wy: float, default=0.0
+            wy alignment error
+        wz: float, default=0.0
+            wz alignment error           
         exact: bool, default=False
             flag to include kinematic term
         output: bool, default=False
@@ -138,6 +159,13 @@ class Line(Element):
         """
         super().__init__(name=name,
                          dp=dp,
+                         alignment=alignment,
+                         dx=dx,
+                         dy=dy,
+                         dz=dz,
+                         wx=wx,
+                         wy=wy,
+                         wz=wz,
                          exact=exact,
                          output=output,
                          matrix=matrix)
