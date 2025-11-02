@@ -108,7 +108,7 @@ class Line(Element):
                  sequence:list[Element|Line],
                  propagate:bool=False,
                  dp:float=0.0, *,
-                 alignment:bool=True,
+                 alignment:bool=False,
                  dx:float=0.0,
                  dy:float=0.0,
                  dz:float=0.0,
@@ -131,7 +131,7 @@ class Line(Element):
             flat to propagate flags to elements
         dp: float, default=0.0
             momentum deviation
-         alignment: bool, default=True
+        alignment: bool, default=False
             flag to use alignment errors
         dx: float, default=0.0
             dx alignment error
