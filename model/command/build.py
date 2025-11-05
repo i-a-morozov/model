@@ -56,6 +56,7 @@ _translation_lte: dict[str, dict[str, str]] = {
     'QUAD'      : {'length': 'L', 'kn': 'K1', 'ks': 'K1S'},
     'SEXT'      : {'length': 'L', 'ms': 'K2'},
     'OCTU'      : {'length': 'L', 'mo': 'K3'},
+    'MULT'      : {'length': 'L', 'kn': 'K1', 'ms': 'K2', 'mo': 'K3'},
     'CSBEND'    : {'length': 'L', 'angle': 'ANGLE', 'e1': 'E1', 'e2': 'E2', 'kn': 'K1', 'ks': 'K1S', 'ms': 'K2'},
     'SBEN'      : {'length': 'L', 'angle': 'ANGLE', 'e1': 'E1', 'e2': 'E2', 'kn': 'K1', 'ks': 'K1S', 'ms': 'K2'},
     'MONI'      : {},
@@ -313,6 +314,15 @@ def _build_lte(target:str,
                 length=data.get(select['length'], 0.0),
                 mo=data.get(select['mo'], 0.0)
             )
+        case 'MULT' as case:
+            select = _translation_lte[case]
+            return Multipole(
+                name=target,
+                length=data.get(select['length'], 0.0),
+                kn=data.get(select['kn'], 0.0),
+                ms=data.get(select['ms'], 0.0),
+                mo=data.get(select['mo'], 0.0)
+            )            
         case 'CSBEND' | 'SBEN' as case:
             select = _translation_lte[case]
             return Dipole(

@@ -163,7 +163,6 @@ class Line(Element):
                          dx=dx,
                          dy=dy,
                          dz=dz,
-                         wx=wx,
                          wy=wy,
                          wz=wz,
                          exact=exact,
@@ -551,7 +550,7 @@ class Line(Element):
 
         """
         self.sequence.remove(self[name])
-
+    
     def replace(self, name:str, element:Element) -> None:
         """
         Replace first occurrance of element with given name
@@ -1350,6 +1349,7 @@ class Line(Element):
         """
         return self._propagate
 
+    
     @propagate.setter
     def propagate(self,
                   propagate:bool) -> None:
@@ -1418,6 +1418,7 @@ class Line(Element):
                 if isinstance(element, Line):
                     element.output = output
 
+    
     @property
     def matrix(self) -> bool:
         """
@@ -1614,30 +1615,55 @@ class Line(Element):
                 element.name = name
 
 
-        def replace_group(self,
-                        pattern:str,
-                        factory:Callable[[Element], Element], *,
-                        kinds:Optional[list[str]]=None) -> None:
-            """
-            Replace group
+    def replace_group(self,
+                      pattern:str,
+                      factory:Callable[[Element], Element], *,
+                      kinds:Optional[list[str]]=None) -> None:
+        """
+        Replace group (first level)
 
-            Parameters
-            ----------
-            pattern: str
-                regex pattern
-            factory: Callable[[Element], Element]
-                factory function
-            kinds: Optional[list[str]]
-                list of kinds to select
+        Parameters
+        ----------
+        pattern: str
+            regex pattern
+        factory: Callable[[Element], Element]
+            factory function
+        kinds: Optional[list[str]]
+            list of kinds to select
 
-            Returns
-            -------
-            None
+        Returns
+        -------
+        None
 
-            """
-            for i, element in enumerate(self.sequence):
-                if (not kinds or element.__class__.__name__ in kinds) and re.compile(pattern).search(element.name):
-                    self.sequence[i] = factory(element)
+        """
+        for i, element in enumerate(self.sequence):
+            if (not kinds or element.__class__.__name__ in kinds) and re.compile(pattern).search(element.name):
+                self.sequence[i] = factory(element)
+
+
+    def remove_group(self,
+                     pattern:str, *,
+                     kinds:Optional[list[str]]=None) -> None:
+        """
+        Remove group (first level)
+    
+        Parameters
+        ----------
+        pattern: str
+            regex pattern
+        factory: Callable[[Element], Element]
+            factory function
+        kinds: Optional[list[str]]
+            list of kinds to select
+    
+        Returns
+        -------
+        None
+    
+        """
+        for i, element in reversed(list(enumerate(self.sequence))):
+            if (not kinds or element.__class__.__name__ in kinds) and re.compile(pattern).search(element.name):
+                self.remove(element.name)
 
 
     def __call__(self,
