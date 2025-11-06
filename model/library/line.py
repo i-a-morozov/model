@@ -515,9 +515,13 @@ class Line(Element):
 
     def insert(self,
                element:Element,
-               name:str) -> None:
+               name:str, *,
+               position:Optional[float]=None) -> None:
         """
-        Insert element after the element with given name
+        Insert element after the element with given name or split the element given a position
+
+        Note, only drift elements are allowed to be inserted into
+        The original drift will be replaced by a line with _ID appended to the original name
 
         Parameters
         ----------
@@ -525,14 +529,27 @@ class Line(Element):
             element
         name: str
             name
+        position: Optional[float]
+            split position (center of inserted element)
 
         Returns
         -------
         None
 
         """
-        self.sequence.insert(self.position(name) + 1, element)
+        if position is None:
+            self.sequence.insert(self.position(name) + 1, element)
+            return
 
+        local = self[name]
+        if local.__class__.__name__ != 'Drift':
+            raise NotImplementedError
+        ll = local.__class__(**{**local.serialize, **{'name': f'{local.name}_L', 'length': (position - 0.5*element.length).item()}})
+        lr = local.__class__(**{**local.serialize, **{'name': f'{local.name}_R', 'length': (local.length - (position + 0.5*element.length)).item()}})
+        local = self.__class__(name=f'{name}_ID', sequence=[ll, element, lr])
+        self.insert(local, name)
+        self.remove(name)
+        
 
     def remove(self,
                name:str) -> None:
@@ -550,7 +567,8 @@ class Line(Element):
 
         """
         self.sequence.remove(self[name])
-    
+
+        
     def replace(self, name:str, element:Element) -> None:
         """
         Replace first occurrance of element with given name
