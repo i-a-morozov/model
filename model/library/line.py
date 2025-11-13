@@ -542,13 +542,22 @@ class Line(Element):
             return
 
         local = self[name]
-        if local.__class__.__name__ != 'Drift':
+        if local.__class__.__name__  not in ['Drift', 'Marker']:
             raise NotImplementedError
-        ll = local.__class__(**{**local.serialize, **{'name': f'{local.name}_L', 'length': (position - 0.5*element.length).item()}})
-        lr = local.__class__(**{**local.serialize, **{'name': f'{local.name}_R', 'length': (local.length - (position + 0.5*element.length)).item()}})
-        local = self.__class__(name=f'{name}_ID', sequence=[ll, element, lr])
-        self.insert(local, name)
-        self.remove(name)
+
+        if local.__class__.__name__  == 'Drift':
+            ll = local.__class__(**{**local.serialize, **{'name': f'{local.name}_L', 'length': (position - 0.5*element.length).item()}})
+            lr = local.__class__(**{**local.serialize, **{'name': f'{local.name}_R', 'length': (local.length - (position + 0.5*element.length)).item()}})
+            local = self.__class__(name=f'{name}_ID', sequence=[ll, element, lr])
+            self.insert(local, name)
+            self.remove(name)
+        
+        if local.__class__.__name__  == 'Marker':
+            ll = self[self.position(name) - 1]
+            lr = self[self.position(name) + 1]
+            ll.length = (ll.length - 0.5*element.length).item()
+            lr.length = (lr.length - 0.5*element.length).item()
+            self.replace(name, element)
         
 
     def remove(self,
