@@ -711,13 +711,14 @@ class Dipole(Element):
 
         """
         self._e1_on = flag
+        self._lmatrix, self._rmatrix = self.make_matrix()
         self._step = self.make_step()
 
 
     @property
     def e2_on(self) -> bool:
         """
-        Get e1 flag
+        Get e2 flag
 
         Parameters
         ----------
@@ -735,7 +736,7 @@ class Dipole(Element):
     def e2_on(self,
               flag:bool) -> None:
         """
-        Set e1 flag
+        Set e2 flag
 
         Parameters
         ----------
@@ -748,6 +749,7 @@ class Dipole(Element):
 
         """
         self._e2_on = flag
+        self._lmatrix, self._rmatrix = self.make_matrix()
         self._step = self.make_step()
 
 
