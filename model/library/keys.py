@@ -32,3 +32,14 @@ KEY_DZ:str = 'dz' # -- dz translation alingnment
 KEY_WX:str = 'wx' # -- wx rotation alingnment
 KEY_WY:str = 'wy' # -- wy rotation alingnment
 KEY_WZ:str = 'wz' # -- wz rotation alingnment
+
+KEY_A11:str = 'a11'
+KEY_A12:str = 'a12'
+KEY_A13:str = 'a13'
+KEY_A14:str = 'a14'
+KEY_A22:str = 'a22'
+KEY_A23:str = 'a23'
+KEY_A24:str = 'a24'
+KEY_A33:str = 'a33'
+KEY_A34:str = 'a34'
+KEY_A44:str = 'a44'
