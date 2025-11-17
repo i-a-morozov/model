@@ -11,7 +11,7 @@ group                : generate group wrapper (one or more elements/lines)
 forward              : forward normalizaton
 inverse              : inverse normalizaton
 normalize            : generate normalizaton wrapper
-Wrapper              : class to wrap function into torcm module
+Wrapper              : class to wrap function into torch module
 _update              : recursively update the value of the parameter (leaf key) in the nested dictionary
 _select              : select a sub-dictionary from a nested dictionary given a path of keys
 _construct           : construct a transformation from one element to another
