@@ -27,8 +27,8 @@ type Mapping = Callable[[State, Tensor, ...], State]
 
 class Linear(Element):
     """
-    Linear  matrix element
-    ----------------------
+    Linear matrix element
+    ---------------------
 
     Zero lenght element, set length to be used in insertion mode
 
@@ -55,7 +55,7 @@ class Linear(Element):
                  output:bool=False,
                  matrix:bool=False) -> None:
         """
-        Gradient instance initialization
+        Linear instance initialization
 
         Parameters
         ----------
