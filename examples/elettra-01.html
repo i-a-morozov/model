@@ -23,7 +23,7 @@
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="ELETTRA-03: ID linear optics distortion" href="elettra-02.html" />
+    <link rel="next" title="ELETTRA-03: ORM construction" href="elettra-02.html" />
     <link rel="prev" title="ELETTRA-01: Layout" href="elettra-00.html" /> 
 </head>
 
@@ -108,10 +108,12 @@
 <li class="toctree-l1"><a class="reference internal" href="model-56.html">Example-57: Trajectory (Approximate invariants spread)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="model-57.html">Example-58: Frequency (Parametric derivatives for linear system)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="model-58.html">Example-59: Matrix (element)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="model-59.html">Example-59: Chromatic matrix (element)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-59.html">Example-60: Chromatic matrix (element)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="elettra-00.html">ELETTRA-01: Layout</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">ELETTRA-02: Linear optics comparison</a></li>
-<li class="toctree-l1"><a class="reference internal" href="elettra-02.html">ELETTRA-03: ID linear optics distortion</a></li>
+<li class="toctree-l1"><a class="reference internal" href="elettra-02.html">ELETTRA-03: ORM construction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="elettra-03.html">ELETTRA-04: Tune response matrix</a></li>
+<li class="toctree-l1"><a class="reference internal" href="elettra-04.html">ELETTRA-05: ID linear optics distortion</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API:</span></p>
 <ul>
@@ -185,13 +187,22 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="ELETTRA-02:-Linear-optics-comparison">
+  <div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+</div>
+<section id="ELETTRA-02:-Linear-optics-comparison">
 <h1>ELETTRA-02: Linear optics comparison<a class="headerlink" href="#ELETTRA-02:-Linear-optics-comparison" title="Link to this heading"></a></h1>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># In this example linear optics is computed for Elettra 2.0 storage ring and compared with ELEGANT</span>
+<span class="c1"># Note, to get smooth optics output elements are sliced, this results in dispersion being slightly off (no difference without slicing)</span>
 </pre></div>
 </div>
 </div>
@@ -210,6 +221,20 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">matplotlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">pyplot</span> <span class="k">as</span> <span class="n">plt</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">matplotlib.patches</span><span class="w"> </span><span class="kn">import</span> <span class="n">Rectangle</span>
 <span class="n">matplotlib</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s1">&#39;text.usetex&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">model.library.element</span><span class="w"> </span><span class="kn">import</span> <span class="n">Element</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">model.library.line</span><span class="w"> </span><span class="kn">import</span> <span class="n">Line</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">model.library.quadrupole</span><span class="w"> </span><span class="kn">import</span> <span class="n">Quadrupole</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">model.command.util</span><span class="w"> </span><span class="kn">import</span> <span class="n">select</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">model.command.external</span><span class="w"> </span><span class="kn">import</span> <span class="n">load_sdds</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">model.command.external</span><span class="w"> </span><span class="kn">import</span> <span class="n">load_lattice</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">model.command.build</span><span class="w"> </span><span class="kn">import</span> <span class="n">build</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">model.command.layout</span><span class="w"> </span><span class="kn">import</span> <span class="n">Layout</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">model.command.tune</span><span class="w"> </span><span class="kn">import</span> <span class="n">tune</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">model.command.orbit</span><span class="w"> </span><span class="kn">import</span> <span class="n">dispersion</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">model.command.twiss</span><span class="w"> </span><span class="kn">import</span> <span class="n">twiss</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">model.command.advance</span><span class="w"> </span><span class="kn">import</span> <span class="n">advance</span>
 </pre></div>
 </div>
 </div>
@@ -218,8 +243,6 @@
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Set data type and device</span>
-
-<span class="kn">from</span><span class="w"> </span><span class="nn">model.library.element</span><span class="w"> </span><span class="kn">import</span> <span class="n">Element</span>
 
 <span class="n">Element</span><span class="o">.</span><span class="n">dtype</span> <span class="o">=</span> <span class="n">dtype</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">float64</span>
 <span class="n">Element</span><span class="o">.</span><span class="n">device</span> <span class="o">=</span> <span class="n">device</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="s1">&#39;cpu&#39;</span><span class="p">)</span>
@@ -232,10 +255,7 @@
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Load ELEGANT data at BPMs</span>
 
-<span class="kn">from</span><span class="w"> </span><span class="nn">model.command.external</span><span class="w"> </span><span class="kn">import</span> <span class="n">load_sdds</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">model.command.util</span><span class="w"> </span><span class="kn">import</span> <span class="n">select</span>
-
-<span class="c1"># Note, this creats a dictionary using element names as keys</span>
+<span class="c1"># Note, the following creates a python dictionary using element names as keys</span>
 <span class="c1"># Repeated elements are collapsed</span>
 
 <span class="n">path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s1">&#39;elettra.twiss&#39;</span><span class="p">)</span>
@@ -279,7 +299,7 @@
 <span class="n">a_y</span><span class="p">:</span><span class="n">Tensor</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="n">value</span> <span class="k">for</span> <span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">),</span> <span class="n">kind</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">a_y</span><span class="o">.</span><span class="n">items</span><span class="p">(),</span> <span class="n">kinds</span><span class="o">.</span><span class="n">values</span><span class="p">())</span> <span class="k">if</span> <span class="n">kind</span> <span class="o">==</span> <span class="s1">&#39;MONI&#39;</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">)</span>
 <span class="n">b_y</span><span class="p">:</span><span class="n">Tensor</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="n">value</span> <span class="k">for</span> <span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">),</span> <span class="n">kind</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">b_y</span><span class="o">.</span><span class="n">items</span><span class="p">(),</span> <span class="n">kinds</span><span class="o">.</span><span class="n">values</span><span class="p">())</span> <span class="k">if</span> <span class="n">kind</span> <span class="o">==</span> <span class="s1">&#39;MONI&#39;</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">)</span>
 
-<span class="c1"># Advance (accumulated from lattice start to each BPM)</span>
+<span class="c1"># Advance (accumulated from lattice start to each BPM position)</span>
 
 <span class="n">mu_x</span> <span class="o">=</span> <span class="n">select</span><span class="p">(</span><span class="n">columns</span><span class="p">,</span> <span class="s1">&#39;psix&#39;</span><span class="p">,</span> <span class="n">keep</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 <span class="n">mu_y</span> <span class="o">=</span> <span class="n">select</span><span class="p">(</span><span class="n">columns</span><span class="p">,</span> <span class="s1">&#39;psiy&#39;</span> <span class="p">,</span> <span class="n">keep</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
@@ -287,7 +307,7 @@
 <span class="n">mu_x</span><span class="p">:</span><span class="n">Tensor</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="n">value</span> <span class="k">for</span> <span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">),</span> <span class="n">kind</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">mu_x</span><span class="o">.</span><span class="n">items</span><span class="p">(),</span> <span class="n">kinds</span><span class="o">.</span><span class="n">values</span><span class="p">())</span> <span class="k">if</span> <span class="n">kind</span> <span class="o">==</span> <span class="s1">&#39;MONI&#39;</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">)</span>
 <span class="n">mu_y</span><span class="p">:</span><span class="n">Tensor</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="n">value</span> <span class="k">for</span> <span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">),</span> <span class="n">kind</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">mu_y</span><span class="o">.</span><span class="n">items</span><span class="p">(),</span> <span class="n">kinds</span><span class="o">.</span><span class="n">values</span><span class="p">())</span> <span class="k">if</span> <span class="n">kind</span> <span class="o">==</span> <span class="s1">&#39;MONI&#39;</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">)</span>
 
-<span class="c1"># Positions</span>
+<span class="c1"># BPM positions</span>
 
 <span class="n">positions</span> <span class="o">=</span> <span class="n">select</span><span class="p">(</span><span class="n">columns</span><span class="p">,</span> <span class="s1">&#39;s&#39;</span><span class="p">,</span> <span class="n">keep</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
 <span class="n">positions</span> <span class="o">=</span> <span class="p">[</span><span class="n">value</span> <span class="k">for</span> <span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">),</span> <span class="n">kind</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">positions</span><span class="p">,</span> <span class="n">kinds</span><span class="o">.</span><span class="n">values</span><span class="p">())</span> <span class="k">if</span> <span class="n">kind</span> <span class="o">==</span> <span class="s1">&#39;MONI&#39;</span><span class="p">]</span>
@@ -301,8 +321,6 @@
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Load lattice (ELEGANT table)</span>
 <span class="c1"># Note, lattice is allowed to have repeated elements</span>
 
-<span class="kn">from</span><span class="w"> </span><span class="nn">model.command.external</span><span class="w"> </span><span class="kn">import</span> <span class="n">load_lattice</span>
-
 <span class="n">path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s1">&#39;elettra.lte&#39;</span><span class="p">)</span>
 <span class="n">data</span> <span class="o">=</span> <span class="n">load_lattice</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
 </pre></div>
@@ -314,23 +332,17 @@
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Build and setup lattice</span>
 
-<span class="kn">from</span><span class="w"> </span><span class="nn">model.library.line</span><span class="w"> </span><span class="kn">import</span> <span class="n">Line</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">model.command.build</span><span class="w"> </span><span class="kn">import</span> <span class="n">build</span>
-
 <span class="n">ring</span><span class="p">:</span><span class="n">Line</span> <span class="o">=</span> <span class="n">build</span><span class="p">(</span><span class="s1">&#39;RING&#39;</span><span class="p">,</span> <span class="s1">&#39;ELEGANT&#39;</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
 
 <span class="c1"># Flatten sublines</span>
 
 <span class="n">ring</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
 
-<span class="c1"># Keep only markers at the center of long straight sections</span>
+<span class="c1"># Remove all marker elements but the ones starting with MLL (long straight section centers)</span>
 
 <span class="n">ring</span><span class="o">.</span><span class="n">remove_group</span><span class="p">(</span><span class="n">pattern</span><span class="o">=</span><span class="sa">r</span><span class="s1">&#39;^(?!MLL_).*&#39;</span><span class="p">,</span> <span class="n">kinds</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Marker&#39;</span><span class="p">])</span>
 
-<span class="c1"># Replace sextupoles with quadrupoles</span>
-
-<span class="kn">from</span><span class="w"> </span><span class="nn">model.library.element</span><span class="w"> </span><span class="kn">import</span> <span class="n">Element</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">model.library.quadrupole</span><span class="w"> </span><span class="kn">import</span> <span class="n">Quadrupole</span>
+<span class="c1"># Replace all sextupoles with quadrupoles</span>
 
 <span class="k">def</span><span class="w"> </span><span class="nf">factory</span><span class="p">(</span><span class="n">element</span><span class="p">:</span><span class="n">Element</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
     <span class="n">table</span> <span class="o">=</span> <span class="n">element</span><span class="o">.</span><span class="n">serialize</span>
@@ -341,16 +353,16 @@
 
 <span class="c1"># Set linear dipoles</span>
 
-<span class="k">def</span><span class="w"> </span><span class="nf">function</span><span class="p">(</span><span class="n">element</span><span class="p">:</span><span class="n">Element</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">apply</span><span class="p">(</span><span class="n">element</span><span class="p">:</span><span class="n">Element</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
     <span class="n">element</span><span class="o">.</span><span class="n">linear</span> <span class="o">=</span> <span class="kc">True</span>
 
-<span class="n">ring</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">function</span><span class="p">,</span> <span class="n">kinds</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Dipole&#39;</span><span class="p">])</span>
+<span class="n">ring</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">apply</span><span class="p">,</span> <span class="n">kinds</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Dipole&#39;</span><span class="p">])</span>
 
-<span class="c1"># Merge and rename drifts</span>
+<span class="c1"># Merge drifts</span>
 
 <span class="n">ring</span><span class="o">.</span><span class="n">merge</span><span class="p">()</span>
 
-<span class="c1"># Split elements</span>
+<span class="c1"># Split elements (smooth twiss output)</span>
 
 <span class="n">step</span> <span class="o">=</span> <span class="mf">0.05</span>
 <span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">ring</span><span class="p">:</span>
@@ -378,10 +390,7 @@
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Compute tunes (fractional part)</span>
 
-<span class="kn">from</span><span class="w"> </span><span class="nn">model.command.tune</span><span class="w"> </span><span class="kn">import</span> <span class="n">tune</span>
-
-<span class="n">guess</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="mi">4</span><span class="o">*</span><span class="p">[</span><span class="mf">0.0</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
-<span class="n">nux</span><span class="p">,</span> <span class="n">nuy</span> <span class="o">=</span> <span class="n">tune</span><span class="p">(</span><span class="n">ring</span><span class="p">,</span> <span class="p">[],</span> <span class="n">alignment</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">matched</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">guess</span><span class="o">=</span><span class="n">guess</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">epsilon</span><span class="o">=</span><span class="mf">1.0E-9</span><span class="p">)</span>
+<span class="n">nux</span><span class="p">,</span> <span class="n">nuy</span> <span class="o">=</span> <span class="n">tune</span><span class="p">(</span><span class="n">ring</span><span class="p">,</span> <span class="p">[],</span> <span class="n">matched</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 
 <span class="c1"># Compare with elegant</span>
 
@@ -404,15 +413,13 @@ True
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Compute and compare dispersion</span>
-<span class="c1"># Note, the values are not matched closely due to splitting of dipoles</span>
+<span class="c1"># Note, the values are not matched exactly due to splitting of dipoles</span>
 
-<span class="kn">from</span><span class="w"> </span><span class="nn">model.command.orbit</span><span class="w"> </span><span class="kn">import</span> <span class="n">dispersion</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">model.command.layout</span><span class="w"> </span><span class="kn">import</span> <span class="n">Layout</span>
-
-<span class="n">guess</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="mi">4</span><span class="o">*</span><span class="p">[</span><span class="mf">0.0</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">)</span>
-<span class="p">(</span><span class="n">etaqx</span><span class="p">,</span> <span class="n">etapx</span><span class="p">,</span> <span class="n">etaqy</span><span class="p">,</span> <span class="n">etapy</span><span class="p">)</span> <span class="o">=</span> <span class="n">dispersion</span><span class="p">(</span><span class="n">ring</span><span class="p">,</span> <span class="n">guess</span><span class="p">,</span> <span class="p">[],</span> <span class="n">alignment</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">advance</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">epsilon</span><span class="o">=</span><span class="mf">1.0E-9</span><span class="p">)</span>
+<span class="n">orbit</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="mi">4</span><span class="o">*</span><span class="p">[</span><span class="mf">0.0</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">)</span>
+<span class="n">etaqx</span><span class="p">,</span> <span class="n">etapx</span><span class="p">,</span> <span class="n">etaqy</span><span class="p">,</span> <span class="n">etapy</span> <span class="o">=</span> <span class="n">dispersion</span><span class="p">(</span><span class="n">ring</span><span class="p">,</span> <span class="n">orbit</span><span class="p">,</span> <span class="p">[],</span> <span class="n">limit</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 
 <span class="n">mask</span> <span class="o">=</span> <span class="p">[</span><span class="n">kind</span> <span class="o">==</span> <span class="s1">&#39;BPM&#39;</span> <span class="k">for</span> <span class="p">(</span><span class="n">_</span><span class="p">,</span> <span class="n">kind</span><span class="p">,</span> <span class="o">*</span><span class="n">_</span><span class="p">)</span> <span class="ow">in</span> <span class="n">ring</span><span class="o">.</span><span class="n">layout</span><span class="p">()]</span>
+
 <span class="n">etaqx_bpm</span> <span class="o">=</span> <span class="n">etaqx</span><span class="p">[</span><span class="n">mask</span><span class="p">]</span>
 <span class="n">etapx_bpm</span> <span class="o">=</span> <span class="n">etapx</span><span class="p">[</span><span class="n">mask</span><span class="p">]</span>
 <span class="n">etaqy_bpm</span> <span class="o">=</span> <span class="n">etaqy</span><span class="p">[</span><span class="n">mask</span><span class="p">]</span>
@@ -453,18 +460,16 @@ True
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_elettra-01_8_1.png" src="../_images/examples_elettra-01_8_1.png" />
+<img alt="../_images/examples_elettra-01_9_1.png" src="../_images/examples_elettra-01_9_1.png" />
 </div>
 </div>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Compute and twiss parameters</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Compute and compare twiss parameters</span>
 
-<span class="kn">from</span><span class="w"> </span><span class="nn">model.command.twiss</span><span class="w"> </span><span class="kn">import</span> <span class="n">twiss</span>
-
-<span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">bx</span><span class="p">,</span> <span class="n">ay</span><span class="p">,</span> <span class="n">by</span><span class="p">)</span> <span class="o">=</span> <span class="n">twiss</span><span class="p">(</span><span class="n">ring</span><span class="p">,</span> <span class="p">[],</span> <span class="n">alignment</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">matched</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">advance</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">full</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">guess</span><span class="o">=</span><span class="n">guess</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">epsilon</span><span class="o">=</span><span class="mf">1.0E-9</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>
+<span class="n">ax</span><span class="p">,</span> <span class="n">bx</span><span class="p">,</span> <span class="n">ay</span><span class="p">,</span> <span class="n">by</span> <span class="o">=</span> <span class="n">twiss</span><span class="p">(</span><span class="n">ring</span><span class="p">,</span> <span class="p">[],</span> <span class="n">matched</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">advance</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">full</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>
 
 <span class="n">mask</span> <span class="o">=</span> <span class="p">[</span><span class="n">kind</span> <span class="o">==</span> <span class="s1">&#39;BPM&#39;</span> <span class="k">for</span> <span class="p">(</span><span class="n">_</span><span class="p">,</span> <span class="n">kind</span><span class="p">,</span> <span class="o">*</span><span class="n">_</span><span class="p">)</span> <span class="ow">in</span> <span class="n">ring</span><span class="o">.</span><span class="n">layout</span><span class="p">()]</span>
 <span class="n">ax_bpm</span> <span class="o">=</span> <span class="n">ax</span><span class="p">[</span><span class="n">mask</span><span class="p">]</span>
@@ -509,18 +514,16 @@ True
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_elettra-01_9_1.png" src="../_images/examples_elettra-01_9_1.png" />
+<img alt="../_images/examples_elettra-01_10_1.png" src="../_images/examples_elettra-01_10_1.png" />
 </div>
 </div>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Compute phase advances</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Compute and compare phase advances</span>
 
-<span class="kn">from</span><span class="w"> </span><span class="nn">model.command.advance</span><span class="w"> </span><span class="kn">import</span> <span class="n">advance</span>
-
-<span class="n">mux</span><span class="p">,</span> <span class="n">muy</span> <span class="o">=</span>  <span class="n">advance</span><span class="p">(</span><span class="n">ring</span><span class="p">,</span> <span class="p">[],</span> <span class="n">alignment</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">matched</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">guess</span><span class="o">=</span><span class="n">guess</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">epsilon</span><span class="o">=</span><span class="mf">1.0E-9</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>
+<span class="n">mux</span><span class="p">,</span> <span class="n">muy</span> <span class="o">=</span>  <span class="n">advance</span><span class="p">(</span><span class="n">ring</span><span class="p">,</span> <span class="p">[],</span> <span class="n">alignment</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">matched</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>
 <span class="n">mux</span> <span class="o">=</span> <span class="n">mux</span><span class="o">.</span><span class="n">cumsum</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
 <span class="n">muy</span> <span class="o">=</span> <span class="n">muy</span><span class="o">.</span><span class="n">cumsum</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
 
@@ -562,7 +565,7 @@ True
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_elettra-01_10_1.png" src="../_images/examples_elettra-01_10_1.png" />
+<img alt="../_images/examples_elettra-01_11_1.png" src="../_images/examples_elettra-01_11_1.png" />
 </div>
 </div>
 <div class="nbinput nblast docutils container">
@@ -580,7 +583,7 @@ True
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="elettra-00.html" class="btn btn-neutral float-left" title="ELETTRA-01: Layout" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="elettra-02.html" class="btn btn-neutral float-right" title="ELETTRA-03: ID linear optics distortion" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="elettra-02.html" class="btn btn-neutral float-right" title="ELETTRA-03: ORM construction" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

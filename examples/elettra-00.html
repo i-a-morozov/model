@@ -24,7 +24,7 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="ELETTRA-02: Linear optics comparison" href="elettra-01.html" />
-    <link rel="prev" title="Example-59: Chromatic matrix (element)" href="model-59.html" /> 
+    <link rel="prev" title="Example-60: Chromatic matrix (element)" href="model-59.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -108,10 +108,12 @@
 <li class="toctree-l1"><a class="reference internal" href="model-56.html">Example-57: Trajectory (Approximate invariants spread)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="model-57.html">Example-58: Frequency (Parametric derivatives for linear system)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="model-58.html">Example-59: Matrix (element)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="model-59.html">Example-59: Chromatic matrix (element)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-59.html">Example-60: Chromatic matrix (element)</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">ELETTRA-01: Layout</a></li>
 <li class="toctree-l1"><a class="reference internal" href="elettra-01.html">ELETTRA-02: Linear optics comparison</a></li>
-<li class="toctree-l1"><a class="reference internal" href="elettra-02.html">ELETTRA-03: ID linear optics distortion</a></li>
+<li class="toctree-l1"><a class="reference internal" href="elettra-02.html">ELETTRA-03: ORM construction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="elettra-03.html">ELETTRA-04: Tune response matrix</a></li>
+<li class="toctree-l1"><a class="reference internal" href="elettra-04.html">ELETTRA-05: ID linear optics distortion</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API:</span></p>
 <ul>
@@ -191,7 +193,7 @@
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># In this example ELEGANT lattice is loaded and corresponding 3D layout is displayed</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># In this example ELEGANT lattice is imported and corresponding 3D layout is displayed</span>
 </pre></div>
 </div>
 </div>
@@ -215,20 +217,30 @@
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Build elettra lattice</span>
 
+<span class="c1"># Load ELEGANT input file and build lattice</span>
+
 <span class="n">file</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s1">&#39;./elettra.lte&#39;</span><span class="p">)</span>
 <span class="n">data</span> <span class="o">=</span> <span class="n">load_lattice</span><span class="p">(</span><span class="n">file</span><span class="p">)</span>
 <span class="n">ring</span> <span class="o">=</span> <span class="n">build</span><span class="p">(</span><span class="s1">&#39;RING&#39;</span><span class="p">,</span> <span class="s1">&#39;ELEGANT&#39;</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
 
-<span class="n">ring</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
-<span class="n">ring</span><span class="o">.</span><span class="n">remove_group</span><span class="p">(</span><span class="n">pattern</span><span class="o">=</span><span class="sa">r</span><span class="s1">&#39;^(?!MLL_).*&#39;</span><span class="p">,</span> <span class="n">kinds</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Marker&#39;</span><span class="p">])</span>
-<span class="n">ring</span><span class="o">.</span><span class="n">merge</span><span class="p">()</span>
+<span class="c1"># Flatten lattice</span>
 
+<span class="n">ring</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+
+<span class="c1"># Remove all marker elements but the ones starting with MLL (long straight section centers)</span>
+
+<span class="n">ring</span><span class="o">.</span><span class="n">remove_group</span><span class="p">(</span><span class="n">pattern</span><span class="o">=</span><span class="sa">r</span><span class="s1">&#39;^(?!MLL_).*&#39;</span><span class="p">,</span> <span class="n">kinds</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Marker&#39;</span><span class="p">])</span>
+
+<span class="c1"># Merge drifts</span>
+
+<span class="n">ring</span><span class="o">.</span><span class="n">merge</span><span class="p">()</span>
 
 <span class="c1"># Slice dipoles</span>
 
 <span class="n">ring</span><span class="o">.</span><span class="n">ns</span> <span class="o">=</span> <span class="p">((</span><span class="s1">&#39;Dipole&#39;</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">),</span> <span class="p">)</span>
 
 <span class="c1"># Profile</span>
+
 <span class="n">layout</span> <span class="o">=</span> <span class="n">Layout</span><span class="p">(</span><span class="n">ring</span><span class="p">)</span>
 
 <span class="c1"># Generate reference orbit</span>
@@ -256,6 +268,7 @@
         <span class="o">*</span><span class="p">[</span><span class="n">graph_objects</span><span class="o">.</span><span class="n">Mesh3d</span><span class="p">(</span><span class="n">block</span><span class="p">)</span> <span class="k">for</span> <span class="n">block</span> <span class="ow">in</span> <span class="n">blocks</span><span class="p">]</span>
     <span class="p">]</span>
 <span class="p">)</span>
+
 <span class="n">figure</span><span class="o">.</span><span class="n">update_layout</span><span class="p">(</span>
     <span class="n">scene</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
         <span class="n">xaxis</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">visible</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="nb">range</span><span class="o">=</span><span class="p">[</span><span class="o">-</span><span class="mi">100</span><span class="p">,</span><span class="mi">100</span><span class="p">]),</span>
@@ -269,6 +282,7 @@
     <span class="n">hoverlabel</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">font_size</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">font_family</span><span class="o">=</span><span class="s2">&quot;Rockwell&quot;</span><span class="p">,</span> <span class="n">font_color</span><span class="o">=</span><span class="s1">&#39;white&#39;</span><span class="p">),</span>
     <span class="n">legend_groupclick</span><span class="o">=</span><span class="s1">&#39;toggleitem&#39;</span>
 <span class="p">)</span>
+
 <span class="n">figure</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -294,7 +308,7 @@
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="model-59.html" class="btn btn-neutral float-left" title="Example-59: Chromatic matrix (element)" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="model-59.html" class="btn btn-neutral float-left" title="Example-60: Chromatic matrix (element)" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
         <a href="elettra-01.html" class="btn btn-neutral float-right" title="ELETTRA-02: Linear optics comparison" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
