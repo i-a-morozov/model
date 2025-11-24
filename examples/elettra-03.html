@@ -114,6 +114,7 @@
 <li class="toctree-l1"><a class="reference internal" href="elettra-02.html">ELETTRA-03: ORM construction</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">ELETTRA-04: Tune response matrix</a></li>
 <li class="toctree-l1"><a class="reference internal" href="elettra-04.html">ELETTRA-05: ID linear optics distortion</a></li>
+<li class="toctree-l1"><a class="reference internal" href="elettra-05.html">ELETTRA-06: ID tune shift correction (global tune knob)</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API:</span></p>
 <ul>
@@ -319,7 +320,7 @@
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Set quadrupole names for global tune correction</span>
 
-<span class="n">QF</span> <span class="o">=</span> <span class="p">[</span><span class="sa">f</span><span class="s1">&#39;QF_S</span><span class="si">{</span><span class="n">i</span><span class="si">:</span><span class="s1">02</span><span class="si">}</span><span class="s1">_</span><span class="si">{</span><span class="n">j</span><span class="si">:</span><span class="s1">02</span><span class="si">}</span><span class="s1">&#39;</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">12</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)]</span>
+<span class="n">QF</span> <span class="o">=</span> <span class="p">[</span><span class="sa">f</span><span class="s1">&#39;QF_S</span><span class="si">{</span><span class="n">i</span><span class="si">:</span><span class="s1">02</span><span class="si">}</span><span class="s1">_</span><span class="si">{</span><span class="n">j</span><span class="si">:</span><span class="s1">02</span><span class="si">}</span><span class="s1">&#39;</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">12</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)]</span>
 <span class="n">QD</span> <span class="o">=</span> <span class="p">[</span><span class="sa">f</span><span class="s1">&#39;QD_S</span><span class="si">{</span><span class="n">i</span><span class="si">:</span><span class="s1">02</span><span class="si">}</span><span class="s1">_</span><span class="si">{</span><span class="n">j</span><span class="si">:</span><span class="s1">02</span><span class="si">}</span><span class="s1">&#39;</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">12</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)]</span>
 </pre></div>
 </div>
@@ -349,21 +350,21 @@
 <div class="output_area docutils container">
 <div class="highlight"><pre>
 torch.Size([2, 48])
-tensor([[ 0.0873,  0.0873,  0.0873,  0.0873,  0.0873,  0.0873,  0.0873,  0.0873,
-          0.0873,  0.0873,  0.0873,  0.0873,  0.0873,  0.0873,  0.0873,  0.0873,
-          0.0873,  0.0873,  0.0873,  0.0873,  0.0873,  0.0873,  0.0873,  0.0873,
+tensor([[ 0.2439,  0.2439,  0.2439,  0.2439,  0.2439,  0.2439,  0.2439,  0.2439,
+          0.2439,  0.2439,  0.2439,  0.2439,  0.2439,  0.2439,  0.2439,  0.2439,
+          0.2439,  0.2439,  0.2439,  0.2439,  0.2439,  0.2439,  0.2439,  0.2439,
           0.0873,  0.0873,  0.0873,  0.0873,  0.0873,  0.0873,  0.0873,  0.0873,
           0.0873,  0.0873,  0.0873,  0.0873,  0.0873,  0.0873,  0.0873,  0.0873,
           0.0873,  0.0873,  0.0873,  0.0873,  0.0873,  0.0873,  0.0873,  0.0873],
-        [-0.1439, -0.1439, -0.1439, -0.1439, -0.1439, -0.1439, -0.1439, -0.1439,
-         -0.1439, -0.1439, -0.1439, -0.1439, -0.1439, -0.1439, -0.1439, -0.1439,
-         -0.1439, -0.1439, -0.1439, -0.1439, -0.1439, -0.1439, -0.1439, -0.1439,
+        [-0.1247, -0.1247, -0.1247, -0.1247, -0.1247, -0.1247, -0.1247, -0.1247,
+         -0.1247, -0.1247, -0.1247, -0.1247, -0.1247, -0.1247, -0.1247, -0.1247,
+         -0.1247, -0.1247, -0.1247, -0.1247, -0.1247, -0.1247, -0.1247, -0.1247,
          -0.0525, -0.0525, -0.0525, -0.0525, -0.0525, -0.0525, -0.0525, -0.0525,
          -0.0525, -0.0525, -0.0525, -0.0525, -0.0525, -0.0525, -0.0525, -0.0525,
          -0.0525, -0.0525, -0.0525, -0.0525, -0.0525, -0.0525, -0.0525, -0.0525]],
        dtype=torch.float64)
-tensor([[ 2.0948,  2.0964],
-        [-3.4526, -1.2602]], dtype=torch.float64)
+tensor([[ 5.8543,  2.0964],
+        [-2.9918, -1.2602]], dtype=torch.float64)
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
@@ -391,17 +392,9 @@ tensor([[ 2.0948,  2.0964],
 <div class="output_area docutils container">
 <div class="highlight"><pre>
 torch.Size([2, 2])
-tensor([[ 2.0948,  2.0964],
-        [-3.4526, -1.2602]], dtype=torch.float64)
+tensor([[ 5.8543,  2.0964],
+        [-2.9918, -1.2602]], dtype=torch.float64)
 </pre></div></div>
-</div>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>
-</pre></div>
-</div>
 </div>
 </section>
 
