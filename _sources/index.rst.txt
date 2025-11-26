@@ -75,6 +75,7 @@ Simple accelerator lattice model: linear optics errors, closed orbit and Twiss p
    examples/elettra-04.ipynb
    examples/elettra-05.ipynb
    examples/elettra-06.ipynb
+   examples/elettra-07.ipynb
 
 .. toctree::
    :caption: API:
