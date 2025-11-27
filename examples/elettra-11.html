@@ -23,7 +23,7 @@
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="BPM" href="../modules/library/bpm.html" />
+    <link rel="next" title="ELETTRA-13 Local ID correction (local/global knobs mixing)" href="elettra-12.html" />
     <link rel="prev" title="ELETTRA-11: Local ID correction (ORM subset: standalone correctors)" href="elettra-10.html" /> 
 </head>
 
@@ -121,6 +121,9 @@
 <li class="toctree-l1"><a class="reference internal" href="elettra-09.html">ELETTRA-10: Local ID correction (ORM subset: ID section correctors)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="elettra-10.html">ELETTRA-11: Local ID correction (ORM subset: standalone correctors)</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">ELETTRA-12: Local ID correction (local/global correction)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="elettra-12.html">ELETTRA-13 Local ID correction (local/global knobs mixing)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="elettra-13.html">ELETTRA-14: Local ID correction (one-by-one local/global correction)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="elettra-14.html">ELETTRA-15: Local ID correction (local/global correction including coupled twiss)</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API:</span></p>
 <ul>
@@ -879,8 +882,6 @@ tensor(0.0523, dtype=torch.float64)
 
 <span class="n">kn</span><span class="p">,</span> <span class="n">ks</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">knobs</span><span class="p">,</span> <span class="p">[</span><span class="mi">6</span><span class="p">,</span> <span class="mi">4</span><span class="p">])</span>
 
-<span class="n">result</span> <span class="o">=</span> <span class="n">error</span><span class="o">.</span><span class="n">clone</span><span class="p">()</span>
-
 <span class="n">error</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
 
 <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">knob</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">nkn</span><span class="p">,</span> <span class="n">kn</span><span class="p">):</span>
@@ -937,7 +938,7 @@ tensor(0.0523, dtype=torch.float64)
 
 <span class="c1"># Correction loop</span>
 
-<span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">8</span><span class="p">):</span>
+<span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">4</span><span class="p">):</span>
     <span class="n">value</span> <span class="o">=</span> <span class="n">global_observable</span><span class="p">(</span><span class="n">global_knobs</span><span class="p">)</span>
     <span class="n">residual</span> <span class="o">=</span> <span class="n">global_target</span> <span class="o">-</span> <span class="n">value</span>
     <span class="n">residual</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">solve_triangular</span><span class="p">(</span><span class="n">L</span><span class="p">,</span> <span class="n">residual</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">),</span> <span class="n">upper</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
@@ -958,10 +959,6 @@ tensor(0.0001, dtype=torch.float64)
 tensor(9.1636e-06, dtype=torch.float64)
 tensor(7.9141e-07, dtype=torch.float64)
 tensor(7.2523e-08, dtype=torch.float64)
-tensor(6.8254e-09, dtype=torch.float64)
-tensor(6.4956e-10, dtype=torch.float64)
-tensor(6.2038e-11, dtype=torch.float64)
-tensor(5.9246e-12, dtype=torch.float64)
 
 </pre></div></div>
 </div>
@@ -1060,8 +1057,8 @@ tensor(5.9246e-12, dtype=torch.float64)
 tensor(0.0260, dtype=torch.float64)
 tensor(0.0114, dtype=torch.float64)
 
-tensor(5.4466e-07, dtype=torch.float64)
-tensor(5.1781e-07, dtype=torch.float64)
+tensor(4.7359e-05, dtype=torch.float64)
+tensor(6.7694e-05, dtype=torch.float64)
 
 </pre></div></div>
 </div>
@@ -1150,8 +1147,8 @@ tensor(0.0004, dtype=torch.float64)
 tensor(11.5994, dtype=torch.float64)
 tensor(1.7916, dtype=torch.float64)
 
-tensor(0.2087, dtype=torch.float64)
-tensor(0.3847, dtype=torch.float64)
+tensor(0.2073, dtype=torch.float64)
+tensor(0.3840, dtype=torch.float64)
 
 </pre></div></div>
 </div>
@@ -1194,8 +1191,8 @@ tensor(0.3847, dtype=torch.float64)
 tensor(8.7941, dtype=torch.float64)
 tensor(1.7778, dtype=torch.float64)
 
-tensor(0.3182, dtype=torch.float64)
-tensor(0.3469, dtype=torch.float64)
+tensor(0.3180, dtype=torch.float64)
+tensor(0.3465, dtype=torch.float64)
 
 </pre></div></div>
 </div>
@@ -1226,8 +1223,8 @@ tensor(0.3469, dtype=torch.float64)
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-tensor(5.6479e-13, dtype=torch.float64)
-tensor(0.1326, dtype=torch.float64)
+tensor(6.8254e-09, dtype=torch.float64)
+tensor(0.1311, dtype=torch.float64)
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
@@ -1291,10 +1288,10 @@ tensor(0.1326, dtype=torch.float64)
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-tensor(0.1326, dtype=torch.float64)
-tensor(0.1288, dtype=torch.float64)
-tensor(0.1284, dtype=torch.float64)
-tensor(0.1283, dtype=torch.float64)
+tensor(0.1311, dtype=torch.float64)
+tensor(0.1274, dtype=torch.float64)
+tensor(0.1270, dtype=torch.float64)
+tensor(0.1270, dtype=torch.float64)
 
 </pre></div></div>
 </div>
@@ -1305,8 +1302,6 @@ tensor(0.1283, dtype=torch.float64)
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Apply final corrections</span>
 
 <span class="n">kn</span><span class="p">,</span> <span class="n">ks</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">knobs</span><span class="p">,</span> <span class="p">[</span><span class="mi">6</span><span class="p">,</span> <span class="mi">4</span><span class="p">])</span>
-
-<span class="n">result</span> <span class="o">=</span> <span class="n">error</span><span class="o">.</span><span class="n">clone</span><span class="p">()</span>
 
 <span class="n">error</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
 
@@ -1395,8 +1390,8 @@ tensor(0.1283, dtype=torch.float64)
 tensor(0.0260, dtype=torch.float64)
 tensor(0.0114, dtype=torch.float64)
 
-tensor(0.0004, dtype=torch.float64)
-tensor(0.0008, dtype=torch.float64)
+tensor(0.0005, dtype=torch.float64)
+tensor(0.0009, dtype=torch.float64)
 
 </pre></div></div>
 </div>
@@ -1485,8 +1480,8 @@ tensor(0.0004, dtype=torch.float64)
 tensor(11.5994, dtype=torch.float64)
 tensor(1.7916, dtype=torch.float64)
 
-tensor(0.2152, dtype=torch.float64)
-tensor(0.3580, dtype=torch.float64)
+tensor(0.2138, dtype=torch.float64)
+tensor(0.3575, dtype=torch.float64)
 
 </pre></div></div>
 </div>
@@ -1529,8 +1524,8 @@ tensor(0.3580, dtype=torch.float64)
 tensor(8.7941, dtype=torch.float64)
 tensor(1.7778, dtype=torch.float64)
 
-tensor(0.3501, dtype=torch.float64)
-tensor(0.3501, dtype=torch.float64)
+tensor(0.3496, dtype=torch.float64)
+tensor(0.3497, dtype=torch.float64)
 
 </pre></div></div>
 </div>
@@ -1541,7 +1536,7 @@ tensor(0.3501, dtype=torch.float64)
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="elettra-10.html" class="btn btn-neutral float-left" title="ELETTRA-11: Local ID correction (ORM subset: standalone correctors)" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="../modules/library/bpm.html" class="btn btn-neutral float-right" title="BPM" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="elettra-12.html" class="btn btn-neutral float-right" title="ELETTRA-13 Local ID correction (local/global knobs mixing)" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
