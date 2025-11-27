@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ELETTRA-12: Local ID correction (local twiss parameters and dispersion, global tunes correction) &mdash; model  documentation</title>
+  <title>ELETTRA-12: Local ID correction (local/global correction) &mdash; model  documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../_static/nbsphinx-code-cells.css?v=2aa19091" />
@@ -120,7 +120,7 @@
 <li class="toctree-l1"><a class="reference internal" href="elettra-08.html">ELETTRA-09: Local ID correction (ORM)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="elettra-09.html">ELETTRA-10: Local ID correction (ORM subset: ID section correctors)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="elettra-10.html">ELETTRA-11: Local ID correction (ORM subset: standalone correctors)</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">ELETTRA-12: Local ID correction (local twiss parameters and dispersion, global tunes correction)</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">ELETTRA-12: Local ID correction (local/global correction)</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API:</span></p>
 <ul>
@@ -184,7 +184,7 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
-      <li class="breadcrumb-item active">ELETTRA-12: Local ID correction (local twiss parameters and dispersion, global tunes correction)</li>
+      <li class="breadcrumb-item active">ELETTRA-12: Local ID correction (local/global correction)</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../_sources/examples/elettra-11.ipynb.txt" rel="nofollow"> View page source</a>
       </li>
@@ -194,8 +194,8 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="ELETTRA-12:-Local-ID-correction-(local-twiss-parameters-and-dispersion,-global-tunes-correction)">
-<h1>ELETTRA-12: Local ID correction (local twiss parameters and dispersion, global tunes correction)<a class="headerlink" href="#ELETTRA-12:-Local-ID-correction-(local-twiss-parameters-and-dispersion,-global-tunes-correction)" title="Link to this heading"></a></h1>
+  <section id="ELETTRA-12:-Local-ID-correction-(local/global-correction)">
+<h1>ELETTRA-12: Local ID correction (local/global correction)<a class="headerlink" href="#ELETTRA-12:-Local-ID-correction-(local/global-correction)" title="Link to this heading"></a></h1>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
 </pre></div>
@@ -469,7 +469,7 @@ tensor([[ 5.8543,  2.0964],
                                   <span class="p">[</span><span class="n">kn</span><span class="p">,</span> <span class="n">ks</span><span class="p">],</span>
                                   <span class="p">(</span><span class="s1">&#39;kn&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">nkn</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
                                   <span class="p">(</span><span class="s1">&#39;ks&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">nks</span><span class="p">,</span> <span class="kc">None</span><span class="p">))</span>
-    <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span><span class="n">etaqx</span><span class="p">,</span> <span class="n">etay</span><span class="p">])</span><span class="o">.</span><span class="n">T</span>
+    <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span><span class="n">etax</span><span class="p">,</span> <span class="n">etay</span><span class="p">])</span><span class="o">.</span><span class="n">T</span>
 </pre></div>
 </div>
 </div>
@@ -765,7 +765,7 @@ tensor(1.7778, dtype=torch.float64)
                                   <span class="p">[</span><span class="n">kn</span><span class="p">,</span> <span class="n">ks</span><span class="p">],</span>
                                   <span class="p">(</span><span class="s1">&#39;kn&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">nkn</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
                                   <span class="p">(</span><span class="s1">&#39;ks&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">nks</span><span class="p">,</span> <span class="kc">None</span><span class="p">))</span>
-    <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span><span class="n">etaqx</span><span class="p">,</span> <span class="n">etay</span><span class="p">])</span><span class="o">.</span><span class="n">T</span>
+    <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span><span class="n">etax</span><span class="p">,</span> <span class="n">etay</span><span class="p">])</span><span class="o">.</span><span class="n">T</span>
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">observable</span><span class="p">(</span><span class="n">knobs</span><span class="p">):</span>

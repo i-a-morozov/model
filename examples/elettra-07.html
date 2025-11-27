@@ -120,7 +120,7 @@
 <li class="toctree-l1"><a class="reference internal" href="elettra-08.html">ELETTRA-09: Local ID correction (ORM)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="elettra-09.html">ELETTRA-10: Local ID correction (ORM subset: ID section correctors)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="elettra-10.html">ELETTRA-11: Local ID correction (ORM subset: standalone correctors)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="elettra-11.html">ELETTRA-12: Local ID correction (local twiss parameters and dispersion, global tunes correction)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="elettra-11.html">ELETTRA-12: Local ID correction (local/global correction)</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API:</span></p>
 <ul>
@@ -687,7 +687,7 @@ tensor([[[0., 0., 0., 0.],
                                   <span class="p">[</span><span class="n">kn</span><span class="p">,</span> <span class="n">ks</span><span class="p">],</span>
                                   <span class="p">(</span><span class="s1">&#39;kn&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">nkn</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
                                   <span class="p">(</span><span class="s1">&#39;ks&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">nks</span><span class="p">,</span> <span class="kc">None</span><span class="p">))</span>
-    <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span><span class="n">etaqx</span><span class="p">,</span> <span class="n">etay</span><span class="p">])</span><span class="o">.</span><span class="n">T</span>
+    <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span><span class="n">etax</span><span class="p">,</span> <span class="n">etay</span><span class="p">])</span><span class="o">.</span><span class="n">T</span>
 
 <span class="n">kn</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="mi">6</span><span class="o">*</span><span class="p">[</span><span class="mf">0.0</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">)</span>
 <span class="n">ks</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="mi">4</span><span class="o">*</span><span class="p">[</span><span class="mf">0.0</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">)</span>
@@ -871,25 +871,37 @@ tensor([[ 5.7064e-02,  0.0000e+00],
         [ 3.6084e-02,  0.0000e+00],
         [ 3.6490e-02,  0.0000e+00],
         [ 5.7064e-02,  0.0000e+00]], dtype=torch.float64)
-tensor([[[0., 0., 0., 0., 0., 0.],
-         [0., 0., 0., 0., 0., 0.]],
+tensor([[[ 9.7335e-07,  6.0423e-06,  2.1173e-06,  7.3312e-07,  1.7280e-06,
+           1.8313e-07],
+         [ 0.0000e+00,  0.0000e+00,  0.0000e+00,  0.0000e+00,  0.0000e+00,
+           0.0000e+00]],
 
-        [[0., 0., 0., 0., 0., 0.],
-         [0., 0., 0., 0., 0., 0.]],
+        [[ 6.5599e-07,  4.1426e-06,  1.4668e-06,  7.2980e-07,  1.8454e-06,
+           2.3522e-07],
+         [ 0.0000e+00,  0.0000e+00,  0.0000e+00,  0.0000e+00,  0.0000e+00,
+           0.0000e+00]],
 
-        [[0., 0., 0., 0., 0., 0.],
-         [0., 0., 0., 0., 0., 0.]],
+        [[-1.6495e-07, -6.3114e-07, -1.3640e-07,  1.1908e-06,  3.5055e-06,
+           5.9274e-07],
+         [ 0.0000e+00,  0.0000e+00,  0.0000e+00,  0.0000e+00,  0.0000e+00,
+           0.0000e+00]],
 
         ...,
 
-        [[0., 0., 0., 0., 0., 0.],
-         [0., 0., 0., 0., 0., 0.]],
+        [[-8.7080e-07, -5.4828e-06, -1.9379e-06, -9.1388e-07, -2.2912e-06,
+          -2.8621e-07],
+         [ 0.0000e+00,  0.0000e+00,  0.0000e+00,  0.0000e+00,  0.0000e+00,
+           0.0000e+00]],
 
-        [[0., 0., 0., 0., 0., 0.],
-         [0., 0., 0., 0., 0., 0.]],
+        [[-9.8106e-07, -6.2897e-06, -2.2471e-06, -1.4069e-06, -3.6711e-06,
+          -5.0143e-07],
+         [ 0.0000e+00,  0.0000e+00,  0.0000e+00,  0.0000e+00,  0.0000e+00,
+           0.0000e+00]],
 
-        [[0., 0., 0., 0., 0., 0.],
-         [0., 0., 0., 0., 0., 0.]]], dtype=torch.float64)
+        [[ 6.0629e-07,  3.4972e-06,  1.1680e-06, -4.3526e-07, -1.4998e-06,
+          -3.0900e-07],
+         [ 0.0000e+00,  0.0000e+00,  0.0000e+00,  0.0000e+00,  0.0000e+00,
+           0.0000e+00]]], dtype=torch.float64)
 tensor([[[ 0.0000,  0.0000,  0.0000,  0.0000],
          [ 0.0143,  0.0012,  0.0061,  0.0003]],
 
@@ -1235,7 +1247,7 @@ tensor(1.7778, dtype=torch.float64)
                                   <span class="p">[</span><span class="n">kn</span><span class="p">,</span> <span class="n">ks</span><span class="p">],</span>
                                   <span class="p">(</span><span class="s1">&#39;kn&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">nkn</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
                                   <span class="p">(</span><span class="s1">&#39;ks&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">nks</span><span class="p">,</span> <span class="kc">None</span><span class="p">))</span>
-    <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span><span class="n">etaqx</span><span class="p">,</span> <span class="n">etay</span><span class="p">])</span><span class="o">.</span><span class="n">T</span>
+    <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span><span class="n">etax</span><span class="p">,</span> <span class="n">etay</span><span class="p">])</span><span class="o">.</span><span class="n">T</span>
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">observable</span><span class="p">(</span><span class="n">knobs</span><span class="p">):</span>
