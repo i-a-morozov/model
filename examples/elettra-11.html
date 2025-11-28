@@ -124,6 +124,9 @@
 <li class="toctree-l1"><a class="reference internal" href="elettra-12.html">ELETTRA-13 Local ID correction (local/global correction: knobs mixing)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="elettra-13.html">ELETTRA-14: Local ID correction (local/global correction: one-by-one iteraton)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="elettra-14.html">ELETTRA-15: Local ID correction (local/global correction: coupled twiss)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="elettra-15.html">ELETTRA-16: Local ID correction (local/global correction: tunes, phase advance and dispersion)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="elettra-16.html">ELETTRA-17: Local ID correction (local/global correction: ORM subset)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="elettra-17.html">ELETTRA-18: Local ID correction (local/global correction: transport matrix)</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API:</span></p>
 <ul>
@@ -890,7 +893,7 @@ tensor(0.0523, dtype=torch.float64)
     <span class="n">error</span><span class="p">[</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">kn</span> <span class="o">=</span> <span class="p">(</span><span class="n">error</span><span class="p">[</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">kn</span> <span class="o">+</span> <span class="n">knob</span><span class="p">)</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
 
 <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">knob</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">nks</span><span class="p">,</span> <span class="n">ks</span><span class="p">):</span>
-    <span class="n">error</span><span class="p">[</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">kn</span> <span class="o">=</span> <span class="p">(</span><span class="n">error</span><span class="p">[</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">ks</span> <span class="o">+</span> <span class="n">knob</span><span class="p">)</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+    <span class="n">error</span><span class="p">[</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">ks</span> <span class="o">=</span> <span class="p">(</span><span class="n">error</span><span class="p">[</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">ks</span> <span class="o">+</span> <span class="n">knob</span><span class="p">)</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
 
 <span class="n">error</span><span class="o">.</span><span class="n">splice</span><span class="p">()</span>
 </pre></div>
@@ -958,9 +961,9 @@ tensor(0.0523, dtype=torch.float64)
 <div class="output_area docutils container">
 <div class="highlight"><pre>
 tensor(0.0001, dtype=torch.float64)
-tensor(9.2160e-06, dtype=torch.float64)
-tensor(7.9252e-07, dtype=torch.float64)
-tensor(7.2393e-08, dtype=torch.float64)
+tensor(9.1653e-06, dtype=torch.float64)
+tensor(7.9153e-07, dtype=torch.float64)
+tensor(7.2532e-08, dtype=torch.float64)
 
 </pre></div></div>
 </div>
@@ -1059,8 +1062,8 @@ tensor(7.2393e-08, dtype=torch.float64)
 tensor(0.0260, dtype=torch.float64)
 tensor(0.0114, dtype=torch.float64)
 
-tensor(4.6522e-05, dtype=torch.float64)
-tensor(6.8088e-05, dtype=torch.float64)
+tensor(4.7349e-05, dtype=torch.float64)
+tensor(6.7706e-05, dtype=torch.float64)
 
 </pre></div></div>
 </div>
@@ -1083,7 +1086,7 @@ tensor(6.8088e-05, dtype=torch.float64)
 <div class="highlight"><pre>
 tensor(0., dtype=torch.float64)
 tensor(0.0004, dtype=torch.float64)
-tensor(0.0004, dtype=torch.float64)
+tensor(0.0009, dtype=torch.float64)
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
@@ -1149,8 +1152,8 @@ tensor(0.0004, dtype=torch.float64)
 tensor(11.5994, dtype=torch.float64)
 tensor(1.7916, dtype=torch.float64)
 
-tensor(0.2671, dtype=torch.float64)
-tensor(0.4017, dtype=torch.float64)
+tensor(0.2070, dtype=torch.float64)
+tensor(0.3842, dtype=torch.float64)
 
 </pre></div></div>
 </div>
@@ -1193,8 +1196,8 @@ tensor(0.4017, dtype=torch.float64)
 tensor(8.7941, dtype=torch.float64)
 tensor(1.7778, dtype=torch.float64)
 
-tensor(0.3416, dtype=torch.float64)
-tensor(0.3646, dtype=torch.float64)
+tensor(0.3178, dtype=torch.float64)
+tensor(0.3465, dtype=torch.float64)
 
 </pre></div></div>
 </div>
@@ -1225,8 +1228,8 @@ tensor(0.3646, dtype=torch.float64)
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-tensor(6.8004e-09, dtype=torch.float64)
-tensor(0.1625, dtype=torch.float64)
+tensor(6.8260e-09, dtype=torch.float64)
+tensor(0.1308, dtype=torch.float64)
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
@@ -1290,10 +1293,10 @@ tensor(0.1625, dtype=torch.float64)
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-tensor(0.1625, dtype=torch.float64)
-tensor(0.1281, dtype=torch.float64)
-tensor(0.1253, dtype=torch.float64)
-tensor(0.1251, dtype=torch.float64)
+tensor(0.1308, dtype=torch.float64)
+tensor(0.1271, dtype=torch.float64)
+tensor(0.1267, dtype=torch.float64)
+tensor(0.1267, dtype=torch.float64)
 
 </pre></div></div>
 </div>
@@ -1311,7 +1314,7 @@ tensor(0.1251, dtype=torch.float64)
     <span class="n">error</span><span class="p">[</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">kn</span> <span class="o">=</span> <span class="p">(</span><span class="n">error</span><span class="p">[</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">kn</span> <span class="o">+</span> <span class="n">knob</span><span class="p">)</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
 
 <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">knob</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">nks</span><span class="p">,</span> <span class="n">ks</span><span class="p">):</span>
-    <span class="n">error</span><span class="p">[</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">kn</span> <span class="o">=</span> <span class="p">(</span><span class="n">error</span><span class="p">[</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">ks</span> <span class="o">+</span> <span class="n">knob</span><span class="p">)</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+    <span class="n">error</span><span class="p">[</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">ks</span> <span class="o">=</span> <span class="p">(</span><span class="n">error</span><span class="p">[</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">ks</span> <span class="o">+</span> <span class="n">knob</span><span class="p">)</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
 
 <span class="n">error</span><span class="o">.</span><span class="n">splice</span><span class="p">()</span>
 </pre></div>
@@ -1392,8 +1395,8 @@ tensor(0.1251, dtype=torch.float64)
 tensor(0.0260, dtype=torch.float64)
 tensor(0.0114, dtype=torch.float64)
 
-tensor(0.0006, dtype=torch.float64)
-tensor(0.0008, dtype=torch.float64)
+tensor(0.0005, dtype=torch.float64)
+tensor(0.0009, dtype=torch.float64)
 
 </pre></div></div>
 </div>
@@ -1416,7 +1419,7 @@ tensor(0.0008, dtype=torch.float64)
 <div class="highlight"><pre>
 tensor(0., dtype=torch.float64)
 tensor(0.0004, dtype=torch.float64)
-tensor(0.0004, dtype=torch.float64)
+tensor(0.0009, dtype=torch.float64)
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
@@ -1482,8 +1485,8 @@ tensor(0.0004, dtype=torch.float64)
 tensor(11.5994, dtype=torch.float64)
 tensor(1.7916, dtype=torch.float64)
 
-tensor(0.2161, dtype=torch.float64)
-tensor(0.3576, dtype=torch.float64)
+tensor(0.2136, dtype=torch.float64)
+tensor(0.3577, dtype=torch.float64)
 
 </pre></div></div>
 </div>
@@ -1526,8 +1529,8 @@ tensor(0.3576, dtype=torch.float64)
 tensor(8.7941, dtype=torch.float64)
 tensor(1.7778, dtype=torch.float64)
 
-tensor(0.3496, dtype=torch.float64)
-tensor(0.3494, dtype=torch.float64)
+tensor(0.3495, dtype=torch.float64)
+tensor(0.3497, dtype=torch.float64)
 
 </pre></div></div>
 </div>

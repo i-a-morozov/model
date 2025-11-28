@@ -1,0 +1,1119 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ELETTRA-17: Local ID correction (local/global correction: ORM subset) &mdash; model  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/nbsphinx-code-cells.css?v=2aa19091" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+      <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+      <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="ELETTRA-18: Local ID correction (local/global correction: transport matrix)" href="elettra-17.html" />
+    <link rel="prev" title="ELETTRA-16: Local ID correction (local/global correction: tunes, phase advance and dispersion)" href="elettra-15.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            model
+              <img src="../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Examples:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="model-00.html">Example-01: Optimizaion (import/export API)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-01.html">Example-02: Workflow (MADX)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-02.html">Example-03: Workflow (ELEGANT)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-03.html">Example-04: Transformations benchmark (PTC)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-04.html">Example-05: Drift (element)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-05.html">Example-06: Quadrupole (element)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-06.html">Example-07: Sextupole (element)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-07.html">Example-08: Octupole (element)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-08.html">Example-09: Multipole (element)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-09.html">Example-10: Dipole (element)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-10.html">Example-11: Corrector (element)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-11.html">Example-12: Gradient (element)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-12.html">Example-13: Kick (element)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-13.html">Example-14: Linear (element)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-14.html">Example-15: BPM (element)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-15.html">Example-16: Custom (element)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-16.html">Example-17: Line (element)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-17.html">Example-18: Inverse tracking</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-18.html">Example-19: Layout</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-19.html">Example-20: LOGO</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-20.html">Example-21: Build MADX and ELEGANT style lattice</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-21.html">Example-22: Line serialization and deserialization (YAML)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-22.html">Example-23: Advanced line editing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-23.html">Example-24: Wrapper</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-24.html">Example-25: Group</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-25.html">Example-26: Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-26.html">Example-27: Normalize</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-27.html">Example-28: Transformation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-28.html">Example-29: Orbit (fixed point computation)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-29.html">Example-30: Orbit (effect of transverse shift)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-30.html">Example-31: Orbit (dispersion)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-31.html">Example-32: Orbit (quadruple shift)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-32.html">Example-33: Orbit (sextupole shift)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-33.html">Example-34: Orbit (ORM)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-34.html">Example-35: Orbit (closed orbit correction)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-35.html">Example-36: Orbit (ORM optics correction)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-36.html">Example-37: Orbit (dispersion correction)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-37.html">Example-38: Orbit (chromatic ORM)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-38.html">Example-39: Mapping (Transformations around closed orbit)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-39.html">Example-40: Tune (Computation of tunes and chromaticities)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-40.html">Example-41: Tune (Tune and chormaticity correction)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-41.html">Example-42: Tune (Tune spread from quafrupole errors)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-42.html">Example-43: Twiss (Computation of Twiss parameters)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-43.html">Example-44: Twiss (Computation of chromatic Twiss parameters)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-44.html">Example-45: Twiss (Beta functions sensitivity)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-45.html">Example-46: Twiss (Optics correction)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-46.html">Example-47: Optimize (Multistart)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-47.html">Example-48: Advance (Computation of phase advances)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-48.html">Example-49: Advance (Computation of chromatic phase advances)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-49.html">Example-50: Advance (Phase advance sensitivity)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-50.html">Example-51: Advance (Optics correction)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-51.html">Example-52: Normalized dispersion</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-52.html">Example-53: Coupling (Minimal tune distance computation)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-53.html">Example-54: Coupling (Coupling correction based on minimal tune)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-54.html">Example-55: Demo</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-55.html">Example-56: Trajectory (Differentiable trajectory generation)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-56.html">Example-57: Trajectory (Approximate invariants spread)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-57.html">Example-58: Frequency (Parametric derivatives for linear system)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-58.html">Example-59: Matrix (element)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-59.html">Example-60: Chromatic matrix (element)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="elettra-00.html">ELETTRA-01: Layout</a></li>
+<li class="toctree-l1"><a class="reference internal" href="elettra-01.html">ELETTRA-02: Linear optics comparison</a></li>
+<li class="toctree-l1"><a class="reference internal" href="elettra-02.html">ELETTRA-03: ORM construction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="elettra-03.html">ELETTRA-04: Tune response matrix</a></li>
+<li class="toctree-l1"><a class="reference internal" href="elettra-04.html">ELETTRA-05: ID linear optics distortion</a></li>
+<li class="toctree-l1"><a class="reference internal" href="elettra-05.html">ELETTRA-06: ID tune shift correction (global tune knob)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="elettra-06.html">ELETTRA-07: ID tune shift fit &amp; correction (global tune knob)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="elettra-07.html">ELETTRA-08: Local ID correction (local correction: tunes, twiss and dispersion)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="elettra-08.html">ELETTRA-09: Local ID correction (local correction: ORM)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="elettra-09.html">ELETTRA-10: Local ID correction (local correction: sector ORM)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="elettra-10.html">ELETTRA-11: Local ID correction (local correction: ORM subset)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="elettra-11.html">ELETTRA-12: Local ID correction (local/global correction: tunes, twiss and dispersion)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="elettra-12.html">ELETTRA-13 Local ID correction (local/global correction: knobs mixing)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="elettra-13.html">ELETTRA-14: Local ID correction (local/global correction: one-by-one iteraton)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="elettra-14.html">ELETTRA-15: Local ID correction (local/global correction: coupled twiss)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="elettra-15.html">ELETTRA-16: Local ID correction (local/global correction: tunes, phase advance and dispersion)</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">ELETTRA-17: Local ID correction (local/global correction: ORM subset)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="elettra-17.html">ELETTRA-18: Local ID correction (local/global correction: transport matrix)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../modules/library/bpm.html">BPM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/library/bpm.html#model.library.bpm.BPM"><code class="docutils literal notranslate"><span class="pre">BPM</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/library/corrector.html">Corrector</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/library/corrector.html#model.library.corrector.Corrector"><code class="docutils literal notranslate"><span class="pre">Corrector</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/library/custom.html">Custom</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/library/custom.html#model.library.custom.Custom"><code class="docutils literal notranslate"><span class="pre">Custom</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/library/element.html">Element</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/library/element.html#model.library.element.Element"><code class="docutils literal notranslate"><span class="pre">Element</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/library/element.html#model.library.element.transform"><code class="docutils literal notranslate"><span class="pre">transform()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/library/gradient.html">Gradient</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/library/gradient.html#model.library.gradient.Gradient"><code class="docutils literal notranslate"><span class="pre">Gradient</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/library/keys.html">Keys</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/library/kick.html">Gradient</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/library/kick.html#model.library.kick.Kick"><code class="docutils literal notranslate"><span class="pre">Kick</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/library/linear.html">Linear</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/library/linear.html#model.library.linear.Linear"><code class="docutils literal notranslate"><span class="pre">Linear</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/library/transformations.html">Transformations module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/library/transformations.html#model.library.transformations.bend"><code class="docutils literal notranslate"><span class="pre">bend()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/library/transformations.html#model.library.transformations.calibration_forward"><code class="docutils literal notranslate"><span class="pre">calibration_forward()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/library/transformations.html#model.library.transformations.calibration_inverse"><code class="docutils literal notranslate"><span class="pre">calibration_inverse()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/library/transformations.html#model.library.transformations.corrector"><code class="docutils literal notranslate"><span class="pre">corrector()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/library/transformations.html#model.library.transformations.cylindrical"><code class="docutils literal notranslate"><span class="pre">cylindrical()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/library/transformations.html#model.library.transformations.cylindrical_error"><code class="docutils literal notranslate"><span class="pre">cylindrical_error()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/library/transformations.html#model.library.transformations.dipole"><code class="docutils literal notranslate"><span class="pre">dipole()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/library/transformations.html#model.library.transformations.dquad"><code class="docutils literal notranslate"><span class="pre">dquad()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/library/transformations.html#model.library.transformations.drift"><code class="docutils literal notranslate"><span class="pre">drift()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/library/transformations.html#model.library.transformations.fquad"><code class="docutils literal notranslate"><span class="pre">fquad()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/library/transformations.html#model.library.transformations.gradient"><code class="docutils literal notranslate"><span class="pre">gradient()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/library/transformations.html#model.library.transformations.kinematic"><code class="docutils literal notranslate"><span class="pre">kinematic()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/library/transformations.html#model.library.transformations.linear"><code class="docutils literal notranslate"><span class="pre">linear()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/library/transformations.html#model.library.transformations.octupole"><code class="docutils literal notranslate"><span class="pre">octupole()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/library/transformations.html#model.library.transformations.polar"><code class="docutils literal notranslate"><span class="pre">polar()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/library/transformations.html#model.library.transformations.quadrupole"><code class="docutils literal notranslate"><span class="pre">quadrupole()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/library/transformations.html#model.library.transformations.rx"><code class="docutils literal notranslate"><span class="pre">rx()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/library/transformations.html#model.library.transformations.ry"><code class="docutils literal notranslate"><span class="pre">ry()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/library/transformations.html#model.library.transformations.rz"><code class="docutils literal notranslate"><span class="pre">rz()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/library/transformations.html#model.library.transformations.sector_bend"><code class="docutils literal notranslate"><span class="pre">sector_bend()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/library/transformations.html#model.library.transformations.sector_bend_fringe"><code class="docutils literal notranslate"><span class="pre">sector_bend_fringe()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/library/transformations.html#model.library.transformations.sector_bend_wedge"><code class="docutils literal notranslate"><span class="pre">sector_bend_wedge()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/library/transformations.html#model.library.transformations.sextupole"><code class="docutils literal notranslate"><span class="pre">sextupole()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/library/transformations.html#model.library.transformations.tx"><code class="docutils literal notranslate"><span class="pre">tx()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/library/transformations.html#model.library.transformations.ty"><code class="docutils literal notranslate"><span class="pre">ty()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/library/transformations.html#model.library.transformations.tz"><code class="docutils literal notranslate"><span class="pre">tz()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/library/transformations.html#model.library.transformations.wedge"><code class="docutils literal notranslate"><span class="pre">wedge()</span></code></a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">model</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">ELETTRA-17: Local ID correction (local/global correction: ORM subset)</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/examples/elettra-16.ipynb.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="ELETTRA-17:-Local-ID-correction-(local/global-correction:-ORM-subset)">
+<h1>ELETTRA-17: Local ID correction (local/global correction: ORM subset)<a class="headerlink" href="#ELETTRA-17:-Local-ID-correction-(local/global-correction:-ORM-subset)" title="Link to this heading"></a></h1>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># In this example global and local knobs are used to correct ID effects using ORM</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Import</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">torch</span><span class="w"> </span><span class="kn">import</span> <span class="n">Tensor</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">matplotlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">matplotlib.patches</span><span class="w"> </span><span class="kn">import</span> <span class="n">Rectangle</span>
+<span class="n">matplotlib</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s1">&#39;text.usetex&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">model.library.element</span><span class="w"> </span><span class="kn">import</span> <span class="n">Element</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">model.library.line</span><span class="w"> </span><span class="kn">import</span> <span class="n">Line</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">model.library.corrector</span><span class="w"> </span><span class="kn">import</span> <span class="n">Corrector</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">model.library.quadrupole</span><span class="w"> </span><span class="kn">import</span> <span class="n">Quadrupole</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">model.library.matrix</span><span class="w"> </span><span class="kn">import</span> <span class="n">Matrix</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">model.command.external</span><span class="w"> </span><span class="kn">import</span> <span class="n">load_lattice</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">model.command.build</span><span class="w"> </span><span class="kn">import</span> <span class="n">build</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">model.command.tune</span><span class="w"> </span><span class="kn">import</span> <span class="n">tune</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">model.command.orbit</span><span class="w"> </span><span class="kn">import</span> <span class="n">dispersion</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">model.command.orbit</span><span class="w"> </span><span class="kn">import</span> <span class="n">ORM</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">model.command.twiss</span><span class="w"> </span><span class="kn">import</span> <span class="n">twiss</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">model.command.advance</span><span class="w"> </span><span class="kn">import</span> <span class="n">advance</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">model.command.coupling</span><span class="w"> </span><span class="kn">import</span> <span class="n">coupling</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">model.command.wrapper</span><span class="w"> </span><span class="kn">import</span> <span class="n">Wrapper</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">model.command.wrapper</span><span class="w"> </span><span class="kn">import</span> <span class="n">forward</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">model.command.wrapper</span><span class="w"> </span><span class="kn">import</span> <span class="n">inverse</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">model.command.wrapper</span><span class="w"> </span><span class="kn">import</span> <span class="n">normalize</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Set data type and device</span>
+
+<span class="n">Element</span><span class="o">.</span><span class="n">dtype</span> <span class="o">=</span> <span class="n">dtype</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">float64</span>
+<span class="n">Element</span><span class="o">.</span><span class="n">device</span> <span class="o">=</span> <span class="n">device</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="s1">&#39;cpu&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Load lattice (ELEGANT table)</span>
+<span class="c1"># Note, lattice is allowed to have repeated elements</span>
+
+<span class="n">path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s1">&#39;elettra.lte&#39;</span><span class="p">)</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">load_lattice</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Build and setup lattice</span>
+
+<span class="n">ring</span><span class="p">:</span><span class="n">Line</span> <span class="o">=</span> <span class="n">build</span><span class="p">(</span><span class="s1">&#39;RING&#39;</span><span class="p">,</span> <span class="s1">&#39;ELEGANT&#39;</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+
+<span class="c1"># Flatten sublines</span>
+
+<span class="n">ring</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+
+<span class="c1"># Remove all marker elements but the ones starting with MLL (long straight section centers)</span>
+
+<span class="n">ring</span><span class="o">.</span><span class="n">remove_group</span><span class="p">(</span><span class="n">pattern</span><span class="o">=</span><span class="sa">r</span><span class="s1">&#39;^(?!MLL_).*&#39;</span><span class="p">,</span> <span class="n">kinds</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Marker&#39;</span><span class="p">])</span>
+
+<span class="c1"># Replace all sextupoles with quadrupoles</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">factory</span><span class="p">(</span><span class="n">element</span><span class="p">:</span><span class="n">Element</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="n">table</span> <span class="o">=</span> <span class="n">element</span><span class="o">.</span><span class="n">serialize</span>
+    <span class="n">table</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;ms&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">Quadrupole</span><span class="p">(</span><span class="o">**</span><span class="n">table</span><span class="p">)</span>
+
+<span class="n">ring</span><span class="o">.</span><span class="n">replace_group</span><span class="p">(</span><span class="n">pattern</span><span class="o">=</span><span class="sa">r</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">factory</span><span class="o">=</span><span class="n">factory</span><span class="p">,</span> <span class="n">kinds</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Sextupole&#39;</span><span class="p">])</span>
+
+<span class="c1"># Set linear dipoles</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">apply</span><span class="p">(</span><span class="n">element</span><span class="p">:</span><span class="n">Element</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="n">element</span><span class="o">.</span><span class="n">linear</span> <span class="o">=</span> <span class="kc">True</span>
+
+<span class="n">ring</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">apply</span><span class="p">,</span> <span class="n">kinds</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Dipole&#39;</span><span class="p">])</span>
+
+<span class="c1"># Insert correctors</span>
+
+<span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="o">*</span><span class="n">_</span> <span class="ow">in</span> <span class="n">ring</span><span class="o">.</span><span class="n">layout</span><span class="p">():</span>
+    <span class="k">if</span> <span class="n">name</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;CH&#39;</span><span class="p">):</span>
+        <span class="n">corrector</span> <span class="o">=</span> <span class="n">Corrector</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s1">_CXY&#39;</span><span class="p">,</span> <span class="n">factor</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">ring</span><span class="o">.</span><span class="n">split</span><span class="p">((</span><span class="mi">1</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="p">[</span><span class="n">name</span><span class="p">],</span> <span class="kc">None</span><span class="p">),</span> <span class="n">paste</span><span class="o">=</span><span class="p">[</span><span class="n">corrector</span><span class="p">])</span>
+
+<span class="c1"># Merge drifts</span>
+
+<span class="n">ring</span><span class="o">.</span><span class="n">merge</span><span class="p">()</span>
+
+<span class="c1"># Change lattice start start</span>
+
+<span class="n">ring</span><span class="o">.</span><span class="n">start</span> <span class="o">=</span> <span class="s2">&quot;BPM_S01_01&quot;</span>
+
+<span class="c1"># Split BPMs</span>
+
+<span class="n">ring</span><span class="o">.</span><span class="n">split</span><span class="p">((</span><span class="kc">None</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;BPM&#39;</span><span class="p">],</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">))</span>
+
+<span class="c1"># Roll lattice</span>
+
+<span class="n">ring</span><span class="o">.</span><span class="n">roll</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="c1"># Splice</span>
+
+<span class="n">ring</span><span class="o">.</span><span class="n">splice</span><span class="p">()</span>
+
+<span class="c1"># Describe</span>
+
+<span class="n">ring</span><span class="o">.</span><span class="n">describe</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+{&#39;BPM&#39;: 168,
+ &#39;Drift&#39;: 732,
+ &#39;Dipole&#39;: 156,
+ &#39;Quadrupole&#39;: 360,
+ &#39;Corrector&#39;: 24,
+ &#39;Marker&#39;: 12}
+</pre></div></div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Compute tunes (fractional part)</span>
+
+<span class="n">nux</span><span class="p">,</span> <span class="n">nuy</span> <span class="o">=</span> <span class="n">tune</span><span class="p">(</span><span class="n">ring</span><span class="p">,</span> <span class="p">[],</span> <span class="n">matched</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Compute dispersion</span>
+
+<span class="n">orbit</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="mi">4</span><span class="o">*</span><span class="p">[</span><span class="mf">0.0</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">)</span>
+<span class="n">etaqx</span><span class="p">,</span> <span class="n">etapx</span><span class="p">,</span> <span class="n">etaqy</span><span class="p">,</span> <span class="n">etapy</span> <span class="o">=</span> <span class="n">dispersion</span><span class="p">(</span><span class="n">ring</span><span class="p">,</span> <span class="n">orbit</span><span class="p">,</span> <span class="p">[],</span> <span class="n">limit</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Compute twiss parameters</span>
+
+<span class="n">ax</span><span class="p">,</span> <span class="n">bx</span><span class="p">,</span> <span class="n">ay</span><span class="p">,</span> <span class="n">by</span> <span class="o">=</span> <span class="n">twiss</span><span class="p">(</span><span class="n">ring</span><span class="p">,</span> <span class="p">[],</span> <span class="n">matched</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">advance</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">full</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Compute phase advances</span>
+
+<span class="n">mux</span><span class="p">,</span> <span class="n">muy</span> <span class="o">=</span> <span class="n">advance</span><span class="p">(</span><span class="n">ring</span><span class="p">,</span> <span class="p">[],</span> <span class="n">alignment</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">matched</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Compute coupling</span>
+
+<span class="n">c</span> <span class="o">=</span> <span class="n">coupling</span><span class="p">(</span><span class="n">ring</span><span class="p">,</span> <span class="p">[])</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Quadrupole names for global tune correction</span>
+
+<span class="n">QF</span> <span class="o">=</span> <span class="p">[</span><span class="sa">f</span><span class="s1">&#39;QF_S</span><span class="si">{</span><span class="n">i</span><span class="si">:</span><span class="s1">02</span><span class="si">}</span><span class="s1">_</span><span class="si">{</span><span class="n">j</span><span class="si">:</span><span class="s1">02</span><span class="si">}</span><span class="s1">&#39;</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">12</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)]</span>
+<span class="n">QD</span> <span class="o">=</span> <span class="p">[</span><span class="sa">f</span><span class="s1">&#39;QD_S</span><span class="si">{</span><span class="n">i</span><span class="si">:</span><span class="s1">02</span><span class="si">}</span><span class="s1">_</span><span class="si">{</span><span class="n">j</span><span class="si">:</span><span class="s1">02</span><span class="si">}</span><span class="s1">&#39;</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">12</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)]</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Several local knobs can be used to correct ID effects</span>
+
+<span class="c1"># Normal quadrupole correctors</span>
+
+<span class="n">nkn</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;OCT_S01_02&#39;</span><span class="p">,</span> <span class="s1">&#39;QF_S01_02&#39;</span><span class="p">,</span> <span class="s1">&#39;QD_S01_02&#39;</span><span class="p">,</span> <span class="s1">&#39;QD_S01_03&#39;</span><span class="p">,</span> <span class="s1">&#39;QF_S01_03&#39;</span><span class="p">,</span> <span class="s1">&#39;OCT_S01_03&#39;</span><span class="p">]</span>
+
+<span class="c1"># Skew quadrupole correctors</span>
+
+<span class="n">nks</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;SD_S01_05&#39;</span><span class="p">,</span> <span class="s1">&#39;SH_S01_02&#39;</span><span class="p">,</span> <span class="s1">&#39;SH_S01_03&#39;</span><span class="p">,</span> <span class="s1">&#39;SD_S01_06&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Define observables for &#39;mixed&#39; knobs</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">knobs_split</span><span class="p">(</span><span class="n">knobs</span><span class="p">):</span>
+    <span class="n">kf</span><span class="p">,</span> <span class="n">kd</span><span class="p">,</span> <span class="n">kn</span><span class="p">,</span> <span class="n">ks</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">knobs</span><span class="p">,</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">4</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">kf</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(),</span> <span class="n">kd</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(),</span> <span class="n">kn</span><span class="p">,</span> <span class="n">ks</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">knobs_build</span><span class="p">(</span><span class="n">knobs</span><span class="p">):</span>
+    <span class="n">kf</span><span class="p">,</span> <span class="n">kd</span><span class="p">,</span> <span class="n">kn</span><span class="p">,</span> <span class="n">ks</span> <span class="o">=</span> <span class="n">knobs_split</span><span class="p">(</span><span class="n">knobs</span><span class="p">)</span>
+    <span class="n">names</span> <span class="o">=</span> <span class="n">QF</span> <span class="o">+</span> <span class="n">QD</span>
+    <span class="n">values</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">QF</span><span class="p">)</span><span class="o">*</span><span class="p">[</span><span class="n">kf</span><span class="p">]</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="n">QD</span><span class="p">)</span><span class="o">*</span><span class="p">[</span><span class="n">kd</span><span class="p">])</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="n">name</span><span class="p">:</span> <span class="n">value</span> <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">names</span><span class="p">,</span> <span class="n">values</span><span class="p">)}</span>
+    <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">nkn</span><span class="p">,</span> <span class="n">kn</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
+            <span class="n">data</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">+</span> <span class="n">value</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="o">**</span><span class="n">data</span><span class="p">,</span> <span class="o">**</span><span class="p">{</span><span class="n">name</span><span class="p">:</span> <span class="n">value</span> <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">nkn</span><span class="p">,</span> <span class="n">kn</span><span class="p">)</span> <span class="k">if</span> <span class="n">name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">names</span><span class="p">}}</span>
+    <span class="n">nn</span> <span class="o">=</span> <span class="p">[</span><span class="n">name</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">data</span><span class="p">]</span>
+    <span class="n">kn</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span><span class="n">data</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">data</span><span class="p">])</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">nn</span><span class="p">,</span> <span class="n">kn</span><span class="p">),</span> <span class="p">(</span><span class="n">nks</span><span class="p">,</span> <span class="n">ks</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">observable_orm</span><span class="p">(</span><span class="n">nn</span><span class="p">,</span> <span class="n">kn</span><span class="p">,</span> <span class="n">ns</span><span class="p">,</span> <span class="n">ks</span><span class="p">):</span>
+    <span class="n">orm</span> <span class="o">=</span> <span class="n">ORM</span><span class="p">(</span><span class="n">ring</span><span class="p">,</span> <span class="n">orbit</span><span class="p">,</span>  <span class="p">[</span><span class="n">kn</span><span class="p">,</span> <span class="n">ks</span><span class="p">],</span> <span class="p">(</span><span class="s1">&#39;kn&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">nn</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;ks&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">ns</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span> <span class="n">limit</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">orm</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">observable</span><span class="p">(</span><span class="n">knobs</span><span class="p">):</span>
+    <span class="p">(</span><span class="n">nn</span><span class="p">,</span> <span class="n">kn</span><span class="p">),</span> <span class="p">(</span><span class="n">ns</span><span class="p">,</span> <span class="n">ks</span><span class="p">)</span> <span class="o">=</span> <span class="n">knobs_build</span><span class="p">(</span><span class="n">knobs</span><span class="p">)</span>
+    <span class="n">orm</span> <span class="o">=</span> <span class="n">observable_orm</span><span class="p">(</span><span class="n">nn</span><span class="p">,</span> <span class="n">kn</span><span class="p">,</span> <span class="n">ns</span><span class="p">,</span> <span class="n">ks</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">orm</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Compute target vector and corresponding responce matrix</span>
+
+<span class="n">knobs</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">((</span><span class="mi">1</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">+</span> <span class="mi">6</span> <span class="o">+</span> <span class="mi">4</span><span class="p">)</span><span class="o">*</span><span class="p">[</span><span class="mf">0.0</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">)</span>
+<span class="n">target</span> <span class="o">=</span> <span class="n">observable</span><span class="p">(</span><span class="n">knobs</span><span class="p">)</span>
+<span class="n">matrix</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">func</span><span class="o">.</span><span class="n">jacfwd</span><span class="p">(</span><span class="n">observable</span><span class="p">)(</span><span class="n">knobs</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">knobs</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">target</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">matrix</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">matrix_rank</span><span class="p">(</span><span class="n">matrix</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+torch.Size([12])
+torch.Size([16128])
+torch.Size([16128, 12])
+tensor(12)
+</pre></div></div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Define ID model</span>
+<span class="c1"># Note, only the flattened triangular part of the A and B matrices is passed</span>
+
+<span class="n">A</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([[</span><span class="o">-</span><span class="mf">0.03484222052711237</span><span class="p">,</span> <span class="mf">1.0272120741819959E-7</span><span class="p">,</span> <span class="o">-</span><span class="mf">4.698931299341201E-9</span><span class="p">,</span> <span class="mf">0.0015923185492594811</span><span class="p">],</span>
+                  <span class="p">[</span><span class="mf">1.0272120579834892E-7</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.046082787920135176</span><span class="p">,</span> <span class="mf">0.0017792061173117564</span><span class="p">,</span> <span class="mf">3.3551298301095784E-8</span><span class="p">],</span>
+                  <span class="p">[</span><span class="o">-</span><span class="mf">4.6989312853101E-9</span><span class="p">,</span> <span class="mf">0.0017792061173117072</span><span class="p">,</span> <span class="mf">0.056853750760983084</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.5929605363332683E-7</span><span class="p">],</span>
+                  <span class="p">[</span><span class="mf">0.0015923185492594336</span><span class="p">,</span> <span class="mf">3.3551298348653296E-8</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.5929605261642905E-7</span><span class="p">,</span> <span class="mf">0.08311631737263032</span><span class="p">]],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">)</span>
+
+<span class="n">B</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([[</span><span class="mf">0.03649353186115209</span><span class="p">,</span> <span class="mf">0.0015448347221877217</span><span class="p">,</span> <span class="mf">0.00002719892025520868</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.0033681183134964482</span><span class="p">],</span>
+                  <span class="p">[</span><span class="mf">0.0015448347221877217</span><span class="p">,</span> <span class="mf">0.13683886657005795</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.0033198692682377406</span><span class="p">,</span> <span class="mf">0.00006140578258682469</span><span class="p">],</span>
+                  <span class="p">[</span><span class="mf">0.00002719892025520868</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.0033198692682377406</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.05260095308967722</span><span class="p">,</span> <span class="mf">0.005019907688182885</span><span class="p">],</span>
+                  <span class="p">[</span><span class="o">-</span><span class="mf">0.0033681183134964482</span><span class="p">,</span> <span class="mf">0.00006140578258682469</span><span class="p">,</span> <span class="mf">0.005019907688182885</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.2531573249456863</span><span class="p">]],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">)</span>
+
+<span class="n">ID</span> <span class="o">=</span> <span class="n">Matrix</span><span class="p">(</span><span class="s1">&#39;ID&#39;</span><span class="p">,</span>
+            <span class="n">length</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>
+            <span class="n">A</span><span class="o">=</span><span class="n">A</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">triu</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">ones_like</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">bool</span><span class="p">))]</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span>
+            <span class="n">B</span><span class="o">=</span><span class="n">B</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">triu</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">ones_like</span><span class="p">(</span><span class="n">B</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">bool</span><span class="p">))]</span><span class="o">.</span><span class="n">tolist</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Insert ID into the existing lattice</span>
+<span class="c1"># This will replace the target marker</span>
+
+<span class="n">error</span> <span class="o">=</span> <span class="n">ring</span><span class="o">.</span><span class="n">clone</span><span class="p">()</span>
+<span class="n">error</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+<span class="n">error</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">ID</span><span class="p">,</span> <span class="s1">&#39;MLL_S01&#39;</span><span class="p">,</span> <span class="n">position</span><span class="o">=</span><span class="mf">0.0</span><span class="p">)</span>
+<span class="n">error</span><span class="o">.</span><span class="n">splice</span><span class="p">()</span>
+
+<span class="c1"># Describe</span>
+
+<span class="n">error</span><span class="o">.</span><span class="n">describe</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+{&#39;BPM&#39;: 168,
+ &#39;Drift&#39;: 732,
+ &#39;Dipole&#39;: 156,
+ &#39;Quadrupole&#39;: 360,
+ &#39;Corrector&#39;: 24,
+ &#39;Matrix&#39;: 1,
+ &#39;Marker&#39;: 11}
+</pre></div></div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Compute tunes (fractional part)</span>
+
+<span class="n">nux_id</span><span class="p">,</span> <span class="n">nuy_id</span> <span class="o">=</span> <span class="n">tune</span><span class="p">(</span><span class="n">error</span><span class="p">,</span> <span class="p">[],</span> <span class="n">matched</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Compute dispersion</span>
+
+<span class="n">orbit</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="mi">4</span><span class="o">*</span><span class="p">[</span><span class="mf">0.0</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">)</span>
+<span class="n">etaqx_id</span><span class="p">,</span> <span class="n">etapx_id</span><span class="p">,</span> <span class="n">etaqy_id</span><span class="p">,</span> <span class="n">etapy_id</span> <span class="o">=</span> <span class="n">dispersion</span><span class="p">(</span><span class="n">error</span><span class="p">,</span> <span class="n">orbit</span><span class="p">,</span> <span class="p">[],</span> <span class="n">limit</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Compute twiss parameters</span>
+
+<span class="n">ax_id</span><span class="p">,</span> <span class="n">bx_id</span><span class="p">,</span> <span class="n">ay_id</span><span class="p">,</span> <span class="n">by_id</span> <span class="o">=</span> <span class="n">twiss</span><span class="p">(</span><span class="n">error</span><span class="p">,</span> <span class="p">[],</span> <span class="n">matched</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">advance</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">full</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Compute phase advances</span>
+
+<span class="n">mux_id</span><span class="p">,</span> <span class="n">muy_id</span> <span class="o">=</span> <span class="n">advance</span><span class="p">(</span><span class="n">error</span><span class="p">,</span> <span class="p">[],</span> <span class="n">alignment</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">matched</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[21]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Compute coupling</span>
+
+<span class="n">c_id</span> <span class="o">=</span> <span class="n">coupling</span><span class="p">(</span><span class="n">error</span><span class="p">,</span> <span class="p">[])</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[22]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Tune shifts</span>
+
+<span class="nb">print</span><span class="p">((</span><span class="n">nux</span> <span class="o">-</span> <span class="n">nux_id</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">((</span><span class="n">nuy</span> <span class="o">-</span> <span class="n">nuy_id</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+tensor(0.0260, dtype=torch.float64)
+tensor(-0.0114, dtype=torch.float64)
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[23]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Coupling (minimal tune distance)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">c_id</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+tensor(0., dtype=torch.float64)
+tensor(0.0004, dtype=torch.float64)
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[24]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Dispersion</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">errorbar</span><span class="p">(</span><span class="n">ring</span><span class="o">.</span><span class="n">locations</span><span class="p">()</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> <span class="p">(</span><span class="n">etaqx</span> <span class="o">-</span> <span class="n">etaqx_id</span><span class="p">)</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> <span class="n">fmt</span><span class="o">=</span><span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;blue&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.75</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">errorbar</span><span class="p">(</span><span class="n">ring</span><span class="o">.</span><span class="n">locations</span><span class="p">()</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> <span class="p">(</span><span class="n">etaqy</span> <span class="o">-</span> <span class="n">etaqy_id</span><span class="p">)</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> <span class="n">fmt</span><span class="o">=</span><span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.75</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/examples_elettra-16_24_0.png" src="../_images/examples_elettra-16_24_0.png" />
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[25]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Beta-beating</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">errorbar</span><span class="p">(</span><span class="n">ring</span><span class="o">.</span><span class="n">locations</span><span class="p">()</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> <span class="mi">100</span><span class="o">*</span><span class="p">((</span><span class="n">bx</span> <span class="o">-</span> <span class="n">bx_id</span><span class="p">)</span><span class="o">/</span><span class="n">bx</span><span class="p">)</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> <span class="n">fmt</span><span class="o">=</span><span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;blue&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.75</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">errorbar</span><span class="p">(</span><span class="n">ring</span><span class="o">.</span><span class="n">locations</span><span class="p">()</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> <span class="mi">100</span><span class="o">*</span><span class="p">((</span><span class="n">by</span> <span class="o">-</span> <span class="n">by_id</span><span class="p">)</span><span class="o">/</span><span class="n">by</span><span class="p">)</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> <span class="n">fmt</span><span class="o">=</span><span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.75</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="mi">100</span><span class="o">*</span><span class="p">(((</span><span class="n">bx</span> <span class="o">-</span> <span class="n">bx_id</span><span class="p">)</span><span class="o">/</span><span class="n">bx</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">sqrt</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">(</span><span class="mi">100</span><span class="o">*</span><span class="p">(((</span><span class="n">by</span> <span class="o">-</span> <span class="n">by_id</span><span class="p">)</span><span class="o">/</span><span class="n">by</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">sqrt</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/examples_elettra-16_25_0.png" src="../_images/examples_elettra-16_25_0.png" />
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+tensor(11.5994, dtype=torch.float64)
+tensor(1.7916, dtype=torch.float64)
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[26]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Phase advance</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">errorbar</span><span class="p">(</span><span class="n">ring</span><span class="o">.</span><span class="n">locations</span><span class="p">()</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> <span class="mi">100</span><span class="o">*</span><span class="p">((</span><span class="n">mux</span> <span class="o">-</span> <span class="n">mux_id</span><span class="p">)</span><span class="o">/</span><span class="n">mux</span><span class="p">)</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> <span class="n">fmt</span><span class="o">=</span><span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;blue&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.75</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">errorbar</span><span class="p">(</span><span class="n">ring</span><span class="o">.</span><span class="n">locations</span><span class="p">()</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> <span class="mi">100</span><span class="o">*</span><span class="p">((</span><span class="n">muy</span> <span class="o">-</span> <span class="n">muy_id</span><span class="p">)</span><span class="o">/</span><span class="n">muy</span><span class="p">)</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> <span class="n">fmt</span><span class="o">=</span><span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.75</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="mi">100</span><span class="o">*</span><span class="p">(((</span><span class="n">mux</span> <span class="o">-</span> <span class="n">mux_id</span><span class="p">)</span><span class="o">/</span><span class="n">mux</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">sqrt</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">(</span><span class="mi">100</span><span class="o">*</span><span class="p">(((</span><span class="n">muy</span> <span class="o">-</span> <span class="n">muy_id</span><span class="p">)</span><span class="o">/</span><span class="n">muy</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">sqrt</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/examples_elettra-16_26_0.png" src="../_images/examples_elettra-16_26_0.png" />
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+tensor(8.7941, dtype=torch.float64)
+tensor(1.7778, dtype=torch.float64)
+</pre></div></div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[27]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Define parametric observable vector (emulate tune measurement)</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">observable_orm</span><span class="p">(</span><span class="n">nn</span><span class="p">,</span> <span class="n">kn</span><span class="p">,</span> <span class="n">ns</span><span class="p">,</span> <span class="n">ks</span><span class="p">):</span>
+    <span class="n">orm</span> <span class="o">=</span> <span class="n">ORM</span><span class="p">(</span><span class="n">error</span><span class="p">,</span> <span class="n">orbit</span><span class="p">,</span>  <span class="p">[</span><span class="n">kn</span><span class="p">,</span> <span class="n">ks</span><span class="p">],</span> <span class="p">(</span><span class="s1">&#39;kn&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">nn</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;ks&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">ns</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span> <span class="n">limit</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">orm</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">observable</span><span class="p">(</span><span class="n">knobs</span><span class="p">):</span>
+    <span class="p">(</span><span class="n">nn</span><span class="p">,</span> <span class="n">kn</span><span class="p">),</span> <span class="p">(</span><span class="n">ns</span><span class="p">,</span> <span class="n">ks</span><span class="p">)</span> <span class="o">=</span> <span class="n">knobs_build</span><span class="p">(</span><span class="n">knobs</span><span class="p">)</span>
+    <span class="n">orm</span> <span class="o">=</span> <span class="n">observable_orm</span><span class="p">(</span><span class="n">nn</span><span class="p">,</span> <span class="n">kn</span><span class="p">,</span> <span class="n">ns</span><span class="p">,</span> <span class="n">ks</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">orm</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[28]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Check the residual vector norm</span>
+
+<span class="n">knobs</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">((</span><span class="mi">1</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">+</span> <span class="mi">6</span> <span class="o">+</span> <span class="mi">4</span><span class="p">)</span><span class="o">*</span><span class="p">[</span><span class="mf">0.0</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(((</span><span class="n">observable</span><span class="p">(</span><span class="n">knobs</span><span class="p">)</span> <span class="o">-</span> <span class="n">target</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+tensor(1498.9104, dtype=torch.float64)
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[29]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Optimization loop (model free)</span>
+
+<span class="c1"># Responce matrix (jacobian)</span>
+
+<span class="n">M</span> <span class="o">=</span> <span class="n">matrix</span><span class="o">.</span><span class="n">clone</span><span class="p">()</span>
+
+<span class="c1"># Weighting covariance (sensitivity) matrix</span>
+
+<span class="n">epsilon</span> <span class="o">=</span> <span class="mf">1.0E-9</span>
+<span class="n">C</span> <span class="o">=</span> <span class="n">M</span> <span class="o">@</span> <span class="n">M</span><span class="o">.</span><span class="n">T</span>
+<span class="n">C</span> <span class="o">=</span> <span class="n">C</span> <span class="o">+</span> <span class="n">epsilon</span><span class="o">*</span><span class="n">torch</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">C</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">)</span>
+
+<span class="c1"># Cholesky decomposition</span>
+
+<span class="n">L</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">cholesky</span><span class="p">(</span><span class="n">C</span><span class="p">)</span>
+
+<span class="c1"># Whiten response</span>
+
+<span class="n">M</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">solve_triangular</span><span class="p">(</span><span class="n">L</span><span class="p">,</span> <span class="n">M</span><span class="p">,</span> <span class="n">upper</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+<span class="c1"># Additional weights</span>
+<span class="c1"># Can be used to extra weight selected observables, e.g. tunes</span>
+
+<span class="n">weights</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">M</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">)</span>
+<span class="n">weights</span> <span class="o">=</span> <span class="n">weights</span><span class="o">.</span><span class="n">sqrt</span><span class="p">()</span>
+
+<span class="c1"># Whiten response with additional weights</span>
+
+<span class="n">M</span> <span class="o">=</span> <span class="n">M</span><span class="o">*</span><span class="n">weights</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="c1"># Iterative correction</span>
+
+<span class="n">lr</span> <span class="o">=</span> <span class="mf">0.75</span>
+
+<span class="c1"># Initial value</span>
+
+<span class="n">knobs</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">((</span><span class="mi">1</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">+</span> <span class="mi">6</span> <span class="o">+</span> <span class="mi">4</span><span class="p">)</span><span class="o">*</span><span class="p">[</span><span class="mf">0.0</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">)</span>
+
+<span class="c1"># Correction loop</span>
+
+<span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">16</span><span class="p">):</span>
+    <span class="n">value</span> <span class="o">=</span> <span class="n">observable</span><span class="p">(</span><span class="n">knobs</span><span class="p">)</span>
+    <span class="n">residual</span> <span class="o">=</span> <span class="n">target</span> <span class="o">-</span> <span class="n">value</span>
+    <span class="n">residual</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">solve_triangular</span><span class="p">(</span><span class="n">L</span><span class="p">,</span> <span class="n">residual</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">),</span> <span class="n">upper</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">residual</span> <span class="o">=</span> <span class="n">residual</span><span class="o">*</span><span class="n">weights</span>
+    <span class="n">delta</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">lstsq</span><span class="p">(</span><span class="n">M</span><span class="p">,</span> <span class="n">residual</span><span class="p">,</span> <span class="n">driver</span><span class="o">=</span><span class="s2">&quot;gels&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">solution</span>
+    <span class="n">knobs</span> <span class="o">+=</span> <span class="n">lr</span><span class="o">*</span><span class="n">delta</span>
+    <span class="nb">print</span><span class="p">(((</span><span class="n">value</span> <span class="o">-</span> <span class="n">target</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+tensor(1498.9104, dtype=torch.float64)
+tensor(91.4951, dtype=torch.float64)
+tensor(25.5624, dtype=torch.float64)
+tensor(13.4001, dtype=torch.float64)
+tensor(10.6152, dtype=torch.float64)
+tensor(10.0171, dtype=torch.float64)
+tensor(9.8851, dtype=torch.float64)
+tensor(9.8520, dtype=torch.float64)
+tensor(9.8426, dtype=torch.float64)
+tensor(9.8397, dtype=torch.float64)
+tensor(9.8387, dtype=torch.float64)
+tensor(9.8384, dtype=torch.float64)
+tensor(9.8384, dtype=torch.float64)
+tensor(9.8383, dtype=torch.float64)
+tensor(9.8383, dtype=torch.float64)
+tensor(9.8383, dtype=torch.float64)
+
+</pre></div></div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[30]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Apply final corrections</span>
+
+<span class="p">(</span><span class="n">nn</span><span class="p">,</span> <span class="n">kn</span><span class="p">),</span> <span class="p">(</span><span class="n">ns</span><span class="p">,</span> <span class="n">ks</span><span class="p">)</span> <span class="o">=</span> <span class="n">knobs_build</span><span class="p">(</span><span class="n">knobs</span><span class="p">)</span>
+
+<span class="n">result</span> <span class="o">=</span> <span class="n">error</span><span class="o">.</span><span class="n">clone</span><span class="p">()</span>
+
+<span class="n">result</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+
+<span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">knob</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">nn</span><span class="p">,</span> <span class="n">kn</span><span class="p">):</span>
+    <span class="n">result</span><span class="p">[</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">kn</span> <span class="o">=</span> <span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">kn</span> <span class="o">+</span> <span class="n">knob</span><span class="p">)</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+
+<span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">knob</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">ns</span><span class="p">,</span> <span class="n">ks</span><span class="p">):</span>
+    <span class="n">result</span><span class="p">[</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">ks</span> <span class="o">=</span> <span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">ks</span> <span class="o">+</span> <span class="n">knob</span><span class="p">)</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+
+<span class="n">result</span><span class="o">.</span><span class="n">splice</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[31]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Compute tunes (fractional part)</span>
+
+<span class="n">nux_result</span><span class="p">,</span> <span class="n">nuy_result</span> <span class="o">=</span> <span class="n">tune</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="p">[],</span> <span class="n">matched</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[32]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Compute dispersion</span>
+
+<span class="n">orbit</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="mi">4</span><span class="o">*</span><span class="p">[</span><span class="mf">0.0</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">)</span>
+<span class="n">etaqx_result</span><span class="p">,</span> <span class="n">etapx_result</span><span class="p">,</span> <span class="n">etaqy_result</span><span class="p">,</span> <span class="n">etapy_result</span> <span class="o">=</span> <span class="n">dispersion</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">orbit</span><span class="p">,</span> <span class="p">[],</span> <span class="n">limit</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[33]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Compute twiss parameters</span>
+
+<span class="n">ax_result</span><span class="p">,</span> <span class="n">bx_result</span><span class="p">,</span> <span class="n">ay_result</span><span class="p">,</span> <span class="n">by_result</span> <span class="o">=</span> <span class="n">twiss</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="p">[],</span> <span class="n">matched</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">advance</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">full</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[34]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Compute phase advances</span>
+
+<span class="n">mux_result</span><span class="p">,</span> <span class="n">muy_result</span> <span class="o">=</span> <span class="n">advance</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="p">[],</span> <span class="n">alignment</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">matched</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[35]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Compute coupling</span>
+
+<span class="n">c_result</span> <span class="o">=</span> <span class="n">coupling</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="p">[])</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[36]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Tune shifts</span>
+
+<span class="nb">print</span><span class="p">((</span><span class="n">nux</span> <span class="o">-</span> <span class="n">nux_id</span><span class="p">)</span><span class="o">.</span><span class="n">abs</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">((</span><span class="n">nuy</span> <span class="o">-</span> <span class="n">nuy_id</span><span class="p">)</span><span class="o">.</span><span class="n">abs</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">()</span>
+
+<span class="nb">print</span><span class="p">((</span><span class="n">nux</span> <span class="o">-</span> <span class="n">nux_result</span><span class="p">)</span><span class="o">.</span><span class="n">abs</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">((</span><span class="n">nuy</span> <span class="o">-</span> <span class="n">nuy_result</span><span class="p">)</span><span class="o">.</span><span class="n">abs</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+tensor(0.0260, dtype=torch.float64)
+tensor(0.0114, dtype=torch.float64)
+
+tensor(0.0003, dtype=torch.float64)
+tensor(0.0003, dtype=torch.float64)
+
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[37]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Coupling (minimal tune distance)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">c_id</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">c_result</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+tensor(0., dtype=torch.float64)
+tensor(0.0004, dtype=torch.float64)
+tensor(3.6172e-06, dtype=torch.float64)
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[38]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Dispersion</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">errorbar</span><span class="p">(</span><span class="n">ring</span><span class="o">.</span><span class="n">locations</span><span class="p">()</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> <span class="p">(</span><span class="n">etaqx</span> <span class="o">-</span> <span class="n">etaqx_id</span><span class="p">)</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> <span class="n">fmt</span><span class="o">=</span><span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;blue&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.75</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">errorbar</span><span class="p">(</span><span class="n">ring</span><span class="o">.</span><span class="n">locations</span><span class="p">()</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> <span class="p">(</span><span class="n">etaqy</span> <span class="o">-</span> <span class="n">etaqy_id</span><span class="p">)</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> <span class="n">fmt</span><span class="o">=</span><span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.75</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">errorbar</span><span class="p">(</span><span class="n">ring</span><span class="o">.</span><span class="n">locations</span><span class="p">()</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> <span class="p">(</span><span class="n">etaqx</span> <span class="o">-</span> <span class="n">etaqx_result</span><span class="p">)</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> <span class="n">fmt</span><span class="o">=</span><span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;o&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;blue&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.75</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">errorbar</span><span class="p">(</span><span class="n">ring</span><span class="o">.</span><span class="n">locations</span><span class="p">()</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> <span class="p">(</span><span class="n">etaqy</span> <span class="o">-</span> <span class="n">etaqy_result</span><span class="p">)</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> <span class="n">fmt</span><span class="o">=</span><span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;o&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.75</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/examples_elettra-16_38_0.png" src="../_images/examples_elettra-16_38_0.png" />
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[39]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Beta-beating</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">errorbar</span><span class="p">(</span><span class="n">ring</span><span class="o">.</span><span class="n">locations</span><span class="p">()</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> <span class="mi">100</span><span class="o">*</span><span class="p">((</span><span class="n">bx</span> <span class="o">-</span> <span class="n">bx_id</span><span class="p">)</span><span class="o">/</span><span class="n">bx</span><span class="p">)</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> <span class="n">fmt</span><span class="o">=</span><span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;blue&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.75</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">errorbar</span><span class="p">(</span><span class="n">ring</span><span class="o">.</span><span class="n">locations</span><span class="p">()</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> <span class="mi">100</span><span class="o">*</span><span class="p">((</span><span class="n">by</span> <span class="o">-</span> <span class="n">by_id</span><span class="p">)</span><span class="o">/</span><span class="n">by</span><span class="p">)</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> <span class="n">fmt</span><span class="o">=</span><span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.75</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">errorbar</span><span class="p">(</span><span class="n">ring</span><span class="o">.</span><span class="n">locations</span><span class="p">()</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> <span class="mi">100</span><span class="o">*</span><span class="p">((</span><span class="n">bx</span> <span class="o">-</span> <span class="n">bx_result</span><span class="p">)</span><span class="o">/</span><span class="n">bx</span><span class="p">)</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> <span class="n">fmt</span><span class="o">=</span><span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;o&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;blue&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.75</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">errorbar</span><span class="p">(</span><span class="n">ring</span><span class="o">.</span><span class="n">locations</span><span class="p">()</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> <span class="mi">100</span><span class="o">*</span><span class="p">((</span><span class="n">by</span> <span class="o">-</span> <span class="n">by_result</span><span class="p">)</span><span class="o">/</span><span class="n">by</span><span class="p">)</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> <span class="n">fmt</span><span class="o">=</span><span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;o&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.75</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="mi">100</span><span class="o">*</span><span class="p">(((</span><span class="n">bx</span> <span class="o">-</span> <span class="n">bx_id</span><span class="p">)</span><span class="o">/</span><span class="n">bx</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">sqrt</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">(</span><span class="mi">100</span><span class="o">*</span><span class="p">(((</span><span class="n">by</span> <span class="o">-</span> <span class="n">by_id</span><span class="p">)</span><span class="o">/</span><span class="n">by</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">sqrt</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">()</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="mi">100</span><span class="o">*</span><span class="p">(((</span><span class="n">bx</span> <span class="o">-</span> <span class="n">bx_result</span><span class="p">)</span><span class="o">/</span><span class="n">bx</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">sqrt</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">(</span><span class="mi">100</span><span class="o">*</span><span class="p">(((</span><span class="n">by</span> <span class="o">-</span> <span class="n">by_result</span><span class="p">)</span><span class="o">/</span><span class="n">by</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">sqrt</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/examples_elettra-16_39_0.png" src="../_images/examples_elettra-16_39_0.png" />
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+tensor(11.5994, dtype=torch.float64)
+tensor(1.7916, dtype=torch.float64)
+
+tensor(0.5539, dtype=torch.float64)
+tensor(0.6361, dtype=torch.float64)
+
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[40]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Phase advance</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">errorbar</span><span class="p">(</span><span class="n">ring</span><span class="o">.</span><span class="n">locations</span><span class="p">()</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> <span class="mi">100</span><span class="o">*</span><span class="p">((</span><span class="n">mux</span> <span class="o">-</span> <span class="n">mux_id</span><span class="p">)</span><span class="o">/</span><span class="n">mux</span><span class="p">)</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> <span class="n">fmt</span><span class="o">=</span><span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;blue&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.75</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">errorbar</span><span class="p">(</span><span class="n">ring</span><span class="o">.</span><span class="n">locations</span><span class="p">()</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> <span class="mi">100</span><span class="o">*</span><span class="p">((</span><span class="n">muy</span> <span class="o">-</span> <span class="n">muy_id</span><span class="p">)</span><span class="o">/</span><span class="n">muy</span><span class="p">)</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> <span class="n">fmt</span><span class="o">=</span><span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.75</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">errorbar</span><span class="p">(</span><span class="n">ring</span><span class="o">.</span><span class="n">locations</span><span class="p">()</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> <span class="mi">100</span><span class="o">*</span><span class="p">((</span><span class="n">mux</span> <span class="o">-</span> <span class="n">mux_result</span><span class="p">)</span><span class="o">/</span><span class="n">mux</span><span class="p">)</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> <span class="n">fmt</span><span class="o">=</span><span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;o&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;blue&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.75</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">errorbar</span><span class="p">(</span><span class="n">ring</span><span class="o">.</span><span class="n">locations</span><span class="p">()</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> <span class="mi">100</span><span class="o">*</span><span class="p">((</span><span class="n">muy</span> <span class="o">-</span> <span class="n">muy_result</span><span class="p">)</span><span class="o">/</span><span class="n">muy</span><span class="p">)</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> <span class="n">fmt</span><span class="o">=</span><span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;o&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.75</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="mi">100</span><span class="o">*</span><span class="p">(((</span><span class="n">mux</span> <span class="o">-</span> <span class="n">mux_id</span><span class="p">)</span><span class="o">/</span><span class="n">mux</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">sqrt</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">(</span><span class="mi">100</span><span class="o">*</span><span class="p">(((</span><span class="n">muy</span> <span class="o">-</span> <span class="n">muy_id</span><span class="p">)</span><span class="o">/</span><span class="n">muy</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">sqrt</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">()</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="mi">100</span><span class="o">*</span><span class="p">(((</span><span class="n">mux</span> <span class="o">-</span> <span class="n">mux_result</span><span class="p">)</span><span class="o">/</span><span class="n">mux</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">sqrt</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">(</span><span class="mi">100</span><span class="o">*</span><span class="p">(((</span><span class="n">muy</span> <span class="o">-</span> <span class="n">muy_result</span><span class="p">)</span><span class="o">/</span><span class="n">muy</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">sqrt</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/examples_elettra-16_40_0.png" src="../_images/examples_elettra-16_40_0.png" />
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+tensor(8.7941, dtype=torch.float64)
+tensor(1.7778, dtype=torch.float64)
+
+tensor(0.3360, dtype=torch.float64)
+tensor(0.4478, dtype=torch.float64)
+
+</pre></div></div>
+</div>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="elettra-15.html" class="btn btn-neutral float-left" title="ELETTRA-16: Local ID correction (local/global correction: tunes, phase advance and dispersion)" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="elettra-17.html" class="btn btn-neutral float-right" title="ELETTRA-18: Local ID correction (local/global correction: transport matrix)" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Ivan Morozov.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
