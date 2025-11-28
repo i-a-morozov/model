@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ELETTRA-08: Local ID correction (tunes, twiss parameteres and dispersion) &mdash; model  documentation</title>
+  <title>ELETTRA-08: Local ID correction (local correction: tunes, twiss and dispersion) &mdash; model  documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../_static/nbsphinx-code-cells.css?v=2aa19091" />
@@ -23,7 +23,7 @@
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="ELETTRA-09: Local ID correction (ORM)" href="elettra-08.html" />
+    <link rel="next" title="ELETTRA-09: Local ID correction (local correction: ORM)" href="elettra-08.html" />
     <link rel="prev" title="ELETTRA-07: ID tune shift fit &amp; correction (global tune knob)" href="elettra-06.html" /> 
 </head>
 
@@ -116,14 +116,14 @@
 <li class="toctree-l1"><a class="reference internal" href="elettra-04.html">ELETTRA-05: ID linear optics distortion</a></li>
 <li class="toctree-l1"><a class="reference internal" href="elettra-05.html">ELETTRA-06: ID tune shift correction (global tune knob)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="elettra-06.html">ELETTRA-07: ID tune shift fit &amp; correction (global tune knob)</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">ELETTRA-08: Local ID correction (tunes, twiss parameteres and dispersion)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="elettra-08.html">ELETTRA-09: Local ID correction (ORM)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="elettra-09.html">ELETTRA-10: Local ID correction (ORM subset: ID section correctors)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="elettra-10.html">ELETTRA-11: Local ID correction (ORM subset: standalone correctors)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="elettra-11.html">ELETTRA-12: Local ID correction (local/global correction)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="elettra-12.html">ELETTRA-13 Local ID correction (local/global knobs mixing)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="elettra-13.html">ELETTRA-14: Local ID correction (one-by-one local/global correction)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="elettra-14.html">ELETTRA-15: Local ID correction (local/global correction including coupled twiss)</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">ELETTRA-08: Local ID correction (local correction: tunes, twiss and dispersion)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="elettra-08.html">ELETTRA-09: Local ID correction (local correction: ORM)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="elettra-09.html">ELETTRA-10: Local ID correction (local correction: sector ORM)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="elettra-10.html">ELETTRA-11: Local ID correction (local correction: ORM subset)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="elettra-11.html">ELETTRA-12: Local ID correction (local/global correction: tunes, twiss and dispersion)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="elettra-12.html">ELETTRA-13 Local ID correction (local/global correction: knobs mixing)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="elettra-13.html">ELETTRA-14: Local ID correction (local/global correction: one-by-one iteraton)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="elettra-14.html">ELETTRA-15: Local ID correction (local/global correction: coupled twiss)</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API:</span></p>
 <ul>
@@ -187,7 +187,7 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
-      <li class="breadcrumb-item active">ELETTRA-08: Local ID correction (tunes, twiss parameteres and dispersion)</li>
+      <li class="breadcrumb-item active">ELETTRA-08: Local ID correction (local correction: tunes, twiss and dispersion)</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../_sources/examples/elettra-07.ipynb.txt" rel="nofollow"> View page source</a>
       </li>
@@ -197,15 +197,13 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="ELETTRA-08:-Local-ID-correction-(tunes,-twiss-parameteres-and-dispersion)">
-<h1>ELETTRA-08: Local ID correction (tunes, twiss parameteres and dispersion)<a class="headerlink" href="#ELETTRA-08:-Local-ID-correction-(tunes,-twiss-parameteres-and-dispersion)" title="Link to this heading"></a></h1>
+  <section id="ELETTRA-08:-Local-ID-correction-(local-correction:-tunes,-twiss-and-dispersion)">
+<h1>ELETTRA-08: Local ID correction (local correction: tunes, twiss and dispersion)<a class="headerlink" href="#ELETTRA-08:-Local-ID-correction-(local-correction:-tunes,-twiss-and-dispersion)" title="Link to this heading"></a></h1>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># In this example effects of an ID (APPLE-II device represented by a linear 4x4 symplectic matrix) are presented</span>
-
-<span class="c1"># Local knobs are used to correct for ID effects (model free) by observing tunes, beta functions and dispersion</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># In this example model free local ID correction is performed using tunes, twiss and dispersion</span>
 </pre></div>
 </div>
 </div>
@@ -393,10 +391,12 @@
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Several local knobs can be used to correct ID effects</span>
 
 <span class="c1"># Normal quadrupole correctors</span>
+
 <span class="n">nkn</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;OCT_S01_02&#39;</span><span class="p">,</span> <span class="s1">&#39;QF_S01_02&#39;</span><span class="p">,</span> <span class="s1">&#39;QD_S01_02&#39;</span><span class="p">,</span> <span class="s1">&#39;QD_S01_03&#39;</span><span class="p">,</span> <span class="s1">&#39;QF_S01_03&#39;</span><span class="p">,</span> <span class="s1">&#39;OCT_S01_03&#39;</span><span class="p">]</span>
 
 <span class="c1"># Skew quadrupole correctors</span>
-<span class="n">nks</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;SD_S01_05&#39;</span><span class="p">,</span> <span class="s1">&#39;SD_S01_02&#39;</span><span class="p">,</span> <span class="s1">&#39;SD_S01_03&#39;</span><span class="p">,</span> <span class="s1">&#39;SD_S01_06&#39;</span><span class="p">]</span>
+
+<span class="n">nks</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;SD_S01_05&#39;</span><span class="p">,</span> <span class="s1">&#39;SH_S01_02&#39;</span><span class="p">,</span> <span class="s1">&#39;SH_S01_03&#39;</span><span class="p">,</span> <span class="s1">&#39;SD_S01_06&#39;</span><span class="p">]</span>
 </pre></div>
 </div>
 </div>
@@ -905,25 +905,26 @@ tensor([[[ 9.7335e-07,  6.0423e-06,  2.1173e-06,  7.3312e-07,  1.7280e-06,
           -3.0900e-07],
          [ 0.0000e+00,  0.0000e+00,  0.0000e+00,  0.0000e+00,  0.0000e+00,
            0.0000e+00]]], dtype=torch.float64)
-tensor([[[ 0.0000,  0.0000,  0.0000,  0.0000],
-         [ 0.0143,  0.0012,  0.0061,  0.0003]],
+tensor([[[ 0.0000e+00,  0.0000e+00,  0.0000e+00,  0.0000e+00],
+         [ 1.4255e-02, -1.1707e-06, -2.5867e-07,  2.7165e-04]],
 
-        [[ 0.0000,  0.0000,  0.0000,  0.0000],
-         [ 0.0766,  0.0222,  0.0479, -0.0247]],
+        [[ 0.0000e+00,  0.0000e+00,  0.0000e+00,  0.0000e+00],
+         [ 7.6600e-02, -5.3693e-06,  3.2503e-06, -2.4709e-02]],
 
-        [[ 0.0000,  0.0000,  0.0000,  0.0000],
-         [-0.0646, -0.0174, -0.0429,  0.0253]],
+        [[ 0.0000e+00,  0.0000e+00,  0.0000e+00,  0.0000e+00],
+         [-6.4586e-02,  4.3706e-06, -3.5290e-06,  2.5280e-02]],
 
         ...,
 
-        [[ 0.0000,  0.0000,  0.0000,  0.0000],
-         [ 0.0147, -0.0135, -0.0080,  0.0247]],
+        [[ 0.0000e+00,  0.0000e+00,  0.0000e+00,  0.0000e+00],
+         [ 1.4670e-02, -2.0658e-06, -4.6029e-06,  2.4736e-02]],
 
-        [[ 0.0000,  0.0000,  0.0000,  0.0000],
-         [ 0.0256,  0.0181,  0.0263, -0.0260]],
+        [[ 0.0000e+00,  0.0000e+00,  0.0000e+00,  0.0000e+00],
+         [ 2.5641e-02, -1.1723e-06,  4.2357e-06, -2.6022e-02]],
 
-        [[ 0.0000,  0.0000,  0.0000,  0.0000],
-         [ 0.0143,  0.0012,  0.0061,  0.0003]]], dtype=torch.float64)
+        [[ 0.0000e+00,  0.0000e+00,  0.0000e+00,  0.0000e+00],
+         [ 1.4255e-02, -1.1707e-06, -2.5867e-07,  2.7165e-04]]],
+       dtype=torch.float64)
 </pre></div></div>
 </div>
 <div class="nbinput nblast docutils container">
@@ -1344,13 +1345,13 @@ tensor(64.2608, dtype=torch.float64)
 <div class="output_area docutils container">
 <div class="highlight"><pre>
 tensor(64.2608, dtype=torch.float64)
-tensor(3.6729, dtype=torch.float64)
+tensor(3.6714, dtype=torch.float64)
 tensor(0.3128, dtype=torch.float64)
 tensor(0.0689, dtype=torch.float64)
-tensor(0.0534, dtype=torch.float64)
+tensor(0.0535, dtype=torch.float64)
 tensor(0.0525, dtype=torch.float64)
-tensor(0.0524, dtype=torch.float64)
-tensor(0.0524, dtype=torch.float64)
+tensor(0.0525, dtype=torch.float64)
+tensor(0.0525, dtype=torch.float64)
 
 </pre></div></div>
 </div>
@@ -1475,7 +1476,7 @@ tensor(0.0106, dtype=torch.float64)
 <div class="highlight"><pre>
 tensor(0., dtype=torch.float64)
 tensor(0.0004, dtype=torch.float64)
-tensor(0.0004, dtype=torch.float64)
+tensor(0.0009, dtype=torch.float64)
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
@@ -1541,8 +1542,8 @@ tensor(0.0004, dtype=torch.float64)
 tensor(11.5994, dtype=torch.float64)
 tensor(1.7916, dtype=torch.float64)
 
-tensor(0.0561, dtype=torch.float64)
-tensor(0.3208, dtype=torch.float64)
+tensor(0.0562, dtype=torch.float64)
+tensor(0.3210, dtype=torch.float64)
 
 </pre></div></div>
 </div>
@@ -1585,8 +1586,8 @@ tensor(0.3208, dtype=torch.float64)
 tensor(8.7941, dtype=torch.float64)
 tensor(1.7778, dtype=torch.float64)
 
-tensor(0.3146, dtype=torch.float64)
-tensor(0.3239, dtype=torch.float64)
+tensor(0.3144, dtype=torch.float64)
+tensor(0.3240, dtype=torch.float64)
 
 </pre></div></div>
 </div>
@@ -1669,13 +1670,13 @@ tensor(0.3239, dtype=torch.float64)
 <div class="output_area docutils container">
 <div class="highlight"><pre>
 tensor(64.2608, dtype=torch.float64)
-tensor(28.4503, dtype=torch.float64)
-tensor(23.3774, dtype=torch.float64)
-tensor(22.3280, dtype=torch.float64)
-tensor(22.1839, dtype=torch.float64)
-tensor(22.1884, dtype=torch.float64)
-tensor(22.2018, dtype=torch.float64)
-tensor(22.2087, dtype=torch.float64)
+tensor(28.4599, dtype=torch.float64)
+tensor(23.3812, dtype=torch.float64)
+tensor(22.3323, dtype=torch.float64)
+tensor(22.1887, dtype=torch.float64)
+tensor(22.1935, dtype=torch.float64)
+tensor(22.2070, dtype=torch.float64)
+tensor(22.2140, dtype=torch.float64)
 
 </pre></div></div>
 </div>
@@ -1800,7 +1801,7 @@ tensor(0.0001, dtype=torch.float64)
 <div class="highlight"><pre>
 tensor(0., dtype=torch.float64)
 tensor(0.0004, dtype=torch.float64)
-tensor(0.0004, dtype=torch.float64)
+tensor(0.0009, dtype=torch.float64)
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
@@ -1866,8 +1867,8 @@ tensor(0.0004, dtype=torch.float64)
 tensor(11.5994, dtype=torch.float64)
 tensor(1.7916, dtype=torch.float64)
 
-tensor(1.2600, dtype=torch.float64)
-tensor(4.2950, dtype=torch.float64)
+tensor(1.2593, dtype=torch.float64)
+tensor(4.2956, dtype=torch.float64)
 
 </pre></div></div>
 </div>
@@ -1910,8 +1911,8 @@ tensor(4.2950, dtype=torch.float64)
 tensor(8.7941, dtype=torch.float64)
 tensor(1.7778, dtype=torch.float64)
 
-tensor(1.0056, dtype=torch.float64)
-tensor(4.1780, dtype=torch.float64)
+tensor(1.0051, dtype=torch.float64)
+tensor(4.1787, dtype=torch.float64)
 
 </pre></div></div>
 </div>
@@ -1922,7 +1923,7 @@ tensor(4.1780, dtype=torch.float64)
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="elettra-06.html" class="btn btn-neutral float-left" title="ELETTRA-07: ID tune shift fit &amp; correction (global tune knob)" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="elettra-08.html" class="btn btn-neutral float-right" title="ELETTRA-09: Local ID correction (ORM)" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="elettra-08.html" class="btn btn-neutral float-right" title="ELETTRA-09: Local ID correction (local correction: ORM)" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
