@@ -1788,7 +1788,22 @@ class Line(Element):
                 if element.name == key:
                     return element
         if isinstance(key, slice):
-            return [self[index] for index in range(*key.indices(len(self)))]
+            start, stop, step = key.start, key.stop, key.step
+            if all(isinstance(value, (int, type(None))) for value in (start, stop, step)):
+                return [self[index] for index in range(*key.indices(len(self)))]
+            step = step if step else 1
+            def translate(value, default: int) -> int:
+                if value is None:
+                    return default
+                if isinstance(value, int):
+                    if value < 0:
+                        value += len(self)
+                    return value
+                if isinstance(value, str):
+                    for i, element in enumerate(self.sequence):
+                        if element.name == value:
+                            return i
+            return [self.sequence[i] for i in range(1 + translate(start, 0), 1+ translate(stop, len(self)), step)]
         if isinstance(key, tuple):
             result = self
             for index in key:
