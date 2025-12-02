@@ -123,10 +123,14 @@
 <li class="toctree-l1"><a class="reference internal" href="elettra-11.html">ELETTRA-12: Local ID correction (local/global correction: tunes, twiss and dispersion)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="elettra-12.html">ELETTRA-13 Local ID correction (local/global correction: knobs mixing)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="elettra-13.html">ELETTRA-14: Local ID correction (local/global correction: one-by-one iteraton)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="elettra-14.html">ELETTRA-15: Local ID correction (local/global correction: coupled twiss)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="elettra-14.html">ELETTRA-15: Local ID correction (local/global correction: tunes, coupled twiss parameters and dispersion)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="elettra-15.html">ELETTRA-16: Local ID correction (local/global correction: tunes, phase advance and dispersion)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="elettra-16.html">ELETTRA-17: Local ID correction (local/global correction: ORM subset)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="elettra-17.html">ELETTRA-18: Local ID correction (local/global correction: transport matrix)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="elettra-18.html">ELETTRA-19: ID model fit (symmetric: tunes, coupled twiss parameters and dispersion)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="elettra-19.html">ELETTRA-20: ID model fit (symmetric: ORM)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="elettra-20.html">ELETTRA-21: ID model fit (symmetric: ORM &amp; knobs utilization)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="elettra-21.html">ELETTRA-22: ID model fit &amp; compensation (tunes, twiss parameters and dispersion)</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API:</span></p>
 <ul>
@@ -554,7 +558,7 @@ tensor([0.2735, 0.1723], dtype=torch.float64)
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Define objective function to be fitted</span>
 
 <span class="k">def</span><span class="w"> </span><span class="nf">objective</span><span class="p">(</span><span class="n">knobs</span><span class="p">):</span>
-    <span class="k">return</span> <span class="p">(</span><span class="n">target</span> <span class="o">-</span> <span class="n">observable</span><span class="p">(</span><span class="n">knobs</span><span class="p">))</span><span class="o">.</span><span class="n">norm</span><span class="p">()</span>
+    <span class="k">return</span> <span class="p">((</span><span class="n">target</span> <span class="o">-</span> <span class="n">observable</span><span class="p">(</span><span class="n">knobs</span><span class="p">))</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
 
 <span class="nb">print</span><span class="p">(</span><span class="n">objective</span><span class="p">(</span><span class="mf">0.0</span><span class="o">*</span><span class="n">ID</span><span class="o">.</span><span class="n">A</span><span class="p">))</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">objective</span><span class="p">(</span><span class="mf">1.0</span><span class="o">*</span><span class="n">ID</span><span class="o">.</span><span class="n">A</span><span class="p">))</span>
@@ -566,7 +570,7 @@ tensor([0.2735, 0.1723], dtype=torch.float64)
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-tensor(0.0284, dtype=torch.float64)
+tensor(0.0008, dtype=torch.float64)
 tensor(0., dtype=torch.float64)
 </pre></div></div>
 </div>
@@ -597,262 +601,262 @@ tensor(0., dtype=torch.float64)
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-0.028369700506047313
-0.027604979574733145
-0.02684207653388388
-0.026081063931985574
-0.02532202986496677
-0.02456503415221196
-0.02381020965125639
-0.023057643096075053
-0.022307458020095296
-0.021559802115037493
-0.020814824133035887
-0.020072691583410796
-0.01933360633793344
-0.01859779624814611
-0.017865514537404256
-0.01713705406561508
-0.016412757428888126
-0.015693019888152106
-0.014978298873072853
-0.014269131037937175
-0.013566148256137492
-0.012870095625237974
-0.012181858106829188
-0.011502492417944167
-0.010833263166714534
-0.010175691458854214
-0.009531616132536076
-0.0089032612390469
-0.008293314881859004
-0.00770502009416522
-0.007142257433254706
-0.006609596503016408
-0.006112278035565941
-0.005677920085235823
-0.005285758836406501
-0.004940049910706599
-0.004643573081830862
-0.0043965995525112
-0.004196015429417217
-0.004035000235607864
-0.0039035410383780065
-0.0037896923390195983
-0.0036811553570592894
-0.0035666798848923665
-0.0034369804317109483
-0.003285134365852536
-0.003106597814067926
-0.0028990209855239667
-0.002662026802255918
-0.0023970851335187657
-0.0021076221174704873
-0.0017995806340871346
-0.001482886230260837
-0.0011748123315649792
-0.0009064586311714966
-0.0007258771735991629
-0.0006602409194314186
-0.0006563256746629608
-0.0006389218078180901
-0.0005756323523207124
-0.0004770652334132349
-0.00040482048739814416
-0.0004488134079377258
-0.0005723447614733553
-0.0006825347339017069
-0.0007375622822843643
-0.0007355602918931942
-0.0006810064358945258
-0.0005860382549705243
-0.0004729294078276646
-0.00037926505707123115
-0.0003391704912980229
-0.0003252472180930264
-0.0002793347411800816
-0.0001741432239347568
-7.986430633214279e-05
-0.00020694664461870272
-0.00028467317875998787
-0.00028737486365218256
-0.0002349386205344058
-0.00017869777807106698
-0.00018210407210867278
-0.00018394985032149243
-0.00012200096293579978
-2.504163199412578e-05
-9.657132662324322e-05
-9.342239305619409e-05
-7.163867003840293e-05
-8.063948051910279e-05
-3.276989876051909e-05
-9.287973607744902e-05
-0.00011803087678276688
-7.866800880937734e-05
-9.610084779320682e-05
-0.0001054906028501998
-3.6598965960343354e-05
-0.00010871857518170825
-0.00014499645021069337
-0.00010249816781572995
-7.709395404407496e-05
-0.00011473143281842893
-8.447119574935473e-05
-2.4138519635949214e-05
-3.927730797423161e-05
-4.5872961895850735e-05
-3.615966267351201e-05
-4.238990558167267e-05
-2.5711734237141967e-05
-6.722204484355513e-05
-5.6237176581074446e-05
-3.845990376887628e-05
-3.5386012152311766e-05
-5.463536908683197e-05
-5.09545300326953e-05
-3.7796217039974957e-05
-3.0385406281355677e-05
-6.080789589346814e-05
-5.953057208598726e-05
-2.9211774539882354e-05
-2.6270378576523216e-05
-5.8214918671829745e-05
-5.293282262883786e-05
-3.863131956949567e-05
-3.629274046056883e-05
-4.617446746188101e-05
-4.03041094160775e-05
-4.833493153181574e-05
-4.2695343559576496e-05
-4.297793319726718e-05
-3.973455242313906e-05
-4.172546219346975e-05
-3.6131181626745114e-05
-4.495459159393313e-05
-4.171390245170822e-05
-3.898845084458991e-05
-3.40525616799877e-05
-4.589294169984328e-05
-4.22290410999437e-05
-3.799126157978804e-05
-3.346594407677967e-05
-4.561314730373438e-05
-4.180245361997472e-05
-3.7657136599340985e-05
-3.313284793812229e-05
-4.5528090843893147e-05
-4.1932270138886904e-05
-3.6543947430367706e-05
-3.18205652575772e-05
-4.6589644378946656e-05
-4.328422866191937e-05
-3.426727169561934e-05
-2.9413522880561434e-05
-4.867666694102279e-05
-4.556636180281018e-05
-3.1263398376916696e-05
-2.6447558661577688e-05
-5.113199868108273e-05
-4.800207880127862e-05
-2.8348048485094676e-05
-2.3773482254170528e-05
-5.310392144287346e-05
-4.989847245283575e-05
-2.2505232483953626e-05
-1.8922583760740437e-05
-5.276224326107467e-05
-4.857750571547126e-05
-2.399680558197707e-05
-2.0716221147737427e-05
-5.048274380409993e-05
-4.616866284917532e-05
-2.5921201684188245e-05
-2.249842355029714e-05
-4.8574493461097755e-05
-4.4469918266027036e-05
-2.698449777660231e-05
-2.3403719577676886e-05
-4.747691695490115e-05
-4.353538193467468e-05
-2.7430166628320154e-05
-2.3805448031834916e-05
-4.6767250638575955e-05
-4.2916757329182764e-05
-2.7673187480954627e-05
-2.4060070352808957e-05
-4.617237618013766e-05
-4.2385219797625957e-05
-2.7856487907968014e-05
-2.4234027976466777e-05
-4.5705985210299664e-05
-4.1999072428320274e-05
-2.7869341596320038e-05
-2.4198601353925668e-05
-4.550055295993997e-05
-4.205696123370083e-05
-2.396418601692664e-05
-2.043356025807998e-05
-4.555562847965381e-05
-4.2161956060550543e-05
-2.354372112083146e-05
-1.9990299374537987e-05
-4.5766146502044445e-05
-4.240805859375417e-05
-2.3020777359054405e-05
-1.9466818965866686e-05
-4.605170524952427e-05
-4.2723041572449765e-05
-2.245147304912021e-05
-1.8900730015085198e-05
-4.6391080083101903e-05
-4.3091386482800466e-05
-2.1835399380092975e-05
-1.828266818229918e-05
-4.679414305050118e-05
-4.351573450817071e-05
-2.1176753718748183e-05
-1.7624353193379887e-05
-4.724479620515181e-05
-4.398395474735512e-05
-2.0491183017546885e-05
-1.6944578498890487e-05
-4.7724316938788e-05
-4.448238093420612e-05
-1.9784646815767107e-05
-1.624368362199292e-05
-4.823203981133701e-05
-4.516591499447908e-05
-1.5699650075826235e-05
-1.2341150668018344e-05
-4.873264396162423e-05
-4.5675987504275135e-05
-1.5014283095429034e-05
-1.1665291024011255e-05
-4.923892542290422e-05
-4.619420779000219e-05
-1.432470729659923e-05
-1.0980951927595938e-05
-4.976107908584259e-05
-4.672690054924609e-05
-1.3629601562839224e-05
-1.0294192172370253e-05
-5.028990354832106e-05
-4.726384844695133e-05
-1.2937594152729637e-05
-9.608561027333687e-06
-5.082705145289385e-05
-4.781189403084756e-05
-1.2238287230536143e-05
-8.914247968399803e-06
-5.1377728361687444e-05
-4.8371756358532895e-05
-1.1534707036896961e-05
-8.218884916578543e-06
-5.192768264520092e-05
-4.8923645138056975e-05
-1.085328843377851e-05
-7.568294157060619e-06
+0.0008048399068028212
+0.0007620349342060703
+0.0007205307248509358
+0.0006803424125036658
+0.0006414829893953095
+0.000603963179617447
+0.0005677915620312731
+0.0005329731984290826
+0.0004995122939169441
+0.0004674085174248959
+0.0004366601056032604
+0.0004072621312454616
+0.0003792063439073972
+0.00035248203582205717
+0.0003270757300961398
+0.0003029708127255459
+0.0002801477863792213
+0.0002585845600949164
+0.00023825635953760388
+0.00021913568060475866
+0.0002011924927164019
+0.00018439447901961084
+0.00016870714114430743
+0.00015409389745957427
+0.00014051628793088745
+0.00012793422756922452
+0.00011630622031845724
+0.00010558955674398206
+9.574054947860015e-05
+8.67147997185777e-05
+7.846745200867355e-05
+7.095343221204984e-05
+6.412769310437521e-05
+5.8244372091230745e-05
+5.2910475720096975e-05
+4.808632410942108e-05
+4.373340605244055e-05
+3.981449880451027e-05
+3.6293785401960895e-05
+3.3136958575082696e-05
+3.031130622646868e-05
+2.778578191273694e-05
+2.553106407645505e-05
+2.351960251849228e-05
+2.1725647947110543e-05
+2.012526316349036e-05
+1.8696318148762623e-05
+1.7418471779002293e-05
+1.6273140899374286e-05
+1.5243456219811562e-05
+1.4314205333691484e-05
+1.3471764748346206e-05
+1.2704023374310251e-05
+1.2000299290200252e-05
+1.1351250843166973e-05
+1.074878306475984e-05
+1.0185950827475094e-05
+9.656860495384129e-06
+9.156571696318549e-06
+8.681000443233331e-06
+8.226824510679523e-06
+7.791391879612098e-06
+7.372633090077241e-06
+6.968978139267706e-06
+6.579279594350578e-06
+6.221246569114974e-06
+5.874584748473645e-06
+5.5390357044105244e-06
+5.214500571610839e-06
+4.900996688150615e-06
+4.598619969033483e-06
+4.307512749930254e-06
+4.027836779773489e-06
+3.7597509995008677e-06
+3.503393722740693e-06
+3.258868826017142e-06
+3.0262355542054893e-06
+2.80550154690835e-06
+2.5966186934312645e-06
+2.399481430058305e-06
+2.2139271049260698e-06
+2.039738053472807e-06
+1.876645049596499e-06
+1.7243318230027e-06
+1.5824403599514112e-06
+1.4505767322925347e-06
+1.328317227626482e-06
+1.215214581879047e-06
+1.1108041441697994e-06
+1.014609832127314e-06
+9.261497634617609e-07
+8.449414756945979e-07
+7.705066701762233e-07
+7.023754384218696e-07
+6.4008994796074e-07
+5.832075814892246e-07
+5.313035367880133e-07
+4.862756633094264e-07
+4.451054400468193e-07
+4.074618259008803e-07
+3.730366268395838e-07
+3.41544310190802e-07
+3.1272158241887614e-07
+2.863267610803841e-07
+2.621389706763429e-07
+2.3995719109269305e-07
+2.1959918632987406e-07
+2.009003403926331e-07
+1.837124263858768e-07
+1.6790233413723542e-07
+1.533507805502872e-07
+1.3995102559602529e-07
+1.2760761494239617e-07
+1.1623516795252144e-07
+1.0575722695875901e-07
+9.610518067051083e-08
+8.721727128618509e-08
+7.903769163557492e-08
+7.151577556029667e-08
+6.460528193616114e-08
+5.8263770277070013e-08
+5.245206386077858e-08
+4.7133794747689096e-08
+4.227502393251919e-08
+3.7843929145319366e-08
+3.381055246391623e-08
+3.0146599831051255e-08
+2.68252847612967e-08
+2.382120890295381e-08
+2.124189250518132e-08
+1.8911705432630753e-08
+1.6810707695301007e-08
+1.4920119209947974e-08
+1.322227135462331e-08
+1.1700566863789782e-08
+1.0339445336516158e-08
+9.124352148723321e-09
+8.041709015266836e-09
+7.078884858034939e-09
+6.224165997579924e-09
+5.46672500173781e-09
+4.7965877836622755e-09
+4.204598771074889e-09
+3.6823841485531696e-09
+3.222313314825974e-09
+2.8174588098937067e-09
+2.4615550467762923e-09
+2.148956229995865e-09
+1.874593873461849e-09
+1.633934339393752e-09
+1.4229368076802283e-09
+1.2380120660374654e-09
+1.075982475515269e-09
+9.34043427770928e-10
+8.097265619927811e-10
+7.008649629509901e-10
+6.055605093182176e-10
+5.221534937153706e-10
+4.491945878415242e-10
+3.854191821333239e-10
+3.2972408830518954e-10
+2.834815510603664e-10
+2.4302892976403254e-10
+2.0769278275067256e-10
+1.7688388787835946e-10
+1.500851674955018e-10
+1.26841280905522e-10
+1.067497201164048e-10
+8.945324771219374e-11
+7.463352166598677e-11
+6.200575757354876e-11
+5.1314289166859826e-11
+4.23288968110366e-11
+3.484178487909292e-11
+2.866509986918011e-11
+2.3628893176730483e-11
+1.9579443106838884e-11
+1.637786242288806e-11
+1.3898928264842267e-11
+1.2030081182733315e-11
+1.0670549600046278e-11
+9.73056429240154e-12
+9.130635305340482e-12
+8.800870259396595e-12
+8.680318959797025e-12
+8.716334018483965e-12
+8.86394146032254e-12
+9.0852183214561e-12
+9.348677136551794e-12
+9.628658787066918e-12
+9.9047367670138e-12
+1.016113659120617e-11
+1.038617451822745e-11
+1.0562159079872892e-11
+1.0695560714543745e-11
+1.0784318295856108e-11
+1.082825842949763e-11
+1.0828724659145301e-11
+1.0788243651508464e-11
+1.0710228217031282e-11
+1.0598716507445306e-11
+1.0458146129027407e-11
+1.0293161660647792e-11
+1.0108453670744687e-11
+9.908626958105299e-12
+9.698095694137904e-12
+9.481002789420563e-12
+9.261161016383427e-12
+9.042013112892124e-12
+8.826608340806471e-12
+8.617592953065961e-12
+8.417212247492623e-12
+8.227321896766784e-12
+8.04940658591718e-12
+7.884604103376039e-12
+7.73373320378322e-12
+7.597323908899757e-12
+7.475648928767757e-12
+7.368755281110631e-12
+7.276495238344267e-12
+7.198555960686624e-12
+7.1344873516487256e-12
+7.083727776870241e-12
+7.045627448527154e-12
+7.019469350428524e-12
+7.005151783481877e-12
+7.000508841404414e-12
+7.004766837513574e-12
+7.017151902628571e-12
+7.036897536924574e-12
+7.0632507303902056e-12
+7.095476882743043e-12
+7.132863601822149e-12
+7.174723650169655e-12
+7.220397126695855e-12
+7.269253018257456e-12
+7.320690290286747e-12
+7.374138563353008e-12
+7.429058528871547e-12
+7.484942084717563e-12
+7.541312361985461e-12
+7.597723576474362e-12
+7.653760820429717e-12
+7.709039784255273e-12
+7.763206398582717e-12
+7.815936461915548e-12
+7.866935203597298e-12
+7.915936783831684e-12
+7.962703792642061e-12
+8.007026653793348e-12
+8.048722935172925e-12
+8.087636697902725e-12
+8.12363763670515e-12
+8.156620256984968e-12
+8.186502899229477e-12
+8.213226744660305e-12
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
@@ -881,14 +885,14 @@ tensor(0., dtype=torch.float64)
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-0.028369700506047313
-4.066909132862517e-07
-3.358642506148264e-10
-1.9754381178133033e-10
-1.9754381178133033e-10
-1.9754381178133033e-10
-1.9754381178133033e-10
-1.9754381178133033e-10
+0.0008048399068028212
+6.976747029574662e-11
+6.976747029574662e-11
+6.976747029574662e-11
+6.976747029574662e-11
+6.976747029574662e-11
+6.976747029574662e-11
+6.976747029574662e-11
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
@@ -917,7 +921,7 @@ tensor([0.2735, 0.1723], dtype=torch.float64)
 tensor([0.2735, 0.1723], dtype=torch.float64)
 
 tensor([0., 0.], dtype=torch.float64)
-tensor([1.8011e-10, 8.1134e-11], dtype=torch.float64)
+tensor([6.7254e-07, 8.3256e-06], dtype=torch.float64)
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
@@ -993,7 +997,7 @@ tensor([0.2735, 0.1723], dtype=torch.float64)
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Define objective</span>
 
 <span class="k">def</span><span class="w"> </span><span class="nf">objective</span><span class="p">(</span><span class="n">knobs</span><span class="p">):</span>
-    <span class="k">return</span> <span class="p">(</span><span class="n">target</span> <span class="o">-</span> <span class="n">observable</span><span class="p">(</span><span class="n">knobs</span><span class="p">))</span><span class="o">.</span><span class="n">norm</span><span class="p">()</span>
+    <span class="k">return</span> <span class="p">((</span><span class="n">target</span> <span class="o">-</span> <span class="n">observable</span><span class="p">(</span><span class="n">knobs</span><span class="p">))</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
 
 <span class="nb">print</span><span class="p">(</span><span class="n">objective</span><span class="p">(</span><span class="n">knobs</span><span class="p">))</span>
 </pre></div>
@@ -1004,7 +1008,7 @@ tensor([0.2735, 0.1723], dtype=torch.float64)
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-tensor(0.0284, dtype=torch.float64)
+tensor(0.0008, dtype=torch.float64)
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
@@ -1033,14 +1037,14 @@ tensor(0.0284, dtype=torch.float64)
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-0.028369700703583963
-1.250945355652117e-07
-2.8035556938341184e-09
-2.1928367264705342e-09
-1.6978970603827018e-09
-3.292485872195638e-10
-2.0558624258379998e-10
-2.0558624258379998e-10
+0.0008049953927670922
+4.915507721072069e-12
+4.915507721072069e-12
+4.915507721072069e-12
+4.915507721072069e-12
+4.915507721072069e-12
+4.915507721072069e-12
+4.915507721072069e-12
 </pre></div></div>
 </div>
 <div class="nbinput nblast docutils container">
@@ -1133,7 +1137,7 @@ tensor(0.0260, dtype=torch.float64)
 tensor(0.0114, dtype=torch.float64)
 
 tensor(0.0001, dtype=torch.float64)
-tensor(8.5259e-05, dtype=torch.float64)
+tensor(0.0001, dtype=torch.float64)
 
 </pre></div></div>
 </div>
@@ -1173,15 +1177,36 @@ tensor(0.0003, dtype=torch.float64)
 
 <span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+<span class="nb">print</span><span class="p">(((</span><span class="n">etaqx</span> <span class="o">-</span> <span class="n">etaqx_id</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(),</span> <span class="p">(</span><span class="n">etaqx</span> <span class="o">-</span> <span class="n">etaqx_id</span><span class="p">)</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="o">-</span> <span class="p">(</span><span class="n">etaqx</span> <span class="o">-</span> <span class="n">etaqx_id</span><span class="p">)</span><span class="o">.</span><span class="n">min</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">(((</span><span class="n">etaqy</span> <span class="o">-</span> <span class="n">etaqy_id</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(),</span> <span class="p">(</span><span class="n">etaqy</span> <span class="o">-</span> <span class="n">etaqy_id</span><span class="p">)</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="o">-</span> <span class="p">(</span><span class="n">etaqy</span> <span class="o">-</span> <span class="n">etaqy_id</span><span class="p">)</span><span class="o">.</span><span class="n">min</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">()</span>
+
+<span class="nb">print</span><span class="p">(((</span><span class="n">etaqx</span> <span class="o">-</span> <span class="n">etaqx_result</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(),</span> <span class="p">(</span><span class="n">etaqx</span> <span class="o">-</span> <span class="n">etaqx_result</span><span class="p">)</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="o">-</span> <span class="p">(</span><span class="n">etaqx</span> <span class="o">-</span> <span class="n">etaqx_result</span><span class="p">)</span><span class="o">.</span><span class="n">min</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">(((</span><span class="n">etaqy</span> <span class="o">-</span> <span class="n">etaqy_result</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(),</span> <span class="p">(</span><span class="n">etaqy</span> <span class="o">-</span> <span class="n">etaqy_result</span><span class="p">)</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="o">-</span> <span class="p">(</span><span class="n">etaqy</span> <span class="o">-</span> <span class="n">etaqy_result</span><span class="p">)</span><span class="o">.</span><span class="n">min</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">()</span>
 </pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/examples_elettra-06_38_0.png" src="../_images/examples_elettra-06_38_0.png" />
 </div>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_elettra-06_38_0.png" src="../_images/examples_elettra-06_38_0.png" />
-</div>
+<div class="highlight"><pre>
+tensor(7.4928e-07, dtype=torch.float64) tensor(3.1227e-06, dtype=torch.float64)
+tensor(1.4168e-08, dtype=torch.float64) tensor(6.0573e-08, dtype=torch.float64)
+
+tensor(5.7138e-07, dtype=torch.float64) tensor(2.4011e-06, dtype=torch.float64)
+tensor(1.4374e-08, dtype=torch.float64) tensor(6.1571e-08, dtype=torch.float64)
+
+</pre></div></div>
 </div>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[39]:
@@ -1197,12 +1222,12 @@ tensor(0.0003, dtype=torch.float64)
 <span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 
-<span class="nb">print</span><span class="p">(</span><span class="mi">100</span><span class="o">*</span><span class="p">(((</span><span class="n">bx</span> <span class="o">-</span> <span class="n">bx_id</span><span class="p">)</span><span class="o">/</span><span class="n">bx</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">sqrt</span><span class="p">())</span>
-<span class="nb">print</span><span class="p">(</span><span class="mi">100</span><span class="o">*</span><span class="p">(((</span><span class="n">by</span> <span class="o">-</span> <span class="n">by_id</span><span class="p">)</span><span class="o">/</span><span class="n">by</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">sqrt</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">(</span><span class="mi">100</span><span class="o">*</span><span class="p">(((</span><span class="n">bx</span> <span class="o">-</span> <span class="n">bx_id</span><span class="p">)</span><span class="o">/</span><span class="n">bx</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(),</span> <span class="mi">100</span><span class="o">*</span><span class="p">(((</span><span class="n">bx</span> <span class="o">-</span> <span class="n">bx_id</span><span class="p">)</span><span class="o">/</span><span class="n">bx</span><span class="p">)</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="o">-</span> <span class="p">((</span><span class="n">bx</span> <span class="o">-</span> <span class="n">bx_id</span><span class="p">)</span><span class="o">/</span><span class="n">bx</span><span class="p">)</span><span class="o">.</span><span class="n">min</span><span class="p">()))</span>
+<span class="nb">print</span><span class="p">(</span><span class="mi">100</span><span class="o">*</span><span class="p">(((</span><span class="n">by</span> <span class="o">-</span> <span class="n">by_id</span><span class="p">)</span><span class="o">/</span><span class="n">by</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(),</span> <span class="mi">100</span><span class="o">*</span><span class="p">(((</span><span class="n">by</span> <span class="o">-</span> <span class="n">by_id</span><span class="p">)</span><span class="o">/</span><span class="n">by</span><span class="p">)</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="o">-</span> <span class="p">((</span><span class="n">by</span> <span class="o">-</span> <span class="n">by_id</span><span class="p">)</span><span class="o">/</span><span class="n">by</span><span class="p">)</span><span class="o">.</span><span class="n">min</span><span class="p">()))</span>
 <span class="nb">print</span><span class="p">()</span>
 
-<span class="nb">print</span><span class="p">(</span><span class="mi">100</span><span class="o">*</span><span class="p">(((</span><span class="n">bx</span> <span class="o">-</span> <span class="n">bx_result</span><span class="p">)</span><span class="o">/</span><span class="n">bx</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">sqrt</span><span class="p">())</span>
-<span class="nb">print</span><span class="p">(</span><span class="mi">100</span><span class="o">*</span><span class="p">(((</span><span class="n">by</span> <span class="o">-</span> <span class="n">by_result</span><span class="p">)</span><span class="o">/</span><span class="n">by</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">sqrt</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">(</span><span class="mi">100</span><span class="o">*</span><span class="p">(((</span><span class="n">bx</span> <span class="o">-</span> <span class="n">bx_result</span><span class="p">)</span><span class="o">/</span><span class="n">bx</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(),</span> <span class="mi">100</span><span class="o">*</span><span class="p">(((</span><span class="n">bx</span> <span class="o">-</span> <span class="n">bx_result</span><span class="p">)</span><span class="o">/</span><span class="n">bx</span><span class="p">)</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="o">-</span> <span class="p">((</span><span class="n">bx</span> <span class="o">-</span> <span class="n">bx_result</span><span class="p">)</span><span class="o">/</span><span class="n">bx</span><span class="p">)</span><span class="o">.</span><span class="n">min</span><span class="p">()))</span>
+<span class="nb">print</span><span class="p">(</span><span class="mi">100</span><span class="o">*</span><span class="p">(((</span><span class="n">by</span> <span class="o">-</span> <span class="n">by_result</span><span class="p">)</span><span class="o">/</span><span class="n">by</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(),</span> <span class="mi">100</span><span class="o">*</span><span class="p">(((</span><span class="n">by</span> <span class="o">-</span> <span class="n">by_result</span><span class="p">)</span><span class="o">/</span><span class="n">by</span><span class="p">)</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="o">-</span> <span class="p">((</span><span class="n">by</span> <span class="o">-</span> <span class="n">by_result</span><span class="p">)</span><span class="o">/</span><span class="n">by</span><span class="p">)</span><span class="o">.</span><span class="n">min</span><span class="p">()))</span>
 <span class="nb">print</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -1219,11 +1244,11 @@ tensor(0.0003, dtype=torch.float64)
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-tensor(11.5994, dtype=torch.float64)
-tensor(1.7916, dtype=torch.float64)
+tensor(11.5994, dtype=torch.float64) tensor(32.6569, dtype=torch.float64)
+tensor(1.7916, dtype=torch.float64) tensor(4.8154, dtype=torch.float64)
 
-tensor(13.5893, dtype=torch.float64)
-tensor(1.0242, dtype=torch.float64)
+tensor(13.2856, dtype=torch.float64) tensor(41.9470, dtype=torch.float64)
+tensor(1.0639, dtype=torch.float64) tensor(4.4647, dtype=torch.float64)
 
 </pre></div></div>
 </div>
@@ -1241,12 +1266,12 @@ tensor(1.0242, dtype=torch.float64)
 <span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 
-<span class="nb">print</span><span class="p">(</span><span class="mi">100</span><span class="o">*</span><span class="p">(((</span><span class="n">mux</span> <span class="o">-</span> <span class="n">mux_id</span><span class="p">)</span><span class="o">/</span><span class="n">mux</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">sqrt</span><span class="p">())</span>
-<span class="nb">print</span><span class="p">(</span><span class="mi">100</span><span class="o">*</span><span class="p">(((</span><span class="n">muy</span> <span class="o">-</span> <span class="n">muy_id</span><span class="p">)</span><span class="o">/</span><span class="n">muy</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">sqrt</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">(</span><span class="mi">100</span><span class="o">*</span><span class="p">(((</span><span class="n">mux</span> <span class="o">-</span> <span class="n">mux_id</span><span class="p">)</span><span class="o">/</span><span class="n">mux</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(),</span> <span class="mi">100</span><span class="o">*</span><span class="p">(((</span><span class="n">mux</span> <span class="o">-</span> <span class="n">mux_id</span><span class="p">)</span><span class="o">/</span><span class="n">mux</span><span class="p">)</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="o">-</span> <span class="p">((</span><span class="n">mux</span> <span class="o">-</span> <span class="n">mux_id</span><span class="p">)</span><span class="o">/</span><span class="n">mux</span><span class="p">)</span><span class="o">.</span><span class="n">min</span><span class="p">()))</span>
+<span class="nb">print</span><span class="p">(</span><span class="mi">100</span><span class="o">*</span><span class="p">(((</span><span class="n">muy</span> <span class="o">-</span> <span class="n">muy_id</span><span class="p">)</span><span class="o">/</span><span class="n">muy</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(),</span> <span class="mi">100</span><span class="o">*</span><span class="p">(((</span><span class="n">muy</span> <span class="o">-</span> <span class="n">muy_id</span><span class="p">)</span><span class="o">/</span><span class="n">muy</span><span class="p">)</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="o">-</span> <span class="p">((</span><span class="n">muy</span> <span class="o">-</span> <span class="n">muy_id</span><span class="p">)</span><span class="o">/</span><span class="n">muy</span><span class="p">)</span><span class="o">.</span><span class="n">min</span><span class="p">()))</span>
 <span class="nb">print</span><span class="p">()</span>
 
-<span class="nb">print</span><span class="p">(</span><span class="mi">100</span><span class="o">*</span><span class="p">(((</span><span class="n">mux</span> <span class="o">-</span> <span class="n">mux_result</span><span class="p">)</span><span class="o">/</span><span class="n">mux</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">sqrt</span><span class="p">())</span>
-<span class="nb">print</span><span class="p">(</span><span class="mi">100</span><span class="o">*</span><span class="p">(((</span><span class="n">muy</span> <span class="o">-</span> <span class="n">muy_result</span><span class="p">)</span><span class="o">/</span><span class="n">muy</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">sqrt</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">(</span><span class="mi">100</span><span class="o">*</span><span class="p">(((</span><span class="n">mux</span> <span class="o">-</span> <span class="n">mux_result</span><span class="p">)</span><span class="o">/</span><span class="n">mux</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(),</span> <span class="mi">100</span><span class="o">*</span><span class="p">(((</span><span class="n">mux</span> <span class="o">-</span> <span class="n">mux_result</span><span class="p">)</span><span class="o">/</span><span class="n">mux</span><span class="p">)</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="o">-</span> <span class="p">((</span><span class="n">mux</span> <span class="o">-</span> <span class="n">mux_result</span><span class="p">)</span><span class="o">/</span><span class="n">mux</span><span class="p">)</span><span class="o">.</span><span class="n">min</span><span class="p">()))</span>
+<span class="nb">print</span><span class="p">(</span><span class="mi">100</span><span class="o">*</span><span class="p">(((</span><span class="n">muy</span> <span class="o">-</span> <span class="n">muy_result</span><span class="p">)</span><span class="o">/</span><span class="n">muy</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(),</span> <span class="mi">100</span><span class="o">*</span><span class="p">(((</span><span class="n">muy</span> <span class="o">-</span> <span class="n">muy_result</span><span class="p">)</span><span class="o">/</span><span class="n">muy</span><span class="p">)</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="o">-</span> <span class="p">((</span><span class="n">muy</span> <span class="o">-</span> <span class="n">muy_result</span><span class="p">)</span><span class="o">/</span><span class="n">muy</span><span class="p">)</span><span class="o">.</span><span class="n">min</span><span class="p">()))</span>
 <span class="nb">print</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -1263,11 +1288,11 @@ tensor(1.0242, dtype=torch.float64)
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-tensor(8.7941, dtype=torch.float64)
-tensor(1.7778, dtype=torch.float64)
+tensor(8.7941, dtype=torch.float64) tensor(32.4432, dtype=torch.float64)
+tensor(1.7778, dtype=torch.float64) tensor(7.0609, dtype=torch.float64)
 
-tensor(10.1208, dtype=torch.float64)
-tensor(1.0428, dtype=torch.float64)
+tensor(9.8962, dtype=torch.float64) tensor(39.6465, dtype=torch.float64)
+tensor(1.0777, dtype=torch.float64) tensor(6.2230, dtype=torch.float64)
 
 </pre></div></div>
 </div>
