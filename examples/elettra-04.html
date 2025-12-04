@@ -216,7 +216,7 @@
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># In this example effects of an ID (APPLE-II device represented by a linear 4x4 symplectic matrix) are presented</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># In this example effects of an ID (APPLE-II device (40*100mm) represented by a linear 4x4 symplectic matrix) are presented</span>
 <span class="c1"># ID is inserted replacing a selected marker as a thin insertion</span>
 
 <span class="c1"># The following effects on the linear optics are investigated:</span>
@@ -228,6 +228,8 @@
 
 <span class="c1"># ID is modeled as a linear element</span>
 <span class="c1"># Corresponding transport matrix is M = exp(S A) exp(dp S B)</span>
+
+<span class="c1"># Additionaly, effects of LPU are also presented (98*46mm)</span>
 </pre></div>
 </div>
 </div>
@@ -1084,6 +1086,396 @@ tensor(1.7916, dtype=torch.float64)
 tensor(8.7941, dtype=torch.float64)
 tensor(1.7778, dtype=torch.float64)
 </pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[47]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Beta-beating and dispersion</span>
+
+<span class="n">bx_ref_bb</span> <span class="o">=</span> <span class="mf">100.0</span><span class="o">*</span><span class="p">(</span><span class="n">bx</span> <span class="o">-</span> <span class="n">bx_id</span><span class="p">)</span>    <span class="o">/</span> <span class="n">bx</span>
+<span class="n">by_ref_bb</span> <span class="o">=</span> <span class="mf">100.0</span><span class="o">*</span><span class="p">(</span><span class="n">by</span> <span class="o">-</span> <span class="n">by_id</span><span class="p">)</span>    <span class="o">/</span> <span class="n">by</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">rms</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">x</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">sqrt</span><span class="p">()</span>
+
+<span class="n">rms_x_ref</span> <span class="o">=</span> <span class="n">rms</span><span class="p">(</span><span class="n">bx_ref_bb</span><span class="p">)</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+<span class="n">ptp_x_ref</span> <span class="o">=</span> <span class="p">(</span><span class="n">bx_ref_bb</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="o">-</span> <span class="n">bx_ref_bb</span><span class="o">.</span><span class="n">min</span><span class="p">())</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+<span class="n">rms_y_ref</span> <span class="o">=</span> <span class="n">rms</span><span class="p">(</span><span class="n">by_ref_bb</span><span class="p">)</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+<span class="n">ptp_y_ref</span> <span class="o">=</span> <span class="p">(</span><span class="n">by_ref_bb</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="o">-</span> <span class="n">by_ref_bb</span><span class="o">.</span><span class="n">min</span><span class="p">())</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+
+<span class="n">s</span> <span class="o">=</span> <span class="n">ring</span><span class="o">.</span><span class="n">locations</span><span class="p">()</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
+<span class="n">bx_ref_np</span> <span class="o">=</span> <span class="n">bx_ref_bb</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
+<span class="n">by_ref_np</span> <span class="o">=</span> <span class="n">by_ref_bb</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
+
+<span class="n">etax_ref</span> <span class="o">=</span> <span class="n">etaqx</span> <span class="o">-</span> <span class="n">etaqx_id</span>
+<span class="n">etay_ref</span> <span class="o">=</span> <span class="n">etaqy</span> <span class="o">-</span> <span class="n">etaqy_id</span>
+
+<span class="n">rms_etax_ref</span> <span class="o">=</span> <span class="n">rms</span><span class="p">(</span><span class="n">etax_ref</span><span class="p">)</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+<span class="n">ptp_etax_ref</span> <span class="o">=</span> <span class="p">(</span><span class="n">etax_ref</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="o">-</span> <span class="n">etax_ref</span><span class="o">.</span><span class="n">min</span><span class="p">())</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+<span class="n">rms_etay_ref</span> <span class="o">=</span> <span class="n">rms</span><span class="p">(</span><span class="n">etay_ref</span><span class="p">)</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+<span class="n">ptp_etay_ref</span> <span class="o">=</span> <span class="p">(</span><span class="n">etay_ref</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="o">-</span> <span class="n">etay_ref</span><span class="o">.</span><span class="n">min</span><span class="p">())</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+
+<span class="n">etax_ref_np</span> <span class="o">=</span> <span class="n">etax_ref</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
+<span class="n">etay_ref_np</span> <span class="o">=</span> <span class="n">etay_ref</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">ay</span><span class="p">)</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span>
+    <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span>
+    <span class="n">sharex</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">gridspec_kw</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;hspace&#39;</span><span class="p">:</span> <span class="mf">0.3</span><span class="p">}</span>
+<span class="p">)</span>
+
+<span class="n">ax</span><span class="o">.</span><span class="n">errorbar</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">bx_ref_np</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;blue&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.75</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mf">2.0</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">r</span><span class="s1">&#39;$\beta_x$&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">errorbar</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">by_ref_np</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span>  <span class="n">alpha</span><span class="o">=</span><span class="mf">0.75</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mf">2.0</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">r</span><span class="s1">&#39;$\beta_y$&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;s [m]&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">18</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;$\Delta \beta / \beta$ [\%]&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">18</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">width</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">labelsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="n">length</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">direction</span><span class="o">=</span><span class="s1">&#39;in&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="n">length</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">direction</span><span class="o">=</span><span class="s1">&#39;in&#39;</span><span class="p">)</span>
+<span class="n">title</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="sa">rf</span><span class="s1">&#39;RMS$_x$=</span><span class="si">{</span><span class="n">rms_x_ref</span><span class="si">:</span><span class="s1">05.2f</span><span class="si">}</span><span class="s1">\% \quad RMS$_y$=</span><span class="si">{</span><span class="n">rms_y_ref</span><span class="si">:</span><span class="s1">05.2f</span><span class="si">}</span><span class="s1">\% \quad &#39;</span>
+    <span class="sa">rf</span><span class="s1">&#39;PTP$_x$=</span><span class="si">{</span><span class="n">ptp_x_ref</span><span class="si">:</span><span class="s1">05.2f</span><span class="si">}</span><span class="s1">\% \quad PTP$_y$=</span><span class="si">{</span><span class="n">ptp_y_ref</span><span class="si">:</span><span class="s1">05.2f</span><span class="si">}</span><span class="s1">\% \quad &#39;</span>
+    <span class="sa">rf</span><span class="s1">&#39;$\Delta \nu_x$=</span><span class="si">{</span><span class="p">(</span><span class="k">lambda</span><span class="w"> </span><span class="n">x</span><span class="p">:</span><span class="w"> </span><span class="s1">&#39;-&#39;</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="s1">&#39;~&#39;</span><span class="p">)(</span><span class="n">nux</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">nux_id</span><span class="p">)</span><span class="si">}{</span><span class="p">(</span><span class="n">nux</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">nux_id</span><span class="p">)</span><span class="o">.</span><span class="n">abs</span><span class="p">()</span><span class="o">.</span><span class="n">item</span><span class="p">()</span><span class="si">:</span><span class="s1">.4f</span><span class="si">}</span><span class="s1"> \quad $\Delta \nu_y$=</span><span class="si">{</span><span class="p">(</span><span class="k">lambda</span><span class="w"> </span><span class="n">x</span><span class="p">:</span><span class="w"> </span><span class="s1">&#39;-&#39;</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="s1">&#39;~&#39;</span><span class="p">)(</span><span class="n">nuy</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">nuy_id</span><span class="p">)</span><span class="si">}{</span><span class="p">(</span><span class="n">nuy</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">nuy_id</span><span class="p">)</span><span class="o">.</span><span class="n">abs</span><span class="p">()</span><span class="o">.</span><span class="n">item</span><span class="p">()</span><span class="si">:</span><span class="s1">.4f</span><span class="si">}</span><span class="s1">&#39;</span>
+    <span class="sa">rf</span><span class="s1">&#39;\quad C=</span><span class="si">{</span><span class="n">c_id</span><span class="o">.</span><span class="n">item</span><span class="p">()</span><span class="si">:</span><span class="s1">.6f</span><span class="si">}</span><span class="s1">&#39;</span>
+<span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.10</span><span class="p">,</span> <span class="n">title</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="n">ax</span><span class="o">.</span><span class="n">transAxes</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s1">&#39;left&#39;</span><span class="p">,</span> <span class="n">va</span><span class="o">=</span><span class="s1">&#39;bottom&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">fontfamily</span><span class="o">=</span><span class="s1">&#39;monospace&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s1">&#39;upper right&#39;</span><span class="p">,</span> <span class="n">frameon</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">,</span> <span class="n">ncol</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+
+<span class="n">ay</span><span class="o">.</span><span class="n">errorbar</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">etax_ref_np</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;blue&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.75</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mf">2.0</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">r</span><span class="s1">&#39;$\eta_x$&#39;</span><span class="p">)</span>
+<span class="n">ay</span><span class="o">.</span><span class="n">errorbar</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">etay_ref_np</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.75</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mf">2.0</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">r</span><span class="s1">&#39;$\eta_y$&#39;</span><span class="p">)</span>
+<span class="n">ay</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;s [m]&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">18</span><span class="p">)</span>
+<span class="n">ay</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;$\Delta \eta$ [m]&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">18</span><span class="p">)</span>
+<span class="n">ay</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">width</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">labelsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+<span class="n">ay</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="n">length</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">direction</span><span class="o">=</span><span class="s1">&#39;in&#39;</span><span class="p">)</span>
+<span class="n">ay</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="n">length</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">direction</span><span class="o">=</span><span class="s1">&#39;in&#39;</span><span class="p">)</span>
+<span class="n">title</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="sa">rf</span><span class="s1">&#39;RMS$_x$=</span><span class="si">{</span><span class="n">rms_etax_ref</span><span class="si">:</span><span class="s1">.4E</span><span class="si">}</span><span class="s1"> m \quad RMS$_y$=</span><span class="si">{</span><span class="n">rms_etay_ref</span><span class="si">:</span><span class="s1">.4E</span><span class="si">}</span><span class="s1"> m  \quad &#39;</span>
+    <span class="sa">rf</span><span class="s1">&#39;PTP$_x$=</span><span class="si">{</span><span class="n">ptp_etax_ref</span><span class="si">:</span><span class="s1">.4E</span><span class="si">}</span><span class="s1"> m \quad PTP$_y$=</span><span class="si">{</span><span class="n">ptp_etay_ref</span><span class="si">:</span><span class="s1">.4E</span><span class="si">}</span><span class="s1"> m  \quad &#39;</span>
+<span class="p">)</span>
+<span class="n">ay</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.125</span><span class="p">,</span> <span class="n">title</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="n">ay</span><span class="o">.</span><span class="n">transAxes</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s1">&#39;left&#39;</span><span class="p">,</span> <span class="n">va</span><span class="o">=</span><span class="s1">&#39;bottom&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">fontfamily</span><span class="o">=</span><span class="s1">&#39;monospace&#39;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">setp</span><span class="p">(</span><span class="n">ax</span><span class="o">.</span><span class="n">spines</span><span class="o">.</span><span class="n">values</span><span class="p">(),</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">2.0</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">setp</span><span class="p">(</span><span class="n">ay</span><span class="o">.</span><span class="n">spines</span><span class="o">.</span><span class="n">values</span><span class="p">(),</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">2.0</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/examples_elettra-04_47_0.png" src="../_images/examples_elettra-04_47_0.png" />
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[48]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Define ID model (LPU)</span>
+
+<span class="n">A</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([[</span><span class="o">-</span><span class="mf">0.00012383337794002073</span><span class="p">,</span> <span class="o">-</span><span class="mf">4.660270490330217E-11</span><span class="p">,</span> <span class="mf">6.376863691496814E-10</span><span class="p">,</span> <span class="mf">2.7230065924765254E-9</span><span class="p">],</span>
+                  <span class="p">[</span><span class="o">-</span><span class="mf">4.660394652563561E-11</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.00023205060950586665</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.3479277794464672E-9</span><span class="p">,</span> <span class="o">-</span><span class="mf">2.355844533297301E-9</span><span class="p">],</span>
+                  <span class="p">[</span><span class="mf">6.376863692762265E-10</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.347927657735391E-9</span><span class="p">,</span> <span class="mf">0.03660488622324795</span><span class="p">,</span> <span class="mf">5.772998189350976E-9</span><span class="p">],</span>
+                  <span class="p">[</span><span class="mf">2.7230065927230765E-9</span><span class="p">,</span> <span class="o">-</span><span class="mf">2.3558445782246365E-9</span><span class="p">,</span> <span class="mf">5.772998640180359E-9</span><span class="p">,</span> <span class="mf">0.06475766873116935</span><span class="p">]],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">)</span>
+
+<span class="n">B</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([[</span><span class="mf">0.00012378599381951955</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.6869692601073327E-7</span><span class="p">,</span> <span class="mf">7.640630142947167E-8</span><span class="p">,</span> <span class="o">-</span><span class="mf">2.0548228907169046E-7</span><span class="p">],</span>
+                  <span class="p">[</span><span class="o">-</span><span class="mf">1.6869692601073327E-7</span><span class="p">,</span> <span class="mf">0.0006954279711404285</span><span class="p">,</span> <span class="mf">1.3864566360308503E-7</span><span class="p">,</span> <span class="o">-</span><span class="mf">5.549940163648357E-7</span><span class="p">],</span>
+                  <span class="p">[</span><span class="mf">7.640630142947167E-8</span><span class="p">,</span> <span class="mf">1.3864566360308503E-7</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.034632609324692906</span><span class="p">,</span> <span class="mf">0.0024749659452940626</span><span class="p">],</span>
+                  <span class="p">[</span><span class="o">-</span><span class="mf">2.0548228907169046E-7</span><span class="p">,</span> <span class="o">-</span><span class="mf">5.549940163648357E-7</span><span class="p">,</span> <span class="mf">0.0024749659452940626</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.19648005917364772</span><span class="p">]],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">)</span>
+
+<span class="n">ID</span> <span class="o">=</span> <span class="n">Matrix</span><span class="p">(</span><span class="s1">&#39;ID&#39;</span><span class="p">,</span>
+            <span class="n">length</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>
+            <span class="n">A</span><span class="o">=</span><span class="n">A</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">triu</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">ones_like</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">bool</span><span class="p">))]</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span>
+            <span class="n">B</span><span class="o">=</span><span class="n">B</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">triu</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">ones_like</span><span class="p">(</span><span class="n">B</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">bool</span><span class="p">))]</span><span class="o">.</span><span class="n">tolist</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[49]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Replace ID</span>
+
+<span class="n">ring</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+<span class="n">ring</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;ID&quot;</span><span class="p">,</span> <span class="n">ID</span><span class="p">)</span>
+<span class="n">ring</span><span class="o">.</span><span class="n">splice</span><span class="p">()</span>
+<span class="n">ring</span><span class="o">.</span><span class="n">describe</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[49]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+{&#39;BPM&#39;: 168,
+ &#39;Drift&#39;: 708,
+ &#39;Dipole&#39;: 156,
+ &#39;Quadrupole&#39;: 360,
+ &#39;Matrix&#39;: 1,
+ &#39;Marker&#39;: 11}
+</pre></div></div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[50]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Compute tunes (fractional part)</span>
+
+<span class="n">nux_id</span><span class="p">,</span> <span class="n">nuy_id</span> <span class="o">=</span> <span class="n">tune</span><span class="p">(</span><span class="n">ring</span><span class="p">,</span> <span class="p">[],</span> <span class="n">matched</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[51]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Compute dispersion</span>
+
+<span class="n">orbit</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="mi">4</span><span class="o">*</span><span class="p">[</span><span class="mf">0.0</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">)</span>
+<span class="n">etaqx_id</span><span class="p">,</span> <span class="n">etapx_id</span><span class="p">,</span> <span class="n">etaqy_id</span><span class="p">,</span> <span class="n">etapy_id</span> <span class="o">=</span> <span class="n">dispersion</span><span class="p">(</span><span class="n">ring</span><span class="p">,</span> <span class="n">orbit</span><span class="p">,</span> <span class="p">[],</span> <span class="n">limit</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[52]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Compute twiss parameters</span>
+
+<span class="n">ax_id</span><span class="p">,</span> <span class="n">bx_id</span><span class="p">,</span> <span class="n">ay_id</span><span class="p">,</span> <span class="n">by_id</span> <span class="o">=</span> <span class="n">twiss</span><span class="p">(</span><span class="n">ring</span><span class="p">,</span> <span class="p">[],</span> <span class="n">matched</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">advance</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">full</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[53]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Compute phase advances</span>
+
+<span class="n">mux_id</span><span class="p">,</span> <span class="n">muy_id</span> <span class="o">=</span> <span class="n">advance</span><span class="p">(</span><span class="n">ring</span><span class="p">,</span> <span class="p">[],</span> <span class="n">alignment</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">matched</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[54]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Compute coupling</span>
+
+<span class="n">c_id</span> <span class="o">=</span> <span class="n">coupling</span><span class="p">(</span><span class="n">ring</span><span class="p">,</span> <span class="p">[])</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[55]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Tune shifts</span>
+
+<span class="nb">print</span><span class="p">((</span><span class="n">nux</span> <span class="o">-</span> <span class="n">nux_id</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">((</span><span class="n">nuy</span> <span class="o">-</span> <span class="n">nuy_id</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+tensor(9.4733e-05, dtype=torch.float64)
+tensor(-0.0079, dtype=torch.float64)
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[56]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Coupling (minimal tune distance)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">c_id</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+tensor(0., dtype=torch.float64)
+tensor(1.1869e-09, dtype=torch.float64)
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[57]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Dispersion</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">errorbar</span><span class="p">(</span><span class="n">ring</span><span class="o">.</span><span class="n">locations</span><span class="p">()</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> <span class="p">(</span><span class="n">etaqx</span> <span class="o">-</span> <span class="n">etaqx_id</span><span class="p">)</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> <span class="n">fmt</span><span class="o">=</span><span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;blue&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.75</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">errorbar</span><span class="p">(</span><span class="n">ring</span><span class="o">.</span><span class="n">locations</span><span class="p">()</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> <span class="p">(</span><span class="n">etaqy</span> <span class="o">-</span> <span class="n">etaqy_id</span><span class="p">)</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> <span class="n">fmt</span><span class="o">=</span><span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.75</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/examples_elettra-04_57_0.png" src="../_images/examples_elettra-04_57_0.png" />
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[58]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Beta-beating</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">errorbar</span><span class="p">(</span><span class="n">ring</span><span class="o">.</span><span class="n">locations</span><span class="p">()</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> <span class="mi">100</span><span class="o">*</span><span class="p">((</span><span class="n">bx</span> <span class="o">-</span> <span class="n">bx_id</span><span class="p">)</span><span class="o">/</span><span class="n">bx</span><span class="p">)</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> <span class="n">fmt</span><span class="o">=</span><span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;blue&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.75</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">errorbar</span><span class="p">(</span><span class="n">ring</span><span class="o">.</span><span class="n">locations</span><span class="p">()</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> <span class="mi">100</span><span class="o">*</span><span class="p">((</span><span class="n">by</span> <span class="o">-</span> <span class="n">by_id</span><span class="p">)</span><span class="o">/</span><span class="n">by</span><span class="p">)</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> <span class="n">fmt</span><span class="o">=</span><span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.75</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="mi">100</span><span class="o">*</span><span class="p">(((</span><span class="n">bx</span> <span class="o">-</span> <span class="n">bx_id</span><span class="p">)</span><span class="o">/</span><span class="n">bx</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">sqrt</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">(</span><span class="mi">100</span><span class="o">*</span><span class="p">(((</span><span class="n">by</span> <span class="o">-</span> <span class="n">by_id</span><span class="p">)</span><span class="o">/</span><span class="n">by</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">sqrt</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/examples_elettra-04_58_0.png" src="../_images/examples_elettra-04_58_0.png" />
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+tensor(0.0423, dtype=torch.float64)
+tensor(0.8755, dtype=torch.float64)
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[59]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Phase advance</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">errorbar</span><span class="p">(</span><span class="n">ring</span><span class="o">.</span><span class="n">locations</span><span class="p">()</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> <span class="mi">100</span><span class="o">*</span><span class="p">((</span><span class="n">mux</span> <span class="o">-</span> <span class="n">mux_id</span><span class="p">)</span><span class="o">/</span><span class="n">mux</span><span class="p">)</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> <span class="n">fmt</span><span class="o">=</span><span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;blue&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.75</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">errorbar</span><span class="p">(</span><span class="n">ring</span><span class="o">.</span><span class="n">locations</span><span class="p">()</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> <span class="mi">100</span><span class="o">*</span><span class="p">((</span><span class="n">muy</span> <span class="o">-</span> <span class="n">muy_id</span><span class="p">)</span><span class="o">/</span><span class="n">muy</span><span class="p">)</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> <span class="n">fmt</span><span class="o">=</span><span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.75</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="mi">100</span><span class="o">*</span><span class="p">(((</span><span class="n">mux</span> <span class="o">-</span> <span class="n">mux_id</span><span class="p">)</span><span class="o">/</span><span class="n">mux</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">sqrt</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">(</span><span class="mi">100</span><span class="o">*</span><span class="p">(((</span><span class="n">muy</span> <span class="o">-</span> <span class="n">muy_id</span><span class="p">)</span><span class="o">/</span><span class="n">muy</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">sqrt</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/examples_elettra-04_59_0.png" src="../_images/examples_elettra-04_59_0.png" />
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+tensor(0.0323, dtype=torch.float64)
+tensor(0.8822, dtype=torch.float64)
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[60]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Beta-beating and dispersion</span>
+
+<span class="n">bx_ref_bb</span> <span class="o">=</span> <span class="mf">100.0</span><span class="o">*</span><span class="p">(</span><span class="n">bx</span> <span class="o">-</span> <span class="n">bx_id</span><span class="p">)</span>    <span class="o">/</span> <span class="n">bx</span>
+<span class="n">by_ref_bb</span> <span class="o">=</span> <span class="mf">100.0</span><span class="o">*</span><span class="p">(</span><span class="n">by</span> <span class="o">-</span> <span class="n">by_id</span><span class="p">)</span>    <span class="o">/</span> <span class="n">by</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">rms</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">x</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">sqrt</span><span class="p">()</span>
+
+<span class="n">rms_x_ref</span> <span class="o">=</span> <span class="n">rms</span><span class="p">(</span><span class="n">bx_ref_bb</span><span class="p">)</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+<span class="n">ptp_x_ref</span> <span class="o">=</span> <span class="p">(</span><span class="n">bx_ref_bb</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="o">-</span> <span class="n">bx_ref_bb</span><span class="o">.</span><span class="n">min</span><span class="p">())</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+<span class="n">rms_y_ref</span> <span class="o">=</span> <span class="n">rms</span><span class="p">(</span><span class="n">by_ref_bb</span><span class="p">)</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+<span class="n">ptp_y_ref</span> <span class="o">=</span> <span class="p">(</span><span class="n">by_ref_bb</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="o">-</span> <span class="n">by_ref_bb</span><span class="o">.</span><span class="n">min</span><span class="p">())</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+
+<span class="n">s</span> <span class="o">=</span> <span class="n">ring</span><span class="o">.</span><span class="n">locations</span><span class="p">()</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
+<span class="n">bx_ref_np</span> <span class="o">=</span> <span class="n">bx_ref_bb</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
+<span class="n">by_ref_np</span> <span class="o">=</span> <span class="n">by_ref_bb</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
+
+<span class="n">etax_ref</span> <span class="o">=</span> <span class="n">etaqx</span> <span class="o">-</span> <span class="n">etaqx_id</span>
+<span class="n">etay_ref</span> <span class="o">=</span> <span class="n">etaqy</span> <span class="o">-</span> <span class="n">etaqy_id</span>
+
+<span class="n">rms_etax_ref</span> <span class="o">=</span> <span class="n">rms</span><span class="p">(</span><span class="n">etax_ref</span><span class="p">)</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+<span class="n">ptp_etax_ref</span> <span class="o">=</span> <span class="p">(</span><span class="n">etax_ref</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="o">-</span> <span class="n">etax_ref</span><span class="o">.</span><span class="n">min</span><span class="p">())</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+<span class="n">rms_etay_ref</span> <span class="o">=</span> <span class="n">rms</span><span class="p">(</span><span class="n">etay_ref</span><span class="p">)</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+<span class="n">ptp_etay_ref</span> <span class="o">=</span> <span class="p">(</span><span class="n">etay_ref</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="o">-</span> <span class="n">etay_ref</span><span class="o">.</span><span class="n">min</span><span class="p">())</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+
+<span class="n">etax_ref_np</span> <span class="o">=</span> <span class="n">etax_ref</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
+<span class="n">etay_ref_np</span> <span class="o">=</span> <span class="n">etay_ref</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">ay</span><span class="p">)</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span>
+    <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span>
+    <span class="n">sharex</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">gridspec_kw</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;hspace&#39;</span><span class="p">:</span> <span class="mf">0.3</span><span class="p">}</span>
+<span class="p">)</span>
+
+<span class="n">ax</span><span class="o">.</span><span class="n">errorbar</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">bx_ref_np</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;blue&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.75</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mf">2.0</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">r</span><span class="s1">&#39;$\beta_x$&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">errorbar</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">by_ref_np</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span>  <span class="n">alpha</span><span class="o">=</span><span class="mf">0.75</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mf">2.0</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">r</span><span class="s1">&#39;$\beta_y$&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;s [m]&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">18</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;$\Delta \beta / \beta$ [\%]&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">18</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">width</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">labelsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="n">length</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">direction</span><span class="o">=</span><span class="s1">&#39;in&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="n">length</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">direction</span><span class="o">=</span><span class="s1">&#39;in&#39;</span><span class="p">)</span>
+<span class="n">title</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="sa">rf</span><span class="s1">&#39;RMS$_x$=</span><span class="si">{</span><span class="n">rms_x_ref</span><span class="si">:</span><span class="s1">05.2f</span><span class="si">}</span><span class="s1">\% \quad RMS$_y$=</span><span class="si">{</span><span class="n">rms_y_ref</span><span class="si">:</span><span class="s1">05.2f</span><span class="si">}</span><span class="s1">\% \quad &#39;</span>
+    <span class="sa">rf</span><span class="s1">&#39;PTP$_x$=</span><span class="si">{</span><span class="n">ptp_x_ref</span><span class="si">:</span><span class="s1">05.2f</span><span class="si">}</span><span class="s1">\% \quad PTP$_y$=</span><span class="si">{</span><span class="n">ptp_y_ref</span><span class="si">:</span><span class="s1">05.2f</span><span class="si">}</span><span class="s1">\% \quad &#39;</span>
+    <span class="sa">rf</span><span class="s1">&#39;$\Delta \nu_x$=</span><span class="si">{</span><span class="p">(</span><span class="k">lambda</span><span class="w"> </span><span class="n">x</span><span class="p">:</span><span class="w"> </span><span class="s1">&#39;-&#39;</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="s1">&#39;~&#39;</span><span class="p">)(</span><span class="n">nux</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">nux_id</span><span class="p">)</span><span class="si">}{</span><span class="p">(</span><span class="n">nux</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">nux_id</span><span class="p">)</span><span class="o">.</span><span class="n">abs</span><span class="p">()</span><span class="o">.</span><span class="n">item</span><span class="p">()</span><span class="si">:</span><span class="s1">.4f</span><span class="si">}</span><span class="s1"> \quad $\Delta \nu_y$=</span><span class="si">{</span><span class="p">(</span><span class="k">lambda</span><span class="w"> </span><span class="n">x</span><span class="p">:</span><span class="w"> </span><span class="s1">&#39;-&#39;</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="s1">&#39;~&#39;</span><span class="p">)(</span><span class="n">nuy</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">nuy_id</span><span class="p">)</span><span class="si">}{</span><span class="p">(</span><span class="n">nuy</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">nuy_id</span><span class="p">)</span><span class="o">.</span><span class="n">abs</span><span class="p">()</span><span class="o">.</span><span class="n">item</span><span class="p">()</span><span class="si">:</span><span class="s1">.4f</span><span class="si">}</span><span class="s1">&#39;</span>
+    <span class="sa">rf</span><span class="s1">&#39;\quad C=</span><span class="si">{</span><span class="n">c_id</span><span class="o">.</span><span class="n">item</span><span class="p">()</span><span class="si">:</span><span class="s1">.6f</span><span class="si">}</span><span class="s1">&#39;</span>
+<span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.10</span><span class="p">,</span> <span class="n">title</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="n">ax</span><span class="o">.</span><span class="n">transAxes</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s1">&#39;left&#39;</span><span class="p">,</span> <span class="n">va</span><span class="o">=</span><span class="s1">&#39;bottom&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">fontfamily</span><span class="o">=</span><span class="s1">&#39;monospace&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s1">&#39;upper right&#39;</span><span class="p">,</span> <span class="n">frameon</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">,</span> <span class="n">ncol</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+
+<span class="n">ay</span><span class="o">.</span><span class="n">errorbar</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">etax_ref_np</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;blue&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.75</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mf">2.0</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">r</span><span class="s1">&#39;$\eta_x$&#39;</span><span class="p">)</span>
+<span class="n">ay</span><span class="o">.</span><span class="n">errorbar</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">etay_ref_np</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.75</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mf">2.0</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">r</span><span class="s1">&#39;$\eta_y$&#39;</span><span class="p">)</span>
+<span class="n">ay</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;s [m]&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">18</span><span class="p">)</span>
+<span class="n">ay</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;$\Delta \eta$ [m]&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">18</span><span class="p">)</span>
+<span class="n">ay</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">width</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">labelsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+<span class="n">ay</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="n">length</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">direction</span><span class="o">=</span><span class="s1">&#39;in&#39;</span><span class="p">)</span>
+<span class="n">ay</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="n">length</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">direction</span><span class="o">=</span><span class="s1">&#39;in&#39;</span><span class="p">)</span>
+<span class="n">title</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="sa">rf</span><span class="s1">&#39;RMS$_x$=</span><span class="si">{</span><span class="n">rms_etax_ref</span><span class="si">:</span><span class="s1">.4E</span><span class="si">}</span><span class="s1"> m \quad RMS$_y$=</span><span class="si">{</span><span class="n">rms_etay_ref</span><span class="si">:</span><span class="s1">.4E</span><span class="si">}</span><span class="s1"> m  \quad &#39;</span>
+    <span class="sa">rf</span><span class="s1">&#39;PTP$_x$=</span><span class="si">{</span><span class="n">ptp_etax_ref</span><span class="si">:</span><span class="s1">.4E</span><span class="si">}</span><span class="s1"> m \quad PTP$_y$=</span><span class="si">{</span><span class="n">ptp_etay_ref</span><span class="si">:</span><span class="s1">.4E</span><span class="si">}</span><span class="s1"> m  \quad &#39;</span>
+<span class="p">)</span>
+<span class="n">ay</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.125</span><span class="p">,</span> <span class="n">title</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="n">ay</span><span class="o">.</span><span class="n">transAxes</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s1">&#39;left&#39;</span><span class="p">,</span> <span class="n">va</span><span class="o">=</span><span class="s1">&#39;bottom&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">fontfamily</span><span class="o">=</span><span class="s1">&#39;monospace&#39;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">setp</span><span class="p">(</span><span class="n">ax</span><span class="o">.</span><span class="n">spines</span><span class="o">.</span><span class="n">values</span><span class="p">(),</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">2.0</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">setp</span><span class="p">(</span><span class="n">ay</span><span class="o">.</span><span class="n">spines</span><span class="o">.</span><span class="n">values</span><span class="p">(),</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">2.0</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/examples_elettra-04_60_0.png" src="../_images/examples_elettra-04_60_0.png" />
+</div>
 </div>
 </section>
 
