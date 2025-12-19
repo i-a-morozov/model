@@ -33,6 +33,11 @@ KEY_WX:str = 'wx' # -- wx rotation alingnment
 KEY_WY:str = 'wy' # -- wy rotation alingnment
 KEY_WZ:str = 'wz' # -- wz rotation alingnment
 
+KEY_DQX:str = 'dqx'
+KEY_DPX:str = 'dpx'
+KEY_DQY:str = 'dqy'
+KEY_DPY:str = 'dpy'
+
 KEY_A11:str = 'a11'
 KEY_A12:str = 'a12'
 KEY_A13:str = 'a13'

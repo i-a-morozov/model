@@ -4,7 +4,7 @@ Matrix
 
 4D linear transport matrix
 
-(qx, px, qy, py) -> exp(S @ A) @ exp(delta * S @ B) @ (qx, px, qy, py)
+(qx, px, qy, py) -> exp(S @ A) @ exp(delta * S @ B) @ (qx, px, qy, py) + dispersion * dp
 
 """
 
@@ -16,6 +16,11 @@ import torch
 from torch import Tensor
 
 from model.library.keys import KEY_DP
+
+from model.library.keys import KEY_DQX
+from model.library.keys import KEY_DPX
+from model.library.keys import KEY_DQY
+from model.library.keys import KEY_DPY
 
 from model.library.keys import KEY_A11
 from model.library.keys import KEY_A12
@@ -61,6 +66,7 @@ class Matrix(Element):
     """
     flag: bool = False
     keys: list[str] = [
+        KEY_DQX, KEY_DPX, KEY_DQY, KEY_DPY,
         KEY_A11, KEY_A12, KEY_A13, KEY_A14, KEY_A22, KEY_A23, KEY_A24, KEY_A33, KEY_A34, KEY_A44,
         KEY_B11, KEY_B12, KEY_B13, KEY_B14, KEY_B22, KEY_B23, KEY_B24, KEY_B33, KEY_B34, KEY_B44,
         KEY_DP
@@ -71,6 +77,10 @@ class Matrix(Element):
                  length:float=0.0,
                  A:list[float]=10*[0.0],
                  B:list[float]=10*[0.0],
+                 dqx:float=0.0,
+                 dpx:float=0.0,
+                 dqy:float=0.0,
+                 dpy:float=0.0,
                  dp:float=0.0, *,
                  alignment:bool=True,
                  dx:float=0.0,
@@ -96,6 +106,14 @@ class Matrix(Element):
         B: list[float]
             symmetric B matrix elements
             B11, B12, B13, B14, B22, B23, B24, B33, B34, B44
+        dqx: float, default=0.0
+            dqx momentum kick
+        dpx: float, default=0.0
+            dpx momentum kick
+        dqy: float, default=0.0
+            dqy momentum kick
+        dpy: float, default=0.0
+            dpy momentum kick
         dp: float, default=0.0
             momentum deviation
         alignment: bool, default=True
@@ -137,6 +155,10 @@ class Matrix(Element):
 
         self._A: list[float] = A
         self._B: list[float] = B
+        self._dqx: float = dqx
+        self._dpx: float = dpx
+        self._dqy: float = dqy
+        self._dpy: float = dpy
 
         self._lmatrix: Tensor
         self._rmatrix: Tensor
@@ -232,6 +254,11 @@ class Matrix(Element):
         _b44: Tensor
         _b11, _b12, _b13, _b14, _b22, _b23, _b24, _b33, _b34, _b44 = self._B
 
+        _dqx: Tensor = self._dqx
+        _dpx: Tensor = self._dpx
+        _dqy: Tensor = self._dqy
+        _dpy: Tensor = self._dpy
+
         _dp: Tensor = self.dp
         _direction = 1.0
 
@@ -244,14 +271,17 @@ class Matrix(Element):
         def integrator(state:State,
                        a11, a12, a13, a14, a22, a23, a24, a33, a34, a44,
                        b11, b12, b13, b14, b22, b23, b24, b33, b34, b44,
+                       dqx, dpx, dqy, dpy,
                        dp:Tensor) -> State:
             A = _direction*torch.stack([a11, a12, a13, a14, a12, a22, a23, a24, a13, a23, a33, a34, a14, a24, a34, a44]).reshape(4, 4)
             B = _direction*torch.stack([b11, b12, b13, b14, b12, b22, b23, b24, b13, b23, b33, b34, b14, b24, b34, b44]).reshape(4, 4)
-            return torch.linalg.matrix_exp(_identity @ A) @ torch.linalg.matrix_exp(dp * _identity @ B) @ state
+            C = torch.stack([dqx, dpx, dqy, dpy])
+            return torch.linalg.matrix_exp(_identity @ A) @ torch.linalg.matrix_exp(dp * _identity @ B) @ state + C * dp
             
         def step(state:State,
                  a11, a12, a13, a14, a22, a23, a24, a33, a34, a44,
                  b11, b12, b13, b14, b22, b23, b24, b33, b34, b44,
+                 dqx, dpx, dqy, dpy,
                  dp:Tensor) -> State:
             if output:
                 container_output = []
@@ -260,6 +290,7 @@ class Matrix(Element):
             state = integrator(state,
                               _a11 + a11, _a12 + a12, _a13 + a13, _a14 + a14, _a22 + a22, _a23 + a23, _a24 + a24, _a33 + a33, _a34 + a34, _a44 + a44,
                               _b11 + b11, _b12 + b12, _b13 + b13, _b14 + b14, _b22 + b22, _b23 + b23, _b24 + b24, _b33 + b33, _b34 + b34, _b44 + b44,
+                              _dqx + dqx, _dpx + dpx, _dqy + dqy, _dpy + dpy,
                               _dp + dp)
             if output:
                 container_output.append(state)
@@ -268,6 +299,7 @@ class Matrix(Element):
                 container_matrix.append(torch.func.jacrev(integrator)(state,
                                                                      _a11 + a11, _a12 + a12, _a13 + a13, _a14 + a14, _a22 + a22, _a23 + a23, _a24 + a24, _a33 + a33, _a34 + a34, _a44 + a44,
                                                                      _b11 + b11, _b12 + b12, _b13 + b13, _b14 + b14, _b22 + b22, _b23 + b23, _b24 + b24, _b33 + b33, _b34 + b34, _b44 + b44,
+                                                                     _dqx + dqx, _dpx + dpx, _dqy + dqy, _dpy + dpy,
                                                                      _dp + dp))
                 self.container_matrix = torch.stack(container_matrix)
             return state
@@ -349,5 +381,77 @@ class Matrix(Element):
         self._step = self.make_step()
 
 
+    @property
+    def dqx(self) -> Tensor:
+        """
+        Get dqx
+        """
+        return torch.tensor(self._dqx, dtype=self.dtype, device=self.device)
+
+
+    @dqx.setter
+    def dqx(self,
+            dqx:float) -> None:
+        """
+        Set dqx
+        """
+        self._dqx = dqx
+        self._step = self.make_step()
+
+
+    @property
+    def dpx(self) -> Tensor:
+        """
+        Get dpx
+        """
+        return torch.tensor(self._dpx, dtype=self.dtype, device=self.device)
+
+
+    @dpx.setter
+    def dpx(self,
+            dpx:float) -> None:
+        """
+        Set dpx
+        """
+        self._dpx = dpx
+        self._step = self.make_step()
+
+
+    @property
+    def dqy(self) -> Tensor:
+        """
+        Get dqy
+        """
+        return torch.tensor(self._dqy, dtype=self.dtype, device=self.device)
+
+
+    @dqy.setter
+    def dqy(self,
+            dqy:float) -> None:
+        """
+        Set dqy
+        """
+        self._dqy = dqy
+        self._step = self.make_step()
+
+
+    @property
+    def dpy(self) -> Tensor:
+        """
+        Get dpy
+        """
+        return torch.tensor(self._dpy, dtype=self.dtype, device=self.device)
+
+
+    @dpy.setter
+    def dpy(self,
+            dpy:float) -> None:
+        """
+        Set dpy
+        """
+        self._dpy = dpy
+        self._step = self.make_step()
+
+
     def __repr__(self) -> str:
-        return f'{self.__class__.__name__}(name="{self._name}", length={self._length}, A={self._A}, B={self._B}, dp={self._dp})'
+        return f'{self.__class__.__name__}(name="{self._name}", length={self._length}, A={self._A}, B={self._B}, dqx={self._dqx}, dpx={self._dpx}, dqy={self._dqy}, dpy={self._dpy}, dp={self._dp})'
