@@ -1,0 +1,686 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Example-61: Line indexing and slicing &mdash; model  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/nbsphinx-code-cells.css?v=2aa19091" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+      <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+      <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="ELETTRA-01: Layout" href="elettra-00.html" />
+    <link rel="prev" title="Example-60: Chromatic matrix (element)" href="model-59.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            model
+              <img src="../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Examples:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="model-00.html">Example-01: Optimizaion (import/export API)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-01.html">Example-02: Workflow (MADX)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-02.html">Example-03: Workflow (ELEGANT)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-03.html">Example-04: Transformations benchmark (PTC)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-04.html">Example-05: Drift (element)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-05.html">Example-06: Quadrupole (element)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-06.html">Example-07: Sextupole (element)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-07.html">Example-08: Octupole (element)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-08.html">Example-09: Multipole (element)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-09.html">Example-10: Dipole (element)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-10.html">Example-11: Corrector (element)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-11.html">Example-12: Gradient (element)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-12.html">Example-13: Kick (element)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-13.html">Example-14: Linear (element)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-14.html">Example-15: BPM (element)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-15.html">Example-16: Custom (element)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-16.html">Example-17: Line (element)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-17.html">Example-18: Inverse tracking</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-18.html">Example-19: Layout</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-19.html">Example-20: LOGO</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-20.html">Example-21: Build MADX and ELEGANT style lattice</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-21.html">Example-22: Line serialization and deserialization (YAML)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-22.html">Example-23: Advanced line editing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-23.html">Example-24: Wrapper</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-24.html">Example-25: Group</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-25.html">Example-26: Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-26.html">Example-27: Normalize</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-27.html">Example-28: Transformation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-28.html">Example-29: Orbit (fixed point computation)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-29.html">Example-30: Orbit (effect of transverse shift)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-30.html">Example-31: Orbit (dispersion)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-31.html">Example-32: Orbit (quadruple shift)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-32.html">Example-33: Orbit (sextupole shift)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-33.html">Example-34: Orbit (ORM)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-34.html">Example-35: Orbit (closed orbit correction)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-35.html">Example-36: Orbit (ORM optics correction)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-36.html">Example-37: Orbit (dispersion correction)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-37.html">Example-38: Orbit (chromatic ORM)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-38.html">Example-39: Mapping (Transformations around closed orbit)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-39.html">Example-40: Tune (Computation of tunes and chromaticities)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-40.html">Example-41: Tune (Tune and chormaticity correction)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-41.html">Example-42: Tune (Tune spread from quafrupole errors)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-42.html">Example-43: Twiss (Computation of Twiss parameters)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-43.html">Example-44: Twiss (Computation of chromatic Twiss parameters)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-44.html">Example-45: Twiss (Beta functions sensitivity)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-45.html">Example-46: Twiss (Optics correction)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-46.html">Example-47: Optimize (Multistart)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-47.html">Example-48: Advance (Computation of phase advances)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-48.html">Example-49: Advance (Computation of chromatic phase advances)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-49.html">Example-50: Advance (Phase advance sensitivity)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-50.html">Example-51: Advance (Optics correction)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-51.html">Example-52: Normalized dispersion</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-52.html">Example-53: Coupling (Minimal tune distance computation)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-53.html">Example-54: Coupling (Coupling correction based on minimal tune)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-54.html">Example-55: Demo</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-55.html">Example-56: Trajectory (Differentiable trajectory generation)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-56.html">Example-57: Trajectory (Approximate invariants spread)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-57.html">Example-58: Frequency (Parametric derivatives for linear system)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-58.html">Example-59: Matrix (element)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model-59.html">Example-60: Chromatic matrix (element)</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Example-61: Line indexing and slicing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="elettra-00.html">ELETTRA-01: Layout</a></li>
+<li class="toctree-l1"><a class="reference internal" href="elettra-01.html">ELETTRA-02: Linear optics comparison</a></li>
+<li class="toctree-l1"><a class="reference internal" href="elettra-02.html">ELETTRA-03: ORM construction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="elettra-03.html">ELETTRA-04: Tune response matrix</a></li>
+<li class="toctree-l1"><a class="reference internal" href="elettra-04.html">ELETTRA-05: ID linear optics distortion</a></li>
+<li class="toctree-l1"><a class="reference internal" href="elettra-05.html">ELETTRA-06: ID tune shift correction (global tune knob)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="elettra-06.html">ELETTRA-07: ID tune shift fit &amp; correction (global tune knob)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="elettra-07.html">ELETTRA-08: Local ID correction (local correction: tunes, twiss and dispersion)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="elettra-08.html">ELETTRA-09: Local ID correction (local correction: ORM)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="elettra-09.html">ELETTRA-10: Local ID correction (local correction: sector ORM)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="elettra-10.html">ELETTRA-11: Local ID correction (local correction: ORM subset)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="elettra-11.html">ELETTRA-12: Local ID correction (local/global correction: tunes, twiss and dispersion)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="elettra-12.html">ELETTRA-13 Local ID correction (local/global correction: knobs mixing)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="elettra-13.html">ELETTRA-14: Local ID correction (local/global correction: one-by-one iteraton)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="elettra-14.html">ELETTRA-15: Local ID correction (local/global correction: tunes, coupled twiss parameters and dispersion)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="elettra-15.html">ELETTRA-16: Local ID correction (local/global correction: tunes, phase advance and dispersion)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="elettra-16.html">ELETTRA-17: Local ID correction (local/global correction: ORM subset)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="elettra-17.html">ELETTRA-18: Local ID correction (local/global correction: transport matrix)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="elettra-18.html">ELETTRA-19: ID model fit (symmetric: tunes, coupled twiss parameters and dispersion)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="elettra-19.html">ELETTRA-20: ID model fit (symmetric: ORM)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="elettra-20.html">ELETTRA-21: ID model fit (symmetric: ORM &amp; knobs utilization)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="elettra-21.html">ELETTRA-22: ID model fit &amp; compensation (tunes, twiss parameters and dispersion)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="elettra-22.html">ELETTRA-23: ID model fit &amp; compensation (tunes, coupled twiss parameters and dispersion)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="elettra-23.html">ELETTRA-24: ID model fit &amp; compensation (ORM subset)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="elettra-24.html">ELETTRA-25: ID model fit &amp; compensation (tunes)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="elettra-25.html">ELETTRA-26: ID model fit &amp; compensation (transport matrix)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="elettra-26.html">ELETTRA-27: IDs interaction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="elettra-27.html">ELETTRA-28: ID correction knobs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="elettra-28.html">ELETTRA-29: ID response</a></li>
+<li class="toctree-l1"><a class="reference internal" href="elettra-29.html">ELETTRA-30: ID linear optics distortion (analytical)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="elettra-30.html">ELETTRA-31: IDs interaction residual correction (ORM)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="elettra-31.html">ELETTRA-32: IDs interaction residual correction (twiss)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="elettra-32.html">ELETTRA-33: ID linear optics distortion (short wiggler)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="elettra-33.html">ELETTRA-34: Short section ID correction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="elettra-34.html">ELETTRA-35: ID feed forward</a></li>
+<li class="toctree-l1"><a class="reference internal" href="elettra-35.html">ELETTRA-36: ID correction (uncorrected IDs in short sections)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="elettra-36.html">ELETTRA-37: ID linear optics distortion (one-turn matrix factorization)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../modules/library/bpm.html">BPM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/library/bpm.html#model.library.bpm.BPM"><code class="docutils literal notranslate"><span class="pre">BPM</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/library/corrector.html">Corrector</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/library/corrector.html#model.library.corrector.Corrector"><code class="docutils literal notranslate"><span class="pre">Corrector</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/library/custom.html">Custom</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/library/custom.html#model.library.custom.Custom"><code class="docutils literal notranslate"><span class="pre">Custom</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/library/element.html">Element</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/library/element.html#model.library.element.Element"><code class="docutils literal notranslate"><span class="pre">Element</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/library/element.html#model.library.element.transform"><code class="docutils literal notranslate"><span class="pre">transform()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/library/gradient.html">Gradient</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/library/gradient.html#model.library.gradient.Gradient"><code class="docutils literal notranslate"><span class="pre">Gradient</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/library/keys.html">Keys</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/library/kick.html">Gradient</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/library/kick.html#model.library.kick.Kick"><code class="docutils literal notranslate"><span class="pre">Kick</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/library/linear.html">Linear</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/library/linear.html#model.library.linear.Linear"><code class="docutils literal notranslate"><span class="pre">Linear</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/library/transformations.html">Transformations module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/library/transformations.html#model.library.transformations.bend"><code class="docutils literal notranslate"><span class="pre">bend()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/library/transformations.html#model.library.transformations.calibration_forward"><code class="docutils literal notranslate"><span class="pre">calibration_forward()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/library/transformations.html#model.library.transformations.calibration_inverse"><code class="docutils literal notranslate"><span class="pre">calibration_inverse()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/library/transformations.html#model.library.transformations.corrector"><code class="docutils literal notranslate"><span class="pre">corrector()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/library/transformations.html#model.library.transformations.cylindrical"><code class="docutils literal notranslate"><span class="pre">cylindrical()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/library/transformations.html#model.library.transformations.cylindrical_error"><code class="docutils literal notranslate"><span class="pre">cylindrical_error()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/library/transformations.html#model.library.transformations.dipole"><code class="docutils literal notranslate"><span class="pre">dipole()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/library/transformations.html#model.library.transformations.dquad"><code class="docutils literal notranslate"><span class="pre">dquad()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/library/transformations.html#model.library.transformations.drift"><code class="docutils literal notranslate"><span class="pre">drift()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/library/transformations.html#model.library.transformations.fquad"><code class="docutils literal notranslate"><span class="pre">fquad()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/library/transformations.html#model.library.transformations.gradient"><code class="docutils literal notranslate"><span class="pre">gradient()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/library/transformations.html#model.library.transformations.kinematic"><code class="docutils literal notranslate"><span class="pre">kinematic()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/library/transformations.html#model.library.transformations.linear"><code class="docutils literal notranslate"><span class="pre">linear()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/library/transformations.html#model.library.transformations.octupole"><code class="docutils literal notranslate"><span class="pre">octupole()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/library/transformations.html#model.library.transformations.polar"><code class="docutils literal notranslate"><span class="pre">polar()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/library/transformations.html#model.library.transformations.quadrupole"><code class="docutils literal notranslate"><span class="pre">quadrupole()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/library/transformations.html#model.library.transformations.rx"><code class="docutils literal notranslate"><span class="pre">rx()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/library/transformations.html#model.library.transformations.ry"><code class="docutils literal notranslate"><span class="pre">ry()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/library/transformations.html#model.library.transformations.rz"><code class="docutils literal notranslate"><span class="pre">rz()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/library/transformations.html#model.library.transformations.sector_bend"><code class="docutils literal notranslate"><span class="pre">sector_bend()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/library/transformations.html#model.library.transformations.sector_bend_fringe"><code class="docutils literal notranslate"><span class="pre">sector_bend_fringe()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/library/transformations.html#model.library.transformations.sector_bend_wedge"><code class="docutils literal notranslate"><span class="pre">sector_bend_wedge()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/library/transformations.html#model.library.transformations.sextupole"><code class="docutils literal notranslate"><span class="pre">sextupole()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/library/transformations.html#model.library.transformations.tx"><code class="docutils literal notranslate"><span class="pre">tx()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/library/transformations.html#model.library.transformations.ty"><code class="docutils literal notranslate"><span class="pre">ty()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/library/transformations.html#model.library.transformations.tz"><code class="docutils literal notranslate"><span class="pre">tz()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/library/transformations.html#model.library.transformations.wedge"><code class="docutils literal notranslate"><span class="pre">wedge()</span></code></a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">model</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Example-61: Line indexing and slicing</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/examples/model-60.ipynb.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="Example-61:-Line-indexing-and-slicing">
+<h1>Example-61: Line indexing and slicing<a class="headerlink" href="#Example-61:-Line-indexing-and-slicing" title="Link to this heading"></a></h1>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># In this example sequence indexing is detailed</span>
+
+<span class="c1"># Indexing can be used to extract individual elements or a sequence of elements (list of elements)</span>
+<span class="c1"># Slicing syntax is used for sequence extraction</span>
+<span class="c1"># Note, the first element is included, while the final one is excluded</span>
+<span class="c1"># But both edges are kept if names are used for slicing</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Import</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">matplotlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">matplotlib.patches</span><span class="w"> </span><span class="kn">import</span> <span class="n">Rectangle</span>
+<span class="n">matplotlib</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s1">&#39;text.usetex&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">plotly</span><span class="w"> </span><span class="kn">import</span> <span class="n">graph_objects</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">model.library.drift</span><span class="w"> </span><span class="kn">import</span> <span class="n">Drift</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">model.library.quadrupole</span><span class="w"> </span><span class="kn">import</span> <span class="n">Quadrupole</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">model.library.sextupole</span><span class="w"> </span><span class="kn">import</span> <span class="n">Sextupole</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">model.library.dipole</span><span class="w"> </span><span class="kn">import</span> <span class="n">Dipole</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">model.library.bpm</span><span class="w"> </span><span class="kn">import</span> <span class="n">BPM</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">model.library.line</span><span class="w"> </span><span class="kn">import</span> <span class="n">Line</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">model.command.layout</span><span class="w"> </span><span class="kn">import</span> <span class="n">Layout</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Define simple FODO based lattice</span>
+
+<span class="n">B1</span> <span class="o">=</span> <span class="n">BPM</span><span class="p">(</span><span class="s1">&#39;B1&#39;</span><span class="p">,</span> <span class="n">direction</span><span class="o">=</span><span class="s1">&#39;inverse&#39;</span><span class="p">)</span>
+<span class="n">B2</span> <span class="o">=</span> <span class="n">BPM</span><span class="p">(</span><span class="s1">&#39;B2&#39;</span><span class="p">,</span> <span class="n">direction</span><span class="o">=</span><span class="s1">&#39;forward&#39;</span><span class="p">)</span>
+
+<span class="n">QF1</span> <span class="o">=</span> <span class="n">Quadrupole</span><span class="p">(</span><span class="s1">&#39;QF1&#39;</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="o">+</span><span class="mf">0.20</span><span class="p">)</span>
+<span class="n">QF2</span> <span class="o">=</span> <span class="n">Quadrupole</span><span class="p">(</span><span class="s1">&#39;QF2&#39;</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="o">+</span><span class="mf">0.20</span><span class="p">)</span>
+
+<span class="n">QD1</span> <span class="o">=</span> <span class="n">Quadrupole</span><span class="p">(</span><span class="s1">&#39;QD1&#39;</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.19</span><span class="p">)</span>
+<span class="n">QD2</span> <span class="o">=</span> <span class="n">Quadrupole</span><span class="p">(</span><span class="s1">&#39;QD2&#39;</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.19</span><span class="p">)</span>
+
+<span class="n">BM1</span> <span class="o">=</span> <span class="n">Dipole</span><span class="p">(</span><span class="s1">&#39;BM1&#39;</span><span class="p">,</span> <span class="mf">3.50</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mf">4.0</span><span class="p">)</span>
+<span class="n">BM2</span> <span class="o">=</span> <span class="n">Dipole</span><span class="p">(</span><span class="s1">&#39;BM2&#39;</span><span class="p">,</span> <span class="mf">3.50</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mf">4.0</span><span class="p">)</span>
+
+<span class="n">SF1</span> <span class="o">=</span> <span class="n">Sextupole</span><span class="p">(</span><span class="s1">&#39;SF1&#39;</span><span class="p">,</span> <span class="mf">0.25</span><span class="p">)</span>
+<span class="n">SF2</span> <span class="o">=</span> <span class="n">Sextupole</span><span class="p">(</span><span class="s1">&#39;SF2&#39;</span><span class="p">,</span> <span class="mf">0.25</span><span class="p">)</span>
+
+<span class="n">SD1</span> <span class="o">=</span> <span class="n">Sextupole</span><span class="p">(</span><span class="s1">&#39;SD1&#39;</span><span class="p">,</span> <span class="mf">0.25</span><span class="p">)</span>
+<span class="n">SD2</span> <span class="o">=</span> <span class="n">Sextupole</span><span class="p">(</span><span class="s1">&#39;SD2&#39;</span><span class="p">,</span> <span class="mf">0.25</span><span class="p">)</span>
+
+<span class="n">DR1</span> <span class="o">=</span> <span class="n">Drift</span><span class="p">(</span><span class="s1">&#39;DR1&#39;</span><span class="p">,</span> <span class="mf">0.25</span><span class="p">)</span>
+<span class="n">DR2</span> <span class="o">=</span> <span class="n">Drift</span><span class="p">(</span><span class="s1">&#39;DR2&#39;</span><span class="p">,</span> <span class="mf">0.25</span><span class="p">)</span>
+<span class="n">DR3</span> <span class="o">=</span> <span class="n">Drift</span><span class="p">(</span><span class="s1">&#39;DR3&#39;</span><span class="p">,</span> <span class="mf">0.25</span><span class="p">)</span>
+<span class="n">DR4</span> <span class="o">=</span> <span class="n">Drift</span><span class="p">(</span><span class="s1">&#39;DR4&#39;</span><span class="p">,</span> <span class="mf">0.25</span><span class="p">)</span>
+<span class="n">DR5</span> <span class="o">=</span> <span class="n">Drift</span><span class="p">(</span><span class="s1">&#39;DR5&#39;</span><span class="p">,</span> <span class="mf">0.25</span><span class="p">)</span>
+<span class="n">DR6</span> <span class="o">=</span> <span class="n">Drift</span><span class="p">(</span><span class="s1">&#39;DR6&#39;</span><span class="p">,</span> <span class="mf">0.25</span><span class="p">)</span>
+<span class="n">DR7</span> <span class="o">=</span> <span class="n">Drift</span><span class="p">(</span><span class="s1">&#39;DR7&#39;</span><span class="p">,</span> <span class="mf">0.25</span><span class="p">)</span>
+<span class="n">DR8</span> <span class="o">=</span> <span class="n">Drift</span><span class="p">(</span><span class="s1">&#39;DR8&#39;</span><span class="p">,</span> <span class="mf">0.25</span><span class="p">)</span>
+
+<span class="n">FODO</span> <span class="o">=</span> <span class="n">Line</span><span class="p">(</span><span class="s1">&#39;FODO&#39;</span><span class="p">,</span>
+            <span class="p">[</span><span class="n">B1</span><span class="p">,</span> <span class="n">QF1</span><span class="p">,</span> <span class="n">DR1</span><span class="p">,</span> <span class="n">SF1</span><span class="p">,</span> <span class="n">DR2</span><span class="p">,</span> <span class="n">BM1</span><span class="p">,</span> <span class="n">DR3</span><span class="p">,</span> <span class="n">SD1</span><span class="p">,</span> <span class="n">DR4</span><span class="p">,</span> <span class="n">QD1</span><span class="p">,</span> <span class="n">QD2</span><span class="p">,</span> <span class="n">DR5</span><span class="p">,</span> <span class="n">SD2</span><span class="p">,</span> <span class="n">DR6</span><span class="p">,</span> <span class="n">BM2</span><span class="p">,</span> <span class="n">DR7</span><span class="p">,</span> <span class="n">SF2</span><span class="p">,</span> <span class="n">DR8</span><span class="p">,</span> <span class="n">QF2</span><span class="p">,</span> <span class="n">B2</span><span class="p">],</span>
+            <span class="n">propagate</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">dp</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>
+            <span class="n">exact</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">output</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">matrix</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Print FODO line</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">FODO</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+BPM(name=&#34;B1&#34;, direction=&#34;inverse&#34;, dp=0.0)
+Quadrupole(name=&#34;QF1&#34;, length=0.5, kn=0.200000000000001, ks=0.0, dp=0.0, exact=False, ns=1, order=0)
+Drift(name=&#34;DR1&#34;, length=0.25, dp=0.0, exact=False, ns=1, order=0)
+Sextupole(name=&#34;SF1&#34;, length=0.25, ms=0.0, dp=0.0, exact=False, ns=1, order=0)
+Drift(name=&#34;DR2&#34;, length=0.25, dp=0.0, exact=False, ns=1, order=0)
+Dipole(name=&#34;BM1&#34;, length=3.5, angle=0.7853981633974493, e1=0.0, e1_on=True, e2=0.0, e2_on=True, kn=1e-15, ks=0.0, ms=0.0, mo=0.0, dp=0.0, exact=False, ns=1, order=0)
+Drift(name=&#34;DR3&#34;, length=0.25, dp=0.0, exact=False, ns=1, order=0)
+Sextupole(name=&#34;SD1&#34;, length=0.25, ms=0.0, dp=0.0, exact=False, ns=1, order=0)
+Drift(name=&#34;DR4&#34;, length=0.25, dp=0.0, exact=False, ns=1, order=0)
+Quadrupole(name=&#34;QD1&#34;, length=0.5, kn=-0.189999999999999, ks=0.0, dp=0.0, exact=False, ns=1, order=0)
+Quadrupole(name=&#34;QD2&#34;, length=0.5, kn=-0.189999999999999, ks=0.0, dp=0.0, exact=False, ns=1, order=0)
+Drift(name=&#34;DR5&#34;, length=0.25, dp=0.0, exact=False, ns=1, order=0)
+Sextupole(name=&#34;SD2&#34;, length=0.25, ms=0.0, dp=0.0, exact=False, ns=1, order=0)
+Drift(name=&#34;DR6&#34;, length=0.25, dp=0.0, exact=False, ns=1, order=0)
+Dipole(name=&#34;BM2&#34;, length=3.5, angle=0.7853981633974493, e1=0.0, e1_on=True, e2=0.0, e2_on=True, kn=1e-15, ks=0.0, ms=0.0, mo=0.0, dp=0.0, exact=False, ns=1, order=0)
+Drift(name=&#34;DR7&#34;, length=0.25, dp=0.0, exact=False, ns=1, order=0)
+Sextupole(name=&#34;SF2&#34;, length=0.25, ms=0.0, dp=0.0, exact=False, ns=1, order=0)
+Drift(name=&#34;DR8&#34;, length=0.25, dp=0.0, exact=False, ns=1, order=0)
+Quadrupole(name=&#34;QF2&#34;, length=0.5, kn=0.200000000000001, ks=0.0, dp=0.0, exact=False, ns=1, order=0)
+BPM(name=&#34;B2&#34;, direction=&#34;forward&#34;, dp=0.0)
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Getting element by index (position in the first level sequence)</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">FODO</span><span class="p">)):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">i</span><span class="si">:</span><span class="s1">02d</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">FODO</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+00 BPM(name=&#34;B1&#34;, direction=&#34;inverse&#34;, dp=0.0)
+01 Quadrupole(name=&#34;QF1&#34;, length=0.5, kn=0.200000000000001, ks=0.0, dp=0.0, exact=False, ns=1, order=0)
+02 Drift(name=&#34;DR1&#34;, length=0.25, dp=0.0, exact=False, ns=1, order=0)
+03 Sextupole(name=&#34;SF1&#34;, length=0.25, ms=0.0, dp=0.0, exact=False, ns=1, order=0)
+04 Drift(name=&#34;DR2&#34;, length=0.25, dp=0.0, exact=False, ns=1, order=0)
+05 Dipole(name=&#34;BM1&#34;, length=3.5, angle=0.7853981633974493, e1=0.0, e1_on=True, e2=0.0, e2_on=True, kn=1e-15, ks=0.0, ms=0.0, mo=0.0, dp=0.0, exact=False, ns=1, order=0)
+06 Drift(name=&#34;DR3&#34;, length=0.25, dp=0.0, exact=False, ns=1, order=0)
+07 Sextupole(name=&#34;SD1&#34;, length=0.25, ms=0.0, dp=0.0, exact=False, ns=1, order=0)
+08 Drift(name=&#34;DR4&#34;, length=0.25, dp=0.0, exact=False, ns=1, order=0)
+09 Quadrupole(name=&#34;QD1&#34;, length=0.5, kn=-0.189999999999999, ks=0.0, dp=0.0, exact=False, ns=1, order=0)
+10 Quadrupole(name=&#34;QD2&#34;, length=0.5, kn=-0.189999999999999, ks=0.0, dp=0.0, exact=False, ns=1, order=0)
+11 Drift(name=&#34;DR5&#34;, length=0.25, dp=0.0, exact=False, ns=1, order=0)
+12 Sextupole(name=&#34;SD2&#34;, length=0.25, ms=0.0, dp=0.0, exact=False, ns=1, order=0)
+13 Drift(name=&#34;DR6&#34;, length=0.25, dp=0.0, exact=False, ns=1, order=0)
+14 Dipole(name=&#34;BM2&#34;, length=3.5, angle=0.7853981633974493, e1=0.0, e1_on=True, e2=0.0, e2_on=True, kn=1e-15, ks=0.0, ms=0.0, mo=0.0, dp=0.0, exact=False, ns=1, order=0)
+15 Drift(name=&#34;DR7&#34;, length=0.25, dp=0.0, exact=False, ns=1, order=0)
+16 Sextupole(name=&#34;SF2&#34;, length=0.25, ms=0.0, dp=0.0, exact=False, ns=1, order=0)
+17 Drift(name=&#34;DR8&#34;, length=0.25, dp=0.0, exact=False, ns=1, order=0)
+18 Quadrupole(name=&#34;QF2&#34;, length=0.5, kn=0.200000000000001, ks=0.0, dp=0.0, exact=False, ns=1, order=0)
+19 BPM(name=&#34;B2&#34;, direction=&#34;forward&#34;, dp=0.0)
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Note, indexing is circular</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">FODO</span><span class="p">[</span><span class="mi">1</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">FODO</span><span class="p">)])</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">FODO</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">FODO</span><span class="p">[</span><span class="mi">1</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="n">FODO</span><span class="p">)])</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Quadrupole(name=&#34;QF1&#34;, length=0.5, kn=0.200000000000001, ks=0.0, dp=0.0, exact=False, ns=1, order=0)
+Quadrupole(name=&#34;QF1&#34;, length=0.5, kn=0.200000000000001, ks=0.0, dp=0.0, exact=False, ns=1, order=0)
+Quadrupole(name=&#34;QF1&#34;, length=0.5, kn=0.200000000000001, ks=0.0, dp=0.0, exact=False, ns=1, order=0)
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Getting subsequence by indices (start and stop first level positions)</span>
+<span class="c1"># Note, the first element is included, while the last one is excluded</span>
+
+<span class="n">start</span><span class="p">,</span> <span class="n">stop</span><span class="p">,</span> <span class="n">step</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">1</span>
+<span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">FODO</span><span class="p">[</span><span class="n">start</span><span class="p">:</span><span class="n">stop</span><span class="p">:</span><span class="n">step</span><span class="p">]:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">FODO</span><span class="o">.</span><span class="n">position</span><span class="p">(</span><span class="n">element</span><span class="o">.</span><span class="n">name</span><span class="p">)</span><span class="si">:</span><span class="s1">02d</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">element</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">()</span>
+
+<span class="n">start</span><span class="p">,</span> <span class="n">stop</span><span class="p">,</span> <span class="n">step</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">4</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span>
+<span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">FODO</span><span class="p">[</span><span class="n">start</span><span class="p">:</span><span class="n">stop</span><span class="p">:</span><span class="n">step</span><span class="p">]:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">FODO</span><span class="o">.</span><span class="n">position</span><span class="p">(</span><span class="n">element</span><span class="o">.</span><span class="n">name</span><span class="p">)</span><span class="si">:</span><span class="s1">02d</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">element</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+01 Quadrupole(name=&#34;QF1&#34;, length=0.5, kn=0.200000000000001, ks=0.0, dp=0.0, exact=False, ns=1, order=0)
+02 Drift(name=&#34;DR1&#34;, length=0.25, dp=0.0, exact=False, ns=1, order=0)
+03 Sextupole(name=&#34;SF1&#34;, length=0.25, ms=0.0, dp=0.0, exact=False, ns=1, order=0)
+
+01 Quadrupole(name=&#34;QF1&#34;, length=0.5, kn=0.200000000000001, ks=0.0, dp=0.0, exact=False, ns=1, order=0)
+02 Drift(name=&#34;DR1&#34;, length=0.25, dp=0.0, exact=False, ns=1, order=0)
+03 Sextupole(name=&#34;SF1&#34;, length=0.25, ms=0.0, dp=0.0, exact=False, ns=1, order=0)
+04 Drift(name=&#34;DR2&#34;, length=0.25, dp=0.0, exact=False, ns=1, order=0)
+
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Forward sequence (step &gt; 0)</span>
+<span class="c1"># Note, wraps around for stop &lt; step</span>
+
+<span class="n">start</span><span class="p">,</span> <span class="n">stop</span><span class="p">,</span> <span class="n">step</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">5</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span>
+<span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">FODO</span><span class="p">[</span><span class="n">start</span><span class="p">:</span><span class="n">stop</span><span class="p">:</span><span class="n">step</span><span class="p">]:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">FODO</span><span class="o">.</span><span class="n">position</span><span class="p">(</span><span class="n">element</span><span class="o">.</span><span class="n">name</span><span class="p">)</span><span class="si">:</span><span class="s1">02d</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">element</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">()</span>
+
+<span class="n">start</span><span class="p">,</span> <span class="n">stop</span><span class="p">,</span> <span class="n">step</span> <span class="o">=</span> <span class="mi">17</span><span class="p">,</span> <span class="mi">3</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span>
+<span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">FODO</span><span class="p">[</span><span class="n">start</span><span class="p">:</span><span class="n">stop</span><span class="p">:</span><span class="n">step</span><span class="p">]:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">FODO</span><span class="o">.</span><span class="n">position</span><span class="p">(</span><span class="n">element</span><span class="o">.</span><span class="n">name</span><span class="p">)</span><span class="si">:</span><span class="s1">02d</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">element</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+01 Quadrupole(name=&#34;QF1&#34;, length=0.5, kn=0.200000000000001, ks=0.0, dp=0.0, exact=False, ns=1, order=0)
+02 Drift(name=&#34;DR1&#34;, length=0.25, dp=0.0, exact=False, ns=1, order=0)
+03 Sextupole(name=&#34;SF1&#34;, length=0.25, ms=0.0, dp=0.0, exact=False, ns=1, order=0)
+04 Drift(name=&#34;DR2&#34;, length=0.25, dp=0.0, exact=False, ns=1, order=0)
+05 Dipole(name=&#34;BM1&#34;, length=3.5, angle=0.7853981633974493, e1=0.0, e1_on=True, e2=0.0, e2_on=True, kn=1e-15, ks=0.0, ms=0.0, mo=0.0, dp=0.0, exact=False, ns=1, order=0)
+
+17 Drift(name=&#34;DR8&#34;, length=0.25, dp=0.0, exact=False, ns=1, order=0)
+18 Quadrupole(name=&#34;QF2&#34;, length=0.5, kn=0.200000000000001, ks=0.0, dp=0.0, exact=False, ns=1, order=0)
+19 BPM(name=&#34;B2&#34;, direction=&#34;forward&#34;, dp=0.0)
+00 BPM(name=&#34;B1&#34;, direction=&#34;inverse&#34;, dp=0.0)
+01 Quadrupole(name=&#34;QF1&#34;, length=0.5, kn=0.200000000000001, ks=0.0, dp=0.0, exact=False, ns=1, order=0)
+02 Drift(name=&#34;DR1&#34;, length=0.25, dp=0.0, exact=False, ns=1, order=0)
+03 Sextupole(name=&#34;SF1&#34;, length=0.25, ms=0.0, dp=0.0, exact=False, ns=1, order=0)
+
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Inverse sequence (step &lt; 0)</span>
+<span class="c1"># Note, wraps around for stop &gt; step</span>
+
+<span class="n">start</span><span class="p">,</span> <span class="n">stop</span><span class="p">,</span> <span class="n">step</span> <span class="o">=</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">2</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span>
+<span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">FODO</span><span class="p">[</span><span class="n">start</span><span class="p">:</span><span class="n">stop</span><span class="p">:</span><span class="n">step</span><span class="p">]:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">FODO</span><span class="o">.</span><span class="n">position</span><span class="p">(</span><span class="n">element</span><span class="o">.</span><span class="n">name</span><span class="p">)</span><span class="si">:</span><span class="s1">02d</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">element</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">()</span>
+
+<span class="n">start</span><span class="p">,</span> <span class="n">stop</span><span class="p">,</span> <span class="n">step</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">16</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span>
+<span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">FODO</span><span class="p">[</span><span class="n">start</span><span class="p">:</span><span class="n">stop</span><span class="p">:</span><span class="n">step</span><span class="p">]:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">FODO</span><span class="o">.</span><span class="n">position</span><span class="p">(</span><span class="n">element</span><span class="o">.</span><span class="n">name</span><span class="p">)</span><span class="si">:</span><span class="s1">02d</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">element</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+05 Dipole(name=&#34;BM1&#34;, length=3.5, angle=0.7853981633974493, e1=0.0, e1_on=True, e2=0.0, e2_on=True, kn=1e-15, ks=0.0, ms=0.0, mo=0.0, dp=0.0, exact=False, ns=1, order=0)
+04 Drift(name=&#34;DR2&#34;, length=0.25, dp=0.0, exact=False, ns=1, order=0)
+03 Sextupole(name=&#34;SF1&#34;, length=0.25, ms=0.0, dp=0.0, exact=False, ns=1, order=0)
+02 Drift(name=&#34;DR1&#34;, length=0.25, dp=0.0, exact=False, ns=1, order=0)
+
+02 Drift(name=&#34;DR1&#34;, length=0.25, dp=0.0, exact=False, ns=1, order=0)
+01 Quadrupole(name=&#34;QF1&#34;, length=0.5, kn=0.200000000000001, ks=0.0, dp=0.0, exact=False, ns=1, order=0)
+00 BPM(name=&#34;B1&#34;, direction=&#34;inverse&#34;, dp=0.0)
+19 BPM(name=&#34;B2&#34;, direction=&#34;forward&#34;, dp=0.0)
+18 Quadrupole(name=&#34;QF2&#34;, length=0.5, kn=0.200000000000001, ks=0.0, dp=0.0, exact=False, ns=1, order=0)
+
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Iteration</span>
+<span class="c1"># Note, iteration propagates through nested sequences if any</span>
+
+<span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">FODO</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">element</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+BPM(name=&#34;B1&#34;, direction=&#34;inverse&#34;, dp=0.0)
+Quadrupole(name=&#34;QF1&#34;, length=0.5, kn=0.200000000000001, ks=0.0, dp=0.0, exact=False, ns=1, order=0)
+Drift(name=&#34;DR1&#34;, length=0.25, dp=0.0, exact=False, ns=1, order=0)
+Sextupole(name=&#34;SF1&#34;, length=0.25, ms=0.0, dp=0.0, exact=False, ns=1, order=0)
+Drift(name=&#34;DR2&#34;, length=0.25, dp=0.0, exact=False, ns=1, order=0)
+Dipole(name=&#34;BM1&#34;, length=3.5, angle=0.7853981633974493, e1=0.0, e1_on=True, e2=0.0, e2_on=True, kn=1e-15, ks=0.0, ms=0.0, mo=0.0, dp=0.0, exact=False, ns=1, order=0)
+Drift(name=&#34;DR3&#34;, length=0.25, dp=0.0, exact=False, ns=1, order=0)
+Sextupole(name=&#34;SD1&#34;, length=0.25, ms=0.0, dp=0.0, exact=False, ns=1, order=0)
+Drift(name=&#34;DR4&#34;, length=0.25, dp=0.0, exact=False, ns=1, order=0)
+Quadrupole(name=&#34;QD1&#34;, length=0.5, kn=-0.189999999999999, ks=0.0, dp=0.0, exact=False, ns=1, order=0)
+Quadrupole(name=&#34;QD2&#34;, length=0.5, kn=-0.189999999999999, ks=0.0, dp=0.0, exact=False, ns=1, order=0)
+Drift(name=&#34;DR5&#34;, length=0.25, dp=0.0, exact=False, ns=1, order=0)
+Sextupole(name=&#34;SD2&#34;, length=0.25, ms=0.0, dp=0.0, exact=False, ns=1, order=0)
+Drift(name=&#34;DR6&#34;, length=0.25, dp=0.0, exact=False, ns=1, order=0)
+Dipole(name=&#34;BM2&#34;, length=3.5, angle=0.7853981633974493, e1=0.0, e1_on=True, e2=0.0, e2_on=True, kn=1e-15, ks=0.0, ms=0.0, mo=0.0, dp=0.0, exact=False, ns=1, order=0)
+Drift(name=&#34;DR7&#34;, length=0.25, dp=0.0, exact=False, ns=1, order=0)
+Sextupole(name=&#34;SF2&#34;, length=0.25, ms=0.0, dp=0.0, exact=False, ns=1, order=0)
+Drift(name=&#34;DR8&#34;, length=0.25, dp=0.0, exact=False, ns=1, order=0)
+Quadrupole(name=&#34;QF2&#34;, length=0.5, kn=0.200000000000001, ks=0.0, dp=0.0, exact=False, ns=1, order=0)
+BPM(name=&#34;B2&#34;, direction=&#34;forward&#34;, dp=0.0)
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Getting element by name (first occurance in the first level sequence)</span>
+<span class="c1"># Note, this returns first occurance of the element with selected name</span>
+<span class="c1"># To avoid confusion, use elements with unique names</span>
+
+<span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">FODO</span><span class="o">.</span><span class="n">names</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">FODO</span><span class="p">[</span><span class="n">name</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+B1 BPM(name=&#34;B1&#34;, direction=&#34;inverse&#34;, dp=0.0)
+QF1 Quadrupole(name=&#34;QF1&#34;, length=0.5, kn=0.200000000000001, ks=0.0, dp=0.0, exact=False, ns=1, order=0)
+DR1 Drift(name=&#34;DR1&#34;, length=0.25, dp=0.0, exact=False, ns=1, order=0)
+SF1 Sextupole(name=&#34;SF1&#34;, length=0.25, ms=0.0, dp=0.0, exact=False, ns=1, order=0)
+DR2 Drift(name=&#34;DR2&#34;, length=0.25, dp=0.0, exact=False, ns=1, order=0)
+BM1 Dipole(name=&#34;BM1&#34;, length=3.5, angle=0.7853981633974493, e1=0.0, e1_on=True, e2=0.0, e2_on=True, kn=1e-15, ks=0.0, ms=0.0, mo=0.0, dp=0.0, exact=False, ns=1, order=0)
+DR3 Drift(name=&#34;DR3&#34;, length=0.25, dp=0.0, exact=False, ns=1, order=0)
+SD1 Sextupole(name=&#34;SD1&#34;, length=0.25, ms=0.0, dp=0.0, exact=False, ns=1, order=0)
+DR4 Drift(name=&#34;DR4&#34;, length=0.25, dp=0.0, exact=False, ns=1, order=0)
+QD1 Quadrupole(name=&#34;QD1&#34;, length=0.5, kn=-0.189999999999999, ks=0.0, dp=0.0, exact=False, ns=1, order=0)
+QD2 Quadrupole(name=&#34;QD2&#34;, length=0.5, kn=-0.189999999999999, ks=0.0, dp=0.0, exact=False, ns=1, order=0)
+DR5 Drift(name=&#34;DR5&#34;, length=0.25, dp=0.0, exact=False, ns=1, order=0)
+SD2 Sextupole(name=&#34;SD2&#34;, length=0.25, ms=0.0, dp=0.0, exact=False, ns=1, order=0)
+DR6 Drift(name=&#34;DR6&#34;, length=0.25, dp=0.0, exact=False, ns=1, order=0)
+BM2 Dipole(name=&#34;BM2&#34;, length=3.5, angle=0.7853981633974493, e1=0.0, e1_on=True, e2=0.0, e2_on=True, kn=1e-15, ks=0.0, ms=0.0, mo=0.0, dp=0.0, exact=False, ns=1, order=0)
+DR7 Drift(name=&#34;DR7&#34;, length=0.25, dp=0.0, exact=False, ns=1, order=0)
+SF2 Sextupole(name=&#34;SF2&#34;, length=0.25, ms=0.0, dp=0.0, exact=False, ns=1, order=0)
+DR8 Drift(name=&#34;DR8&#34;, length=0.25, dp=0.0, exact=False, ns=1, order=0)
+QF2 Quadrupole(name=&#34;QF2&#34;, length=0.5, kn=0.200000000000001, ks=0.0, dp=0.0, exact=False, ns=1, order=0)
+B2 BPM(name=&#34;B2&#34;, direction=&#34;forward&#34;, dp=0.0)
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Name based slicing</span>
+<span class="c1"># Note, name based slicing includes edges and wraps around (use with step equal to 1 or -1)</span>
+
+<span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">FODO</span><span class="p">[</span><span class="s1">&#39;QF1&#39;</span><span class="p">:</span><span class="s1">&#39;SD1&#39;</span><span class="p">]:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">element</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">element</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">()</span>
+
+<span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">FODO</span><span class="p">[</span><span class="s1">&#39;QF2&#39;</span><span class="p">:</span><span class="s1">&#39;DR1&#39;</span><span class="p">]:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">element</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">element</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">()</span>
+
+<span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">FODO</span><span class="p">[</span><span class="s1">&#39;QF1&#39;</span><span class="p">:</span><span class="s1">&#39;SD1&#39;</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">element</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">element</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+QF1 Quadrupole(name=&#34;QF1&#34;, length=0.5, kn=0.200000000000001, ks=0.0, dp=0.0, exact=False, ns=1, order=0)
+DR1 Drift(name=&#34;DR1&#34;, length=0.25, dp=0.0, exact=False, ns=1, order=0)
+SF1 Sextupole(name=&#34;SF1&#34;, length=0.25, ms=0.0, dp=0.0, exact=False, ns=1, order=0)
+DR2 Drift(name=&#34;DR2&#34;, length=0.25, dp=0.0, exact=False, ns=1, order=0)
+BM1 Dipole(name=&#34;BM1&#34;, length=3.5, angle=0.7853981633974493, e1=0.0, e1_on=True, e2=0.0, e2_on=True, kn=1e-15, ks=0.0, ms=0.0, mo=0.0, dp=0.0, exact=False, ns=1, order=0)
+DR3 Drift(name=&#34;DR3&#34;, length=0.25, dp=0.0, exact=False, ns=1, order=0)
+SD1 Sextupole(name=&#34;SD1&#34;, length=0.25, ms=0.0, dp=0.0, exact=False, ns=1, order=0)
+
+QF2 Quadrupole(name=&#34;QF2&#34;, length=0.5, kn=0.200000000000001, ks=0.0, dp=0.0, exact=False, ns=1, order=0)
+B2 BPM(name=&#34;B2&#34;, direction=&#34;forward&#34;, dp=0.0)
+B1 BPM(name=&#34;B1&#34;, direction=&#34;inverse&#34;, dp=0.0)
+QF1 Quadrupole(name=&#34;QF1&#34;, length=0.5, kn=0.200000000000001, ks=0.0, dp=0.0, exact=False, ns=1, order=0)
+DR1 Drift(name=&#34;DR1&#34;, length=0.25, dp=0.0, exact=False, ns=1, order=0)
+
+QF1 Quadrupole(name=&#34;QF1&#34;, length=0.5, kn=0.200000000000001, ks=0.0, dp=0.0, exact=False, ns=1, order=0)
+B1 BPM(name=&#34;B1&#34;, direction=&#34;inverse&#34;, dp=0.0)
+B2 BPM(name=&#34;B2&#34;, direction=&#34;forward&#34;, dp=0.0)
+QF2 Quadrupole(name=&#34;QF2&#34;, length=0.5, kn=0.200000000000001, ks=0.0, dp=0.0, exact=False, ns=1, order=0)
+DR8 Drift(name=&#34;DR8&#34;, length=0.25, dp=0.0, exact=False, ns=1, order=0)
+SF2 Sextupole(name=&#34;SF2&#34;, length=0.25, ms=0.0, dp=0.0, exact=False, ns=1, order=0)
+DR7 Drift(name=&#34;DR7&#34;, length=0.25, dp=0.0, exact=False, ns=1, order=0)
+BM2 Dipole(name=&#34;BM2&#34;, length=3.5, angle=0.7853981633974493, e1=0.0, e1_on=True, e2=0.0, e2_on=True, kn=1e-15, ks=0.0, ms=0.0, mo=0.0, dp=0.0, exact=False, ns=1, order=0)
+DR6 Drift(name=&#34;DR6&#34;, length=0.25, dp=0.0, exact=False, ns=1, order=0)
+SD2 Sextupole(name=&#34;SD2&#34;, length=0.25, ms=0.0, dp=0.0, exact=False, ns=1, order=0)
+DR5 Drift(name=&#34;DR5&#34;, length=0.25, dp=0.0, exact=False, ns=1, order=0)
+QD2 Quadrupole(name=&#34;QD2&#34;, length=0.5, kn=-0.189999999999999, ks=0.0, dp=0.0, exact=False, ns=1, order=0)
+QD1 Quadrupole(name=&#34;QD1&#34;, length=0.5, kn=-0.189999999999999, ks=0.0, dp=0.0, exact=False, ns=1, order=0)
+DR4 Drift(name=&#34;DR4&#34;, length=0.25, dp=0.0, exact=False, ns=1, order=0)
+SD1 Sextupole(name=&#34;SD1&#34;, length=0.25, ms=0.0, dp=0.0, exact=False, ns=1, order=0)
+
+</pre></div></div>
+</div>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="model-59.html" class="btn btn-neutral float-left" title="Example-60: Chromatic matrix (element)" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="elettra-00.html" class="btn btn-neutral float-right" title="ELETTRA-01: Layout" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Ivan Morozov.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
