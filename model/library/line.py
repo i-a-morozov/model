@@ -52,6 +52,8 @@ output        : (property) get/set output flag
 matrix        : (property) get/set matrix flag
 query         : query line
 apply         : apply function for specific elements
+next          : get next element
+previous      : get previous element
 before        : insert element before
 after         : insert element after
 swap          : swap elements
@@ -1550,6 +1552,42 @@ class Line(Element):
             funcion(element)
 
 
+    def next(self,
+             name:str) -> Element:
+        """
+        Get next element
+
+        Parameters
+        ----------
+        name: str
+            element name
+
+        Returns
+        -------
+        Element
+
+        """
+        return self[self.position(name) + 1]
+
+
+    def previous(self,
+                 name:str) -> Element:
+        """
+        Get previous element
+
+        Parameters
+        ----------
+        name: str
+            element name
+
+        Returns
+        -------
+        Element
+
+        """
+        return self[self.position(name) - 1]
+
+
     def before(self,
                name:str,
                element:Element) -> None:
@@ -1782,16 +1820,22 @@ class Line(Element):
 
         """
         if isinstance(key, int):
-            return self.sequence[key]
+            return self.sequence[key % len(self)]
         if isinstance(key, str):
             for element in self.sequence:
                 if element.name == key:
                     return element
         if isinstance(key, slice):
             start, stop, step = key.start, key.stop, key.step
-            if all(isinstance(value, (int, type(None))) for value in (start, stop, step)):
-                return [self[index] for index in range(*key.indices(len(self)))]
             step = step if step else 1
+            if all(isinstance(value, int) for value in (start, stop, step)):
+                if step > 0:
+                    while start > stop:
+                        stop += len(self)
+                if step < 0:
+                    while start < stop:
+                        stop -= len(self)
+                return [self[index] for index in range(start, stop, step)]
             def translate(value, default: int) -> int:
                 if value is None:
                     return default
@@ -1803,7 +1847,9 @@ class Line(Element):
                     for i, element in enumerate(self.sequence):
                         if element.name == value:
                             return i
-            return [self.sequence[i] for i in range(1 + translate(start, 0), 1+ translate(stop, len(self)), step)]
+            start = translate(start, 0)
+            stop = translate(stop, len(self))
+            return self[start:stop:step]
         if isinstance(key, tuple):
             result = self
             for index in key:
