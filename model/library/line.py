@@ -1853,7 +1853,7 @@ class Line(Element):
                         if element.name == value:
                             return i
             start = translate(start, 0)
-            stop = translate(stop, len(self))
+            stop = translate(stop, len(self)) + 1 if step > 0 else translate(stop, len(self)) - 1
             return self[start:stop:step]
         if isinstance(key, tuple):
             result = self
