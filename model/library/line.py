@@ -1805,6 +1805,11 @@ class Line(Element):
         return len(self.sequence)
 
 
+    def __iter__(self):
+        for i in range(len(self)):
+            yield self.sequence[i]
+
+
     def __getitem__(self, key: int|str|slice|tuple) -> Element | list[Element]:
         """
         Get (first level) element by key
