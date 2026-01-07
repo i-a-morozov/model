@@ -1,0 +1,823 @@
+{
+ "cells": [
+  {
+   "cell_type": "markdown",
+   "id": "20c6e585-e888-466d-b331-6a12c406e229",
+   "metadata": {},
+   "source": [
+    "## ELETTRA-39: ID linear optics distortion (analytical & multiple perturbatons)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 1,
+   "id": "900ef29b-96ab-4de1-9069-428491032a5b",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# In this example one-turn matrix factorization is illustrated\n",
+    "# The one-turn matrix can be expressed as M exp(S A) where Aij = Aji is (a block matrix if there is no coupling that) describes cumulative effect of perturbation\n",
+    "# Here the matrix A is constructed perturbatively using Magnus expansion"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 2,
+   "id": "099afd12-f618-40a5-86db-c20994df0241",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# Import\n",
+    "\n",
+    "import torch\n",
+    "from torch import Tensor\n",
+    "\n",
+    "from pathlib import Path\n",
+    "\n",
+    "import matplotlib\n",
+    "from matplotlib import pyplot as plt\n",
+    "from matplotlib.patches import Rectangle\n",
+    "matplotlib.rcParams['text.usetex'] = True\n",
+    "\n",
+    "from model.library.element import Element\n",
+    "from model.library.line import Line\n",
+    "from model.library.quadrupole import Quadrupole\n",
+    "from model.library.matrix import Matrix\n",
+    "\n",
+    "from model.command.external import load_lattice\n",
+    "from model.command.build import build\n",
+    "from model.command.tune import tune\n",
+    "from model.command.orbit import dispersion\n",
+    "from model.command.twiss import twiss\n",
+    "from model.command.advance import advance\n",
+    "from model.command.coupling import coupling"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 3,
+   "id": "0ecac1a5-3753-4067-9c8a-39233e31c564",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# Set data type and device\n",
+    "\n",
+    "Element.dtype = dtype = torch.float64\n",
+    "Element.device = device = torch.device('cpu')"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 4,
+   "id": "0b8b6d75-8773-44bf-916a-4f4628ebd283",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# Load lattice (ELEGANT table)\n",
+    "# Note, lattice is allowed to have repeated elements\n",
+    "\n",
+    "path = Path('elettra.lte')\n",
+    "data = load_lattice(path)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 5,
+   "id": "7d97f0d5-0240-4cf2-b0ce-4753633a8b64",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "{'Marker': 12, 'Drift': 708, 'BPM': 168, 'Quadrupole': 360, 'Dipole': 156}"
+      ]
+     },
+     "execution_count": 5,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "# Build and setup lattice\n",
+    "\n",
+    "ring:Line = build('RING', 'ELEGANT', data)\n",
+    "\n",
+    "# Flatten sublines\n",
+    "\n",
+    "ring.flatten()\n",
+    "\n",
+    "# Remove all marker elements but the ones starting with MLL (long straight section centers)\n",
+    "\n",
+    "ring.remove_group(pattern=r'^(?!MLL_).*', kinds=['Marker'])\n",
+    "\n",
+    "# Replace all sextupoles with quadrupoles\n",
+    "\n",
+    "def factory(element:Element) -> None:\n",
+    "    table = element.serialize\n",
+    "    table.pop('ms', None)\n",
+    "    return Quadrupole(**table)\n",
+    "\n",
+    "ring.replace_group(pattern=r'', factory=factory, kinds=['Sextupole'])\n",
+    "\n",
+    "# Set linear dipoles\n",
+    "\n",
+    "def apply(element:Element) -> None:\n",
+    "    element.linear = True\n",
+    "\n",
+    "ring.apply(apply, kinds=['Dipole'])\n",
+    "\n",
+    "# Merge drifts\n",
+    "\n",
+    "ring.merge()\n",
+    "\n",
+    "# Change lattice start\n",
+    "\n",
+    "ring.start = \"MLL_S01\"\n",
+    "\n",
+    "# Describe\n",
+    "\n",
+    "ring.describe"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 6,
+   "id": "6170d4c9-f6d5-4eda-abd3-db8d87902cdf",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "tensor([[-0.3055,  8.9649,  0.0000,  0.0000],\n",
+      "        [-0.1011, -0.3055,  0.0000,  0.0000],\n",
+      "        [ 0.0000,  0.0000,  0.5315,  1.3891],\n",
+      "        [ 0.0000,  0.0000, -0.5166,  0.5315]], dtype=torch.float64)\n"
+     ]
+    }
+   ],
+   "source": [
+    "# Unperturbed one-turn matrix\n",
+    "\n",
+    "state = torch.tensor(4*[0.0], dtype=dtype)\n",
+    "M0 = torch.func.jacrev(ring)(state)\n",
+    "print(M0)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 7,
+   "id": "aa566372-4ff8-4b7a-bf1b-20496c162880",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# Define IDs\n",
+    "\n",
+    "# The first ID is 'fake' and acts as an identity\n",
+    "# It is also located at the lattice start\n",
+    "\n",
+    "ca, cb, cc, cd = -0.034441907232402175, -0.04458009513208418, 0.056279356423643276, 0.08037110220505986\n",
+    "A = torch.tensor([[ca, 0.0, 0.0, 0.0], [0.0, cb, 0.0, 0.0], [0.0, 0.0, cc, 0.0], [0.0, 0.0, 0.0, cd]], dtype=dtype)\n",
+    "mask = torch.triu(torch.ones_like(A, dtype=torch.bool))\n",
+    "\n",
+    "ID1 = Matrix('ID1', length=0.0, A=(0.25*A[mask]).tolist())\n",
+    "ID2 = Matrix('ID2', length=0.0, A=(0.25*A[mask]).tolist())\n",
+    "ID3 = Matrix('ID3', length=0.0, A=(0.25*A[mask]).tolist())"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 8,
+   "id": "f8a50c6b-1bcf-43f9-984c-92c182dc6455",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "{'Marker': 12,\n",
+       " 'Matrix': 3,\n",
+       " 'Drift': 708,\n",
+       " 'BPM': 168,\n",
+       " 'Quadrupole': 360,\n",
+       " 'Dipole': 156}"
+      ]
+     },
+     "execution_count": 8,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "# Insert IDs\n",
+    "\n",
+    "# Each ID (or other perturbation) is a thin insertion matrix\n",
+    "# The matrices are inserted after given markers\n",
+    "\n",
+    "elements = [ID1, ID2, ID3]\n",
+    "markers = ['MLL_S01', 'MLL_S02', 'MLL_S03']\n",
+    "\n",
+    "error = ring.clone()\n",
+    "for element, marker in zip(elements, markers):\n",
+    "    error.insert(element, marker)\n",
+    "    \n",
+    "# Describe\n",
+    "\n",
+    "error.describe"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 9,
+   "id": "256014e1-af40-4712-a572-5c356935083e",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "tensor([[-0.3055,  8.9649,  0.0000,  0.0000],\n",
+      "        [-0.1011, -0.3055,  0.0000,  0.0000],\n",
+      "        [ 0.0000,  0.0000,  0.5315,  1.3891],\n",
+      "        [ 0.0000,  0.0000, -0.5166,  0.5315]], dtype=torch.float64)\n",
+      "tensor([[-0.1780,  9.1328,  0.0000,  0.0000],\n",
+      "        [-0.1057, -0.1928,  0.0000,  0.0000],\n",
+      "        [ 0.0000,  0.0000,  0.4820,  1.4276],\n",
+      "        [ 0.0000,  0.0000, -0.5351,  0.4897]], dtype=torch.float64)\n",
+      "\n"
+     ]
+    }
+   ],
+   "source": [
+    "# Perturbed one-turn matrix\n",
+    "\n",
+    "state = torch.tensor(4*[0.0], dtype=dtype)\n",
+    "M1 = torch.func.jacrev(error)(state)\n",
+    "\n",
+    "print(M0)\n",
+    "print(M1)\n",
+    "print()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 10,
+   "id": "9fc448cc-a199-40a7-be09-034a5a3cbb69",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "[True, True, True]\n",
+      "\n",
+      "tensor([[-0.3055,  8.9649,  0.0000,  0.0000],\n",
+      "        [-0.1011, -0.3055,  0.0000,  0.0000],\n",
+      "        [ 0.0000,  0.0000,  0.5315,  1.3891],\n",
+      "        [ 0.0000,  0.0000, -0.5166,  0.5315]], dtype=torch.float64)\n",
+      "tensor([[-0.3055,  8.9649,  0.0000,  0.0000],\n",
+      "        [-0.1011, -0.3055,  0.0000,  0.0000],\n",
+      "        [ 0.0000,  0.0000,  0.5315,  1.3891],\n",
+      "        [ 0.0000,  0.0000, -0.5166,  0.5315]], dtype=torch.float64)\n",
+      "True\n",
+      "\n",
+      "tensor([[-0.1780,  9.1328,  0.0000,  0.0000],\n",
+      "        [-0.1057, -0.1928,  0.0000,  0.0000],\n",
+      "        [ 0.0000,  0.0000,  0.4820,  1.4276],\n",
+      "        [ 0.0000,  0.0000, -0.5351,  0.4897]], dtype=torch.float64)\n",
+      "tensor([[-0.1780,  9.1328,  0.0000,  0.0000],\n",
+      "        [-0.1057, -0.1928,  0.0000,  0.0000],\n",
+      "        [ 0.0000,  0.0000,  0.4820,  1.4276],\n",
+      "        [ 0.0000,  0.0000, -0.5351,  0.4897]], dtype=torch.float64)\n",
+      "True\n",
+      "\n"
+     ]
+    }
+   ],
+   "source": [
+    "# Skew identity matrix\n",
+    "\n",
+    "S = torch.tensor([[0, 1, 0, 0], [-1, 0, 0, 0], [0, 0, 0, 1], [0, 0, -1, 0]], dtype=dtype)\n",
+    "\n",
+    "# Compute perturbations\n",
+    "\n",
+    "Ais = []\n",
+    "Kis = []\n",
+    "for element in elements:\n",
+    "    Ai = torch.zeros((4, 4), dtype=dtype)\n",
+    "    Ai[mask] = element.A\n",
+    "    Ki = torch.linalg.matrix_exp(S @ Ai)\n",
+    "    Ais.append(Ai)\n",
+    "    Kis.append(Ki)\n",
+    "    \n",
+    "Ais = torch.stack(Ais)\n",
+    "Kis = torch.stack(Kis)\n",
+    "\n",
+    "print([torch.allclose(Ki, torch.func.jacrev(element)(state)) for Ki, element in zip(Kis, elements)])\n",
+    "print()\n",
+    "\n",
+    "# Compute matrices between IDs (using markers in the unperturbed lattice)\n",
+    "\n",
+    "Tis = []\n",
+    "for i in range(len(markers)):\n",
+    "    _, *sequence, _ = ring[markers[i] : markers[(i + 1) % len(markers)]]\n",
+    "    line = Line('', sequence=sequence)\n",
+    "    Tis.append(torch.func.jacrev(line)(state))\n",
+    "Tis = torch.stack(Tis)\n",
+    "\n",
+    "# Construct one-turn matrix\n",
+    "\n",
+    "hM = torch.eye(4, dtype=dtype)\n",
+    "for Ti in Tis:\n",
+    "    hM = Ti @ hM\n",
+    "\n",
+    "print(M0)\n",
+    "print(hM)\n",
+    "print(torch.allclose(M0, hM))\n",
+    "print()\n",
+    "\n",
+    "# Construct one-turn matrix\n",
+    "\n",
+    "hM = torch.eye(4, dtype=dtype)\n",
+    "for Ti, Ki in zip(Tis, Kis):\n",
+    "    hM = Ti @ Ki @ hM\n",
+    "\n",
+    "print(M1)\n",
+    "print(hM)\n",
+    "print(torch.allclose(M1, hM))\n",
+    "print()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 11,
+   "id": "7ed6852c-694c-4141-b89a-cfaaf823ea1d",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "tensor([[-0.1780,  9.1328,  0.0000,  0.0000],\n",
+      "        [-0.1057, -0.1928,  0.0000,  0.0000],\n",
+      "        [ 0.0000,  0.0000,  0.4820,  1.4276],\n",
+      "        [ 0.0000,  0.0000, -0.5351,  0.4897]], dtype=torch.float64)\n",
+      "tensor([[-0.1780,  9.1328,  0.0000,  0.0000],\n",
+      "        [-0.1057, -0.1928,  0.0000,  0.0000],\n",
+      "        [ 0.0000,  0.0000,  0.4820,  1.4276],\n",
+      "        [ 0.0000,  0.0000, -0.5351,  0.4897]], dtype=torch.float64)\n",
+      "True\n",
+      "\n"
+     ]
+    }
+   ],
+   "source": [
+    "# Compute unperturbed transport matrices from lattice start to each ID\n",
+    "\n",
+    "Tis = []\n",
+    "for marker in markers:\n",
+    "    *sequence, _ = ring[ring.start : marker]\n",
+    "    line = Line('', sequence=sequence)\n",
+    "    Tis.append(torch.func.jacrev(line)(state))\n",
+    "Tis = torch.stack(Tis)\n",
+    "\n",
+    "# Construct one-turn matrix\n",
+    "\n",
+    "hM = torch.eye(4, dtype=dtype)\n",
+    "for Ti, Ki in zip(Tis, Kis):\n",
+    "    hKi = Ti.inverse() @ Ki @ Ti\n",
+    "    hM =  hKi @ hM\n",
+    "hM = M0 @ hM\n",
+    "\n",
+    "print(M1)\n",
+    "print(hM)\n",
+    "print(torch.allclose(M1, hM))\n",
+    "print()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 12,
+   "id": "d77c854b-e434-4a97-a830-8a8733aa8887",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "tensor([[-0.1780,  9.1328,  0.0000,  0.0000],\n",
+      "        [-0.1057, -0.1928,  0.0000,  0.0000],\n",
+      "        [ 0.0000,  0.0000,  0.4820,  1.4276],\n",
+      "        [ 0.0000,  0.0000, -0.5351,  0.4897]], dtype=torch.float64)\n",
+      "tensor([[-0.1780,  9.1328,  0.0000,  0.0000],\n",
+      "        [-0.1057, -0.1928,  0.0000,  0.0000],\n",
+      "        [ 0.0000,  0.0000,  0.4820,  1.4276],\n",
+      "        [ 0.0000,  0.0000, -0.5351,  0.4897]], dtype=torch.float64)\n",
+      "True\n",
+      "\n"
+     ]
+    }
+   ],
+   "source": [
+    "# Construct shifted exponents\n",
+    "\n",
+    "hAis = []\n",
+    "for Ti, Ai in zip(Tis, Ais):\n",
+    "    hAi = Ti.T @ Ai @ Ti\n",
+    "    hAis.append(hAi)\n",
+    "hAis = torch.stack(hAis)\n",
+    "\n",
+    "# Construct one-turn matrix\n",
+    "\n",
+    "hM = torch.eye(4, dtype=dtype)\n",
+    "for hAi in hAis:\n",
+    "    hM =  torch.linalg.matrix_exp(S @ hAi) @ hM\n",
+    "hM = M0 @ hM\n",
+    "\n",
+    "print(M1)\n",
+    "print(hM)\n",
+    "print(torch.allclose(M1, hM))\n",
+    "print()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 13,
+   "id": "18838603-8942-4666-a181-d904e01b4cb7",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# Define bracket (commutator)\n",
+    "\n",
+    "def bracket(X, Y):\n",
+    "    return X @ Y - Y @ X"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 14,
+   "id": "1bad7399-6404-46d0-8bf5-949f949bb5a7",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# Construct product approximation\n",
+    "\n",
+    "hA1 = torch.zeros((4, 4), dtype=dtype)\n",
+    "for hAi in hAis:\n",
+    "    hA1 += hAi\n",
+    "\n",
+    "hA2 = torch.zeros((4, 4), dtype=dtype)\n",
+    "for i in range(len(elements)):\n",
+    "    for j in range(i + 1):\n",
+    "        dij = (i == j)\n",
+    "        factor = 1/(1 + dij)\n",
+    "        Xi = S @ hAis[i]\n",
+    "        Xj = S @ hAis[j]\n",
+    "        hA2 += factor*1/2*bracket(Xi, Xj)       \n",
+    "hA2 = - S @ hA2\n",
+    "\n",
+    "hA3 = torch.zeros((4, 4), dtype=dtype)\n",
+    "for i in range(len(elements)):\n",
+    "    for j in range(i + 1):\n",
+    "        for k in range(j + 1):\n",
+    "            dij = (i == j)\n",
+    "            dik = (i == k)\n",
+    "            djk = (j == k)\n",
+    "            factor = (1.0/(1.0 + dij))*(1.0/(1.0 + dik + djk))\n",
+    "            Xi = S @ hAis[i]\n",
+    "            Xj = S @ hAis[j]\n",
+    "            Xk = S @ hAis[k]\n",
+    "            hA3 += factor*(\n",
+    "                + 1/4*bracket(bracket(Xi, Xj), Xk) \n",
+    "                - (1/12)*bracket(bracket(Xi, Xk), Xj) \n",
+    "                - (1/12)*bracket(bracket(Xj, Xk), Xi)\n",
+    "            )\n",
+    "hA3 = - S @ hA3\n",
+    "\n",
+    "hA4 = torch.zeros((4, 4), dtype=dtype)\n",
+    "for i in range(len(elements)):\n",
+    "    for j in range(i + 1):\n",
+    "        for k in range(j + 1):\n",
+    "            for l in range(k + 1):\n",
+    "                dij = (i == j)\n",
+    "                dik = (i == k)\n",
+    "                djk = (j == k)\n",
+    "                dil = (i == l)\n",
+    "                djl = (j == l)\n",
+    "                dkl = (k == l)\n",
+    "                factor = (1.0 / (1.0 + dij)) * (1.0 / (1.0 + dik + djk)) * (1.0 / (1.0 + dil + djl + dkl))\n",
+    "                Xi = S @ hAis[i]\n",
+    "                Xj = S @ hAis[j]\n",
+    "                Xk = S @ hAis[k]\n",
+    "                Xl = S @ hAis[l]\n",
+    "                hA4 += factor*(\n",
+    "                    1/12*bracket(bracket(bracket(Xi, Xj), Xk), Xl) +\n",
+    "                    1/12*bracket(Xi, bracket(bracket(Xj, Xk), Xl)) +\n",
+    "                    1/12*bracket(Xi, bracket(Xj, bracket(Xk, Xl))) +\n",
+    "                    1/12*bracket(Xj, bracket(Xk, bracket(Xl, Xi)))\n",
+    "                )\n",
+    "hA4 = - S @ hA4"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 15,
+   "id": "88e69f5e-f498-4fe2-ac91-ad1bf3be8674",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# Set elements\n",
+    "\n",
+    "Ax, Bx, _, _, Cx, _, _, Ay, By, Cy = (hA1 + hA2  + hA2  + hA4)[mask].to(torch.complex128)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 16,
+   "id": "4686af6a-71cb-4ced-a733-81f4b74d6d6c",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# Compute tunes (fractional part)\n",
+    "\n",
+    "nux, nuy = tune(ring, [], matched=True, limit=1)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 17,
+   "id": "32847c06-0e9e-48c7-9a70-2e0ac896ab12",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# Compute twiss parameters\n",
+    "\n",
+    "ax, bx, ay, by = twiss(ring, [], matched=True, advance=True, full=False).T\n",
+    "\n",
+    "axi, *_ = ax\n",
+    "bxi, *_ = bx\n",
+    "ayi, *_ = ay\n",
+    "byi, *_ = by"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 18,
+   "id": "c27f62c2-5756-4c7b-b371-2aa90e2f3c8f",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# Compute tunes (fractional part)\n",
+    "\n",
+    "nux_id, nuy_id = tune(error, [], matched=True, limit=1)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 19,
+   "id": "ea78288f-5bf5-46d4-a29f-b3334e418798",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# Compute twiss parameters\n",
+    "\n",
+    "ax_id, bx_id, ay_id, by_id = twiss(error, [], matched=True, advance=True, full=False).T\n",
+    "\n",
+    "axf, *_ = ax_id\n",
+    "bxf, *_ = bx_id\n",
+    "ayf, *_ = ay_id\n",
+    "byf, *_ = by_id"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 20,
+   "id": "69bd478b-eb43-43fe-9e18-7288ac13c69f",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "tensor(0.0197, dtype=torch.float64)\n",
+      "tensor(-0.0084, dtype=torch.float64)\n"
+     ]
+    }
+   ],
+   "source": [
+    "# Tune shifts\n",
+    "\n",
+    "print(nux - nux_id)\n",
+    "print(nuy - nuy_id)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 21,
+   "id": "bfb0296b-af6a-4a4f-b2c7-317c093d591e",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "tensor(0.0197, dtype=torch.float64)\n",
+      "tensor(0.0198, dtype=torch.float64)\n",
+      "\n",
+      "tensor(-0.0084, dtype=torch.float64)\n",
+      "tensor(-0.0084, dtype=torch.float64)\n",
+      "\n"
+     ]
+    }
+   ],
+   "source": [
+    "# Tune shifts (exact)\n",
+    "\n",
+    "def dnux(Ax, Bx, Cx, ax, bx, nux):\n",
+    "    return nux - torch.arccos(torch.cos(2*nux*torch.pi)*torch.cosh(torch.sqrt(Bx**2 - Ax*Cx)) - ((Ax*bx**2 - 2*ax*bx*Bx + Cx + ax**2*Cx)*torch.sin(2*nux*torch.pi)*torch.sinh(torch.sqrt(Bx**2 - Ax*Cx)))/(2*bx*torch.sqrt(Bx**2 - Ax*Cx)))/(2*torch.pi)\n",
+    "\n",
+    "def dnuy(Ay, By, Cy, ay, by, nuy):\n",
+    "    return nuy - torch.arccos(torch.cos(2*nuy*torch.pi)*torch.cosh(torch.sqrt(By**2 - Ay*Cy)) - ((Ay*by**2 - 2*ay*by*By + Cy + ay**2*Cy)*torch.sin(2*nuy*torch.pi)*torch.sinh(torch.sqrt(By**2 - Ay*Cy)))/(2*by*torch.sqrt(By**2 - Ay*Cy)))/(2*torch.pi)\n",
+    "\n",
+    "print((nux - nux_id))\n",
+    "print(dnux(Ax, Bx, Cx, axi, bxi, nux).real)\n",
+    "print()\n",
+    "\n",
+    "print((nuy - nuy_id))\n",
+    "print(dnux(Ay, By, Cy, ayi, byi, nuy).real)\n",
+    "print()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 22,
+   "id": "69833017-c66a-43a9-9bcf-59eb2a24ba40",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "tensor(0.0197, dtype=torch.float64)\n",
+      "tensor(0.0198, dtype=torch.float64)\n",
+      "\n",
+      "tensor(-0.0084, dtype=torch.float64)\n",
+      "tensor(-0.0084, dtype=torch.float64)\n",
+      "\n"
+     ]
+    }
+   ],
+   "source": [
+    "# Tune shifts (approximate)\n",
+    "\n",
+    "def dnux(Ax, Bx, Cx, ax, bx, nux):\n",
+    "    cx = (1 + ax**2)/bx\n",
+    "    return - ((Ax*bx - 2*ax*Bx + cx*Cx)/(4*torch.pi) - ((Ax**2*bx**2 - 4*ax*Ax*bx*Bx + 4*bx*Bx**2*cx + 2*Ax*(-2 + bx*cx)*Cx + cx*Cx*(-4*ax*Bx + cx*Cx))*torch.cos(2*nux*torch.pi)/torch.sin(2*nux*torch.pi))/(16*torch.pi))\n",
+    "\n",
+    "def dnuy(Ay, By, Cy, ay, by, nuy):\n",
+    "    cy = (1 + ay**2)/by\n",
+    "    return - ((Ay*by - 2*ay*By + cy*Cy)/(4*torch.pi) - ((Ay**2*by**2 - 4*ay*Ay*by*By + 4*by*By**2*cy + 2*Ay*(-2 + by*cy)*Cy + cy*Cy*(-4*ay*By + cy*Cy))*torch.cos(2*nuy*torch.pi)/torch.sin(2*nuy*torch.pi))/(16*torch.pi))\n",
+    "\n",
+    "print((nux - nux_id))\n",
+    "print(dnux(Ax, Bx, Cx, axi, bxi, nux).real)\n",
+    "print()\n",
+    "\n",
+    "print((nuy - nuy_id))\n",
+    "print(dnux(Ay, By, Cy, ayi, byi, nuy).real)\n",
+    "print()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 23,
+   "id": "7617f0d7-1444-4d38-a00c-3c289ff0bc78",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "tensor([7.5487e-03, 9.2940e+00], dtype=torch.float64)\n",
+      "tensor([5.3985e-03, 9.3283e+00], dtype=torch.float64)\n",
+      "\n",
+      "tensor([-0.0044,  1.6334], dtype=torch.float64)\n",
+      "tensor([-0.0044,  1.6335], dtype=torch.float64)\n",
+      "\n"
+     ]
+    }
+   ],
+   "source": [
+    "# Twiss at the observation point (exact)\n",
+    "\n",
+    "def csx(Ax, Bx, Cx, ax, bx, nux):\n",
+    "    cx = (1 + ax**2)/bx\n",
+    "    hax = (2*ax*torch.cosh(torch.sqrt(Bx**2 - Ax*Cx))*torch.sin(2*nux*torch.pi) + ((2*bx*Bx*torch.cos(2*nux*torch.pi) + (-(Ax*bx**2) + Cx + ax**2*Cx)*torch.sin(2*nux*torch.pi))*torch.sinh(torch.sqrt(Bx**2 - Ax*Cx)))/(bx*torch.sqrt(Bx**2 - Ax*Cx)))/(2*torch.sqrt(1 - (torch.cos(2*nux*torch.pi)*torch.cosh(torch.sqrt(Bx**2 - Ax*Cx)) - ((Ax*bx**2 - 2*ax*bx*Bx + Cx + ax**2*Cx)*torch.sin(2*nux*torch.pi)*torch.sinh(torch.sqrt(Bx**2 - Ax*Cx)))/(2*bx*torch.sqrt(Bx**2 - Ax*Cx)))**2))    \n",
+    "    hbx = (bx*torch.cosh(torch.sqrt(Bx**2 - Ax*Cx))*torch.sin(2*nux*torch.pi) + ((Cx*torch.cos(2*nux*torch.pi) + (-(bx*Bx) + ax*Cx)*torch.sin(2*nux*torch.pi))*torch.sinh(torch.sqrt(Bx**2 - Ax*Cx)))/torch.sqrt(Bx**2 - Ax*Cx))/torch.sqrt(1 - (torch.cos(2*nux*torch.pi)*torch.cosh(torch.sqrt(Bx**2 - Ax*Cx)) - ((Ax*bx**2 - 2*ax*bx*Bx + Cx + ax**2*Cx)*torch.sin(2*nux*torch.pi)*torch.sinh(torch.sqrt(Bx**2 - Ax*Cx)))/(2*bx*torch.sqrt(Bx**2 - Ax*Cx)))**2)\n",
+    "    return torch.stack([hax, hbx])\n",
+    "\n",
+    "def csy(Ay, By, Cy, ay, by, nuy):\n",
+    "    cy = (1 + ay**2)/by\n",
+    "    hay = (2*ay*torch.cosh(torch.sqrt(By**2 - Ay*Cy))*torch.sin(2*nuy*torch.pi) + ((2*by*By*torch.cos(2*nuy*torch.pi) + (-(Ay*by**2) + Cy + ay**2*Cy)*torch.sin(2*nuy*torch.pi))*torch.sinh(torch.sqrt(By**2 - Ay*Cy)))/(by*torch.sqrt(By**2 - Ay*Cy)))/(2*torch.sqrt(1 - (torch.cos(2*nuy*torch.pi)*torch.cosh(torch.sqrt(By**2 - Ay*Cy)) - ((Ay*by**2 - 2*ay*by*By + Cy + ay**2*Cy)*torch.sin(2*nuy*torch.pi)*torch.sinh(torch.sqrt(By**2 - Ay*Cy)))/(2*by*torch.sqrt(By**2 - Ay*Cy)))**2))    \n",
+    "    hby = (by*torch.cosh(torch.sqrt(By**2 - Ay*Cy))*torch.sin(2*nuy*torch.pi) + ((Cy*torch.cos(2*nuy*torch.pi) + (-(by*By) + ay*Cy)*torch.sin(2*nuy*torch.pi))*torch.sinh(torch.sqrt(By**2 - Ay*Cy)))/torch.sqrt(By**2 - Ay*Cy))/torch.sqrt(1 - (torch.cos(2*nuy*torch.pi)*torch.cosh(torch.sqrt(By**2 - Ay*Cy)) - ((Ay*by**2 - 2*ay*by*By + Cy + ay**2*Cy)*torch.sin(2*nuy*torch.pi)*torch.sinh(torch.sqrt(By**2 - Ay*Cy)))/(2*by*torch.sqrt(By**2 - Ay*Cy)))**2)\n",
+    "    return torch.stack([hay, hby])\n",
+    "\n",
+    "print(torch.stack([axf, bxf]))\n",
+    "print(csx(Ax, Bx, Cx, axi, bxi, nux).real)\n",
+    "print()\n",
+    "\n",
+    "print(torch.stack([ayf, byf]))\n",
+    "print(csy(Ay, By, Cy, ayi, byi, nuy).real)\n",
+    "print()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 24,
+   "id": "44e99470-1ac0-4a77-b2b5-b4cd2c91ed27",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "tensor([7.5487e-03, 9.2940e+00], dtype=torch.float64)\n",
+      "tensor([5.3630e-03, 9.3289e+00], dtype=torch.float64)\n",
+      "\n",
+      "tensor([-0.0044,  1.6334], dtype=torch.float64)\n",
+      "tensor([-0.0044,  1.6335], dtype=torch.float64)\n",
+      "\n"
+     ]
+    }
+   ],
+   "source": [
+    "# Twiss at the observation point (approximate)\n",
+    "\n",
+    "def csx(Ax, Bx, Cx, ax, bx, nux):\n",
+    "    cx = (1 + ax**2)/bx\n",
+    "    hax = ax + (-(Ax*bx) + cx*Cx - (ax*Ax*bx - 2*bx*Bx*cx + ax*cx*Cx)*(torch.cos(2*nux*torch.pi)/torch.sin(2*nux*torch.pi)))/2.0 + ((1.0/torch.sin(2*nux*torch.pi)**3)*(16*ax*(Bx**2 - Ax*Cx)*torch.sin(2*nux*torch.pi)**3 + 4*ax*torch.sin(2*nux*torch.pi)*(4*(Bx**2 - Ax*Cx)*torch.cos(2*nux*torch.pi)**2 + (Ax*bx - 2*ax*Bx + cx*Cx)**2 * torch.sin(2*nux*torch.pi)**2) + 4*(Ax*bx - 2*ax*Bx + cx*Cx)*(-2*Bx*torch.cos(2*nux*torch.pi) + (Ax*bx - cx*Cx)*torch.sin(2*nux*torch.pi))*torch.sin(4*nux*torch.pi) + 3*ax*(Ax*bx - 2*ax*Bx + cx*Cx)**2*(1.0/torch.sin(2*nux*torch.pi)) * torch.sin(4*nux*torch.pi)**2))/32.0\n",
+    "    hbx = bx - bx*Bx + ax*Cx + (-0.5*(Ax*bx**2) + ax*bx*Bx + Cx - 0.5*(bx*cx*Cx)) * (torch.cos(2*nux*torch.pi)/torch.sin(2*nux*torch.pi)) + (4*bx*(Bx**2 - Ax*Cx) + bx*(Ax*bx - 2*ax*Bx + cx*Cx)**2 + 4*bx*(Bx**2 - Ax*Cx)*(torch.cos(2*nux*torch.pi)/torch.sin(2*nux*torch.pi))**2 + 3*bx*(Ax*bx - 2*ax*Bx + cx*Cx)**2*(torch.cos(2*nux*torch.pi)/torch.sin(2*nux*torch.pi))**2 + 2*(Ax*bx - 2*ax*Bx + cx*Cx)*(bx*Bx - ax*Cx - Cx*(torch.cos(2*nux*torch.pi)/torch.sin(2*nux*torch.pi)))*(1.0/torch.sin(2*nux*torch.pi)**2) * torch.sin(4*nux*torch.pi))/8.0\n",
+    "    return torch.stack([hax, hbx])\n",
+    "\n",
+    "def csy(Ay, By, Cy, ay, by, nuy):\n",
+    "    cy = (1 + ay**2)/by\n",
+    "    hay = ay + (-(Ay*by) + cy*Cy - (ay*Ay*by - 2*by*By*cy + ay*cy*Cy)*(torch.cos(2*nuy*torch.pi)/torch.sin(2*nuy*torch.pi)))/2.0 + ((1.0/torch.sin(2*nuy*torch.pi)**3)*(16*ay*(By**2 - Ay*Cy)*torch.sin(2*nuy*torch.pi)**3 + 4*ay*torch.sin(2*nuy*torch.pi)*(4*(By**2 - Ay*Cy)*torch.cos(2*nuy*torch.pi)**2 + (Ay*by - 2*ay*By + cy*Cy)**2 * torch.sin(2*nuy*torch.pi)**2) + 4*(Ay*by - 2*ay*By + cy*Cy)*(-2*By*torch.cos(2*nuy*torch.pi) + (Ay*by - cy*Cy)*torch.sin(2*nuy*torch.pi))*torch.sin(4*nuy*torch.pi) + 3*ay*(Ay*by - 2*ay*By + cy*Cy)**2*(1.0/torch.sin(2*nuy*torch.pi)) * torch.sin(4*nuy*torch.pi)**2))/32.0\n",
+    "    hby = by - by*By + ay*Cy + (-0.5*(Ay*by**2) + ay*by*By + Cy - 0.5*(by*cy*Cy)) * (torch.cos(2*nuy*torch.pi)/torch.sin(2*nuy*torch.pi)) + (4*by*(By**2 - Ay*Cy) + by*(Ay*by - 2*ay*By + cy*Cy)**2 + 4*by*(By**2 - Ay*Cy)*(torch.cos(2*nuy*torch.pi)/torch.sin(2*nuy*torch.pi))**2 + 3*by*(Ay*by - 2*ay*By + cy*Cy)**2*(torch.cos(2*nuy*torch.pi)/torch.sin(2*nuy*torch.pi))**2 + 2*(Ay*by - 2*ay*By + cy*Cy)*(by*By - ay*Cy - Cy*(torch.cos(2*nuy*torch.pi)/torch.sin(2*nuy*torch.pi)))*(1.0/torch.sin(2*nuy*torch.pi)**2) * torch.sin(4*nuy*torch.pi))/8.0\n",
+    "    return torch.stack([hay, hby])\n",
+    "\n",
+    "print(torch.stack([axf, bxf]))\n",
+    "print(csx(Ax, Bx, Cx, axi, bxi, nux).real)\n",
+    "print()\n",
+    "\n",
+    "print(torch.stack([ayf, byf]))\n",
+    "print(csy(Ay, By, Cy, ayi, byi, nuy).real)\n",
+    "print()"
+   ]
+  }
+ ],
+ "metadata": {
+  "colab": {
+   "collapsed_sections": [
+    "myt0_gMIOq7b",
+    "5d97819c"
+   ],
+   "name": "03_frequency.ipynb",
+   "provenance": []
+  },
+  "kernelspec": {
+   "display_name": "Python 3 (ipykernel)",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.14.0"
+  },
+  "latex_envs": {
+   "LaTeX_envs_menu_present": true,
+   "autoclose": false,
+   "autocomplete": true,
+   "bibliofile": "biblio.bib",
+   "cite_by": "apalike",
+   "current_citInitial": 1,
+   "eqLabelWithNumbers": true,
+   "eqNumInitial": 1,
+   "hotkeys": {
+    "equation": "Ctrl-E",
+    "itemize": "Ctrl-I"
+   },
+   "labels_anchors": false,
+   "latex_user_defs": false,
+   "report_style_numbering": false,
+   "user_envs_cfg": false
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 5
+}
