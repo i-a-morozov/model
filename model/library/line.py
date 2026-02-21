@@ -62,6 +62,7 @@ replace_group : replace element group
 __call__      : transform state
 __len__       : get number of elements (first level)
 __getitem__   : get (first level) element by key
+__getattr__   : get (first level) element by attribute name
 __setitem__   : set (first level) element by key
 __delitem__   : del (first level) element by key
 __repr__      : print line
@@ -1860,6 +1861,31 @@ class Line(Element):
             for index in key:
                 result = result[index]
             return result
+
+
+    def __getattr__(self, key: str) -> Element:
+        """
+        Get (first level) element by attribute name
+
+        Parameters
+        ----------
+        key: str
+            element name
+
+        Returns
+        -------
+        Element
+
+        Raises
+        ------
+        AttributeError
+            if no element with matching name exists
+
+        """
+        element = self[key]
+        if isinstance(element, Element):
+            return element
+        raise AttributeError(f'{self.__class__.__name__!r} has no attribute {key!r}')
 
 
     def __setitem__(self, key: int|str|slice|tuple, element: Element) -> None:
