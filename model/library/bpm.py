@@ -29,8 +29,8 @@ from model.library.element import Element
 from model.library.transformations import calibration_forward
 from model.library.transformations import calibration_inverse
 
-type State = Tensor
-type Mapping = Callable[[State, Tensor, ...], State]
+State = Tensor
+Mapping = Callable[[State, Tensor], State]
 
 
 class BPM(Element):
@@ -53,6 +53,7 @@ class BPM(Element):
                  name:str,
                  direction:Literal['forward', 'inverse']='forward',
                  dp:float=0.0, *,
+                 virtual:bool=False,
                  alignment:bool=True,
                  dx:float=0.0,
                  dy:float=0.0,
@@ -73,6 +74,8 @@ class BPM(Element):
             transformation direction
         dp: float, default=0.0
             momentum deviation
+        virtual: bool, default=False
+            virtual flag            
         alignment: bool, default=True
             flag to use alignment errors
         dx: float, default=0.0
@@ -108,6 +111,8 @@ class BPM(Element):
                          wz=wz,
                          output=output,
                          matrix=matrix)
+
+        self.virtual = virtual
 
         self._direction: Literal['forward', 'inverse'] = direction
 
@@ -223,7 +228,7 @@ class BPM(Element):
         return step
 
     @property
-    def direction(self) -> Tensor:
+    def direction(self) -> str:
         """
         Get direction
 

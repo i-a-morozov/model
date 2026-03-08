@@ -16,8 +16,8 @@ from model.library.keys import KEY_DP
 
 from model.library.element import Element
 
-type State = Tensor
-type Mapping = Callable[[State, Tensor, ...], State]
+State = Tensor
+Mapping = Callable[[State, Tensor], State]
 
 
 class Marker(Element):
@@ -39,6 +39,7 @@ class Marker(Element):
     def __init__(self,
                  name:str,
                  dp:float=0.0, *,
+                 virtual:bool=False,
                  alignment:bool=True,
                  dx:float=0.0,
                  dy:float=0.0,
@@ -57,6 +58,8 @@ class Marker(Element):
             name
         dp: float, default=0.0
             momentum deviation
+        virtual: bool, default=False
+            virtual flag
         alignment: bool, default=True
             flag to use alignment errors
         dx: float, default=0.0
@@ -92,6 +95,8 @@ class Marker(Element):
                          wz=wz,
                          output=output,
                          matrix=matrix)
+
+        self.virtual = virtual
 
         self._lmatrix: Tensor
         self._rmatrix: Tensor

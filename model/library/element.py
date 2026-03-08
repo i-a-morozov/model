@@ -43,8 +43,10 @@ from model.library.keys import KEY_WZ
 from model.library.transformations import tx, ty, tz
 from model.library.transformations import rx, ry, rz
 
-type State = Tensor
-type Mapping = Callable[[State, Tensor, ...], State]
+State = Tensor
+class Mapping(Protocol):
+    def __call__(self, state:State, *knobs:Tensor) -> State:
+        ...
 
 class Element(ABC):
     """

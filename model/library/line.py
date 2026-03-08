@@ -1212,7 +1212,7 @@ class Line(Element):
         Tensor
 
         """
-        return sum(value for name, value in self.get('length'))
+        return sum(value for _, value in self.get('length'))
 
 
     @property
