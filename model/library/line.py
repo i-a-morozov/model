@@ -1900,6 +1900,8 @@ class Line(Element):
             if no element with matching name exists
 
         """
+        if key.startswith('_') or (key.startswith('__') and key.endswith('__')):
+            raise AttributeError(f'{self.__class__.__name__!r} has no attribute {key!r}')
         element = self[key]
         if isinstance(element, Element):
             return element
