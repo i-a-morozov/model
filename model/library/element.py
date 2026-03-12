@@ -44,9 +44,7 @@ from model.library.transformations import tx, ty, tz
 from model.library.transformations import rx, ry, rz
 
 State = Tensor
-class Mapping(Protocol):
-    def __call__(self, state:State, *knobs:Tensor) -> State:
-        ...
+type Mapping = Callable[[State, Tensor, ...], State]
 
 class Element(ABC):
     """

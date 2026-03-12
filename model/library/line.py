@@ -709,7 +709,7 @@ class Line(Element):
     @property
     def start(self) -> str:
         """
-        Get the first element
+        Get the first element name
 
         Parameters
         ----------
@@ -742,6 +742,24 @@ class Line(Element):
         """
         index = self.position(start) if isinstance(start, str) else start
         self.sequence = rotate(self.sequence, index)
+
+
+    @property
+    def end(self) -> str:
+        """
+        Get the last element name
+
+        Parameters
+        ----------
+        None
+
+        Returns
+        -------
+        str
+
+        """
+        *_, element = self.sequence
+        return element.name
 
 
     def roll(self,
