@@ -684,7 +684,7 @@ def bend(state:State,
 
 
 def bend_knobs(r:Tensor, kn:Tensor, ks:Tensor, dp:Tensor, length:Tensor) -> Knobs:
-    kq = kn + r**2*(kn**2 + ks**2)
+    kq = 0j + kn + r**2*(kn**2 + ks**2)
     kr = (1 + 4*kq*r**2).sqrt()
     kra = (kr + 1).sqrt()
     krb = (kr - 1).sqrt()
@@ -726,7 +726,7 @@ def bend_knobs(r:Tensor, kn:Tensor, ks:Tensor, dp:Tensor, length:Tensor) -> Knob
     return torch.stack([qxcx, qxqx, qxpx, qxqy, qxpy,
                         pxcx, pxqx, pxpx, pxqy, pxpy,
                         qycy, qyqx, qypx, qyqy, qypy,
-                        pycy, pyqx, pypx, pyqy, pypy])
+                        pycy, pyqx, pypx, pyqy, pypy]).real
 
 
 def bend_track(state:Tensor, knobs:Tensor) -> Tensor:
