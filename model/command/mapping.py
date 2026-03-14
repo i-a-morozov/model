@@ -84,6 +84,40 @@ def mapping(line:Line,
     if isinstance(other, str):
         *_, other = line.positions(other) if last else [line.position(other)]
 
+    source = line
+    if not root and not matched:
+        _, _, source = group(line, probe, other, root=False, name=name, alignment=alignment)
+
+    select = []
+    for key, kinds, names, clean in groups:
+
+        names = names if isinstance(names, list) else None
+        clean = clean if isinstance(clean, list) else None
+
+        local = []
+        if names is not None:
+            for entry in names:
+                if entry in source.names:
+                    local.append(entry)
+                    continue
+                local.extend([element.name for element in source.query(patterns=[entry])])
+            local = list(dict.fromkeys(local))
+        names = local if names is not None else None
+
+        local = []
+        if clean is not None:
+            for entry in clean:
+                if entry in source.names:
+                    local.append(entry)
+                    continue
+                local.extend([element.name for element in source.query(patterns=[entry])])
+            local = list(dict.fromkeys(local))
+        clean = local if clean is not None else None
+
+        select.append((key, kinds, names, clean))
+
+    groups = tuple(select)
+
     if not matched:
         transport, table, _ = group(line, probe, other, *groups, root=root, name=name, alignment=alignment)
         return transport, table
