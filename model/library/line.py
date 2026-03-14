@@ -40,6 +40,7 @@ clean         : clean first level sequence
 mangle        : mangle elements
 merge         : merge drift elements
 splice        : splice line
+nest          : nest line between named elements
 group         : replace sequence part (first level) from probe to other with a line
 dp            : (property) get/set momentum deviation
 exact         : (property) get/set exact flag
@@ -84,14 +85,13 @@ from typing import Literal
 import torch
 from torch import Tensor
 
+from model.types import State
+
 from model.library.element import Element
 from model.library.element import transform
+from model.library.marker import Marker
 
 from model.command.util import rotate
-
-type State = Tensor
-type Mapping = Callable[[State, Tensor, ...], State]
-
 
 class Line(Element):
     """
@@ -875,7 +875,8 @@ class Line(Element):
 
     def split(self,
               group:tuple[int, list[str]|None, list[str]|None, list[str]|None], *,
-              paste:Optional[list[Element]]=None) -> None:
+              paste:Optional[list[Element]]=None, 
+              marker:bool=False) -> None:
         """
         Split elements
 
@@ -893,6 +894,8 @@ class Line(Element):
             count is the number of elements, not splits
         paste: Optional[list[Element]]
             elements to paste between parts
+        marker: bool, default=False
+            flag to add marker at the center of splitted BPMs
 
         Returns
         -------
@@ -906,13 +909,15 @@ class Line(Element):
         names = names or []
         clean = clean or []
         paste = paste or []
-        for index, element in enumerate(self.sequence):
+        for _, element in enumerate(self.sequence):
             kind = element.__class__.__name__
             if (kind in kinds or element.name in names) and (element.name not in clean):
                 if kind == 'BPM':
                     head = element.clone()
                     tail = element.clone()
                     tail.direction = {'forward': 'inverse', 'inverse': 'forward'}[tail.direction]
+                    if marker:
+                        paste.append(Marker(name=element.name))
                     sequence.extend([head, *paste, tail])
                     continue
                 if count == 1:
@@ -1082,6 +1087,61 @@ class Line(Element):
                     )
                 )
                 line = []
+        self.sequence = sequence
+
+
+    def nest(self,
+             names:list[str], *,
+             root:str='LINE') -> None:
+        """
+        Nest line between named elements
+
+        Example
+        -------
+        [..., name_i, ..., name_j, ...]
+        [..., name_i, line_i, name_j, line_j]
+
+        Parameters
+        ----------
+        names: list[str]
+            ordered anchor names
+        root: str, default='LINE'
+            nested line name root
+
+        Returns
+        -------
+        None
+
+        """
+        index:int = 0
+        size:int = len(self.sequence)
+        sequence:list[Element|Line] = []
+
+        heads, _ = names
+        _, tails = names
+
+        for head, tail in zip(heads, tails):
+            while index < size and self.sequence[index].name != head:
+                index += 1
+            anchor:Element|Line = self.sequence[index]
+            sequence.append(anchor)
+            index += 1
+            line:list[Element|Line] = []
+            while index < size and self.sequence[index].name != tail:
+                line.append(self.sequence[index])
+                index += 1
+            sequence.append(
+                Line(
+                    name=f'{root}_{head}',
+                    sequence=line,
+                    propagate=self.propagate,
+                    dp=self.dp.item(),
+                    exact=self.exact,
+                    output=self.output,
+                    matrix=self.matrix
+                )
+            )
+        sequence.append(self.sequence[index])
         self.sequence = sequence
 
 
