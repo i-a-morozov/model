@@ -36,9 +36,8 @@ rz[_{knobs, track}]                  -- RZ rotation
 import torch
 from torch import Tensor
 
-type State = Tensor
-type Knobs = Tensor
-
+from model.types import State
+from model.types import Knobs
 
 def calibration_forward(state:State,
                         gxx:Tensor,
