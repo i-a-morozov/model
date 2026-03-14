@@ -916,9 +916,10 @@ class Line(Element):
                     head = element.clone()
                     tail = element.clone()
                     tail.direction = {'forward': 'inverse', 'inverse': 'forward'}[tail.direction]
+                    center = []
                     if marker:
-                        paste.append(Marker(name=element.name))
-                    sequence.extend([head, *paste, tail])
+                        center = [Marker(name=element.name)]
+                    sequence.extend([head, *paste, *center, tail])
                     continue
                 if count == 1:
                     sequence.append(element)
@@ -1117,8 +1118,8 @@ class Line(Element):
         size:int = len(self.sequence)
         sequence:list[Element|Line] = []
 
-        heads, _ = names
-        _, tails = names
+        *heads, _ = names
+        _, *tails = names
 
         for head, tail in zip(heads, tails):
             while index < size and self.sequence[index].name != head:
@@ -1130,17 +1131,18 @@ class Line(Element):
             while index < size and self.sequence[index].name != tail:
                 line.append(self.sequence[index])
                 index += 1
-            sequence.append(
-                Line(
-                    name=f'{root}_{head}',
-                    sequence=line,
-                    propagate=self.propagate,
-                    dp=self.dp.item(),
-                    exact=self.exact,
-                    output=self.output,
-                    matrix=self.matrix
+            if line:
+                sequence.append(
+                    Line(
+                        name=f'{root}_{head}',
+                        sequence=line,
+                        propagate=self.propagate,
+                        dp=self.dp.item(),
+                        exact=self.exact,
+                        output=self.output,
+                        matrix=self.matrix
+                    )
                 )
-            )
         sequence.append(self.sequence[index])
         self.sequence = sequence
 
