@@ -477,6 +477,10 @@ class Model:
         self.dict = self.data_frame.to_dict()
 
 
+    def to_dict(self) -> dict:
+        return self.data_frame.to_dict()
+
+
     def export(self, path:Path) -> None:
         """
         Export configuration
@@ -622,3 +626,6 @@ class Model:
             result.lattice:dict[str,dict[str,str|int|float|dict]] = lattice
 
         return result
+
+    def __repr__(self) -> str:
+        return f'{self.__class__.__name__}(model={self.model})'
