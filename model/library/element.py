@@ -6,7 +6,7 @@ Abstract element
 
 Adding new elements:
 
-1. add new keys to library.keys if any
+1. add new keys to library.keys if any (differentiable parameters)
 2. add to command.build  (build from external and serializaton)
 3. add to command.layout (graphical representation settings)
 
@@ -28,6 +28,9 @@ from torch import dtype as DataType
 from torch import device as DataDevice
 from torch import float64 as Float64
 
+from model.types import State
+from model.types import Mapping
+
 from model.library.keys import KEY_DP
 from model.library.keys import KEY_DL
 from model.library.keys import KEY_DW
@@ -42,9 +45,6 @@ from model.library.keys import KEY_WZ
 
 from model.library.transformations import tx, ty, tz
 from model.library.transformations import rx, ry, rz
-
-State = Tensor
-type Mapping = Callable[[State, Tensor, ...], State]
 
 class Element(ABC):
     """
