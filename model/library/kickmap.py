@@ -64,10 +64,6 @@ class KM(Element):
 
     Insertion device kick map loaded from a MATLAB table
 
-    The table contains the kick for one period and must define xtable,
-    ytable, xkick1, ykick1 and Len. Coordinates and lengths are in meters.
-    The total element length is count*Len.
-
     Returns
     -------
     KM
@@ -164,7 +160,7 @@ class KM(Element):
         self._period = period
 
         super().__init__(name=name,
-                         length=count*period,
+                         length=0.0 if insertion else count*period,
                          dp=dp,
                          alignment=alignment,
                          dx=dx,
@@ -210,17 +206,17 @@ class KM(Element):
 
 
     def make_step(self) -> Mapping:
-        count = self.count
-        xgrid = self._xgrid
-        ygrid = self._ygrid
-        xkick = self._xkick
-        ykick = self._ykick
-        energy = self.energy
-        factor_x = self.factor_x*self.sign_x*self.scale
-        factor_y = self.factor_y*self.sign_y*self.scale
-        base_dp = self.dp
-        base_length = self.length
-        direction = -1.0 if self.is_inversed else 1.0
+        _ns: int = self.count
+        _xgrid: Tensor = self._xgrid
+        _ygrid: Tensor = self._ygrid
+        _xkick: Tensor = self._xkick
+        _ykick: Tensor = self._ykick
+        _energy: Optional[float] = self.energy
+        _factor_x: float = self.factor_x*self.sign_x*self.scale
+        _factor_y: float = self.factor_y*self.sign_y*self.scale
+        _dp: Tensor = self.dp
+        _length: Tensor = self.count*self.period
+        _direction: float = -1.0 if self.is_inversed else 1.0
         insertion = self.insertion
         output = self.output
         matrix = self.matrix
@@ -229,16 +225,16 @@ class KM(Element):
             qx, px, qy, py = state
             momentum = 1.0 + dp
             pz = torch.sqrt(momentum**2 - px**2 - py**2)
-            half = 0.5*length/count
+            half = 0.5*length/_ns
 
             qx = qx + half*px/pz
             qy = qy + half*py/pz
 
             xp = px/pz
             yp = py/pz
-            normalization = 1.0/momentum**2 if energy is None else (self.rigidity/(energy*momentum))**2
-            xp = xp - direction*factor_x*normalization*interpolate(xkick, xgrid, ygrid, qx, qy)
-            yp = yp - direction*factor_y*normalization*interpolate(ykick, xgrid, ygrid, qx, qy)
+            normalization = 1.0/momentum**2 if _energy is None else (self.rigidity/(_energy*momentum))**2
+            xp = xp - _direction*_factor_x*normalization*interpolate(_xkick, _xgrid, _ygrid, qx, qy)
+            yp = yp - _direction*_factor_y*normalization*interpolate(_ykick, _xgrid, _ygrid, qx, qy)
 
             denominator = torch.sqrt(1.0 + xp**2 + yp**2)
             px = momentum*xp/denominator
@@ -250,8 +246,8 @@ class KM(Element):
             return torch.stack([qx, px, qy, py])
 
         def step(state:State, dp:Tensor, dl:Tensor) -> State:
-            local_dp = base_dp + dp
-            local_length = base_length + dl
+            local_dp = _dp + dp
+            local_length = _direction*(_length + dl)
             if output:
                 container_output = []
             if matrix:
@@ -265,7 +261,7 @@ class KM(Element):
                 qy = qy - 0.5*local_length*py/pz
                 state = torch.stack([qx, px, qy, py])
 
-            for _ in range(count):
+            for _ in range(_ns):
                 if matrix:
                     container_matrix.append(torch.func.jacrev(integrator)(state, local_dp, local_length))
                 state = integrator(state, local_dp, local_length)
@@ -302,6 +298,16 @@ class KM(Element):
     @property
     def period(self) -> Tensor:
         return torch.tensor(self._period, dtype=self.dtype, device=self.device)
+
+    @property
+    def insertion(self) -> bool:
+        return self._insertion
+
+    @insertion.setter
+    def insertion(self, insertion:bool) -> None:
+        self._insertion = insertion
+        self._length = 0.0 if insertion else self._count*self._period
+        self._step = self.make_step()
 
     @property
     def factor_x(self) -> float:
