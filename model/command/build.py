@@ -34,6 +34,7 @@ from model.library.dipole     import Dipole
 from model.library.corrector  import Corrector
 from model.library.gradient   import Gradient
 from model.library.kick       import Kick
+from model.library.kickmap    import KM
 from model.library.linear     import Linear
 from model.library.bpm        import BPM
 from model.library.marker     import Marker
@@ -151,6 +152,9 @@ def _traverse(table:dict) -> Line:
         case 'Kick':
             table.pop('kind')
             return Kick(**table)
+        case 'KM':
+            table.pop('kind')
+            return KM(**table)
         case 'Linear':
             table.pop('kind')
             return Linear(**table)

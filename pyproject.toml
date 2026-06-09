@@ -17,6 +17,7 @@ dependencies = [
     "pyyaml>=6.0.1",
     "pandas>=2.2.0",
     "numpy>=1.26.3",
+    "scipy>=1.12.0",
     "torch>=2.4.0", 
     "multimethod>=1.11",
     "twiss@git+https://github.com/i-a-morozov/twiss#egg=main", 
