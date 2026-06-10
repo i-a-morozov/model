@@ -43,18 +43,19 @@ def load(path:Path) -> tuple[numpy.ndarray, numpy.ndarray, numpy.ndarray, numpy.
 
 
 def interpolate(table:Tensor, xgrid:Tensor, ygrid:Tensor, x:Tensor, y:Tensor) -> Tensor:
-    """Linear interpolation."""
-    ix = torch.searchsorted(xgrid, x).clamp(1, xgrid.numel() - 1)
-    iy = torch.searchsorted(ygrid, y).clamp(1, ygrid.numel() - 1)
-    x0, x1 = xgrid[ix - 1], xgrid[ix]
-    y0, y1 = ygrid[iy - 1], ygrid[iy]
-    tx = (x - x0)/(x1 - x0)
-    ty = (y - y0)/(y1 - y0)
-    f00 = table[ix - 1, iy - 1]
-    f10 = table[ix, iy - 1]
-    f01 = table[ix - 1, iy]
-    f11 = table[ix, iy]
-    return (1 - tx)*(1 - ty)*f00 + tx*(1 - ty)*f10 + (1 - tx)*ty*f01 + tx*ty*f11
+    def weights(grid:Tensor, value:Tensor) -> Tensor:
+        delta = grid[1:] - grid[:-1]
+        fraction = (value.unsqueeze(-1) - grid[:-1])/delta
+        first = (value <= grid[1]).unsqueeze(-1)
+        middle = (value.unsqueeze(-1) > grid[1:-2]) & (value.unsqueeze(-1) <= grid[2:-1])
+        last = (value > grid[-2]).unsqueeze(-1)
+        mask = torch.cat([first, middle, last], dim=-1).to(grid.dtype)
+        left = mask*(1 - fraction)
+        right = mask*fraction
+        return torch.cat([left[..., :1], right[..., :-1] + left[..., 1:], right[..., -1:]], dim=-1)
+    xweight = weights(xgrid, x)
+    yweight = weights(ygrid, y)
+    return torch.einsum('...i,ij,...j->...', xweight, table, yweight)
 
 
 class KM(Element):
